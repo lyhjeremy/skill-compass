@@ -54,8 +54,9 @@ cd backend && pip install -r requirements.txt && uvicorn app.main:app --reload
 
 ## Status
 
-**Beta** — quiz engine, calibration, and the Data Analyst track are live.
-Resume gap reports, mock interviews, study guides, and the remaining tracks
+**Beta** — the quiz engine and the Data Analyst track are live, with
+difficulty-routed question sets and on-device progress. Live percentile
+calibration, resume gap reports, mock interviews, and the remaining tracks
 are in active development. Roadmap in `writeup.md`.
 
 MIT © 2026 Jeremy Lee

@@ -86,7 +86,7 @@ export default function Results() {
 
       {/* 4 · actions */}
       <div style={{ display: 'flex', gap: 12, marginTop: 26, flexWrap: 'wrap' }}>
-        <button className="btn" onClick={download}>↓ Take your study notes</button>
+        <button className="btn" onClick={download}>↓ Save your study notes</button>
         <Link className="btn ghost" to={`/quiz/${session.subtopic}`}>Take it again</Link>
         <Link className="btn subtle" to="/tracks/data-analyst">Back to your track</Link>
       </div>

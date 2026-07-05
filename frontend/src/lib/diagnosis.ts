@@ -25,6 +25,7 @@ export function composeDiagnosis(
       ? `Take it again to cover ${label(untested[0].id).toLowerCase()}; a perfect run on fresh questions is the real test.`
       : 'Try the next subtopic up — this one looks solved.')
   } else {
+    if (session.correct === 0) parts.push(`A tough draw — it happens, and it tells us exactly where to start.`)
     if (hardestRight) parts.push(`You reason well about ${label(hardestRight.concept).toLowerCase()}.`)
     else if (strong.length) parts.push(`${label(strong[0].id)} is solid.`)
     if (weak.length) {

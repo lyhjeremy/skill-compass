@@ -1,0 +1,452 @@
+{
+ "id": "dashboards-bi",
+ "concepts": [
+  {
+   "id": "aggregation-granularity",
+   "label": "Aggregation Granularity",
+   "definition": "The level of detail at which data is summarized, such as daily versus monthly totals.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "chart-type-selection",
+   "label": "Chart Type Selection",
+   "definition": "Choosing the chart form (bar, line, scatter, etc.) that best matches the data and the question being asked.",
+   "prereq": "aggregation-granularity",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "misleading-visualizations",
+   "label": "Misleading Visualizations",
+   "definition": "Design choices like truncated axes or inappropriate scales that cause a chart to distort the underlying data.",
+   "prereq": "chart-type-selection",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "kpi-design",
+   "label": "KPI Design",
+   "definition": "Selecting and formatting the key metrics that summarize performance for viewers at a glance.",
+   "prereq": "chart-type-selection",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "dashboard-layout",
+   "label": "Dashboard Layout Principles",
+   "definition": "Arranging charts and KPIs on a dashboard to create clear visual hierarchy and guide the viewer's attention.",
+   "prereq": "kpi-design",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "dashboard-filters",
+   "label": "Interactive Filters",
+   "definition": "Dashboard controls that let users narrow the displayed data by criteria like date range or category.",
+   "prereq": "dashboard-layout",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "drill-down",
+   "label": "Drill-Down Navigation",
+   "definition": "An interaction pattern that lets users move from a summary view into more detailed underlying data.",
+   "prereq": "dashboard-filters",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "refresh-scheduling",
+   "label": "Data Refresh Scheduling",
+   "definition": "Configuring how often a dashboard's underlying data source is updated so figures stay current.",
+   "prereq": "drill-down",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "chart-type-selection",
+   "stem": "A retail analyst wants to compare monthly revenue trends across the last 24 months for a single store. Which chart type best shows this?",
+   "options": [
+    "Donut chart",
+    "Line chart",
+    "Scatter plot",
+    "Heat map"
+   ],
+   "answer": 1,
+   "explanation": "Line charts represent continuous trends over time most clearly. Donut charts show part-to-whole composition, scatter plots show correlation between variables, and heat maps show intensity across two categorical dimensions — none convey a single trend well.",
+   "grounding": {
+    "source": "Wikipedia: Line chart",
+    "note": "Line charts are the standard choice for displaying trends over continuous time intervals."
+   },
+   "difficulty_prior": 0.8,
+   "id": "dashboards-bi-000",
+   "status": "beta"
+  },
+  {
+   "concept": "misleading-visualizations",
+   "stem": "A bar chart comparing quarterly sales starts its y-axis at 80,000 instead of 0, making a 5% increase look like a 300% increase. What is the primary issue with this chart?",
+   "options": [
+    "Bar charts cannot display quarterly sales data",
+    "A truncated y-axis exaggerates the visual difference",
+    "The chart contains too many bar colors",
+    "The bars are not ordered chronologically"
+   ],
+   "answer": 1,
+   "explanation": "Starting the y-axis above zero compresses the baseline and visually exaggerates small differences between bars, a classic misleading-chart technique. The other options don't explain why the comparison looks distorted.",
+   "grounding": {
+    "source": "Wikipedia: Misleading graph",
+    "note": "Documents truncated, non-zero-baseline axes as a common technique that exaggerates perceived differences."
+   },
+   "difficulty_prior": 0.75,
+   "id": "dashboards-bi-001",
+   "status": "beta"
+  },
+  {
+   "concept": "kpi-design",
+   "stem": "A support team's dashboard shows 'Total Tickets Closed' with no comparison to a prior period or target. What is the main limitation of this KPI display?",
+   "options": [
+    "It requires a drill-down to be shown",
+    "It combines two unrelated metrics together",
+    "It lacks context to judge performance quality",
+    "It refreshes too often for users to track"
+   ],
+   "answer": 2,
+   "explanation": "A KPI value alone, without a target, benchmark, or prior-period comparison, gives no sense of whether performance is good or bad. Update frequency and drill-down availability don't affect whether the number is interpretable.",
+   "grounding": {
+    "source": "Stephen Few, Information Dashboard Design",
+    "note": "Argues KPIs need context such as targets or trends to be actionable, not raw counts alone."
+   },
+   "difficulty_prior": 0.78,
+   "id": "dashboards-bi-002",
+   "status": "beta"
+  },
+  {
+   "concept": "dashboard-filters",
+   "stem": "A sales dashboard lets users filter by region and product line. When a user selects 'West' region, all charts on the page update to show only West data. What BI concept does this describe?",
+   "options": [
+    "A scheduled refresh of the data",
+    "A drill-down into one chart only",
+    "A global filter applied dashboard-wide",
+    "A calculated KPI target value"
+   ],
+   "answer": 2,
+   "explanation": "A filter that updates every visual on a dashboard when changed is a global (page-level) filter. Drill-down instead reveals deeper detail within a single visual rather than filtering the whole page.",
+   "grounding": {
+    "source": "Microsoft Power BI documentation: Filters in reports",
+    "note": "Describes page-level (global) filters that affect all visuals versus visual-level filters."
+   },
+   "difficulty_prior": 0.72,
+   "id": "dashboards-bi-003",
+   "status": "beta"
+  },
+  {
+   "concept": "aggregation-granularity",
+   "stem": "An analyst builds a dashboard showing website sessions aggregated by month. A stakeholder asks to see daily spikes around a product launch. What should the analyst change?",
+   "options": [
+    "Add a pie chart for browser share",
+    "Increase the refresh schedule to hourly",
+    "Lower the aggregation granularity to daily data",
+    "Apply a filter to remove outlier days"
+   ],
+   "answer": 2,
+   "explanation": "Monthly aggregation smooths out day-to-day variation, hiding short-term spikes. Lowering granularity to daily data reveals them. Refresh frequency affects data currency, not the level of detail already aggregated in the dataset.",
+   "grounding": {
+    "source": "Wikipedia: Data aggregation",
+    "note": "Explains how the level of aggregation determines what detail, such as daily spikes, is visible in reported data."
+   },
+   "difficulty_prior": 0.82,
+   "id": "dashboards-bi-004",
+   "status": "beta"
+  },
+  {
+   "concept": "dashboard-layout",
+   "stem": "An executive dashboard will be viewed for only a few seconds before decisions are made. Where should the designer place the most critical KPIs to match how people naturally scan a screen?",
+   "options": [
+    "In the top-left area, matching where eyes typically look first",
+    "In the bottom-right corner, matching where eyes typically look last",
+    "Scattered evenly across the screen, giving every metric equal attention",
+    "Behind a secondary tab that users must click through to view"
+   ],
+   "answer": 0,
+   "explanation": "Eye-tracking research shows viewers scan screens in a Z or F pattern, starting top-left. Dashboard design principles recommend placing the most important KPIs there for immediate visibility, rather than hiding them behind tabs or scattering them evenly.",
+   "grounding": {
+    "source": "Stephen Few, \"Information Dashboard Design\"",
+    "note": "Recommends placing the most important information in the upper-left to match natural scanning patterns."
+   },
+   "difficulty_prior": 0.65,
+   "id": "dashboards-bi-005",
+   "status": "beta"
+  },
+  {
+   "concept": "drill-down",
+   "stem": "On a sales dashboard, a manager clicks a bar labeled 'West Region' and the chart updates to show sales broken out by individual store within that region. This interaction is best described as:",
+   "options": [
+    "Drill-down, navigating from a summary level to more granular detail",
+    "Filtering, removing records that do not match a chosen value",
+    "Aggregation, combining detailed records into a single summary total",
+    "Refresh, pulling the latest data from the source system"
+   ],
+   "answer": 0,
+   "explanation": "Drill-down means navigating from a summary level to a more detailed level within the same hierarchy (region to store), keeping the same metric. Filtering only narrows which records are shown without changing the level of detail.",
+   "grounding": {
+    "source": "OLAP (Wikipedia)",
+    "note": "Drill-down and roll-up are classic OLAP operations for moving between hierarchy levels of detail."
+   },
+   "difficulty_prior": 0.6,
+   "id": "dashboards-bi-006",
+   "status": "beta"
+  },
+  {
+   "concept": "refresh-scheduling",
+   "stem": "A warehouse dashboard must alert staff to stockouts within 30 minutes so they can reorder in time, but the underlying data currently refreshes only once per day overnight. What is the most appropriate fix?",
+   "options": [
+    "Increase the refresh frequency so data latency matches the 30-minute requirement",
+    "Add a filter panel so staff can search for specific product codes",
+    "Replace the stockout table with a pie chart of inventory categories",
+    "Increase the number of KPIs shown on the dashboard's front page"
+   ],
+   "answer": 0,
+   "explanation": "Refresh frequency determines how current the data is; a daily refresh cannot surface a stockout within a 30-minute window regardless of chart type or filters. The fix must target data latency directly.",
+   "grounding": {
+    "source": "Microsoft Power BI documentation, \"Data refresh in Power BI\"",
+    "note": "Explains that refresh schedules must be set to match how quickly consumers need updated data."
+   },
+   "difficulty_prior": 0.7,
+   "id": "dashboards-bi-007",
+   "status": "beta"
+  },
+  {
+   "concept": "chart-type-selection",
+   "stem": "A product manager wants to show how a $500,000 quarterly marketing budget is divided among five channels: search, social, email, display, and print. Which chart best communicates this part-to-whole breakdown?",
+   "options": [
+    "A pie chart showing each channel's percentage share of total spend",
+    "A line chart showing spend for each channel over 12 months",
+    "A scatter plot comparing channel spend against staff headcount",
+    "A histogram showing the distribution of individual campaign spend amounts"
+   ],
+   "answer": 0,
+   "explanation": "Pie charts are designed to show how parts contribute to a whole when there are few categories. Line charts show trends, scatter plots show relationships between variables, and histograms show distribution of one variable — none show composition.",
+   "grounding": {
+    "source": "Pie chart (Wikipedia)",
+    "note": "Describes the pie chart as a circular graphic divided into slices to illustrate numerical proportion of a whole."
+   },
+   "difficulty_prior": 0.65,
+   "id": "dashboards-bi-008",
+   "status": "beta"
+  },
+  {
+   "concept": "kpi-design",
+   "stem": "A marketing team's dashboard prominently displays 'Total Social Media Followers' as its headline KPI, but no one on the team can explain how this number influences any business decision. This metric is best described as:",
+   "options": [
+    "A vanity metric with no link to decisions",
+    "A leading indicator that predicts next quarter's revenue",
+    "A lagging indicator measured against an approved target",
+    "A benchmark metric used to compare against competitors"
+   ],
+   "answer": 0,
+   "explanation": "A vanity metric rises impressively but has no demonstrated link to revenue, retention, or other outcomes. Effective KPIs must be actionable; a raw follower count doesn't qualify as a leading or lagging indicator without evidence connecting it to results.",
+   "grounding": {
+    "source": "Alistair Croll and Benjamin Yoskovitz, \"Lean Analytics\"",
+    "note": "Introduces the term 'vanity metric' for numbers that look good but don't inform decisions."
+   },
+   "difficulty_prior": 0.6,
+   "id": "dashboards-bi-009",
+   "status": "beta"
+  },
+  {
+   "concept": "aggregation-granularity",
+   "stem": "A BI dashboard calculates monthly 'Average Order Value' by averaging each day's daily average order value, rather than dividing total monthly revenue by total monthly order count. What problem does this create?",
+   "options": [
+    "The two calculation methods always produce identical results, so no distortion exists.",
+    "It always produces a lower value than total revenue divided by total order count.",
+    "Low-volume days are weighted equally with high-volume days, skewing the true average.",
+    "It has no effect on accuracy unless the dashboard is also segmented by region."
+   ],
+   "answer": 2,
+   "explanation": "Averaging daily averages treats every day equally regardless of order volume, unlike total revenue divided by total orders, which weights by volume. This 'average of averages' error occurs regardless of segmentation, and its direction isn't guaranteed to be higher or lower.",
+   "grounding": {
+    "source": "Weighted arithmetic mean (Wikipedia)",
+    "note": "Explains why averaging subgroup averages diverges from the true overall average unless subgroups are equal in size."
+   },
+   "difficulty_prior": 0.45,
+   "id": "dashboards-bi-010",
+   "status": "beta"
+  },
+  {
+   "concept": "chart-type-selection",
+   "stem": "A marketing dashboard must show how the share of website traffic from five channels (organic, paid, social, email, direct) has shifted as a percentage of total traffic each month over the past year. Which chart best shows this?",
+   "options": [
+    "A grouped bar chart with one bar per channel for each month",
+    "A 100% stacked area chart, normalized to show monthly channel share",
+    "Five separate line charts, one per channel, plotted on shared axes",
+    "A standard stacked bar chart showing absolute visit counts per channel"
+   ],
+   "answer": 1,
+   "explanation": "A 100% stacked area chart normalizes each month to a fixed total, so height changes reflect true share shifts. Plain stacked bars show absolute volume, and grouped bars or separate lines emphasize magnitude rather than proportional composition.",
+   "grounding": {
+    "source": "Area chart (Wikipedia)",
+    "note": "Describes 100%-stacked area charts as normalizing series to show proportional composition over time, unlike absolute stacked variants."
+   },
+   "difficulty_prior": 0.5,
+   "id": "dashboards-bi-011",
+   "status": "beta"
+  },
+  {
+   "concept": "misleading-visualizations",
+   "stem": "A presentation includes a chart with two y-axes: website traffic (left axis, scaled 0 to 10,000) and revenue (right axis, scaled 0 to 50,000). The lines appear to move together, implying traffic drives revenue. What is the primary concern with this chart?",
+   "options": [
+    "Dual-axis charts cannot display more than two metrics at the same time.",
+    "Neither axis begins at zero, which is the sole reason the lines appear correlated.",
+    "The chart needs a logarithmic scale to compare traffic and revenue fairly.",
+    "Independently chosen axis scales can make unrelated lines appear to move together."
+   ],
+   "answer": 3,
+   "explanation": "Because each axis's range is chosen independently, two unrelated series can be scaled to visually align, creating a false impression of correlation. The issue is the independent scaling, not a non-zero baseline or the need for a log scale.",
+   "grounding": {
+    "source": "Alberto Cairo, \"How Charts Lie\"",
+    "note": "Discusses how dual-axis charts with independently scaled axes can visually imply false correlations between unrelated metrics."
+   },
+   "difficulty_prior": 0.5,
+   "id": "dashboards-bi-012",
+   "status": "beta"
+  },
+  {
+   "concept": "dashboard-layout",
+   "stem": "A dashboard designer places four related 'Sales' KPIs in separate corners of the screen, each surrounded by unrelated operational metrics. Users report difficulty comparing the sales figures at a glance. Which layout change best addresses this?",
+   "options": [
+    "Increase the font size of every KPI number across the dashboard.",
+    "Apply the same color scheme to all charts for visual consistency.",
+    "Group the four sales KPIs together so proximity signals their relationship.",
+    "Add a single refresh button so every metric updates simultaneously."
+   ],
+   "answer": 2,
+   "explanation": "The Gestalt principle of proximity holds that spatially grouped items are perceived as related; grouping the sales KPIs lets users compare them without scanning the whole layout. Font size, color, and refresh timing don't fix spatial organization.",
+   "grounding": {
+    "source": "Stephen Few, \"Information Dashboard Design\"",
+    "note": "Recommends grouping related metrics using proximity so viewers can compare them without excessive eye movement."
+   },
+   "difficulty_prior": 0.55,
+   "id": "dashboards-bi-013",
+   "status": "beta"
+  },
+  {
+   "concept": "drill-down",
+   "stem": "A BI chart uses a date hierarchy of Year, Quarter, Month, and Day. After a user drills down from Year to Month to inspect a spike, which feature lets them step back to the Year-level view within the same chart?",
+   "options": [
+    "A drill-through action that opens a separate detail-level report page.",
+    "The built-in drill-up control, reversing one hierarchy level at a time.",
+    "A cross-filter that updates other visuals based on the current selection.",
+    "An export function that downloads the chart's underlying raw dataset."
+   ],
+   "answer": 1,
+   "explanation": "Drill-up is the inverse of drill-down, stepping back to a higher hierarchy level within the same visual. Drill-through instead opens a different, detail-focused page rather than moving up the current chart's hierarchy.",
+   "grounding": {
+    "source": "Microsoft Power BI documentation: Drill down in a visual",
+    "note": "Documents drill-up as hierarchy navigation within one visual, distinct from drill-through, which opens a separate detail page."
+   },
+   "difficulty_prior": 0.45,
+   "id": "dashboards-bi-014",
+   "status": "beta"
+  },
+  {
+   "concept": "aggregation-granularity",
+   "stem": "A bank's dashboard shows \"Total Account Balance\" by summing every daily balance snapshot recorded for each account over the past 30 days. Why does this produce a misleading figure?",
+   "options": [
+    "Balances are semi-additive, so summing them across days inflates the total repeatedly",
+    "The total should be broken down by account type rather than by time period",
+    "Daily snapshots contain duplicated transactions that must be removed before summing",
+    "The dashboard needs a longer time window than 30 days to be accurate"
+   ],
+   "answer": 0,
+   "explanation": "Account balance is a semi-additive measure: valid to sum across accounts at a single point in time, but invalid to sum across time periods. The figure isn't a duplicate-data problem — it's an aggregation-granularity error from summing 30 daily snapshots.",
+   "grounding": {
+    "source": "The Data Warehouse Toolkit (Ralph Kimball) - semi-additive facts",
+    "note": "Explains why measures like balances or inventory levels must not be summed across a time dimension."
+   },
+   "difficulty_prior": 0.3,
+   "id": "dashboards-bi-015",
+   "status": "beta"
+  },
+  {
+   "concept": "chart-type-selection",
+   "stem": "A retail analyst wants to understand the spread and outliers in individual customer order values across thousands of transactions, not just the average. Which chart type is most appropriate?",
+   "options": [
+    "A pie chart split into order-value ranges",
+    "A box plot showing the distribution and outliers",
+    "A single KPI card showing average order value",
+    "A stacked bar chart of orders by month"
+   ],
+   "answer": 1,
+   "explanation": "A box plot displays the median, quartiles, and outliers, revealing spread that a single average figure or a pie chart of continuous values cannot show.",
+   "grounding": {
+    "source": "Wikipedia: Box plot",
+    "note": "Describes the box plot as the standard chart for visualizing distribution, quartiles, and outliers in a dataset."
+   },
+   "difficulty_prior": 0.32,
+   "id": "dashboards-bi-016",
+   "status": "beta"
+  },
+  {
+   "concept": "misleading-visualizations",
+   "stem": "A presentation shows user growth using two icons: the icon for the newer figure is scaled to be twice as tall and twice as wide as the smaller icon, to depict a 2x increase. What is misleading here?",
+   "options": [
+    "Since both dimensions kept the same proportions, the size increase accurately reflects 2x growth",
+    "The vertical axis does not start at zero, exaggerating the visual difference",
+    "Doubling both dimensions makes the area four times larger, not two",
+    "The icons are missing numeric value labels, making the comparison unclear"
+   ],
+   "answer": 2,
+   "explanation": "Scaling both dimensions preserves proportions but quadruples the icon's area, since area scales with the square of linear dimensions. Preserving proportions does not make the comparison accurate — viewers perceive area, so the icon visually implies roughly 4x growth instead of the intended 2x.",
+   "grounding": {
+    "source": "Wikipedia: Misleading graph",
+    "note": "Describes how scaling pictogram icons in both dimensions creates a quadratic, exaggerated area increase instead of the intended linear one."
+   },
+   "difficulty_prior": 0.28,
+   "id": "dashboards-bi-017",
+   "status": "beta"
+  },
+  {
+   "concept": "dashboard-filters",
+   "stem": "A dashboard applies a global filter for \"Region = West\" to all visuals, except one KPI card labeled \"Company-Wide YTD Revenue\" that must always total every region. How should the designer prevent user confusion?",
+   "options": [
+    "Remove the global filter so all visuals show every region",
+    "Apply the filter to the KPI card's title text only",
+    "Convert the KPI card into a bar chart instead",
+    "Label the KPI card as unfiltered, showing all regions"
+   ],
+   "answer": 3,
+   "explanation": "Users assume global filters apply everywhere; a visual that is intentionally exempted must be clearly labeled, or it will be misread as reflecting the current filter selection.",
+   "grounding": {
+    "source": "Microsoft Power BI documentation: Edit interactions",
+    "note": "Describes excluding specific visuals from slicer/filter interactions and the need to clearly indicate when a visual ignores the active filter."
+   },
+   "difficulty_prior": 0.35,
+   "id": "dashboards-bi-018",
+   "status": "beta"
+  },
+  {
+   "concept": "refresh-scheduling",
+   "stem": "A weekly executive dashboard reads from a warehouse that loads new data only once per night via ETL. Scheduling the dashboard to refresh every 15 minutes would mainly result in what outcome?",
+   "options": [
+    "The dashboard automatically switching from import mode to live connection",
+    "Wasted compute cost, since the source has no new data",
+    "Duplicate rows being appended each time the refresh completes",
+    "KPI calculations being recalculated from a smaller sample size"
+   ],
+   "answer": 1,
+   "explanation": "Refresh frequency should match the source's update cadence. Refreshing every 15 minutes against data that only updates nightly consumes compute resources without ever surfacing new information.",
+   "grounding": {
+    "source": "Microsoft Power BI documentation: Data refresh in Power BI",
+    "note": "Recommends aligning refresh schedules with the source system's actual update frequency to avoid unnecessary resource use."
+   },
+   "difficulty_prior": 0.3,
+   "id": "dashboards-bi-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}
