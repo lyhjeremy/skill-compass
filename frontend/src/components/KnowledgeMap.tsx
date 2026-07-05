@@ -6,6 +6,19 @@ const COLORS: Record<ConceptState, string> = {
   strong: 'var(--good)', shaky: 'var(--warn)', missed: 'var(--bad)', untested: 'transparent',
 }
 
+/** split a label into <=2 balanced lines so nodes 80px apart don't collide */
+function wrap(label: string): string[] {
+  if (label.length <= 13) return [label]
+  const words = label.split(' ')
+  let best = 1, bestDiff = Infinity
+  for (let i = 1; i < words.length; i++) {
+    const a = words.slice(0, i).join(' ').length, b = words.slice(i).join(' ').length
+    const d = Math.abs(a - b)
+    if (d < bestDiff) { bestDiff = d; best = i }
+  }
+  return [words.slice(0, best).join(' '), words.slice(best).join(' ')]
+}
+
 /** The knowledge map: precomputed layout, status-colored nodes, tap -> concept
  *  sheet (spec §5.5). Untested nodes render hollow. */
 export function KnowledgeMap({ content, states, missedStems, retakeTo }: {
@@ -33,7 +46,11 @@ export function KnowledgeMap({ content, states, missedStems, retakeTo }: {
               <circle cx={c.x} cy={c.y} r="11" fill={st === 'untested' ? 'var(--card)' : COLORS[st]}
                 stroke={st === 'untested' ? 'var(--faint)' : COLORS[st]}
                 strokeWidth="2" strokeDasharray={st === 'untested' ? '3 2' : undefined} />
-              <text x={c.x} y={c.y + 24} fontSize="7.5" textAnchor="middle" fill="var(--muted)">{c.label}</text>
+              <text x={c.x} y={c.y + 22} fontSize="6.8" textAnchor="middle" fill="var(--muted)">
+                {wrap(c.label).map((line, li) => (
+                  <tspan key={li} x={c.x} dy={li === 0 ? 0 : 8}>{line}</tspan>
+                ))}
+              </text>
             </g>
           )
         })}

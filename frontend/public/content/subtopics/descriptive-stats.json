@@ -1,0 +1,452 @@
+{
+ "id": "descriptive-stats",
+ "concepts": [
+  {
+   "id": "central-tendency",
+   "label": "Mean vs median",
+   "definition": "Mean and median are two different ways to summarize the 'typical' value in a set of numbers.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "distribution-shape",
+   "label": "Skewed distributions",
+   "definition": "A distribution is skewed when values trail off more on one side, which pulls the mean away from the median while the median stays put.",
+   "prereq": "central-tendency",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "standard-deviation",
+   "label": "Standard deviation",
+   "definition": "Standard deviation measures how far, on average, data points spread out from the mean.",
+   "prereq": "central-tendency",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "percentiles",
+   "label": "Percentiles and quartiles",
+   "definition": "A percentile tells you the value below which a given percentage of the data falls, letting you locate a point within a skewed or non-normal distribution.",
+   "prereq": "distribution-shape",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "sampling-basics",
+   "label": "Sampling basics",
+   "definition": "A sample is a subset drawn from a larger population, and how it's chosen determines whether its statistics reliably reflect that population.",
+   "prereq": "central-tendency",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "correlation",
+   "label": "Correlation strength",
+   "definition": "Correlation measures how strongly two variables tend to rise or fall together.",
+   "prereq": "standard-deviation",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "correlation-vs-causation",
+   "label": "Correlation vs causation",
+   "definition": "Two variables moving together does not by itself prove that one causes the other, since a third factor or coincidence could explain the link.",
+   "prereq": "correlation",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "misleading-summary-stats",
+   "label": "Misleading summary statistics",
+   "definition": "A single summary number like a mean or a correlation can create a false impression when it hides skew, outliers, small samples, or confounding factors in the underlying data.",
+   "prereq": "correlation-vs-causation",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "central-tendency",
+   "stem": "A company reports a mean employee salary of $95,000, driven up by a handful of highly paid executives. Which measure best represents the salary of a typical employee?",
+   "options": [
+    "The mean, since it includes every data point",
+    "The median, since extreme values do not shift it much",
+    "The standard deviation, since it shows variability in pay",
+    "The range, since it shows the spread between highest and lowest pay"
+   ],
+   "answer": 1,
+   "explanation": "The mean is pulled upward by high executive salaries in this right-skewed distribution, while the median reflects the middle value and resists outliers. Standard deviation and range describe spread, not typical value.",
+   "grounding": {
+    "source": "Skewness (Wikipedia)",
+    "note": "In right-skewed distributions, the mean exceeds the median because it is pulled toward extreme high values."
+   },
+   "difficulty_prior": 0.75,
+   "id": "descriptive-stats-000",
+   "status": "beta"
+  },
+  {
+   "concept": "standard-deviation",
+   "stem": "Two factories produce bolts with the same mean diameter of 10 mm. Factory A's diameters have a standard deviation of 0.1 mm; Factory B's have a standard deviation of 0.5 mm. What does this indicate?",
+   "options": [
+    "Factory A's bolts are more consistent than Factory B's",
+    "Factory B's bolts are more consistent than Factory A's",
+    "Both factories are equally consistent since their means are equal",
+    "Standard deviation values cannot be meaningfully compared across factories"
+   ],
+   "answer": 0,
+   "explanation": "A lower standard deviation means less variation around the mean, so Factory A's bolt diameters are more tightly clustered and consistent than Factory B's, despite identical means.",
+   "grounding": {
+    "source": "Standard deviation (Wikipedia)",
+    "note": "Standard deviation quantifies dispersion around the mean; equal means do not imply equal variability."
+   },
+   "difficulty_prior": 0.8,
+   "id": "descriptive-stats-001",
+   "status": "beta"
+  },
+  {
+   "concept": "percentiles",
+   "stem": "On a hiring assessment, a candidate's score places them at the 90th percentile among all applicants who took the test. What does this indicate?",
+   "options": [
+    "The candidate scored higher than about 90% of applicants",
+    "The candidate answered 90% of the questions correctly",
+    "The candidate's score equals 90% of the maximum possible score",
+    "The candidate is ranked 90th among all applicants"
+   ],
+   "answer": 0,
+   "explanation": "Percentile rank reflects relative standing, not percent correct, score fraction, or absolute rank; rank 90th only equals the 90th percentile when there are exactly 100 applicants.",
+   "grounding": {
+    "source": "Percentile (Wikipedia)",
+    "note": "A percentile denotes the value below which a given percentage of observations in a data set fall."
+   },
+   "difficulty_prior": 0.65,
+   "id": "descriptive-stats-002",
+   "status": "beta"
+  },
+  {
+   "concept": "correlation-vs-causation",
+   "stem": "A city report finds that months with higher ice cream sales also have higher drowning rates. A columnist concludes that eating ice cream causes drowning. What best explains the flaw in this reasoning?",
+   "options": [
+    "Warm weather is a confounding variable behind both trends",
+    "The correlation coefficient was miscalculated in the report",
+    "The number of months studied was too small",
+    "Drowning incidents may have caused increased ice cream buying"
+   ],
+   "answer": 0,
+   "explanation": "Warm weather independently drives both ice cream sales and swimming activity, a classic confounding variable; correlation does not imply causation, and no evidence supports drowning influencing ice cream purchases.",
+   "grounding": {
+    "source": "Correlation does not imply causation (Wikipedia)",
+    "note": "The ice cream–drowning example is a standard illustration of a confounding variable creating spurious correlation."
+   },
+   "difficulty_prior": 0.72,
+   "id": "descriptive-stats-003",
+   "status": "beta"
+  },
+  {
+   "concept": "sampling-basics",
+   "stem": "A company estimates overall customer satisfaction by surveying only customers who called its support hotline. What is the main limitation of this approach?",
+   "options": [
+    "The sample overrepresents customers who experienced problems",
+    "The sample is representative since it includes many respondents",
+    "The survey did not collect enough responses to be reliable",
+    "Random sampling error explains any bias in the results"
+   ],
+   "answer": 0,
+   "explanation": "Customers who call support are disproportionately those with complaints, so the sample misrepresents the full customer base regardless of size; this is systematic selection bias, not random sampling error.",
+   "grounding": {
+    "source": "Sampling bias (Wikipedia)",
+    "note": "Surveying a non-random subgroup, such as only complainants, produces estimates that do not generalize to the full population."
+   },
+   "difficulty_prior": 0.68,
+   "id": "descriptive-stats-004",
+   "status": "beta"
+  },
+  {
+   "concept": "central-tendency",
+   "stem": "A real estate report states the average (mean) home price in a neighborhood is $850,000, while the median price is $420,000. Which explanation best accounts for this large gap?",
+   "options": [
+    "A few very expensive homes are skewing the distribution, pulling the mean upward.",
+    "The median was calculated incorrectly, since it should always equal the mean.",
+    "Home prices in the neighborhood follow a symmetric, bell-shaped distribution.",
+    "One home's price was likely entered incorrectly, creating a data error."
+   ],
+   "answer": 0,
+   "explanation": "Right-skewed data have a few very high values that pull the mean above the median; the mean is sensitive to outliers while the median is not. A large gap like this is a normal feature of skewed data, not necessarily an error.",
+   "grounding": {
+    "source": "Wikipedia: Skewness",
+    "note": "Explains why the mean exceeds the median when a distribution is right-skewed by outliers."
+   },
+   "difficulty_prior": 0.6,
+   "id": "descriptive-stats-005",
+   "status": "beta"
+  },
+  {
+   "concept": "distribution-shape",
+   "stem": "A histogram of customer call durations shows most calls clustered between 2 and 5 minutes, with a long tail extending toward 45 minutes. How would a statistician best describe this distribution?",
+   "options": [
+    "Right-skewed (positively skewed), with a long tail toward higher values.",
+    "Left-skewed (negatively skewed), with a long tail toward lower values.",
+    "Normally distributed, since most call durations cluster near the center.",
+    "Bimodal, since the data shows two distinct, equally sized peaks."
+   ],
+   "answer": 0,
+   "explanation": "A long tail toward higher values defines a right-skewed (positively skewed) distribution, which typically pulls the mean above the median. A symmetric or bimodal shape would not produce this single long tail.",
+   "grounding": {
+    "source": "Wikipedia: Skewness",
+    "note": "Defines right (positive) skew as a distribution with a long tail toward higher values."
+   },
+   "difficulty_prior": 0.6,
+   "id": "descriptive-stats-006",
+   "status": "beta"
+  },
+  {
+   "concept": "standard-deviation",
+   "stem": "A teacher reports that a class's test scores have a mean of 78 and a standard deviation of 12 points. Which statement best interprets the standard deviation?",
+   "options": [
+    "It shows how much individual scores typically deviate from the mean of 78.",
+    "It represents the difference between the highest and lowest scores in the class.",
+    "It indicates the score that at least half the students scored above.",
+    "It identifies the single score that occurs most often among students."
+   ],
+   "answer": 0,
+   "explanation": "Standard deviation quantifies the typical spread of individual values around the mean, not the range (max minus min), the median, or the mode. A larger value means scores are more spread out from 78.",
+   "grounding": {
+    "source": "Wikipedia: Standard deviation",
+    "note": "Defines standard deviation as a measure of dispersion around the mean."
+   },
+   "difficulty_prior": 0.65,
+   "id": "descriptive-stats-007",
+   "status": "beta"
+  },
+  {
+   "concept": "correlation",
+   "stem": "A researcher finds a correlation coefficient of -0.85 between hours of sleep and reported stress levels. Which interpretation is correct?",
+   "options": [
+    "There is a strong negative relationship: more sleep tends to accompany less stress.",
+    "The variables are unrelated, since a negative sign shows no real pattern.",
+    "Sleep hours directly cause the observed reduction in stress levels.",
+    "About 85 percent of the variation in stress is explained by sleep."
+   ],
+   "answer": 0,
+   "explanation": "A coefficient near -1 signals a strong negative linear relationship, not the absence of one. Correlation does not establish causation, and r (not r-squared) measures strength and direction; r-squared reflects variance explained.",
+   "grounding": {
+    "source": "Wikipedia: Pearson correlation coefficient",
+    "note": "Explains that r measures the strength and direction of a linear association, distinct from causation or r-squared."
+   },
+   "difficulty_prior": 0.6,
+   "id": "descriptive-stats-008",
+   "status": "beta"
+  },
+  {
+   "concept": "misleading-summary-stats",
+   "stem": "A shipping company advertises an average delivery time of 2 days based on all orders. A customer's package arrives in 9 days. Which additional statistic would best help customers understand the range of likely delivery times?",
+   "options": [
+    "A measure of spread, such as standard deviation or a percentile range.",
+    "The median delivery time across all orders, replacing the mean entirely.",
+    "The mode, or single most common delivery time among all orders.",
+    "A larger sample of orders, since more data always narrows the range."
+   ],
+   "answer": 0,
+   "explanation": "A single average hides variability; a standard deviation or percentile range shows how far individual delivery times typically spread, explaining outliers like 9 days. Switching to median, mode, or a larger sample size does not by itself reveal that spread.",
+   "grounding": {
+    "source": "Wikipedia: Descriptive statistics",
+    "note": "Notes that central tendency measures alone don't capture the spread or variability of data."
+   },
+   "difficulty_prior": 0.5,
+   "id": "descriptive-stats-009",
+   "status": "beta"
+  },
+  {
+   "concept": "central-tendency",
+   "stem": "A right-skewed city income distribution has a few very high earners. A report states: mean household income rose 8% but median rose only 2%. Is it reasonable to conclude gains were concentrated among higher earners?",
+   "options": [
+    "No; the mean and median must always rise by the same percentage in any correctly reported dataset.",
+    "Yes, but only because the mean is always the more trustworthy measure of central tendency overall.",
+    "Yes; a faster-rising mean than median in skewed data typically signals gains concentrated near the top.",
+    "No; a faster-rising mean than median actually signals gains concentrated among the lowest earners instead."
+   ],
+   "answer": 2,
+   "explanation": "In skewed data, extreme values inflate the mean much more than the resistant median, so a mean rising faster signals gains concentrated in the upper tail — not a general property that the mean is more 'trustworthy.'",
+   "grounding": {
+    "source": "Wikipedia: Skewness",
+    "note": "Explains how right-skewed distributions cause the mean to exceed the median, with divergence driven by the upper tail."
+   },
+   "difficulty_prior": 0.45,
+   "id": "descriptive-stats-010",
+   "status": "beta"
+  },
+  {
+   "concept": "distribution-shape",
+   "stem": "A software company measures time-to-first-response for support tickets. A histogram shows two distinct peaks: one around 5 minutes (chat tickets) and another around 4 hours (email tickets). Which statement about this distribution is most accurate?",
+   "options": [
+    "The distribution is uniform, so every response time between 5 minutes and 4 hours is equally likely.",
+    "The distribution is bimodal, so a single overall mean response time would misrepresent both ticket types.",
+    "The distribution is right-skewed, so the median falls below the mean for both ticket types combined.",
+    "The distribution is approximately normal, so about 68% of tickets fall within one standard deviation of the mean."
+   ],
+   "answer": 1,
+   "explanation": "Two separate peaks reveal two subpopulations (chat vs. email tickets), not a single skewed or normal curve, so one overall mean misrepresents both groups; each channel should be analyzed separately.",
+   "grounding": {
+    "source": "Wikipedia: Multimodal distribution",
+    "note": "Describes bimodal distributions and why a single mean or median misrepresents distinct underlying subgroups."
+   },
+   "difficulty_prior": 0.5,
+   "id": "descriptive-stats-011",
+   "status": "beta"
+  },
+  {
+   "concept": "percentiles",
+   "stem": "A pediatric growth chart shows a child's height at the 25th percentile for their age group. A parent worries this means the child is shorter than average and something is wrong. What is the correct interpretation of this percentile?",
+   "options": [
+    "The child's height measurement is exactly 25% below the average height for their age group.",
+    "The child ranks in the bottom 25% of all children nationally, which does indicate a growth problem.",
+    "The child's height score is 25 points below the median on a standardized 100-point scale.",
+    "About 25% of children the same age are shorter, which is normal variation."
+   ],
+   "answer": 3,
+   "explanation": "Percentile expresses rank within a peer group, not distance from the average. Being at the 25th percentile means 25% of same-age children are shorter, which is common and not, by itself, a growth problem.",
+   "grounding": {
+    "source": "Wikipedia: Percentile",
+    "note": "Defines percentile as the value below which a given percentage of observations in a group falls."
+   },
+   "difficulty_prior": 0.45,
+   "id": "descriptive-stats-012",
+   "status": "beta"
+  },
+  {
+   "concept": "sampling-basics",
+   "stem": "Two surveys estimate average weekly work hours in the same company. Survey A randomly samples 50 employees; Survey B randomly samples 800 employees, using an identical random sampling method. Which statement is most accurate?",
+   "options": [
+    "Both surveys will produce identical sample means, since each uses genuinely random sampling from the population.",
+    "Survey B's mean is likely closer to the true population mean, since larger samples reduce sampling error.",
+    "Survey A's sample mean is more reliable, since smaller samples are easier to collect without recording errors.",
+    "Survey B's sample mean is guaranteed to exactly match the true population mean because of its larger size."
+   ],
+   "answer": 1,
+   "explanation": "Larger random samples reduce sampling error and typically land closer to the true population value, but this is a tendency, not a guarantee of an exact match or identical results across samples.",
+   "grounding": {
+    "source": "Wikipedia: Sampling error",
+    "note": "Explains that sampling error tends to decrease as random sample size increases."
+   },
+   "difficulty_prior": 0.5,
+   "id": "descriptive-stats-013",
+   "status": "beta"
+  },
+  {
+   "concept": "correlation",
+   "stem": "A quality engineer calculates a correlation coefficient of 0.03 between oven temperature and defect rate, concluding there is no relationship. A scatterplot shows defects are low at moderate temperatures but rise sharply at both very low and very high temperatures. What does this reveal?",
+   "options": [
+    "The conclusion is correct, since a coefficient near zero always means the variables are unrelated.",
+    "The conclusion is flawed: a nonzero coefficient, however small, would still prove that temperature causes defects.",
+    "The conclusion is flawed: correlation coefficients capture only linear association and can miss non-linear relationships.",
+    "The conclusion is correct, since a U-shaped scatterplot pattern confirms there is no relationship."
+   ],
+   "answer": 2,
+   "explanation": "Pearson's r captures only linear association, so a U-shaped pattern can still yield r≈0 despite a real effect. Also, a tiny nonzero r does not establish causation — correlation and causation are distinct.",
+   "grounding": {
+    "source": "Wikipedia: Pearson correlation coefficient",
+    "note": "Explains that Pearson's r measures only linear association and can be near zero despite a strong non-linear relationship; correlation alone does not establish causation."
+   },
+   "difficulty_prior": 0.4,
+   "id": "descriptive-stats-014",
+   "status": "beta"
+  },
+  {
+   "concept": "distribution-shape",
+   "stem": "A quality control analyst reports that a batch of measurements has a mean of 50.0 and a median of 50.0, exactly equal. She concludes the distribution must be symmetric. Is her conclusion valid?",
+   "options": [
+    "Yes — mean and median can only be equal when a distribution is perfectly symmetric.",
+    "No — equal mean and median doesn't guarantee symmetry; skewed data can coincide this way too.",
+    "Yes — the equality only holds because the sample size is large enough to smooth out any skew.",
+    "No — equal mean and median indicates the data contains no meaningful outliers or extreme values."
+   ],
+   "answer": 1,
+   "explanation": "Equal mean and median only shows two statistics coincide; it doesn't test shape. A skewed dataset can have offsetting extreme values, or a bimodal dataset can hide structure, so symmetry must be checked directly, e.g., via a histogram.",
+   "grounding": {
+    "source": "Wikipedia: Skewness",
+    "note": "Notes that measures like mean and median coinciding does not by itself establish a symmetric distribution shape."
+   },
+   "difficulty_prior": 0.32,
+   "id": "descriptive-stats-015",
+   "status": "beta"
+  },
+  {
+   "concept": "standard-deviation",
+   "stem": "A researcher studies household wealth, which is heavily right-skewed due to a few extremely wealthy households. She applies the empirical rule to claim about 95% of households fall within two standard deviations of the mean. What is the flaw in her reasoning?",
+   "options": [
+    "Standard deviation is undefined for right-skewed distributions so no percentage claim can be made at all.",
+    "The empirical rule requires computing variance rather than standard deviation whenever a distribution is skewed.",
+    "Skewed distributions need three standard deviations instead of two to capture roughly 95% of values.",
+    "The rule assumes an approximately normal distribution, so it doesn't reliably apply to skewed data."
+   ],
+   "answer": 3,
+   "explanation": "The 68-95-99.7 empirical rule is derived from the normal distribution and assumes roughly symmetric, bell-shaped data. Heavily skewed distributions, like wealth data with extreme outliers, violate this assumption, so the rule's percentage guarantees do not hold.",
+   "grounding": {
+    "source": "Wikipedia: 68–95–99.7 rule",
+    "note": "States the rule applies specifically to normal (Gaussian) distributions, not skewed ones."
+   },
+   "difficulty_prior": 0.3,
+   "id": "descriptive-stats-016",
+   "status": "beta"
+  },
+  {
+   "concept": "percentiles",
+   "stem": "A student scores at the 60th percentile on a standardized test in Grade 8, then again at the 60th percentile in Grade 10. A counselor concludes the student's actual skill level has not improved. What is wrong with this reasoning?",
+   "options": [
+    "Percentile rank shows standing relative to peers that year, not absolute skill; growth may still occur.",
+    "The counselor is correct, since percentile rank directly measures a student's absolute skill level independent of peers.",
+    "Percentile scores from different school years can never be compared to one another under any circumstances.",
+    "A given percentile corresponds to a completely different raw score each year, making any comparison meaningless."
+   ],
+   "answer": 0,
+   "explanation": "Percentile rank is defined relative to a specific comparison group, not as an absolute skill measure. If the peer group's performance shifts across years, a student's percentile can stay flat even while true skill changes.",
+   "grounding": {
+    "source": "Wikipedia: Percentile",
+    "note": "Defines percentile as the value below which a given percentage of observations in a reference group fall."
+   },
+   "difficulty_prior": 0.35,
+   "id": "descriptive-stats-017",
+   "status": "beta"
+  },
+  {
+   "concept": "correlation-vs-causation",
+   "stem": "A hospital finds patients who received vitamin D supplements during their stay recovered faster on average and concludes the supplement caused faster recovery. Physicians, however, were less likely to give the supplement to the most severely ill patients. What best explains the flaw?",
+   "options": [
+    "The association is spurious because the sample size was too small to support any real conclusion.",
+    "Faster recovery caused physicians to prescribe the supplement more often, reversing the true direction of causation.",
+    "Illness severity confounds the result: sicker patients got the supplement less often and recovered slower regardless.",
+    "Recovery time cannot be compared across patients unless it is first converted into percentile ranks."
+   ],
+   "answer": 2,
+   "explanation": "This is confounding by indication: illness severity affects both whether a patient receives the supplement and how fast they recover, creating a spurious association without the supplement itself causing faster recovery.",
+   "grounding": {
+    "source": "Wikipedia: Confounding",
+    "note": "Describes how a third variable linked to both treatment assignment and outcome can create a misleading association."
+   },
+   "difficulty_prior": 0.32,
+   "id": "descriptive-stats-018",
+   "status": "beta"
+  },
+  {
+   "concept": "misleading-summary-stats",
+   "stem": "A university reports an overall admission rate of 45% for male applicants versus 35% for female applicants, suggesting bias. Yet within every individual department, women are admitted at an equal or higher rate than men. What explains this contradiction?",
+   "options": [
+    "The department-level figures must contain an error, since they contradict the reported overall admission rate.",
+    "Women applied more often to selective, lower-admission departments, pulling down their overall rate despite department-level parity.",
+    "Aggregated, overall statistics are always more trustworthy than disaggregated, department-level statistics for detecting bias.",
+    "This proves bias exists but is only visible when data is aggregated rather than broken out by department."
+   ],
+   "answer": 1,
+   "explanation": "This is Simpson's Paradox: when women apply more to selective, lower-admission departments, the aggregate rate can look lower even though each department admits women at parity or better, reversing the apparent trend.",
+   "grounding": {
+    "source": "Wikipedia: Simpson's paradox",
+    "note": "Classic example describes exactly this reversal between aggregated and disaggregated admission rate data."
+   },
+   "difficulty_prior": 0.35,
+   "id": "descriptive-stats-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}
