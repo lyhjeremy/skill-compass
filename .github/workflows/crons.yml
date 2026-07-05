@@ -1,0 +1,14 @@
+name: Scheduled data refresh (stubs)
+on:
+  workflow_dispatch:
+  # Phase 2+: uncomment as each pipeline lands.
+  # schedule:
+  #   - cron: '0 22 * * *'   # daily: job-postings corpus refresh (Phase 3)
+  #   - cron: '0 */12 * * *' # keep the HF Space awake (Phase 2)
+  #   - cron: '0 3 * * 1'    # weekly: Supabase keep-alive + YouTube resources (Phase 4)
+
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Cron stubs - activated in later beta phases (see spec §8)."

@@ -1,0 +1,29 @@
+name: Deploy backend to Hugging Face Space
+on:
+  push:
+    branches: [main]
+    paths: ['backend/**']
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Requires repo secrets: HF_TOKEN (write), and variable HF_SPACE (e.g. lyhjeremy/skillcompass-api)
+    steps:
+      - uses: actions/checkout@v4
+      - name: Push backend/ to the Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ vars.HF_SPACE }}
+        run: |
+          if [ -z "$HF_TOKEN" ] || [ -z "$HF_SPACE" ]; then
+            echo "HF_TOKEN/HF_SPACE not configured yet - skipping (Phase 0 pending HF account)."
+            exit 0
+          fi
+          cd backend
+          git init -b main
+          git config user.name "Jeremy Lee"
+          git config user.email "lyhjeremy@gmail.com"
+          git add -A
+          git commit -m "Deploy backend"
+          git push --force "https://lyhjeremy:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" main
