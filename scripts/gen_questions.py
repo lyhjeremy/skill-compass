@@ -29,6 +29,22 @@ SUBTOPIC_BRIEFS = {
     "dashboards-bi": "Dashboards & BI: choosing chart types, KPI design, dashboard layout principles, misleading visualizations, aggregation granularity, BI tool concepts (filters, drill-down, refresh).",
     "ab-testing": "A/B testing for analysts: hypothesis setup, significance and p-values, power and sample size, common pitfalls (peeking, multiple comparisons, novelty effects), interpreting results honestly.",
     "data-storytelling": "Data storytelling: structuring an insight narrative, leading with the answer, audience-appropriate framing, honest uncertainty communication, chart annotation, executive summaries.",
+    # --- Data Scientist / ML track (Coursera ML & IBM DS inspired) ---
+    "ml-fundamentals": "Machine learning fundamentals: supervised vs unsupervised learning, classification vs regression tasks, train/validation/test splits, overfitting and underfitting, bias-variance tradeoff, why cross-validation. Coursera Machine Learning-level intuition, scenario-based, no heavy math.",
+    "feature-engineering-data-prep": "Preparing data for models: handling missing values, one-hot vs label encoding, feature scaling and when it matters, target leakage, outlier treatment, class imbalance handling. Practical scenarios an ML practitioner faces.",
+    "regression-basics": "Regression for analysts: interpreting linear regression coefficients and intercepts, R-squared meaning and limits, residual patterns, multicollinearity symptoms, when logistic regression applies, odds ratios, extrapolation dangers.",
+    "model-evaluation": "Evaluating ML models: accuracy limits under class imbalance, precision vs recall tradeoffs, F1, confusion matrices, ROC-AUC vs precision-recall curves, classification threshold selection, probability calibration, validation vs test sets.",
+    "python-for-data": "Python for data analysis with pandas: DataFrame vs Series, filtering with boolean masks, groupby aggregations, merge/join types and row-explosion pitfalls, handling NaN, vectorization vs loops, common gotchas (SettingWithCopyWarning, chained indexing).",
+    "statistical-inference": "Statistical inference: interpreting confidence intervals correctly, standard error vs standard deviation, Central Limit Theorem in practice, t-tests, Type I vs Type II errors, sample vs population, statistical vs practical significance.",
+    # --- Stats & Quant (edX MITx / Kaplan CFA quant methods inspired) ---
+    "probability-basics": "Applied probability: conditional probability, independence, Bayes' theorem with base rates (diagnostic-test and fraud-detection scenarios), expected value decisions, binomial vs normal vs Poisson and when each applies. CFA quantitative-methods level, simple numbers.",
+    # --- Finance & Markets (Kaplan / CFA Level I inspired; conceptual, calculator-free) ---
+    "time-value-of-money": "Time value of money: present vs future value intuition, compounding frequency effects, annuities vs perpetuities, NPV decision rule, IRR and its pitfalls, choosing discount rates. CFA Level I quant-methods style with simple round numbers.",
+    "financial-statements": "Reading financial statements: what lives on the income statement vs balance sheet vs cash flow statement, gross/operating/net margins, accrual vs cash accounting, working capital, current ratio, ROE, debt-to-equity, linking the three statements. CFA Level I FRA-inspired.",
+    "portfolio-risk-return": "Portfolio risk and return: why diversification works and its limits, correlation's role, systematic vs idiosyncratic risk, beta interpretation, Sharpe ratio comparisons, risk-return tradeoff, rebalancing logic. CFA Level I portfolio-management-inspired, conceptual.",
+    # --- Business Analytics (Coursera business analytics inspired) ---
+    "business-metrics-kpis": "Business and product metrics: CAC and LTV and their ratio, churn vs retention math, conversion funnel analysis, MRR/ARR, cohort views, choosing a north-star metric, spotting vanity metrics. Realistic startup/enterprise scenarios.",
+    "forecasting-basics": "Business forecasting: separating trend, seasonality, and noise; moving averages and exponential smoothing intuition; forecast error measures (MAE, MAPE, bias); naive baselines as benchmarks; forecast horizons and uncertainty growth; when judgment should override the model.",
 }
 
 RUBRIC = """Every question MUST pass ALL of these:
@@ -148,9 +164,13 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--subtopic")
     ap.add_argument("--all", action="store_true")
+    ap.add_argument("--force", action="store_true", help="regenerate even if output exists")
     args = ap.parse_args()
     targets = list(SUBTOPIC_BRIEFS) if args.all else [args.subtopic]
     for sid in targets:
+        if not args.force and (OUT / f"{sid}.json").exists():
+            print(f"[{sid}] exists, skipping (use --force to regenerate)", flush=True)
+            continue
         try:
             build_subtopic(sid)
         except Exception as e:

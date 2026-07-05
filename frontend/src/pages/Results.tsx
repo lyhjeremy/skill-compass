@@ -11,10 +11,15 @@ export default function Results() {
   const session = store.session(sessionId)
   const [content, setContent] = useState<SubtopicContent | null>(null)
   const [title, setTitle] = useState('')
+  const [trackId, setTrackId] = useState('data-analyst')
   useEffect(() => {
     if (!session) return
     getSubtopic(session.subtopic).then(setContent).catch(console.error)
-    getManifest().then(m => setTitle(m.subtopics.find(s => s.id === session.subtopic)?.title ?? session.subtopic)).catch(() => {})
+    getManifest().then(m => {
+      setTitle(m.subtopics.find(s => s.id === session.subtopic)?.title ?? session.subtopic)
+      const t = m.tracks.find(t => t.status === 'live' && t.subtopics.includes(session.subtopic))
+      if (t) setTrackId(t.id)
+    }).catch(() => {})
   }, [sessionId])
 
   if (!session) return (
@@ -88,7 +93,7 @@ export default function Results() {
       <div style={{ display: 'flex', gap: 12, marginTop: 26, flexWrap: 'wrap' }}>
         <button className="btn" onClick={download}>↓ Save your study notes</button>
         <Link className="btn ghost" to={`/quiz/${session.subtopic}`}>Take it again</Link>
-        <Link className="btn subtle" to="/tracks/data-analyst">Back to your track</Link>
+        <Link className="btn subtle" to={`/tracks/${trackId}`}>Back to your track</Link>
       </div>
       <p className="small muted" style={{ marginTop: 14 }}>
         Shareable result cards and the market gap report arrive later in the beta — <Link to="/methodology">see what's coming</Link>.

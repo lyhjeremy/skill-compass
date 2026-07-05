@@ -1,11 +1,11 @@
 {
-  "version": 1,
+  "version": 2,
   "themes": [
-    { "id": "ml-ai", "title": "Machine Learning & AI", "color": "#7C3AED", "status": "soon" },
-    { "id": "stats", "title": "Statistics & Experimentation", "color": "#0891B2", "status": "partial" },
+    { "id": "ml-ai", "title": "Machine Learning & AI", "color": "#7C3AED", "status": "live" },
+    { "id": "stats", "title": "Statistics & Experimentation", "color": "#0891B2", "status": "live" },
     { "id": "sql-data", "title": "SQL & Data", "color": "#D97706", "status": "live" },
-    { "id": "finance", "title": "Finance & Markets", "color": "#059669", "status": "soon" },
-    { "id": "business", "title": "Business Analytics", "color": "#E11D48", "status": "partial" }
+    { "id": "finance", "title": "Finance & Markets", "color": "#059669", "status": "live" },
+    { "id": "business", "title": "Business Analytics", "color": "#E11D48", "status": "live" }
   ],
   "tracks": [
     {
@@ -13,9 +13,21 @@
       "blurb": "SQL, spreadsheets, statistics, dashboards, experiments, and telling the story.",
       "subtopics": ["sql-querying", "spreadsheets", "descriptive-stats", "dashboards-bi", "ab-testing", "data-storytelling"]
     },
-    { "id": "data-scientist", "title": "Data Scientist / ML", "status": "soon", "blurb": "Stats, ML fundamentals, model evaluation.", "subtopics": [] },
-    { "id": "business-analytics", "title": "Business / Product Analytics", "status": "soon", "blurb": "Metrics, A/B testing, product sense.", "subtopics": [] },
-    { "id": "quant", "title": "Quant / Investment Analytics", "status": "soon", "blurb": "Markets, fixed income, portfolio math.", "subtopics": [] }
+    {
+      "id": "data-scientist", "title": "Data Scientist / ML", "status": "live",
+      "blurb": "ML fundamentals, data prep, regression, model evaluation, inference, and Python.",
+      "subtopics": ["ml-fundamentals", "feature-engineering-data-prep", "regression-basics", "model-evaluation", "statistical-inference", "python-for-data"]
+    },
+    {
+      "id": "business-analytics", "title": "Business / Product Analytics", "status": "live",
+      "blurb": "Metrics that matter, forecasting, experiments, dashboards, and the story behind them.",
+      "subtopics": ["business-metrics-kpis", "forecasting-basics", "descriptive-stats", "dashboards-bi", "ab-testing", "data-storytelling"]
+    },
+    {
+      "id": "quant", "title": "Quant / Investment Analytics", "status": "live",
+      "blurb": "Probability, time value of money, financial statements, and portfolio thinking.",
+      "subtopics": ["probability-basics", "time-value-of-money", "financial-statements", "portfolio-risk-return"]
+    }
   ],
   "certs": [
     { "id": "cfa-l1", "title": "CFA Level I", "status": "soon", "blurb": "Practice across the 10 curriculum areas. Not affiliated with CFA Institute." },
@@ -25,9 +37,21 @@
   "subtopics": [
     { "id": "sql-querying", "title": "SQL & querying", "theme": "sql-data", "track": "data-analyst", "status": "live" },
     { "id": "spreadsheets", "title": "Spreadsheets & Excel", "theme": "sql-data", "track": "data-analyst", "status": "live" },
+    { "id": "python-for-data", "title": "Python for data (pandas)", "theme": "sql-data", "track": "data-scientist", "status": "live" },
     { "id": "descriptive-stats", "title": "Descriptive statistics", "theme": "stats", "track": "data-analyst", "status": "live" },
-    { "id": "dashboards-bi", "title": "Dashboards & BI", "theme": "business", "track": "data-analyst", "status": "live" },
     { "id": "ab-testing", "title": "A/B testing", "theme": "stats", "track": "data-analyst", "status": "live" },
-    { "id": "data-storytelling", "title": "Data storytelling", "theme": "business", "track": "data-analyst", "status": "live" }
+    { "id": "statistical-inference", "title": "Statistical inference", "theme": "stats", "track": "data-scientist", "status": "live" },
+    { "id": "probability-basics", "title": "Probability essentials", "theme": "stats", "track": "quant", "status": "live" },
+    { "id": "ml-fundamentals", "title": "ML fundamentals", "theme": "ml-ai", "track": "data-scientist", "status": "live" },
+    { "id": "feature-engineering-data-prep", "title": "Feature engineering & data prep", "theme": "ml-ai", "track": "data-scientist", "status": "live" },
+    { "id": "regression-basics", "title": "Regression essentials", "theme": "ml-ai", "track": "data-scientist", "status": "live" },
+    { "id": "model-evaluation", "title": "Model evaluation", "theme": "ml-ai", "track": "data-scientist", "status": "live" },
+    { "id": "time-value-of-money", "title": "Time value of money", "theme": "finance", "track": "quant", "status": "live" },
+    { "id": "financial-statements", "title": "Financial statements", "theme": "finance", "track": "quant", "status": "live" },
+    { "id": "portfolio-risk-return", "title": "Portfolio risk & return", "theme": "finance", "track": "quant", "status": "live" },
+    { "id": "dashboards-bi", "title": "Dashboards & BI", "theme": "business", "track": "data-analyst", "status": "live" },
+    { "id": "data-storytelling", "title": "Data storytelling", "theme": "business", "track": "data-analyst", "status": "live" },
+    { "id": "business-metrics-kpis", "title": "Business metrics & KPIs", "theme": "business", "track": "business-analytics", "status": "live" },
+    { "id": "forecasting-basics", "title": "Forecasting essentials", "theme": "business", "track": "business-analytics", "status": "live" }
   ]
 }

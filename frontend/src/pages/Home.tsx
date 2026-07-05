@@ -13,8 +13,10 @@ export default function Home() {
   const sessions = store.sessions()
   const returning = sessions.length > 0
   const lastSession = returning ? sessions[sessions.length - 1] : null
-  const daTrack = manifest?.tracks.find(t => t.id === 'data-analyst')
-  const assessed = daTrack ? daTrack.subtopics.filter(s => store.mastery(s) !== null).length : 0
+  const lastTrack = lastSession && manifest
+    ? manifest.tracks.find(t => t.status === 'live' && t.subtopics.includes(lastSession.subtopic)) ?? manifest.tracks[0]
+    : null
+  const assessed = lastTrack ? lastTrack.subtopics.filter(s => store.mastery(s) !== null).length : 0
 
   function pickTheme(themeId: string) {
     const live = manifest!.subtopics.filter(s => s.theme === themeId && s.status === 'live')
@@ -34,14 +36,14 @@ export default function Home() {
       </section>
 
       <div className="container">
-        {returning && lastSession && daTrack ? (
+        {returning && lastSession && lastTrack ? (
           <div className="card raised" style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
             <div style={{ flex: 1, minWidth: 220 }}>
               <span className="pill">Welcome back</span>
-              <h3 style={{ marginTop: 6 }}>Data Analyst track — {assessed} of {daTrack.subtopics.length} topics assessed</h3>
+              <h3 style={{ marginTop: 6 }}>{lastTrack.title} track — {assessed} of {lastTrack.subtopics.length} topics assessed</h3>
               <p className="small muted" style={{ marginTop: 4 }}>Pick up where you left off, or try something new below.</p>
             </div>
-            <Link className="btn" to="/tracks/data-analyst">Continue</Link>
+            <Link className="btn" to={`/tracks/${lastTrack.id}`}>Continue</Link>
           </div>
         ) : (
           <div className="card" style={{ background: 'var(--alt)', display: 'flex', gap: 18, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -69,9 +71,9 @@ export default function Home() {
             <h3>Quick Topics</h3>
             <p className="small muted" style={{ marginTop: 4 }}>5 themes · 2-minute checks</p>
           </Link>
-          <Link to="/tracks/data-analyst" className="card lanecard" style={{ textDecoration: 'none', borderTopColor: 'var(--t-violet)' }}>
+          <Link to="/explore" className="card lanecard" style={{ textDecoration: 'none', borderTopColor: 'var(--t-violet)' }}>
             <h3>Career Tracks</h3>
-            <p className="small muted" style={{ marginTop: 4 }}>Data Analyst live · 3 more coming</p>
+            <p className="small muted" style={{ marginTop: 4 }}>4 role-based paths, live</p>
           </Link>
           <Link to="/explore" className="card lanecard" style={{ textDecoration: 'none', borderTopColor: 'var(--t-amber)' }}>
             <h3>Certificate Prep</h3>
