@@ -1,0 +1,452 @@
+{
+ "id": "sql-querying",
+ "concepts": [
+  {
+   "id": "select-where",
+   "label": "SELECT and WHERE filtering",
+   "definition": "SELECT chooses which columns to return while WHERE filters which rows qualify based on a boolean condition.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "null-semantics",
+   "label": "NULL and three-valued logic",
+   "definition": "NULL represents an unknown value, so comparisons involving NULL evaluate to unknown rather than true or false and are silently excluded by WHERE and JOIN conditions unless handled with IS NULL, IS NOT NULL, or COALESCE.",
+   "prereq": "select-where",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "group-by-aggregation",
+   "label": "GROUP BY and aggregates",
+   "definition": "GROUP BY collapses rows sharing the same key into groups so aggregate functions like COUNT, SUM, and AVG can summarize each group, with HAVING filtering on the aggregated results.",
+   "prereq": "select-where",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "inner-join",
+   "label": "Inner join",
+   "definition": "An INNER JOIN combines rows from two tables by matching keys and returns only the rows where a match exists in both tables.",
+   "prereq": "select-where",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "left-anti-join",
+   "label": "Left join and anti-join",
+   "definition": "A LEFT JOIN keeps every row from the left table and fills unmatched right-table columns with NULL, and filtering for those NULLs (or using NOT EXISTS) turns it into an anti-join that finds rows with no match at all.",
+   "prereq": "inner-join",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "window-functions",
+   "label": "Window functions",
+   "definition": "Window functions like ROW_NUMBER, RANK, and SUM OVER compute a value across a set of related rows defined by PARTITION BY and ORDER BY without collapsing the rows the way GROUP BY does.",
+   "prereq": "group-by-aggregation",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "cte",
+   "label": "Common table expressions",
+   "definition": "A CTE defined with WITH names a temporary result set that can be referenced later in the query, making it possible to filter or join on values like window-function results that can't be referenced directly in WHERE.",
+   "prereq": "window-functions",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "query-correctness-pitfalls",
+   "label": "Query correctness pitfalls",
+   "definition": "Common analyst mistakes such as row duplication from one-to-many joins before aggregating, NOT IN silently dropping all rows when its list contains a NULL, and confusing WHERE with HAVING can silently produce wrong numbers even though the query runs without error.",
+   "prereq": "cte",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "select-where",
+   "stem": "You run SELECT * FROM orders WHERE status = 'Shipped'; on a PostgreSQL table where the status column contains the values 'shipped', 'Shipped', and 'SHIPPED' for different rows. Which rows does the query return?",
+   "options": [
+    "Only the rows where status is exactly 'Shipped'",
+    "All three rows, since string comparisons ignore case by default",
+    "Only the rows where status is 'shipped' (lowercase)",
+    "The query fails with a syntax error"
+   ],
+   "answer": 0,
+   "explanation": "The = operator performs an exact, case-sensitive comparison in PostgreSQL, so only rows matching 'Shipped' precisely are returned. ILIKE or LOWER() would be needed for case-insensitive matching.",
+   "grounding": {
+    "source": "PostgreSQL Documentation, Chapter 9: Functions and Operators (Comparison Operators)",
+    "note": "Ordinary string equality (=) is a byte-wise, case-sensitive comparison in PostgreSQL unless a case-insensitive collation or citext is used."
+   },
+   "difficulty_prior": 0.65,
+   "id": "sql-querying-000",
+   "status": "beta"
+  },
+  {
+   "concept": "null-semantics",
+   "stem": "A customers table has a region column that is NULL for some rows. An analyst runs SELECT * FROM customers WHERE region <> 'West'; Besides rows where region equals 'West', what does this query exclude?",
+   "options": [
+    "Rows where region is NULL",
+    "No additional rows are excluded",
+    "Rows where region equals 'East'",
+    "Rows where region is an empty string"
+   ],
+   "answer": 0,
+   "explanation": "Any comparison involving NULL, including <>, evaluates to NULL rather than TRUE under three-valued logic, so rows with a NULL region are silently dropped by the WHERE clause too.",
+   "grounding": {
+    "source": "PostgreSQL Documentation, Chapter 9: Functions and Operators",
+    "note": "States that comparisons with a NULL operand yield NULL (unknown), not TRUE or FALSE, so WHERE excludes those rows."
+   },
+   "difficulty_prior": 0.65,
+   "id": "sql-querying-001",
+   "status": "beta"
+  },
+  {
+   "concept": "group-by-aggregation",
+   "stem": "An employees table includes a manager_id column that is NULL for employees with no manager. An analyst runs SELECT department, COUNT(manager_id) FROM employees GROUP BY department; What does COUNT(manager_id) represent per department?",
+   "options": [
+    "The number of employees with a manager in that department",
+    "The total number of employees in that department",
+    "The number of employees who do not have a manager in that department",
+    "The query errors because manager_id is not in GROUP BY"
+   ],
+   "answer": 0,
+   "explanation": "COUNT(column) counts only non-NULL values, so it tallies employees who have a manager, not those without one; COUNT(*) would count all employees regardless of NULLs.",
+   "grounding": {
+    "source": "PostgreSQL Documentation, Chapter 9: Functions and Operators (Aggregate Functions)",
+    "note": "COUNT(expression) counts only non-null input values, distinguishing it from COUNT(*), which counts all rows."
+   },
+   "difficulty_prior": 0.7,
+   "id": "sql-querying-002",
+   "status": "beta"
+  },
+  {
+   "concept": "inner-join",
+   "stem": "The orders table contains an order whose customer_id does not exist in the customers table. An analyst runs SELECT * FROM orders o INNER JOIN customers c ON o.customer_id = c.customer_id; What happens to that order?",
+   "options": [
+    "It is excluded from the result set",
+    "It appears once with NULL values for customer columns",
+    "It causes the query to raise an error",
+    "It appears multiple times, once per customer row"
+   ],
+   "answer": 0,
+   "explanation": "INNER JOIN returns only rows with matching keys in both tables. An order with no matching customer_id has no match and is dropped, unlike a LEFT JOIN, which would keep it with NULLs.",
+   "grounding": {
+    "source": "PostgreSQL Documentation, Chapter 7: Queries (Joined Tables)",
+    "note": "Describes INNER JOIN as returning only rows satisfying the join condition in both tables."
+   },
+   "difficulty_prior": 0.8,
+   "id": "sql-querying-003",
+   "status": "beta"
+  },
+  {
+   "concept": "left-anti-join",
+   "stem": "You need a list of customers who have never placed an order, given a query that begins SELECT * FROM customers c. Which JOIN and WHERE clause correctly completes it to produce this anti-join result?",
+   "options": [
+    "LEFT JOIN orders o ON c.customer_id = o.customer_id WHERE o.customer_id IS NULL",
+    "INNER JOIN orders o ON c.customer_id = o.customer_id WHERE o.customer_id IS NULL",
+    "LEFT JOIN orders o ON c.customer_id = o.customer_id WHERE o.customer_id IS NOT NULL",
+    "RIGHT JOIN orders o ON c.customer_id = o.customer_id WHERE o.customer_id IS NULL"
+   ],
+   "answer": 0,
+   "explanation": "A LEFT JOIN keeps every customer and fills unmatched order columns with NULL; filtering WHERE o.customer_id IS NULL isolates unmatched customers. An INNER JOIN would already drop unmatched rows, so that filter returns nothing.",
+   "grounding": {
+    "source": "PostgreSQL Documentation, Chapter 7: Queries (Joined Tables)",
+    "note": "Describes LEFT OUTER JOIN combined with an IS NULL filter as the standard anti-join technique."
+   },
+   "difficulty_prior": 0.65,
+   "id": "sql-querying-004",
+   "status": "beta"
+  },
+  {
+   "concept": "select-where",
+   "stem": "A finance analyst needs all transactions with an amount between 100 and 500, inclusive of both endpoints, from a payments table. Which WHERE clause returns exactly this set in PostgreSQL?",
+   "options": [
+    "WHERE amount > 100 AND amount < 500",
+    "WHERE amount BETWEEN 100 AND 500",
+    "WHERE amount >= 100 OR amount <= 500",
+    "WHERE amount IN (100, 500)"
+   ],
+   "answer": 1,
+   "explanation": "BETWEEN x AND y is equivalent to x <= value AND value <= y, so both endpoints are included. The AND version excludes them, the OR version matches almost everything, and IN matches only the two literals.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Chapter 9.2, Comparison Functions and Operators",
+    "note": "Defines BETWEEN as inclusive of both boundary values."
+   },
+   "difficulty_prior": 0.65,
+   "id": "sql-querying-005",
+   "status": "beta"
+  },
+  {
+   "concept": "group-by-aggregation",
+   "stem": "A sales table has a nullable discount column. An analyst runs: SELECT region, COUNT(discount) FROM sales GROUP BY region; For some regions, the count is lower than the number of rows in that region. Why?",
+   "options": [
+    "COUNT(discount) counts only rows where discount is not NULL, unlike COUNT(*).",
+    "GROUP BY silently drops rows where region is NULL before counting.",
+    "COUNT() removes duplicate discount values before counting them.",
+    "PostgreSQL rounds down COUNT() results when a table contains NULL values."
+   ],
+   "answer": 0,
+   "explanation": "COUNT(expression) counts only non-NULL values of that expression, while COUNT(*) counts every row regardless of NULLs. The gap between the two reflects rows where discount is NULL.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Chapter 9.21, Aggregate Functions",
+    "note": "States that COUNT(expression) counts non-null input rows, while COUNT(*) counts all rows."
+   },
+   "difficulty_prior": 0.6,
+   "id": "sql-querying-006",
+   "status": "beta"
+  },
+  {
+   "concept": "window-functions",
+   "stem": "A query uses RANK() OVER (PARTITION BY department ORDER BY salary DESC) to rank employees within each department. Two Engineering employees tie for the highest salary. What rank does the next-highest-paid Engineering employee receive?",
+   "options": [
+    "Rank 2, because RANK() ignores ties and assigns sequential values.",
+    "Rank 3, because RANK() leaves a gap after tied rows.",
+    "Rank 1, because ties always share the top rank with no gap.",
+    "Rank 2, because the row is ordered by department, not salary."
+   ],
+   "answer": 1,
+   "explanation": "RANK() assigns the same rank to tied rows but leaves a gap afterward equal to the number of ties. Two rows tied at rank 1 push the next distinct salary to rank 3, unlike DENSE_RANK().",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Chapter 9.22, Window Functions",
+    "note": "Describes RANK() as leaving gaps in the ranking sequence after tied rows, unlike DENSE_RANK()."
+   },
+   "difficulty_prior": 0.6,
+   "id": "sql-querying-007",
+   "status": "beta"
+  },
+  {
+   "concept": "cte",
+   "stem": "An analyst writes: WITH dept_avg AS (SELECT department, AVG(salary) AS avg_salary FROM employees GROUP BY department) SELECT * FROM dept_avg WHERE avg_salary > 70000; Why would moving this condition to HAVING avg_salary > 70000 inside the CTE instead cause an error?",
+   "options": [
+    "HAVING clauses cannot be combined with aggregate functions such as AVG().",
+    "SELECT aliases aren't visible inside WHERE or HAVING at that same level.",
+    "WITH clauses always rename aggregate output, so HAVING can no longer find it.",
+    "Using HAVING there would recompute the average once per employee instead of per department."
+   ],
+   "answer": 1,
+   "explanation": "SQL evaluates WHERE/HAVING before the SELECT list, so the avg_salary alias isn't visible there yet. Wrapping the aggregation in a CTE turns avg_salary into a real output column the outer query can filter with WHERE.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Chapter 7.8, WITH Queries (Common Table Expressions)",
+    "note": "Explains that a CTE's output columns behave like an ordinary table for the enclosing query."
+   },
+   "difficulty_prior": 0.45,
+   "id": "sql-querying-008",
+   "status": "beta"
+  },
+  {
+   "concept": "query-correctness-pitfalls",
+   "stem": "An analyst joins orders to order_items (each order has multiple items) and computes SUM(orders.total_amount) grouped by customer_id. The resulting totals are far higher than the actual amounts customers paid. What causes this?",
+   "options": [
+    "The join adds one row per item, so total_amount sums repeatedly per order.",
+    "SUM() silently double-counts NULL values within the total_amount column.",
+    "GROUP BY customer_id does not remove duplicate rows prior to aggregation.",
+    "Using an inner join instead of a left join inflates the row counts here."
+   ],
+   "answer": 0,
+   "explanation": "Joining orders to order_items produces one row per item, so each order's total_amount appears once per item and gets re-added that many times when summed. Switching to a left join would not fix this.",
+   "grounding": {
+    "source": "PostgreSQL Tutorial - Chapter 2.6, Joins Between Tables",
+    "note": "Illustrates how joining a one-to-many relationship yields multiple result rows per parent row."
+   },
+   "difficulty_prior": 0.6,
+   "id": "sql-querying-009",
+   "status": "beta"
+  },
+  {
+   "concept": "null-semantics",
+   "stem": "An analyst runs SELECT customer_id FROM customers WHERE customer_id NOT IN (SELECT customer_id FROM orders); The orders.customer_id column is nullable, and at least one order row has a NULL customer_id. What result does this query return?",
+   "options": [
+    "PostgreSQL raises a syntax error, because NOT IN cannot be used on a subquery containing NULL values.",
+    "Only customers whose own customer_id column is NULL are included in the result set.",
+    "No rows are returned, because comparing any value to NULL yields UNKNOWN rather than TRUE.",
+    "All customers who never placed an order are returned, since NULL rows in the subquery are simply ignored."
+   ],
+   "answer": 2,
+   "explanation": "NOT IN is a chain of <> comparisons ANDed together; a NULL element makes one comparison UNKNOWN, so the AND is never TRUE for any row. PostgreSQL does not silently ignore NULLs in the list, so the result set is empty, not all non-ordering customers.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Row and Array Comparisons (IN / NOT IN operators)",
+    "note": "Documents that a NULL in the NOT IN list causes the comparison to evaluate to UNKNOWN for every row."
+   },
+   "difficulty_prior": 0.4,
+   "id": "sql-querying-010",
+   "status": "beta"
+  },
+  {
+   "concept": "group-by-aggregation",
+   "stem": "An analyst runs SELECT department, COUNT(bonus) AS bonus_count FROM employees GROUP BY department; The bonus column is NULL for employees who did not receive a bonus. In a department of 10 employees where 3 received a bonus, what value does bonus_count return?",
+   "options": [
+    "3, because COUNT(column_name) only counts rows where that column is not NULL.",
+    "10, because COUNT always counts every row in the group regardless of NULLs.",
+    "7, because COUNT(column_name) counts only the rows where the column is NULL.",
+    "NULL, because aggregating a column that contains NULL values returns NULL."
+   ],
+   "answer": 0,
+   "explanation": "COUNT(expression) counts only non-NULL evaluations of that expression, unlike COUNT(*) which counts all input rows. Since 7 employees have a NULL bonus, only the 3 non-NULL rows are counted.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Aggregate Functions (COUNT)",
+    "note": "States that COUNT(expression) counts input rows for which the expression is non-null, distinct from COUNT(*)."
+   },
+   "difficulty_prior": 0.6,
+   "id": "sql-querying-011",
+   "status": "beta"
+  },
+  {
+   "concept": "inner-join",
+   "stem": "An analyst runs orders o INNER JOIN customers c ON o.customer_email = c.email, but 40% of orders that should match are absent from the results. Emails match except for letter case, e.g., 'Jane@Example.com' versus 'jane@example.com'. Why does PostgreSQL treat these as non-matching?",
+   "options": [
+    "PostgreSQL's default text comparison is case-sensitive, so strings differing only in case are treated as different values.",
+    "PostgreSQL uses a case-insensitive default collation, so the mismatches are actually caused by hidden whitespace in the emails.",
+    "The two columns use different collations, which prevents equal-looking strings from matching during the join.",
+    "JOIN conditions require identical column data types, so comparing a VARCHAR to a TEXT column fails to match."
+   ],
+   "answer": 0,
+   "explanation": "PostgreSQL's = operator does byte-wise comparison under the active collation, so 'Jane@Example.com' and 'jane@example.com' are unequal without LOWER() or a case-insensitive collation. Differing collations or data types (VARCHAR vs TEXT) are not the actual cause here.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Collation Support",
+    "note": "Explains that default locale-based collations perform case-sensitive comparison, so equality requires normalization like LOWER() or a case-insensitive collation."
+   },
+   "difficulty_prior": 0.5,
+   "id": "sql-querying-012",
+   "status": "beta"
+  },
+  {
+   "concept": "window-functions",
+   "stem": "A query computes SUM(amount) OVER (ORDER BY sale_date) AS running_total on a sales table where two rows share the same sale_date. What value does running_total show for each of the two tied rows?",
+   "options": [
+    "PostgreSQL raises an error because ORDER BY cannot contain duplicate sale_date values in a window function.",
+    "Both tied rows show one identical combined total, covering both rows plus prior amounts.",
+    "The running_total restarts from zero on the second tied row since ties break window ordering.",
+    "Each tied row shows its own separate cumulative sum, so the two values differ from each other."
+   ],
+   "answer": 1,
+   "explanation": "Without an explicit frame clause, ORDER BY defaults to RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW, which includes all peer rows sharing the same ORDER BY value, so tied rows report one shared total instead of separate running sums.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Window Function Calls (frame clause)",
+    "note": "Documents that the default window frame is RANGE UNBOUNDED PRECEDING, grouping rows with equal ORDER BY values as peers."
+   },
+   "difficulty_prior": 0.3,
+   "id": "sql-querying-013",
+   "status": "beta"
+  },
+  {
+   "concept": "cte",
+   "stem": "An analyst writes a CTE that references itself in its own definition to build an employee's full management chain, but omits the RECURSIVE keyword from the WITH clause. What happens when this query runs in PostgreSQL?",
+   "options": [
+    "The query runs successfully but returns only the base case, silently skipping the recursive part.",
+    "PostgreSQL detects that recursion is needed and executes the query correctly without the keyword.",
+    "The query executes but loops indefinitely until PostgreSQL's statement timeout cancels it.",
+    "PostgreSQL raises an error, since a non-recursive CTE cannot reference itself in its definition."
+   ],
+   "answer": 3,
+   "explanation": "PostgreSQL requires the RECURSIVE keyword for any CTE that references itself; without it, the self-reference is treated as an undefined relation and the query fails to parse, rather than running partially or looping indefinitely.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - WITH Queries (Common Table Expressions), Recursive Queries",
+    "note": "States that a CTE can only reference itself when declared with WITH RECURSIVE; otherwise the self-reference is invalid."
+   },
+   "difficulty_prior": 0.45,
+   "id": "sql-querying-014",
+   "status": "beta"
+  },
+  {
+   "concept": "select-where",
+   "stem": "A table logs events with a timestamp column event_at (type timestamp without time zone). An analyst runs: SELECT * FROM events WHERE event_at BETWEEN '2024-01-01' AND '2024-01-31'; intending to capture every event during January. What is the most likely correctness issue with this query?",
+   "options": [
+    "BETWEEN excludes both endpoint values, so events on January 1 are also left out of the result.",
+    "Events on January 31 after midnight are excluded, since the upper bound parses as 2024-01-31 00:00:00.",
+    "BETWEEN compares the bounds as plain text, matching events lexicographically instead of chronologically.",
+    "PostgreSQL rejects the query because string literals cannot be compared to a timestamp column without an explicit CAST."
+   ],
+   "answer": 1,
+   "explanation": "BETWEEN is equivalent to >= AND <=, so it does NOT exclude endpoints; the real issue is that a timestamp literal with no time-of-day defaults to 00:00:00, so events after midnight on Jan 31 are excluded.",
+   "grounding": {
+    "source": "PostgreSQL Documentation – Date/Time Types (Section 8.5)",
+    "note": "Explains that date/timestamp literals without a time-of-day default to 00:00:00, and per Comparison Operators that BETWEEN equals >= AND <=, together explaining the excluded rows."
+   },
+   "difficulty_prior": 0.35,
+   "id": "sql-querying-015",
+   "status": "beta"
+  },
+  {
+   "concept": "null-semantics",
+   "stem": "A products table has columns list_price and sale_price, both of which allow NULL. An analyst wants every product where the two prices differ, including products where exactly one price is NULL. They filter using: WHERE list_price <> sale_price. Why might rows be missing?",
+   "options": [
+    "PostgreSQL substitutes 0 for NULL before evaluating <>, so a NULL price counts as equal to a zero price.",
+    "<> requires both compared columns to be declared NOT NULL, or PostgreSQL raises a constraint error.",
+    "PostgreSQL raises a syntax error when applying <> to two nullable columns without an explicit IS NOT NULL check first.",
+    "When either operand is NULL, <> evaluates to NULL rather than TRUE, silently excluding that row."
+   ],
+   "answer": 3,
+   "explanation": "Comparison operators return NULL (not TRUE/FALSE) when either operand is NULL, so WHERE silently drops those rows — PostgreSQL does not substitute 0 for NULL or require NOT NULL columns; use IS DISTINCT FROM for NULL-safe comparison.",
+   "grounding": {
+    "source": "PostgreSQL Documentation – Comparison Functions and Operators (IS DISTINCT FROM)",
+    "note": "Explains that ordinary comparison operators yield NULL when an operand is NULL, and recommends IS DISTINCT FROM for NULL-safe inequality checks."
+   },
+   "difficulty_prior": 0.35,
+   "id": "sql-querying-016",
+   "status": "beta"
+  },
+  {
+   "concept": "group-by-aggregation",
+   "stem": "An analyst runs: SELECT region, SUM(amount) AS total FROM sales GROUP BY region HAVING amount > 1000; intending to sum only transactions individually over 1000. What happens when this query is executed in PostgreSQL?",
+   "options": [
+    "PostgreSQL raises an error, because amount is not part of an aggregate or the GROUP BY list.",
+    "The HAVING clause filters rows before grouping, so only transactions over 1000 are summed per region.",
+    "PostgreSQL silently rewrites the condition to SUM(amount) > 1000, filtering region totals instead of individual amounts.",
+    "PostgreSQL executes the query by silently using the amount value from an arbitrary row within each region group."
+   ],
+   "answer": 0,
+   "explanation": "HAVING filters aggregated groups, not raw rows; amount is neither aggregated nor in GROUP BY, so PostgreSQL raises an error. WHERE, not HAVING, filters rows before grouping.",
+   "grounding": {
+    "source": "PostgreSQL Documentation – The SQL Language: Queries, HAVING Clause",
+    "note": "States that HAVING restricts the groups produced by GROUP BY and that referenced columns must be grouped or aggregated."
+   },
+   "difficulty_prior": 0.4,
+   "id": "sql-querying-017",
+   "status": "beta"
+  },
+  {
+   "concept": "left-anti-join",
+   "stem": "An analyst wants every supplier that has no products priced above 100. They write: SELECT s.supplier_id FROM suppliers s WHERE NOT EXISTS (SELECT 1 FROM products p WHERE p.price > 100); What is wrong with this query?",
+   "options": [
+    "PostgreSQL requires EXISTS subqueries to filter on the outer table's primary key, or execution fails.",
+    "PostgreSQL automatically correlates the subquery to the outer supplier_id column even though it is not referenced explicitly.",
+    "Because the subquery omits p.supplier_id = s.supplier_id, it checks all products globally, not per supplier.",
+    "NOT EXISTS always evaluates to TRUE whenever the subquery returns at least one matching row."
+   ],
+   "answer": 2,
+   "explanation": "NOT EXISTS needs an explicit correlated condition (e.g., p.supplier_id = s.supplier_id); PostgreSQL does not auto-correlate subqueries by matching column names, so without it the subquery evaluates identically for every supplier.",
+   "grounding": {
+    "source": "PostgreSQL Documentation – Subquery Expressions (EXISTS)",
+    "note": "Explains that EXISTS/NOT EXISTS subqueries are typically correlated to the outer query, and an uncorrelated subquery evaluates once regardless of the outer row."
+   },
+   "difficulty_prior": 0.3,
+   "id": "sql-querying-018",
+   "status": "beta"
+  },
+  {
+   "concept": "window-functions",
+   "stem": "An analyst uses ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date DESC) AS rn to pick each customer's most recent order, then filters WHERE rn = 1. Some customers have multiple orders sharing the same latest order_date. What is the issue?",
+   "options": [
+    "PostgreSQL breaks ties using the rows' physical storage order, so the result stays deterministic across repeated runs.",
+    "With tied order_date values, ROW_NUMBER() arbitrarily assigns rn = 1 to just one of the tied rows.",
+    "PostgreSQL automatically switches to RANK() behavior on ties, giving every tied row rn = 1.",
+    "PostgreSQL automatically adds the primary key as a secondary sort column to break ties within the partition."
+   ],
+   "answer": 1,
+   "explanation": "ROW_NUMBER() needs a deterministic ORDER BY to break ties consistently; on ties PostgreSQL may assign rn = 1 to any one row, unlike RANK(), which would assign the same rank to every tied row.",
+   "grounding": {
+    "source": "PostgreSQL Documentation – Window Functions",
+    "note": "Notes that ROW_NUMBER() assigns numbers based on ORDER BY within a partition, and ties are broken arbitrarily unless the ORDER BY is unique."
+   },
+   "difficulty_prior": 0.32,
+   "id": "sql-querying-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}
