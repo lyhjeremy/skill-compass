@@ -1,0 +1,452 @@
+{
+ "id": "ab-testing",
+ "concepts": [
+  {
+   "id": "hypothesis-setup",
+   "label": "Hypothesis Setup",
+   "definition": "Before running a test, analysts state a null hypothesis (no difference) and an alternative hypothesis (there is a difference) that the experiment is designed to distinguish between.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "randomization-control",
+   "label": "Control & Treatment Groups",
+   "definition": "Users are randomly split into a control group (existing experience) and a treatment group (the new variant) so any outcome difference can be attributed to the change rather than to who happened to see it.",
+   "prereq": "hypothesis-setup",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "p-values-significance",
+   "label": "P-values & Significance",
+   "definition": "A p-value estimates how likely the observed difference (or a larger one) would be if there were truly no effect, and it's compared to a significance threshold like 0.05 to decide whether a result counts as statistically significant.",
+   "prereq": "randomization-control",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "power-sample-size",
+   "label": "Power & Sample Size",
+   "definition": "Statistical power is the probability of detecting a real effect if one exists, and it determines the sample size needed before launch so the test isn't too small to notice a true difference.",
+   "prereq": "p-values-significance",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "peeking-pitfall",
+   "label": "Peeking & Early Stopping",
+   "definition": "Repeatedly checking results and stopping as soon as they look significant inflates the false-positive rate, because each extra look gives random noise another chance to cross the significance threshold.",
+   "prereq": "power-sample-size",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "multiple-comparisons-pitfall",
+   "label": "Multiple Comparisons Problem",
+   "definition": "Testing many metrics or variants at once increases the odds that at least one shows a 'significant' result purely by chance, so the significance threshold needs to be adjusted for the number of comparisons made.",
+   "prereq": "peeking-pitfall",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "novelty-effect",
+   "label": "Novelty Effect",
+   "definition": "Users may react to a change simply because it's new or different, so an early lift or drop can fade once the novelty wears off and shouldn't be mistaken for the change's lasting impact.",
+   "prereq": "multiple-comparisons-pitfall",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "honest-interpretation",
+   "label": "Honest Result Interpretation",
+   "definition": "Reporting results honestly means acknowledging these pitfalls, distinguishing statistical significance from practically meaningful impact, and not cherry-picking metrics or timeframes that make a weak result look like a win.",
+   "prereq": "novelty-effect",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "hypothesis-setup",
+   "stem": "A product analyst is designing an A/B test to check whether a new checkout button color changes conversion rate compared to the current color. Which statement correctly pairs the null and alternative hypotheses?",
+   "options": [
+    "H0: the new color increases conversion; H1: the new color decreases conversion",
+    "H0: conversion rates are equal; H1: conversion rates differ",
+    "H0: button color has no effect; H1: the sample size was too small",
+    "H0: conversion rates differ; H1: conversion rates are equal"
+   ],
+   "answer": 1,
+   "explanation": "The null hypothesis asserts no difference between groups, while the alternative asserts a difference exists. The other options impose an unwarranted direction, pair H1 with an unrelated claim, or reverse which hypothesis represents 'no difference.'",
+   "grounding": {
+    "source": "Wikipedia: Null hypothesis",
+    "note": "Defines the null hypothesis as the no-difference default tested against an alternative hypothesis of an effect."
+   },
+   "difficulty_prior": 0.8,
+   "id": "ab-testing-000",
+   "status": "beta"
+  },
+  {
+   "concept": "p-values-significance",
+   "stem": "An analyst runs an A/B test comparing two checkout flows and finds p = 0.03 for the conversion difference, using a pre-set significance threshold of 0.05. What does this p-value mean?",
+   "options": [
+    "Assuming no true difference, a result this extreme occurs about 3% of the time",
+    "There is roughly a 3% chance that the null hypothesis itself is actually true",
+    "There is roughly a 97% chance that the new checkout flow is truly better",
+    "The observed difference would replicate in about 97% of future repeated tests"
+   ],
+   "answer": 0,
+   "explanation": "A p-value is the probability of a result this extreme or more so if the null hypothesis were true. It is not the probability that either hypothesis is true, nor a replication rate.",
+   "grounding": {
+    "source": "Wikipedia: P-value",
+    "note": "Defines a p-value as the probability, under the null hypothesis, of a result at least as extreme as observed."
+   },
+   "difficulty_prior": 0.55,
+   "id": "ab-testing-001",
+   "status": "beta"
+  },
+  {
+   "concept": "power-sample-size",
+   "stem": "Before launching an A/B test, an analyst's power calculation shows only 50% power to detect the expected lift at alpha = 0.05 with the planned sample size. What is the main concern?",
+   "options": [
+    "The test is likely to be overpowered and cost more than needed",
+    "There's a high chance of missing a real effect even if one exists",
+    "The test's false-positive rate will rise above the 5% threshold",
+    "The results will be biased toward showing the new version as better"
+   ],
+   "answer": 1,
+   "explanation": "Low power means a real effect is likely to go undetected, a false negative. Power calculations don't change the false-positive rate, which is set by alpha, or bias results toward either outcome.",
+   "grounding": {
+    "source": "Wikipedia: Statistical power",
+    "note": "Explains that low statistical power increases the risk of failing to detect a true effect (Type II error)."
+   },
+   "difficulty_prior": 0.7,
+   "id": "ab-testing-002",
+   "status": "beta"
+  },
+  {
+   "concept": "peeking-pitfall",
+   "stem": "An analyst checks an A/B test's results every morning and stops the test the moment p drops below 0.05, well before the pre-planned sample size is reached. What is the main risk?",
+   "options": [
+    "The test loses statistical power but the false-positive rate stays the same",
+    "The true false-positive rate rises well above the stated 5% threshold",
+    "The novelty effect becomes stronger the longer the test continues to run",
+    "Multiple comparisons across metrics inflate the observed effect size unfairly"
+   ],
+   "answer": 1,
+   "explanation": "Repeatedly checking results and stopping as soon as p dips below 0.05 (optional stopping) inflates the real false-positive rate far beyond the nominal alpha, since each peek is another chance for a false alarm.",
+   "grounding": {
+    "source": "Wikipedia: Data dredging",
+    "note": "Describes how optional stopping (repeated checking and stopping once significant) inflates the true false-positive rate above the nominal alpha."
+   },
+   "difficulty_prior": 0.65,
+   "id": "ab-testing-003",
+   "status": "beta"
+  },
+  {
+   "concept": "novelty-effect",
+   "stem": "A redesigned homepage shows a 15% lift in engagement during the first week of an A/B test, but the lift shrinks to 2% by the fourth week. What best explains this pattern?",
+   "options": [
+    "Initial curiosity fades as users become used to the new design",
+    "The test's statistical power dropped sharply between the first and fourth week",
+    "Random daily fluctuations in traffic fully explain the change in lift",
+    "Comparing multiple weekly checkpoints inflated the early estimate of the lift"
+   ],
+   "answer": 0,
+   "explanation": "A novelty effect occurs when users react to the change itself, and the boost fades as the design becomes routine. Power, random noise, and multiple comparisons don't explain a lift that steadily shrinks over consecutive weeks.",
+   "grounding": {
+    "source": "Wikipedia: Novelty effect",
+    "note": "Describes how a temporary boost in response to a new stimulus or change tends to fade over time."
+   },
+   "difficulty_prior": 0.78,
+   "id": "ab-testing-004",
+   "status": "beta"
+  },
+  {
+   "concept": "hypothesis-setup",
+   "stem": "A mobile app team wants to know whether sending push notifications at 6 PM instead of 9 AM changes the app's open rate. Which pair correctly states the null and alternative hypotheses for this test?",
+   "options": [
+    "Null: the two open rates differ; Alternative: the two open rates are equal",
+    "Null: the two open rates are equal; Alternative: the two open rates differ",
+    "Null: the app is generally popular; Alternative: the app is generally unpopular",
+    "Null: the 6 PM rate is higher; Alternative: the 6 PM rate is lower"
+   ],
+   "answer": 1,
+   "explanation": "The null hypothesis assumes no difference between send times, while the alternative allows the rates to differ in either direction. Option A reverses this framing, C ignores the metric being tested, and D presupposes a direction without justifying a one-tailed test.",
+   "grounding": {
+    "source": "Wikipedia: Null hypothesis",
+    "note": "Defines the null as 'no effect/no difference' and the alternative as the claim being tested against it."
+   },
+   "difficulty_prior": 0.6,
+   "id": "ab-testing-005",
+   "status": "beta"
+  },
+  {
+   "concept": "randomization-control",
+   "stem": "Before launching an A/B test comparing two pricing pages, an analyst randomly assigns each visitor to either version. What is the main statistical benefit of this random assignment?",
+   "options": [
+    "It guarantees the sample size needed for adequate statistical power",
+    "It balances known and unknown confounders across both groups",
+    "It eliminates the need to run a significance test afterward",
+    "It ensures both groups are shown the exact same page"
+   ],
+   "answer": 1,
+   "explanation": "Random assignment spreads confounders like traffic source, device, and time of day evenly across groups, isolating the treatment's causal effect. It does not determine sample size, and a significance test is still needed since averages can differ by chance.",
+   "grounding": {
+    "source": "Wikipedia: Randomized controlled trial",
+    "note": "Randomization is the mechanism that balances confounding variables between compared groups."
+   },
+   "difficulty_prior": 0.6,
+   "id": "ab-testing-006",
+   "status": "beta"
+  },
+  {
+   "concept": "p-values-significance",
+   "stem": "An analyst compares two email subject lines and finds a click-through rate difference with p = 0.12 at a pre-registered alpha of 0.05. What should the analyst conclude?",
+   "options": [
+    "The result is statistically significant because the observed difference is large",
+    "The null hypothesis has been proven true by this result",
+    "The data do not provide enough evidence to reject the null",
+    "The test should be rerun repeatedly until p falls below 0.05"
+   ],
+   "answer": 2,
+   "explanation": "Since p = 0.12 exceeds the pre-registered alpha of 0.05, the observed difference is plausibly due to chance, so the analyst fails to reject the null. A high p-value never proves the null true, and retesting until significant is p-hacking.",
+   "grounding": {
+    "source": "Wikipedia: p-value",
+    "note": "A p-value above the chosen significance threshold means the result fails to reject the null hypothesis."
+   },
+   "difficulty_prior": 0.65,
+   "id": "ab-testing-007",
+   "status": "beta"
+  },
+  {
+   "concept": "multiple-comparisons-pitfall",
+   "stem": "An analyst tests 10 different button colors against a control at alpha = 0.05 for each comparison and finds one color 'significantly' outperforms control. Why is this finding less trustworthy than a single planned test?",
+   "options": [
+    "Running more variants always increases the true underlying effect size",
+    "Testing many variants at once inflates the overall false-positive risk",
+    "Alpha automatically drops to 0.005 once more than one variant is tested",
+    "Testing multiple variants reduces the sample size needed per group"
+   ],
+   "answer": 1,
+   "explanation": "Each comparison carries its own 5% false-positive risk, so running 10 independent tests raises the chance that at least one appears significant by chance well above 5%, unless a correction such as Bonferroni is applied. Alpha does not adjust automatically.",
+   "grounding": {
+    "source": "Wikipedia: Multiple comparisons problem",
+    "note": "Explains how the familywise error rate grows as more simultaneous comparisons are tested."
+   },
+   "difficulty_prior": 0.6,
+   "id": "ab-testing-008",
+   "status": "beta"
+  },
+  {
+   "concept": "honest-interpretation",
+   "stem": "An A/B test finds a statistically significant 0.2 percentage-point increase in conversion rate with a very large sample size. What should the analyst include when reporting this result to stakeholders?",
+   "options": [
+    "Only the p-value, since statistical significance alone is sufficient",
+    "The practical business impact of the effect alongside its significance",
+    "A recommendation to ignore the result because the lift is small",
+    "The confidence interval, but only when the result is not significant"
+   ],
+   "answer": 1,
+   "explanation": "With a very large sample, even a trivially small effect can be statistically significant. Honest reporting weighs whether the effect size matters for the business alongside the p-value, rather than treating significance alone as proof of a meaningful win.",
+   "grounding": {
+    "source": "Wikipedia: Statistical significance",
+    "note": "Distinguishes statistical significance from practical, real-world importance of an effect."
+   },
+   "difficulty_prior": 0.6,
+   "id": "ab-testing-009",
+   "status": "beta"
+  },
+  {
+   "concept": "randomization-control",
+   "stem": "An analyst tests a new search ranking algorithm by showing it to all users on odd-numbered calendar days, and the old algorithm on even-numbered days. What is the main statistical concern with this design?",
+   "options": [
+    "Day-of-week and calendar effects may confound the algorithm's true effect on user behavior",
+    "The sample size is too small to detect a meaningful difference between algorithms",
+    "The results will show novelty effects that fade after users adjust to the change",
+    "Testing on multiple days inflates the false-positive rate like multiple comparisons"
+   ],
+   "answer": 0,
+   "explanation": "Alternating by calendar day confounds treatment with day-of-week and calendar effects (weekends, paydays), so differences may reflect timing rather than the algorithm. True randomization assigns each user independently of date.",
+   "grounding": {
+    "source": "Kohavi, Tang, Xu - Trustworthy Online Controlled Experiments (2020)",
+    "note": "Discusses randomization unit selection and how time-based assignment schemes introduce confounds."
+   },
+   "difficulty_prior": 0.45,
+   "id": "ab-testing-010",
+   "status": "beta"
+  },
+  {
+   "concept": "p-values-significance",
+   "stem": "A p-value of 0.02 is reported for an A/B test comparing sign-up rates between two versions. Which statement correctly describes what this p-value means?",
+   "options": [
+    "Assuming no real difference, a gap this large occurs about 2% of the time",
+    "There is a 2% probability that the null hypothesis itself is actually true",
+    "There is a 98% probability that the treatment version is truly the better one",
+    "There is a 98% probability the result would replicate if the study were repeated"
+   ],
+   "answer": 0,
+   "explanation": "A p-value is P(data this extreme | null true), not the probability the null is true, the treatment is better, or that the result will replicate. Options B, C, and D each misstate this conditional probability.",
+   "grounding": {
+    "source": "American Statistical Association, 'Statement on Statistical Significance and P-Values' (2016)",
+    "note": "Clarifies that p-values do not give the probability that the null hypothesis is true or that a result will replicate."
+   },
+   "difficulty_prior": 0.5,
+   "id": "ab-testing-011",
+   "status": "beta"
+  },
+  {
+   "concept": "power-sample-size",
+   "stem": "An analyst plans an A/B test on a feature with a 1% baseline conversion rate, versus an earlier test with a 20% baseline rate. Holding the target relative lift and desired power constant, how does the required sample size compare?",
+   "options": [
+    "It increases substantially, because detecting the same relative lift needs far more observations",
+    "It decreases, because rare events reach significance with fewer total observations",
+    "It stays the same, since sample size calculations do not depend on baseline rate",
+    "It increases only if the significance threshold is also lowered from 0.05"
+   ],
+   "answer": 0,
+   "explanation": "Detecting a fixed relative lift on a low base rate requires a much larger absolute sample, since the absolute effect size shrinks. Sample size does depend heavily on baseline rate, contrary to option C.",
+   "grounding": {
+    "source": "Kohavi, Tang, Xu - Trustworthy Online Controlled Experiments (2020)",
+    "note": "Explains that required sample size grows substantially as baseline conversion rate decreases for a fixed relative minimum detectable effect."
+   },
+   "difficulty_prior": 0.42,
+   "id": "ab-testing-012",
+   "status": "beta"
+  },
+  {
+   "concept": "peeking-pitfall",
+   "stem": "A team wants to review A/B test results daily and act quickly once a winner emerges, rather than waiting for the pre-planned sample size. Which approach lets them do this without inflating the false-positive rate?",
+   "options": [
+    "Use a sequential testing method designed to control error rates under repeated looks",
+    "Check the p-value daily and stop as soon as it drops below 0.05",
+    "Divide alpha by the number of days elapsed rather than by planned looks",
+    "Lower the significance threshold to 0.01 for the remainder of the test"
+   ],
+   "answer": 0,
+   "explanation": "Sequential or 'always-valid' testing methods are built for repeated interim looks and control overall Type I error. Naively stopping once p<0.05 (B), or ad hoc alpha adjustments (C, D), do not properly correct for repeated testing.",
+   "grounding": {
+    "source": "Wikipedia, 'Sequential analysis'",
+    "note": "Describes statistical methods designed to permit valid repeated interim analysis without inflating false-positive rates."
+   },
+   "difficulty_prior": 0.45,
+   "id": "ab-testing-013",
+   "status": "beta"
+  },
+  {
+   "concept": "honest-interpretation",
+   "stem": "An A/B test shows no significant difference on the primary metric, but the treatment scores significantly higher on one of twelve secondary metrics examined. What is the most honest way to report this result?",
+   "options": [
+    "Report the primary metric as non-significant, and flag the secondary result as exploratory",
+    "Report the test as a clear win based on the significant secondary metric",
+    "Rerun the primary metric analysis with different tests until it also reaches significance",
+    "Leave the secondary metric result out of the report since it wasn't primary"
+   ],
+   "answer": 0,
+   "explanation": "Honest reporting states the primary result plainly and treats unplanned secondary findings as hypothesis-generating, not confirmed wins. Calling the secondary metric a win overstates the evidence given multiple comparisons.",
+   "grounding": {
+    "source": "American Statistical Association, 'Statement on Statistical Significance and P-Values' (2016)",
+    "note": "Warns against selectively highlighting significant secondary results as confirmatory findings without disclosure."
+   },
+   "difficulty_prior": 0.5,
+   "id": "ab-testing-014",
+   "status": "beta"
+  },
+  {
+   "concept": "hypothesis-setup",
+   "stem": "A team sets up an A/B test with a one-sided hypothesis (treatment increases upsell click-through versus control) to gain power. Midway through, treatment is performing noticeably worse than control. What is the main drawback of this setup?",
+   "options": [
+    "It cannot detect a real drop in click-through — harm looks merely 'not significant.'",
+    "One-sided tests always require a larger sample size than two-sided tests for equal power.",
+    "One-sided tests double the effective false-positive rate for the hypothesized direction of the effect.",
+    "One-sided hypotheses can only be tested using confidence intervals, not a single p-value."
+   ],
+   "answer": 0,
+   "explanation": "A one-sided test is built to detect effects only in the pre-specified direction. If the true effect is opposite, the test yields a non-significant p-value regardless of how large the harm is, since that direction was excluded from the alternative hypothesis.",
+   "grounding": {
+    "source": "Wikipedia: One- and two-tailed tests",
+    "note": "Explains that a one-tailed test has no power to detect effects in the untested direction, trading that ability for extra power in the specified direction."
+   },
+   "difficulty_prior": 0.4,
+   "id": "ab-testing-015",
+   "status": "beta"
+  },
+  {
+   "concept": "randomization-control",
+   "stem": "A ride-sharing app tests a new driver bonus by randomly assigning individual drivers (not cities) to treatment or control, though drivers in both groups compete for the same local riders. Why might this design bias the estimated effect?",
+   "options": [
+    "Treatment drivers' changed behavior affects shared rider supply, indirectly influencing control drivers and diluting the effect.",
+    "Randomizing at the driver level instead of the city level always increases the required sample size for adequate power.",
+    "Individual-level randomization guarantees that driver experience and tenure will be imbalanced between the two groups.",
+    "Because bonuses are financial incentives, they always trigger stronger novelty effects than product feature changes."
+   ],
+   "answer": 0,
+   "explanation": "Because treatment and control drivers share the same rider marketplace, the bonus's effect on treatment drivers spills over to control drivers (a SUTVA violation), biasing the estimate — typically toward understating the true effect.",
+   "grounding": {
+    "source": "Kohavi, Tang, Xu — Trustworthy Online Controlled Experiments",
+    "note": "Describes interference and network effects (SUTVA violations) in marketplace experiments, which bias treatment effect estimates when units share a resource pool."
+   },
+   "difficulty_prior": 0.28,
+   "id": "ab-testing-016",
+   "status": "beta"
+  },
+  {
+   "concept": "power-sample-size",
+   "stem": "An analyst plans two A/B tests with the same 5% relative lift and traffic: one on binary conversion (10% baseline), another on average revenue per user (highly skewed by rare large purchases). Why will the revenue test likely need a far larger sample?",
+   "options": [
+    "Sample size scales with the metric's variance, and revenue's skew drives up variance, requiring far more observations.",
+    "Continuous metrics must first be converted into binary categories before a significance test can be applied.",
+    "Ratio metrics like revenue per user have no defined variance, so power must be found by trial and error.",
+    "A 5% relative lift is inherently harder to detect than a 5% absolute lift, regardless of the underlying metric."
+   ],
+   "answer": 0,
+   "explanation": "Sample size requirements depend on the variance of the outcome metric, not just the relative effect size. Skewed metrics like revenue per user have much higher variance than bounded proportions, requiring many more users to detect the same relative lift.",
+   "grounding": {
+    "source": "Wikipedia: Sample size determination",
+    "note": "Sample size formulas for comparing means or proportions scale with the outcome's variance; higher-variance metrics need larger samples for equivalent power."
+   },
+   "difficulty_prior": 0.35,
+   "id": "ab-testing-017",
+   "status": "beta"
+  },
+  {
+   "concept": "multiple-comparisons-pitfall",
+   "stem": "An analyst evaluates 9 secondary metrics (bounce rate, time on page, cart adds, etc.) alongside the primary metric, each at alpha = 0.05, none with a true effect. What is the approximate chance at least one looks significant by chance?",
+   "options": [
+    "About 5% — since alpha = 0.05 is the risk for any single test regardless of how many are run.",
+    "About 37% — the chance rises because running many tests compounds the false-positive risk.",
+    "About 60% — testing multiple metrics roughly doubles the single-test false-positive rate for each pair.",
+    "About 95% — with 9 tests, a false positive somewhere becomes almost certain."
+   ],
+   "answer": 1,
+   "explanation": "With 9 independent tests at alpha = 0.05, the chance of at least one false positive is 1-(0.95)^9 ≈ 37%, illustrating why unadjusted multiple comparisons sharply inflate the family-wise error rate.",
+   "grounding": {
+    "source": "Wikipedia: Multiple comparisons problem",
+    "note": "Gives the family-wise error rate formula 1-(1-alpha)^m for m independent tests, showing how false-positive risk compounds without correction."
+   },
+   "difficulty_prior": 0.32,
+   "id": "ab-testing-018",
+   "status": "beta"
+  },
+  {
+   "concept": "honest-interpretation",
+   "stem": "An A/B test comparing two onboarding flows finds p = 0.35 for activation rate, with a 95% CI for the lift of -2% to +6%. The analyst concludes 'the new flow has no effect.' What is the strongest critique of this claim?",
+   "options": [
+    "The wide interval still includes a meaningful positive lift, so the test was inconclusive, not proof of zero effect.",
+    "The claim is correct, since p = 0.35 means there is a 35% probability the new flow truly has no effect.",
+    "The claim is correct, because a confidence interval that crosses zero formally proves the two flows are equivalent.",
+    "The claim is wrong because switching to a one-tailed test would have made this result statistically significant."
+   ],
+   "answer": 0,
+   "explanation": "A non-significant result with a confidence interval spanning both negative and clearly meaningful positive values indicates insufficient precision, not evidence of zero effect — absence of evidence is not evidence of absence.",
+   "grounding": {
+    "source": "Wikipedia: Absence of evidence is not evidence of absence",
+    "note": "Explains why failing to reject the null hypothesis does not confirm the null; a wide, zero-crossing CI signals inconclusiveness, not equivalence."
+   },
+   "difficulty_prior": 0.4,
+   "id": "ab-testing-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

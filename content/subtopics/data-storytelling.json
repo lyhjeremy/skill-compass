@@ -1,0 +1,444 @@
+{
+ "id": "data-storytelling",
+ "concepts": [
+  {
+   "id": "signal-vs-noise",
+   "label": "Insight Identification",
+   "definition": "Distinguishing the one or two findings that matter most from supporting details and noise in the data.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "lead-with-answer",
+   "label": "Bottom-Line-Up-Front",
+   "definition": "Stating the main conclusion or recommendation first, before walking through the supporting evidence.",
+   "prereq": "signal-vs-noise",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "narrative-arc",
+   "label": "Insight Narrative Structure",
+   "definition": "Organizing findings into a clear structure, such as situation-complication-resolution, so the audience can follow the logic.",
+   "prereq": "lead-with-answer",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "chart-annotation",
+   "label": "Chart Annotation",
+   "definition": "Adding labels, callouts, or highlights directly on a chart to point the viewer to the key takeaway.",
+   "prereq": "narrative-arc",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "uncertainty-communication",
+   "label": "Honest Uncertainty Communication",
+   "definition": "Clearly conveying the confidence, limitations, and caveats behind a data-driven claim without overstating certainty.",
+   "prereq": "narrative-arc",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "executive-summary",
+   "label": "Executive Summary Writing",
+   "definition": "Condensing an entire analysis into a brief, decision-focused summary for time-constrained leaders.",
+   "prereq": "lead-with-answer",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "stakeholder-tailoring",
+   "label": "Multi-Audience Storytelling",
+   "definition": "Adapting the same underlying insight into different narrative versions for different stakeholders, such as executives versus analysts.",
+   "prereq": "executive-summary",
+   "x": 210,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "lead-with-answer",
+   "stem": "A data analyst is presenting quarterly churn results to the VP of Sales, who has only five minutes before her next meeting. Which opening best follows the 'lead with the answer' principle?",
+   "options": [
+    "Let me start by walking through the methodology we used to calculate churn this quarter.",
+    "Before the numbers, here's some background on how the churn metric has evolved over time.",
+    "Churn rose to 8% this quarter, driven mainly by pricing complaints; here's what we recommend.",
+    "I'll first cover data collection steps, then move into the trends we noticed this quarter."
+   ],
+   "answer": 2,
+   "explanation": "Leading with the headline finding and recommendation respects a time-constrained executive; opening with methodology, background, or process details buries the answer the VP most needs.",
+   "grounding": {
+    "source": "Barbara Minto, The Pyramid Principle",
+    "note": "Recommends stating the conclusion first, before supporting detail, especially for time-constrained decision-makers."
+   },
+   "difficulty_prior": 0.78,
+   "id": "data-storytelling-000",
+   "status": "beta"
+  },
+  {
+   "concept": "chart-annotation",
+   "stem": "An analyst's line chart of monthly revenue shows a sharp dip in March caused by a warehouse outage. What is the most effective way to convey this context directly on the chart?",
+   "options": [
+    "Add a second axis so viewers can compare revenue to headcount trends",
+    "Add a callout annotation on the March dip labeling the warehouse outage",
+    "Increase the line thickness so the March dip is easier to spot",
+    "Add a footnote at the bottom listing every operational event of the year"
+   ],
+   "answer": 1,
+   "explanation": "A direct callout on the exact data point ties the explanation to the moment it matters. Axis changes, line styling, or a general footnote force viewers to hunt for the context themselves.",
+   "grounding": {
+    "source": "Cole Nussbaumer Knaflic, Storytelling with Data",
+    "note": "Recommends annotating specific chart points directly rather than relying on separate footnotes or legends."
+   },
+   "difficulty_prior": 0.75,
+   "id": "data-storytelling-001",
+   "status": "beta"
+  },
+  {
+   "concept": "executive-summary",
+   "stem": "A data team is finalizing a ten-page report on customer retention for the executive leadership team. Which approach best serves the executive summary placed at the top of the report?",
+   "options": [
+    "A full restatement of every table and chart that appears later in the report",
+    "A detailed description of the SQL queries and data cleaning steps used",
+    "A chronological log of every meeting held while the analysis was conducted",
+    "Three to five bullet points stating the key findings and recommended actions"
+   ],
+   "answer": 3,
+   "explanation": "An executive summary condenses a report into its most decision-relevant findings and actions. Restating every table, detailing methodology, or logging meetings replicates report content instead of distilling it.",
+   "grounding": {
+    "source": "Wikipedia: Executive summary",
+    "note": "Describes the executive summary as a condensed statement of key points enabling readers to grasp a longer document without reading it in full."
+   },
+   "difficulty_prior": 0.8,
+   "id": "data-storytelling-002",
+   "status": "beta"
+  },
+  {
+   "concept": "uncertainty-communication",
+   "stem": "A forecasting analyst tells stakeholders that next quarter's sales will be '$2.1 million, though the estimate could reasonably range from $1.8 million to $2.4 million.' What practice does this statement reflect?",
+   "options": [
+    "Rounding the forecast to reduce the appearance of false precision",
+    "Replacing the point estimate entirely with a qualitative confidence level",
+    "Giving a point estimate with a range to show uncertainty",
+    "Withholding the estimate until more data reduces the uncertainty range"
+   ],
+   "answer": 2,
+   "explanation": "Pairing a point estimate with a plausible range communicates honest uncertainty while still giving stakeholders a number to act on, unlike vague qualitative labels or withholding the estimate.",
+   "grounding": {
+    "source": "Wikipedia: Confidence interval",
+    "note": "Describes giving a range around a point estimate to convey the degree of uncertainty in a measurement or forecast."
+   },
+   "difficulty_prior": 0.72,
+   "id": "data-storytelling-003",
+   "status": "beta"
+  },
+  {
+   "concept": "stakeholder-tailoring",
+   "stem": "A data analyst prepares two versions of a churn analysis: one for engineers emphasizing technical root causes, one for executives emphasizing revenue impact and next steps. What practice does this reflect?",
+   "options": [
+    "Duplicating effort unnecessarily, since one universal report would suffice",
+    "Adjusting the framing and detail to fit each audience's needs",
+    "Withholding technical detail from engineers to simplify their review",
+    "Inflating the executive version with extra charts to appear thorough"
+   ],
+   "answer": 1,
+   "explanation": "Effective stakeholder tailoring adjusts emphasis and depth to each audience's goals, not effort duplication, withheld detail, or padding. Engineers need root causes; executives need business impact and next steps.",
+   "grounding": {
+    "source": "Nancy Duarte, Resonate: Present Visual Stories that Transform Audiences",
+    "note": "Argues that communication should be shaped around the specific audience's needs rather than one-size-fits-all content."
+   },
+   "difficulty_prior": 0.77,
+   "id": "data-storytelling-004",
+   "status": "beta"
+  },
+  {
+   "concept": "lead-with-answer",
+   "stem": "A data analyst is asked to brief a busy operations director in a five-minute hallway conversation about why fulfillment delays increased last month. What is the most effective way to open the conversation?",
+   "options": [
+    "Start with the methodology used to calculate delay times across regions.",
+    "Lead with the key finding: staffing dropped while order volume held steady.",
+    "Begin with a summary of all data sources consulted before sharing findings.",
+    "Walk through the data chronologically from three months ago to today."
+   ],
+   "answer": 1,
+   "explanation": "Leading with the key finding respects the director's limited time and lets them act immediately; methodology, source lists, and chronological walkthroughs delay the actionable insight and belong in a written appendix instead.",
+   "grounding": {
+    "source": "Pyramid Principle (Barbara Minto)",
+    "note": "Advocates presenting conclusions before supporting detail, especially when audience time is limited."
+   },
+   "difficulty_prior": 0.65,
+   "id": "data-storytelling-005",
+   "status": "beta"
+  },
+  {
+   "concept": "signal-vs-noise",
+   "stem": "A weekly sales dashboard shows day-to-day revenue bouncing between -15% and +15% with no clear trend, while the 12-week moving average has climbed steadily. Which pattern should the analyst emphasize as the actual signal in a summary?",
+   "options": [
+    "The single day with the largest percentage drop, since it is the most dramatic number.",
+    "The average of all daily percentage changes, since it captures every data point equally.",
+    "The steady upward trend in the moving average, since daily swings reflect normal variation.",
+    "The day-to-day volatility itself, since it shows how unpredictable revenue can be."
+   ],
+   "answer": 2,
+   "explanation": "The moving average filters out normal day-to-day randomness to reveal the true underlying trend. A single dramatic day, or an average dominated by volatile swings, mistakes typical noise for meaningful signal.",
+   "grounding": {
+    "source": "The Signal and the Noise (Nate Silver)",
+    "note": "Distinguishes genuine underlying trends (signal) from short-term random fluctuation (noise) in forecasting and analysis."
+   },
+   "difficulty_prior": 0.6,
+   "id": "data-storytelling-006",
+   "status": "beta"
+  },
+  {
+   "concept": "narrative-arc",
+   "stem": "An analyst is structuring a ten-minute talk on why customer support wait times doubled this quarter. Which structure best follows a narrative arc that builds understanding before recommending action?",
+   "options": [
+    "Start with rising ticket volume, explain the staffing gap, then propose a hiring plan.",
+    "Show only the final wait-time number, without explaining what caused the change.",
+    "List every tracked support metric in random order, with no unifying thread.",
+    "Open with the hiring plan, then mention causes afterward with no logical order."
+   ],
+   "answer": 0,
+   "explanation": "A narrative arc presents context and complication before the resolution so the audience can follow the logic; front-loading the recommendation and scattering causes afterward, or listing metrics with no throughline, breaks that flow.",
+   "grounding": {
+    "source": "Freytag's Pyramid",
+    "note": "Classic exposition-complication-resolution structure, commonly adapted for structuring analytical presentations."
+   },
+   "difficulty_prior": 0.65,
+   "id": "data-storytelling-007",
+   "status": "beta"
+  },
+  {
+   "concept": "chart-annotation",
+   "stem": "A bar chart compares average handle time across five call center regions. One region's bar is far higher than the rest due to a system outage that week. What is the best way to annotate this in the chart?",
+   "options": [
+    "Remove that region's data entirely so the chart looks visually consistent.",
+    "Rescale the y-axis so the outlier bar appears similar in height to others.",
+    "Leave the chart unannotated and explain the outage verbally if asked.",
+    "Add a text label on the bar noting the outage as the cause."
+   ],
+   "answer": 3,
+   "explanation": "Annotating the outlier directly on the chart preserves accurate data while giving viewers context to interpret it correctly. Rescaling the axis or removing the point distorts reality, and verbal-only explanation fails once the chart is shared.",
+   "grounding": {
+    "source": "Storytelling with Data (Cole Nussbaumer Knaflic)",
+    "note": "Recommends direct in-chart annotations to explain outliers so viewers don't misread anomalies as errors or trends."
+   },
+   "difficulty_prior": 0.55,
+   "id": "data-storytelling-008",
+   "status": "beta"
+  },
+  {
+   "concept": "executive-summary",
+   "stem": "An analyst is asked to add a one-slide executive summary to the front of a 25-slide monthly operations deck for senior leadership. What should that slide primarily contain?",
+   "options": [
+    "A detailed table of contents listing all twenty-five slides in order.",
+    "The two or three most important findings and actions from the deck.",
+    "The raw data tables used to build every chart in the deck.",
+    "A restatement of the meeting agenda and list of attendees."
+   ],
+   "answer": 1,
+   "explanation": "An executive summary should surface only the handful of findings and actions leadership needs to decide, since senior audiences rarely have time to review all 25 slides. A contents list, raw data, or agenda conveys no actual conclusions.",
+   "grounding": {
+    "source": "Executive summary (Wikipedia)",
+    "note": "An executive summary condenses a document's most critical findings and recommendations for readers who won't review the full text."
+   },
+   "difficulty_prior": 0.7,
+   "id": "data-storytelling-009",
+   "status": "beta"
+  },
+  {
+   "concept": "signal-vs-noise",
+   "stem": "A manufacturing quality analyst tracks daily defect rates that have randomly fluctuated between 1.6% and 2.7% for two months with no trend. When one day's rate reads 2.6%, a manager wants to halt the line immediately. What should the analyst check first?",
+   "options": [
+    "Whether 2.6% falls within the metric's normal historical variation",
+    "Recommend halting the line immediately since any increase above baseline signals a real problem",
+    "Recalculate the rate using a shorter time window so the trend line appears smoother",
+    "Compare this day's rate only to the single lowest value in the historical dataset"
+   ],
+   "answer": 0,
+   "explanation": "The spike must first be checked against the metric's normal historical variation; 2.6% falls within the already-observed 1.6%-2.7% range. Option B treats ordinary common-cause variation as a real signal, risking unnecessary line stoppages.",
+   "grounding": {
+    "source": "Statistical Process Control (Wikipedia)",
+    "note": "Distinguishes common-cause (normal) variation from special-cause variation, the basis for judging when a data change is really signal versus noise."
+   },
+   "difficulty_prior": 0.45,
+   "id": "data-storytelling-010",
+   "status": "beta"
+  },
+  {
+   "concept": "narrative-arc",
+   "stem": "An analyst is structuring a presentation on a sudden drop in warehouse throughput. She has baseline context, the complication (the drop), and a proposed resolution. Which sequence best follows a classic insight narrative arc for a business audience?",
+   "options": [
+    "Situation, then Complication, then Resolution",
+    "Resolution, then Situation, then Complication",
+    "Complication, then Resolution, then Situation",
+    "Situation, then Resolution, then Complication"
+   ],
+   "answer": 0,
+   "explanation": "The Situation-Complication-Resolution arc establishes shared context, then introduces the tension driving the need for change, then delivers the resolution. The other sequences open with the resolution or complication before context is set, leaving the audience ungrounded.",
+   "grounding": {
+    "source": "The Pyramid Principle (Barbara Minto)",
+    "note": "Describes Situation-Complication-Resolution as the classic structure for persuasive business narratives, building tension before the resolution."
+   },
+   "difficulty_prior": 0.5,
+   "id": "data-storytelling-011",
+   "status": "beta"
+  },
+  {
+   "concept": "lead-with-answer",
+   "stem": "A manager reviews a draft opening line: 'We analyzed three years of transaction data across five regions using two statistical models.' The finding appears in the final sentence. Which revision best applies the lead-with-the-answer principle?",
+   "options": [
+    "Open with the key finding and recommendation, then present the methodology as supporting detail",
+    "Keep the methodology first but shorten it down to a single short sentence",
+    "Move the methodology into a footnote while still presenting the results in their original discovery order",
+    "Add a summary restating both the methodology and the finding at the very end"
+   ],
+   "answer": 0,
+   "explanation": "Leading with the answer lets busy audiences grasp the conclusion immediately, with methodology as supporting evidence rather than a gate to pass through first. Options B and C still delay or preserve the original discovery order, burying the key finding.",
+   "grounding": {
+    "source": "BLUF (Bottom Line Up Front) - Wikipedia",
+    "note": "BLUF is a communication convention placing the conclusion before supporting detail so readers get the key point immediately."
+   },
+   "difficulty_prior": 0.45,
+   "id": "data-storytelling-012",
+   "status": "beta"
+  },
+  {
+   "concept": "chart-annotation",
+   "stem": "A line chart of weekly website conversion rate has one week with an unlabeled, sharp spike. To make the insight clear without requiring the audience to ask what happened, what should the analyst add to the chart?",
+   "options": [
+    "A text annotation directly on the chart pointing to the spike and naming its cause",
+    "A footnote in small print at the bottom of the slide listing that quarter's site changes",
+    "A separate appendix slide with a table of every week's raw conversion values",
+    "A brighter color applied to the entire line so the overall trend stands out more"
+   ],
+   "answer": 0,
+   "explanation": "Direct on-chart annotation ties the explanation to the exact visual moment, so the audience doesn't have to search a footnote or appendix. A color change to the whole line (D) draws attention broadly, not to the specific event that matters.",
+   "grounding": {
+    "source": "Storytelling with Data (Cole Nussbaumer Knaflic)",
+    "note": "Recommends annotating charts directly at the point of interest so the audience doesn't have to search for or infer the insight."
+   },
+   "difficulty_prior": 0.45,
+   "id": "data-storytelling-013",
+   "status": "beta"
+  },
+  {
+   "concept": "stakeholder-tailoring",
+   "stem": "An analyst must present the same credit-risk model results to a loan approval committee focused on default exposure and to an IT team focused on system integration. What is the best approach?",
+   "options": [
+    "Keep the findings constant but tailor emphasis: exposure for the committee, integration for IT",
+    "Use identical slides for both groups to ensure the message stays fully consistent",
+    "Give the IT team the full default-rate financial breakdown so they understand the business context",
+    "Give the loan committee the model's technical architecture diagram to ensure accuracy of understanding"
+   ],
+   "answer": 0,
+   "explanation": "Tailoring keeps the underlying findings identical while adjusting which details are emphasized for each audience's priorities and expertise. Option D risks the 'curse of knowledge' by handing a non-technical committee an architecture diagram they lack context to interpret.",
+   "grounding": {
+    "source": "Made to Stick (Chip Heath & Dan Heath)",
+    "note": "Describes the 'curse of knowledge,' explaining why communicators must adapt technical depth and framing to each audience's existing expertise."
+   },
+   "difficulty_prior": 0.5,
+   "id": "data-storytelling-014",
+   "status": "beta"
+  },
+  {
+   "concept": "lead-with-answer",
+   "stem": "A data analyst's email update on a pricing experiment begins: 'We tested three price points over six weeks across 40,000 users, controlling for seasonality and device type.' The recommendation appears in the final paragraph. Which revision best applies the 'lead with the answer' principle?",
+   "options": [
+    "Move the recommendation and its impact to the first sentence, then support it with the methodology.",
+    "Keep the structure but bold the recommendation sentence wherever it appears in the email.",
+    "Delete the methodology entirely so only the recommendation remains.",
+    "Add a one-sentence teaser question at the top, such as 'Which price point wins?', before the methodology."
+   ],
+   "answer": 0,
+   "explanation": "Leading with the answer means stating the recommendation first, then supporting it with methodology — not just highlighting text later in the same order (B), stripping out supporting evidence (C), or opening with a hook that still delays the conclusion (D).",
+   "grounding": {
+    "source": "The Pyramid Principle by Barbara Minto",
+    "note": "Recommends stating conclusions before supporting arguments in business writing and presentations."
+   },
+   "difficulty_prior": 0.4,
+   "id": "data-storytelling-015",
+   "status": "beta"
+  },
+  {
+   "concept": "signal-vs-noise",
+   "stem": "A support team's CSAT average moves from 4.42 to 4.38 out of 5 across two consecutive months, based on 30 survey responses each month with a margin of error near ±0.15. How should an analyst frame this change for leadership?",
+   "options": [
+    "Note the 0.04-point change is within the ±0.15 margin, not a real trend.",
+    "Flag the drop as a meaningful downward trend that requires immediate corrective action.",
+    "Report the drop as statistically significant since the score fell across both months.",
+    "Present both scores side by side with no interpretation, since two points prove nothing."
+   ],
+   "answer": 0,
+   "explanation": "The 0.04-point change is far smaller than the ±0.15 margin of error, so it is statistical noise, not a trend. Options B and C treat noise as a real decline; D avoids interpretation entirely, which is also unhelpful to leadership.",
+   "grounding": {
+    "source": "Margin of error - Wikipedia",
+    "note": "A difference smaller than the margin of error should not be treated as a real change."
+   },
+   "difficulty_prior": 0.4,
+   "id": "data-storytelling-016",
+   "status": "beta"
+  },
+  {
+   "concept": "narrative-arc",
+   "stem": "An analyst is structuring a 20-minute workshop for the product team to build shared understanding of a new customer segmentation, not just deliver a verdict. Which structure best follows a narrative arc appropriate for this goal?",
+   "options": [
+    "Frame the business question first, walk through the key evidence, then end with the segmentation and its implications.",
+    "Begin with the segmentation result, then use the remaining time to explain the modeling steps that produced it.",
+    "Present the raw data exploration in the exact chronological order it was performed, without stating an overarching question.",
+    "Open with limitations and caveats about the data before showing any findings, then run out of time before reaching a conclusion."
+   ],
+   "answer": 0,
+   "explanation": "A narrative arc for building shared understanding opens with the business question, develops the evidence, then resolves with the finding — unlike a chronological process log (C), a reversed justify-the-result order (B), or over-caveating without ever reaching a conclusion (D).",
+   "grounding": {
+    "source": "Storytelling with Data by Cole Nussbaumer Knaflic",
+    "note": "Describes structuring narratives around context, insight, and resolution rather than a chronological process log."
+   },
+   "difficulty_prior": 0.35,
+   "id": "data-storytelling-017",
+   "status": "beta"
+  },
+  {
+   "concept": "uncertainty-communication",
+   "stem": "A data analyst reports that a new checkout flow 'increased conversion by 3 percentage points,' based on an A/B test where the 95% confidence interval for the lift is -1 to +7 points. What is the most honest way to communicate this result?",
+   "options": [
+    "State that the result looks positive, but the interval crosses zero, so it isn't conclusive yet.",
+    "Round the finding to 'a confirmed 3-point lift' since that is the value observed in the test.",
+    "Report only the confidence interval range without stating the observed point estimate, to avoid overstating certainty.",
+    "Recommend rolling out the new flow immediately, since a positive point estimate is enough evidence."
+   ],
+   "answer": 0,
+   "explanation": "Because the 95% CI spans -1 to +7 points, it includes zero, so the lift is not statistically significant. Honest communication flags this uncertainty rather than calling it confirmed (B), rolling out based on it (D), or omitting the useful point estimate (C).",
+   "grounding": {
+    "source": "Confidence interval - Wikipedia",
+    "note": "A confidence interval that includes zero indicates the estimate is not statistically significant at that level."
+   },
+   "difficulty_prior": 0.45,
+   "id": "data-storytelling-018",
+   "status": "beta"
+  },
+  {
+   "concept": "stakeholder-tailoring",
+   "stem": "An inventory forecasting analyst has one demand forecast to share with the supply planning team and with the CFO. What is the most appropriate way to tailor the two briefings?",
+   "options": [
+    "For supply planning, share SKU-level forecasts and assumptions; for the CFO, summarize the cash and margin impact.",
+    "Give both groups the identical SKU-level spreadsheet so nothing is lost in translation.",
+    "For the CFO, include the full list of model features and hyperparameters so the forecast's rigor is clear.",
+    "For supply planning, skip the underlying assumptions and give only the high-level revenue impact number."
+   ],
+   "answer": 0,
+   "explanation": "Stakeholder tailoring means matching depth and framing to each audience's decisions: planners need SKU-level detail to act, while the CFO needs financial impact. Sharing identical raw spreadsheets (B) or swapping the technical depth between audiences (C, D) fails to serve either one's actual need.",
+   "grounding": {
+    "source": "Made to Stick by Chip Heath and Dan Heath",
+    "note": "Warns against the 'curse of knowledge,' urging communicators to tailor detail and framing to each audience."
+   },
+   "difficulty_prior": 0.45,
+   "id": "data-storytelling-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}
