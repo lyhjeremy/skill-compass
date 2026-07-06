@@ -1,0 +1,452 @@
+{
+ "id": "regression-basics",
+ "concepts": [
+  {
+   "id": "regression-coefficients",
+   "label": "Regression Coefficients",
+   "definition": "Each coefficient in a linear regression shows how much the outcome changes for a one-unit increase in that predictor, holding other predictors constant.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "regression-intercept",
+   "label": "Regression Intercept",
+   "definition": "The intercept is the model's predicted outcome when all predictors equal zero, which is sometimes meaningless outside the data's context.",
+   "prereq": "regression-coefficients",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "r-squared",
+   "label": "R-squared and Its Limits",
+   "definition": "R-squared is the share of outcome variance the model explains, but a high value doesn't prove the model is correct, unbiased, or causal.",
+   "prereq": "regression-coefficients",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "residual-patterns",
+   "label": "Residual Patterns",
+   "definition": "Plotting residuals against fitted values or predictors exposes violations of regression assumptions like linearity and constant variance.",
+   "prereq": "r-squared",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "multicollinearity",
+   "label": "Multicollinearity Symptoms",
+   "definition": "When predictors are highly correlated with each other, individual coefficient estimates become unstable and unreliable to interpret, even if overall predictions remain accurate.",
+   "prereq": "regression-coefficients",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "extrapolation-danger",
+   "label": "Extrapolation Dangers",
+   "definition": "Applying a regression model to predict outcomes far outside the range of the original data can yield unreliable or nonsensical results.",
+   "prereq": "r-squared",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "logistic-regression",
+   "label": "Logistic Regression Basics",
+   "definition": "When the outcome is binary rather than continuous, logistic regression replaces linear regression to model the probability of an event.",
+   "prereq": "regression-coefficients",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "odds-ratio",
+   "label": "Odds Ratios",
+   "definition": "Exponentiating a logistic regression coefficient yields an odds ratio, describing how the odds of the outcome change per one-unit increase in the predictor.",
+   "prereq": "logistic-regression",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "regression-coefficients",
+   "stem": "A simple linear regression predicting monthly salary (in dollars) from years of experience yields: Salary = 3,000 + 150 × Experience. What does the value 150 represent?",
+   "options": [
+    "The minimum salary for someone with zero experience is $150",
+    "150% of an employee's salary is explained by experience",
+    "Each extra year of experience raises predicted salary by $150",
+    "An employee needs 150 years of experience to double their salary"
+   ],
+   "answer": 2,
+   "explanation": "In this regression, 150 is the slope: predicted salary rises by $150 per additional year of experience. It is not a percentage change, and the baseline salary at zero experience is the intercept ($3,000), not $150.",
+   "grounding": {
+    "source": "Wikipedia: Simple linear regression",
+    "note": "Defines the slope coefficient as the average change in the response per one-unit increase in the predictor."
+   },
+   "difficulty_prior": 0.8,
+   "id": "regression-basics-000",
+   "status": "beta"
+  },
+  {
+   "concept": "regression-intercept",
+   "stem": "In a regression model, ExamScore = 55 + 4 × HoursStudied, what does the intercept value of 55 represent?",
+   "options": [
+    "The average exam score across all students in the sample",
+    "The model's predicted exam score when hours studied equals zero",
+    "The increase in exam score for each additional hour studied",
+    "The minimum possible exam score a student can earn"
+   ],
+   "answer": 1,
+   "explanation": "The intercept is the model's predicted value when the predictor equals zero, here a score of 55 at zero hours studied. It is not the sample average, the slope, or a guaranteed floor on scores.",
+   "grounding": {
+    "source": "Wikipedia: Linear regression",
+    "note": "Defines the intercept as the predicted response when the predictor variable equals zero."
+   },
+   "difficulty_prior": 0.78,
+   "id": "regression-basics-001",
+   "status": "beta"
+  },
+  {
+   "concept": "r-squared",
+   "stem": "A regression of house price on square footage produces R² = 0.62. Which statement correctly interprets this value?",
+   "options": [
+    "The correlation between square footage and price equals 0.62",
+    "The model correctly predicts the exact price for 62% of houses",
+    "There is a 62% chance that square footage causes price changes",
+    "Square footage explains about 62% of the variation in price"
+   ],
+   "answer": 3,
+   "explanation": "R-squared is the proportion of variance in the outcome explained by the predictor, not the correlation coefficient itself, not a hit rate on exact predictions, and not a probability of causation.",
+   "grounding": {
+    "source": "Wikipedia: Coefficient of determination",
+    "note": "R-squared is defined as the proportion of variance in the dependent variable explained by the model."
+   },
+   "difficulty_prior": 0.72,
+   "id": "regression-basics-002",
+   "status": "beta"
+  },
+  {
+   "concept": "extrapolation-danger",
+   "stem": "An analyst builds a regression model using monthly ad spend data ranging from $1,000 to $10,000, then uses it to predict sales at a $50,000 spend level. What is the primary concern with this prediction?",
+   "options": [
+    "The regression coefficients become statistically insignificant beyond this range",
+    "The R-squared value will automatically drop at higher spend levels",
+    "The linear pattern in the data may not hold beyond it",
+    "The model will underestimate the intercept at high spend levels"
+   ],
+   "answer": 2,
+   "explanation": "Extrapolating beyond the observed data range assumes the same linear relationship continues, which often fails. R-squared and coefficient significance are properties of the fitted sample and don't change just because a new input lies outside it.",
+   "grounding": {
+    "source": "Wikipedia: Extrapolation",
+    "note": "Describes the risk of assuming a fitted trend continues to hold outside the range of observed data."
+   },
+   "difficulty_prior": 0.75,
+   "id": "regression-basics-003",
+   "status": "beta"
+  },
+  {
+   "concept": "logistic-regression",
+   "stem": "An analyst wants to predict whether a customer will churn (yes or no) based on account tenure and usage. Why is logistic regression more appropriate than linear regression here?",
+   "options": [
+    "Logistic regression only works with categorical predictor variables",
+    "Logistic regression outputs a probability bounded between 0 and 1",
+    "Logistic regression requires no assumptions about the underlying data",
+    "Logistic regression always produces a higher R-squared than linear regression"
+   ],
+   "answer": 1,
+   "explanation": "Linear regression can output values outside [0,1], which is nonsensical for a yes/no outcome. Logistic regression models a bounded probability instead. It still works with continuous predictors and still relies on modeling assumptions.",
+   "grounding": {
+    "source": "Wikipedia: Logistic regression",
+    "note": "Explains that logistic regression models a bounded probability for binary outcomes, unlike ordinary linear regression."
+   },
+   "difficulty_prior": 0.8,
+   "id": "regression-basics-004",
+   "status": "beta"
+  },
+  {
+   "concept": "residual-patterns",
+   "stem": "An analyst plots residuals from a linear regression against fitted values and observes a clear U-shaped curve rather than a random scatter. What does this pattern most likely indicate?",
+   "options": [
+    "The linear model omits a nonlinear relationship in the data",
+    "The independent variables are highly correlated with each other",
+    "The sample size is too small to estimate coefficients reliably",
+    "The dependent variable was measured with a categorical scale"
+   ],
+   "answer": 0,
+   "explanation": "A curved (non-random) residual pattern signals the linear model is missing nonlinear structure, not multicollinearity, which is diagnosed via correlation among predictors or VIF, not residual shape.",
+   "grounding": {
+    "source": "Errors and residuals (Wikipedia)",
+    "note": "Residual plots with systematic curvature indicate an inadequate functional form, i.e., unmodeled nonlinearity."
+   },
+   "difficulty_prior": 0.6,
+   "id": "regression-basics-005",
+   "status": "beta"
+  },
+  {
+   "concept": "multicollinearity",
+   "stem": "A regression predicting employee performance includes both years of experience and age as predictors, which are strongly correlated. The coefficients for both variables have large standard errors and unstable signs. What is this symptom most indicative of?",
+   "options": [
+    "Multicollinearity between the two predictors",
+    "Heteroscedasticity in the error terms",
+    "A missing quadratic term for age",
+    "Autocorrelation in the residuals"
+   ],
+   "answer": 0,
+   "explanation": "Strongly correlated predictors inflate standard errors and destabilize coefficient estimates, the classic sign of multicollinearity. Heteroscedasticity and autocorrelation describe error-variance patterns, not instability from correlated predictors.",
+   "grounding": {
+    "source": "Multicollinearity (Wikipedia)",
+    "note": "Correlated predictors inflate the variance of coefficient estimates, producing large standard errors and unstable signs."
+   },
+   "difficulty_prior": 0.6,
+   "id": "regression-basics-006",
+   "status": "beta"
+  },
+  {
+   "concept": "odds-ratio",
+   "stem": "In a logistic regression predicting loan default, the odds ratio for 'missed a payment in the last year' is 3.5. What does this value mean?",
+   "options": [
+    "The odds of default are 3.5 times as high for those who missed a payment",
+    "The probability of default rises by 3.5 percentage points for those who missed a payment",
+    "Missing a payment causes default in 3.5% of cases",
+    "The odds of default are 3.5% higher for those who missed a payment"
+   ],
+   "answer": 0,
+   "explanation": "An odds ratio of 3.5 means the odds of the outcome multiply by 3.5, not that probability rises by 3.5 percentage points or 3.5%, a common misreading of odds ratios.",
+   "grounding": {
+    "source": "Odds ratio (Wikipedia)",
+    "note": "Defines the odds ratio as the multiplicative factor by which odds change, distinct from a probability difference."
+   },
+   "difficulty_prior": 0.65,
+   "id": "regression-basics-007",
+   "status": "beta"
+  },
+  {
+   "concept": "regression-coefficients",
+   "stem": "A regression model estimates DeliveryTime = 20 + 0.5 × Distance, where Distance is in miles and DeliveryTime is in minutes. How should the coefficient 0.5 be interpreted?",
+   "options": [
+    "Delivery time rises by 0.5 minutes for each extra mile",
+    "Every delivery takes at least 0.5 minutes regardless of distance",
+    "Distance explains 50% of the variation in delivery time",
+    "Distance and delivery time have a correlation of 0.5"
+   ],
+   "answer": 0,
+   "explanation": "The slope coefficient gives the expected change in the outcome per one-unit increase in the predictor. It is not a correlation coefficient, R-squared, or a minimum delivery time.",
+   "grounding": {
+    "source": "Simple linear regression (Wikipedia)",
+    "note": "Describes the slope coefficient as the expected change in the response per unit change in the predictor."
+   },
+   "difficulty_prior": 0.6,
+   "id": "regression-basics-008",
+   "status": "beta"
+  },
+  {
+   "concept": "logistic-regression",
+   "stem": "A quality analyst wants to predict whether a manufactured part is defective (yes or no) using its weight and production temperature. Why is logistic regression more appropriate than linear regression for this task?",
+   "options": [
+    "It models binary outcomes and keeps predicted probabilities between 0 and 1",
+    "It always produces a higher R-squared than linear regression",
+    "It removes the need to check for multicollinearity among predictors",
+    "It allows the outcome variable to take on more than two categories"
+   ],
+   "answer": 0,
+   "explanation": "Logistic regression models probabilities through a sigmoid function, keeping predictions within 0 and 1, which plain linear regression cannot guarantee for a binary outcome. The other claims about it are false.",
+   "grounding": {
+    "source": "Logistic regression (Wikipedia)",
+    "note": "Explains that logistic regression models bounded probabilities for binary outcomes via the logistic function."
+   },
+   "difficulty_prior": 0.6,
+   "id": "regression-basics-009",
+   "status": "beta"
+  },
+  {
+   "concept": "regression-coefficients",
+   "stem": "A regression model estimates CustomerSatisfaction = 72 − 3×ResponseTimeMinutes + 5×AgentExperienceYears. Holding agent experience constant, an increase of 2 minutes in response time is associated with which change in predicted satisfaction score?",
+   "options": [
+    "Decrease of 6 points",
+    "Decrease of 3 points",
+    "Increase of 6 points",
+    "Decrease of 5 points"
+   ],
+   "answer": 0,
+   "explanation": "The coefficient −3 applies per minute of response time; a 2-minute increase multiplies to −6 points. Other options misuse the raw coefficient, flip the sign, or apply the wrong variable's coefficient.",
+   "grounding": {
+    "source": "Wikipedia: Linear regression",
+    "note": "Partial regression coefficients represent a predictor's effect holding other predictors constant, a core multiple-regression interpretation."
+   },
+   "difficulty_prior": 0.5,
+   "id": "regression-basics-010",
+   "status": "beta"
+  },
+  {
+   "concept": "r-squared",
+   "stem": "An analyst adds three unrelated random variables (e.g., a coworker's shoe size) to a regression predicting quarterly sales and finds R² increases from 0.55 to 0.59. What best explains this increase?",
+   "options": [
+    "R² mechanically rises whenever predictors are added, regardless of true relevance",
+    "The random variables happen to be correlated with sales through some hidden factor",
+    "The original model was misspecified, and the new variables fixed that problem",
+    "R² only rises when newly added predictors are statistically significant"
+   ],
+   "answer": 0,
+   "explanation": "R² is mathematically non-decreasing as predictors are added, even irrelevant ones, because they can absorb random in-sample variance. This does not mean the variables have real explanatory power.",
+   "grounding": {
+    "source": "Wikipedia: Coefficient of determination",
+    "note": "Documents that R² cannot decrease when additional predictors are added, regardless of true relevance."
+   },
+   "difficulty_prior": 0.45,
+   "id": "regression-basics-011",
+   "status": "beta"
+  },
+  {
+   "concept": "residual-patterns",
+   "stem": "In a regression predicting crop yield from rainfall, a plot of residuals against rainfall shows a clear U-shaped curve rather than a random scatter. What does this pattern most likely indicate?",
+   "options": [
+    "The rainfall-yield relationship is nonlinear, which the linear model misses",
+    "The residuals have constant variance across all levels of rainfall",
+    "Two of the predictor variables are highly correlated with each other",
+    "The model's R² is artificially inflated by a few outliers"
+   ],
+   "answer": 0,
+   "explanation": "A systematic, non-random curve in a residual plot signals the wrong functional form — here, a missing nonlinear term. A well-specified model would show residuals scattered randomly around zero.",
+   "grounding": {
+    "source": "Wikipedia: Regression validation",
+    "note": "Curvature in residual plots is a standard diagnostic for omitted nonlinear terms or model misspecification."
+   },
+   "difficulty_prior": 0.48,
+   "id": "regression-basics-012",
+   "status": "beta"
+  },
+  {
+   "concept": "multicollinearity",
+   "stem": "A regression predicting apartment rent includes both square footage and number of bedrooms, which are highly correlated. Adding number of bedrooms causes the square footage coefficient to flip from positive to negative. What does this most likely indicate?",
+   "options": [
+    "Multicollinearity is inflating standard errors and destabilizing estimates",
+    "The two predictors capture an interaction effect the model omits",
+    "Square footage truly has no relationship with apartment rent",
+    "The regression residuals are not normally distributed"
+   ],
+   "answer": 0,
+   "explanation": "Highly correlated predictors inflate standard errors and can destabilize coefficient signs even though true relationships are unchanged; this differs from an interaction effect, which would need an explicit product term to detect.",
+   "grounding": {
+    "source": "Wikipedia: Multicollinearity",
+    "note": "Describes sign instability and inflated standard errors as classic symptoms when predictors are highly correlated."
+   },
+   "difficulty_prior": 0.48,
+   "id": "regression-basics-013",
+   "status": "beta"
+  },
+  {
+   "concept": "odds-ratio",
+   "stem": "In a logistic regression predicting disease onset, the odds ratio for smokers versus non-smokers is 3.2. Which interpretation is correct?",
+   "options": [
+    "Smokers have 3.2 times the odds of developing the disease compared to non-smokers",
+    "Smokers are 3.2 times more likely, in probability, to develop the disease than non-smokers",
+    "Smoking increases the probability of developing the disease by 320 percentage points",
+    "The correlation coefficient between smoking and disease status equals 3.2"
+   ],
+   "answer": 0,
+   "explanation": "Odds ratios describe relative odds, not relative probability. Equating the two overstates the effect, especially when the disease is common, since odds and probability diverge as risk rises.",
+   "grounding": {
+    "source": "Wikipedia: Odds ratio",
+    "note": "Clarifies that odds ratios quantify relative odds, which differ from relative risk or probability ratios."
+   },
+   "difficulty_prior": 0.42,
+   "id": "regression-basics-014",
+   "status": "beta"
+  },
+  {
+   "concept": "regression-coefficients",
+   "stem": "A regression of employee salary on years of experience and years of education yields: Salary = 40,000 + 800×Experience − 200×Education. The education coefficient is negative even though salary and education are positively correlated overall. What is the best interpretation?",
+   "options": [
+    "Holding experience constant, each extra year of education predicts $200 lower salary.",
+    "The negative sign proves education directly causes lower earning potential for employees.",
+    "The regression is misspecified, since education cannot logically reduce an employee's salary.",
+    "The coefficient is invalid because it contradicts education's positive raw correlation with salary."
+   ],
+   "answer": 0,
+   "explanation": "The coefficient holds experience constant; correlated predictors can flip an apparent sign without implying causation (rules out option 2) or model error (rules out options 3 and 4).",
+   "grounding": {
+    "source": "Wikipedia: Confounding",
+    "note": "Explains how controlling for a related variable (here, experience) can reverse or explain a coefficient's sign relative to its raw bivariate correlation."
+   },
+   "difficulty_prior": 0.35,
+   "id": "regression-basics-015",
+   "status": "beta"
+  },
+  {
+   "concept": "r-squared",
+   "stem": "A linear regression of ice cream sales on temperature yields R² = 0.05. A scatterplot shows a clear inverted-U pattern: low sales at both cold and hot temperatures, peak sales at moderate temperatures. What does the low R² most likely indicate?",
+   "options": [
+    "Temperature has no meaningful relationship with ice cream sales in this data.",
+    "A linear model fails to capture a real, nonlinear relationship between the variables.",
+    "The sample size is too small for R² to be a meaningful statistic.",
+    "Temperature and sales are strongly negatively correlated across the observed range."
+   ],
+   "answer": 1,
+   "explanation": "Low R² only measures how well a straight line fits; it does not rule out relationships. The inverted-U shape shows temperature strongly predicts sales, just not linearly, so option 1 is incorrect.",
+   "grounding": {
+    "source": "Wikipedia: Anscombe's quartet",
+    "note": "Illustrates how a single fit statistic like R² can mask an underlying nonlinear or non-obvious relationship shape."
+   },
+   "difficulty_prior": 0.35,
+   "id": "regression-basics-016",
+   "status": "beta"
+  },
+  {
+   "concept": "multicollinearity",
+   "stem": "A regression predicting job satisfaction from weekly workload and weekly hours worked produces R² = 0.81 and a significant overall F-test, yet neither predictor's coefficient is individually statistically significant. What does this pattern most likely indicate?",
+   "options": [
+    "Workload and hours worked are highly correlated, inflating standard errors of both coefficients.",
+    "The sample size is far too small to detect any real effect on satisfaction.",
+    "Job satisfaction is actually unrelated to both predictors despite the high R².",
+    "The dependent variable was measured with too much random error to detect effects."
+   ],
+   "answer": 0,
+   "explanation": "This is a classic multicollinearity symptom, not a sample-size or measurement issue: correlated predictors inflate standard errors, so the joint F-test stays significant while individual t-tests do not.",
+   "grounding": {
+    "source": "Wikipedia: Multicollinearity",
+    "note": "Documents this exact symptom pattern — significant joint F-test with individually insignificant coefficients — as a hallmark of multicollinearity."
+   },
+   "difficulty_prior": 0.4,
+   "id": "regression-basics-017",
+   "status": "beta"
+  },
+  {
+   "concept": "odds-ratio",
+   "stem": "In a logistic regression predicting whether a customer upgrades their subscription, the odds ratio for having used a free trial is 3.0, holding other variables constant. Which interpretation of this odds ratio is correct?",
+   "options": [
+    "Trial users are three times as likely, in probability, to upgrade as non-users.",
+    "The odds of upgrading for trial users are triple the odds for non-users.",
+    "Trial usage raises the upgrade probability by exactly three percentage points.",
+    "Trial users upgrade at a rate of 300 percent, compared to non-users."
+   ],
+   "answer": 1,
+   "explanation": "Odds ratios compare odds, not probabilities. A ratio of 3 triples the odds; the corresponding change in probability depends on the baseline rate, so option 1's probability claim is wrong.",
+   "grounding": {
+    "source": "Wikipedia: Odds ratio",
+    "note": "Clarifies that odds ratios describe multiplicative change in odds, not in probability, a frequent misinterpretation."
+   },
+   "difficulty_prior": 0.4,
+   "id": "regression-basics-018",
+   "status": "beta"
+  },
+  {
+   "concept": "logistic-regression",
+   "stem": "An analyst uses ordinary linear regression, rather than logistic regression, to model the probability that a machine fails (1 = fail, 0 = no fail) from operating temperature. For high temperatures, the model predicts a probability of 1.15. What does this reveal?",
+   "options": [
+    "The model correctly extrapolates failure probability beyond the observed data range.",
+    "Linear regression does not constrain predictions to the required 0–1 probability range.",
+    "A predicted value of 1.15 should simply be read as certain machine failure.",
+    "The result shows temperature should be dropped as a predictor entirely."
+   ],
+   "answer": 1,
+   "explanation": "A probability cannot exceed 1; rounding 1.15 to certain failure (option 3) misreads the real issue, which is that linear regression lacks a bounded output unlike logistic regression's sigmoid.",
+   "grounding": {
+    "source": "Wikipedia: Logistic regression",
+    "note": "Explains why linear regression is unsuitable for binary/probability outcomes and how the logistic function bounds predictions between 0 and 1."
+   },
+   "difficulty_prior": 0.4,
+   "id": "regression-basics-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

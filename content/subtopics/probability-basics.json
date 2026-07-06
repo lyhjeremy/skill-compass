@@ -1,0 +1,444 @@
+{
+ "id": "probability-basics",
+ "concepts": [
+  {
+   "id": "probability-fundamentals",
+   "label": "Probability fundamentals",
+   "definition": "Probabilities are numbers between 0 and 1 that describe how likely an event is, and they must sum to 1 across all possible outcomes.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "conditional-probability",
+   "label": "Conditional probability",
+   "definition": "Conditional probability measures the chance of one event occurring given that another event is already known to have happened.",
+   "prereq": "probability-fundamentals",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "independence",
+   "label": "Statistical independence",
+   "definition": "Two events are independent when knowing one occurred does not change the probability of the other.",
+   "prereq": "conditional-probability",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "base-rate-diagnostic",
+   "label": "Base rates in diagnosis",
+   "definition": "When interpreting a positive test result, the rarity of the condition in the population (the base rate) can make even an accurate test more likely to be a false positive than a true one.",
+   "prereq": null,
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "expected-value",
+   "label": "Expected value decisions",
+   "definition": "Expected value is the probability-weighted average outcome of a decision, used to compare choices when results are uncertain.",
+   "prereq": "probability-fundamentals",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "binomial-distribution",
+   "label": "Binomial distribution",
+   "definition": "The binomial distribution models the number of successes in a fixed number of independent yes/no trials, each with the same probability of success.",
+   "prereq": "independence",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "normal-poisson-fit",
+   "label": "Normal vs Poisson",
+   "definition": "The normal distribution approximates counts or averages from many trials while the Poisson distribution models rare, independent events over a fixed interval, so the right choice depends on how the data are generated.",
+   "prereq": "binomial-distribution",
+   "x": 210,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "conditional-probability",
+   "stem": "An analyst estimates a 40% probability that a stock's price rises this quarter and a 25% probability that the price rises and the firm beats its earnings estimate. Given that the price rises, what is the probability the firm beats its earnings estimate?",
+   "options": [
+    "62.5%",
+    "10.0%",
+    "40.0%",
+    "25.0%"
+   ],
+   "answer": 0,
+   "explanation": "P(beat | rise) = P(rise and beat) / P(rise) = 0.25 / 0.40 = 0.625. Multiplying the two probabilities (10%) or citing the joint probability (25%) directly are common errors that skip dividing by the conditioning event's probability.",
+   "grounding": {
+    "source": "Wikipedia: Conditional probability",
+    "note": "Defines P(A|B) = P(A and B) / P(B), the formula used to compute conditional probability from a joint and marginal probability."
+   },
+   "difficulty_prior": 0.76,
+   "id": "probability-basics-000",
+   "status": "beta"
+  },
+  {
+   "concept": "independence",
+   "stem": "A trader assigns a 30% probability that oil prices rise this month and a 50% probability that the central bank raises rates. Assuming the two events are independent, what is the probability that both occur?",
+   "options": [
+    "15%",
+    "80%",
+    "65%",
+    "0.15%"
+   ],
+   "answer": 0,
+   "explanation": "For independent events, P(A and B) = P(A) x P(B) = 0.30 x 0.50 = 0.15, or 15%. Adding the probabilities (80%) or using the union formula (65%) both answer a different question: the probability that at least one event occurs.",
+   "grounding": {
+    "source": "Wikipedia: Independence (probability theory)",
+    "note": "States that for independent events, the probability of both occurring equals the product of their individual probabilities."
+   },
+   "difficulty_prior": 0.8,
+   "id": "probability-basics-001",
+   "status": "beta"
+  },
+  {
+   "concept": "base-rate-diagnostic",
+   "stem": "Out of 1,000 patients screened for a disease, 10 truly have it and 9 of those test positive. Among the 990 disease-free patients, 99 also test positive (false positives). If a patient tests positive, what is the probability they actually have the disease?",
+   "options": [
+    "8%",
+    "90%",
+    "10%",
+    "50%"
+   ],
+   "answer": 0,
+   "explanation": "Total positives = 9 + 99 = 108; P(disease | positive) = 9/108 ≈ 8%. Answering 90% confuses the test's sensitivity (true positive rate) with the probability of disease given a positive result, ignoring the low base rate.",
+   "grounding": {
+    "source": "Wikipedia: Base rate fallacy",
+    "note": "Illustrates how a low disease prevalence makes most positive test results false positives, even with a highly accurate test."
+   },
+   "difficulty_prior": 0.68,
+   "id": "probability-basics-002",
+   "status": "beta"
+  },
+  {
+   "concept": "expected-value",
+   "stem": "A firm can launch a new product feature that yields a $50,000 profit if competitors do not respond (70% chance) or a $20,000 loss if a competitor matches it within the month (30% chance). What is the expected value of launching this feature?",
+   "options": [
+    "$29,000",
+    "$35,000",
+    "$30,000",
+    "$1,000"
+   ],
+   "answer": 0,
+   "explanation": "EV = 0.7($50,000) + 0.3(-$20,000) = $35,000 - $6,000 = $29,000. Taking only the favorable-scenario term ($35,000) or the unweighted difference between outcomes ($30,000) both skip properly weighting each outcome by its probability.",
+   "grounding": {
+    "source": "Wikipedia: Expected value",
+    "note": "Defines expected value as the probability-weighted average of all possible outcomes of a decision."
+   },
+   "difficulty_prior": 0.8,
+   "id": "probability-basics-003",
+   "status": "beta"
+  },
+  {
+   "concept": "binomial-distribution",
+   "stem": "A sales rep closes each of 5 independent calls with a 20% probability of success per call. Using the binomial distribution, what is the probability she closes zero deals out of the 5 calls?",
+   "options": [
+    "32.8%",
+    "36.8%",
+    "80%",
+    "0.03%"
+   ],
+   "answer": 0,
+   "explanation": "P(X=0) = (0.8)^5 ≈ 32.8%. Using a Poisson approximation (e^-1 ≈ 36.8%) is inappropriate here since n is small; using 80% ignores compounding across calls, and (0.2)^5 mistakenly uses the success rather than failure probability.",
+   "grounding": {
+    "source": "Wikipedia: Binomial distribution",
+    "note": "Gives the binomial formula for the probability of exactly k successes in n independent trials with fixed success probability."
+   },
+   "difficulty_prior": 0.73,
+   "id": "probability-basics-004",
+   "status": "beta"
+  },
+  {
+   "concept": "probability-fundamentals",
+   "stem": "A macro strategist estimates a 40% probability of a rate cut this year and a 25% probability of a recession, with a 15% probability that both occur. Using the general addition rule, what is the probability of a rate cut, a recession, or both?",
+   "options": [
+    "50%",
+    "65%",
+    "35%",
+    "10%"
+   ],
+   "answer": 0,
+   "explanation": "The general addition rule is P(A or B) = P(A) + P(B) − P(A and B) = 0.40 + 0.25 − 0.15 = 0.50. Simply adding 0.40 and 0.25 (65%) double-counts the 15% overlap between the two events.",
+   "grounding": {
+    "source": "Wikipedia: Inclusion–exclusion principle",
+    "note": "States that P(A∪B) = P(A) + P(B) − P(A∩B), the addition rule used to avoid double-counting overlapping events."
+   },
+   "difficulty_prior": 0.65,
+   "id": "probability-basics-005",
+   "status": "beta"
+  },
+  {
+   "concept": "conditional-probability",
+   "stem": "A compliance team finds 25% of trades are executed by Trader X, and 10% of trades are both executed by Trader X and flagged for review. What is the probability a trade is flagged for review, given Trader X executed it?",
+   "options": [
+    "40%",
+    "10%",
+    "25%",
+    "2.5%"
+   ],
+   "answer": 0,
+   "explanation": "Conditional probability is P(A | B) = P(A and B) / P(B) = 0.10 / 0.25 = 0.40. Using the joint probability alone (10%) or the marginal probability of Trader X (25%) skips the required division.",
+   "grounding": {
+    "source": "Wikipedia: Conditional probability",
+    "note": "Defines conditional probability as P(A|B) = P(A∩B)/P(B), applied here to isolate the flag rate specific to Trader X's trades."
+   },
+   "difficulty_prior": 0.58,
+   "id": "probability-basics-006",
+   "status": "beta"
+  },
+  {
+   "concept": "independence",
+   "stem": "A payment processor finds that 20% of transactions originate from its mobile app, 30% of all transactions are flagged for manual review, and 6% of transactions are both from the mobile app and flagged for review. Are these two events independent?",
+   "options": [
+    "Yes, since 20% × 30% equals the observed 6% joint probability.",
+    "No, since independence would require the two marginal probabilities to be equal.",
+    "No, since any nonzero joint probability rules out independence.",
+    "Yes, since both individual probabilities are below 50%."
+   ],
+   "answer": 0,
+   "explanation": "Two events are independent when P(A)×P(B) = P(A and B). Here 0.20 × 0.30 = 0.06, matching the observed joint probability. Equal marginal probabilities or a nonzero joint probability alone do not determine independence.",
+   "grounding": {
+    "source": "Wikipedia: Independence (probability theory)",
+    "note": "Defines independent events as those where P(A∩B) = P(A)×P(B), the multiplication test applied to confirm independence here."
+   },
+   "difficulty_prior": 0.58,
+   "id": "probability-basics-007",
+   "status": "beta"
+  },
+  {
+   "concept": "base-rate-diagnostic",
+   "stem": "A bank's fraud-monitoring system flags a transaction as suspicious. Historically, 1% of transactions are fraudulent, the system flags 90% of fraudulent transactions, and 5% of all transactions get flagged overall. What is the probability a flagged transaction is actually fraudulent?",
+   "options": [
+    "18%",
+    "90%",
+    "5%",
+    "1%"
+   ],
+   "answer": 0,
+   "explanation": "By Bayes' theorem, P(fraud|flagged) = P(flagged|fraud) × P(fraud) / P(flagged) = 0.90 × 0.01 / 0.05 = 0.18. Mistaking the 90% detection rate for the answer ignores how rare fraud is relative to the overall 5% flag rate.",
+   "grounding": {
+    "source": "Wikipedia: Base rate fallacy",
+    "note": "Illustrates how a test's high sensitivity can still yield a low posterior probability when the underlying base rate is low."
+   },
+   "difficulty_prior": 0.42,
+   "id": "probability-basics-008",
+   "status": "beta"
+  },
+  {
+   "concept": "normal-poisson-fit",
+   "stem": "A call center receives an average of 4 calls per minute, arriving randomly and independently of one another throughout the day. Which distribution is most appropriate for modeling the number of calls received in a given one-minute interval?",
+   "options": [
+    "Poisson distribution, since calls occur randomly and independently at a constant average rate.",
+    "Binomial distribution, since each call is a fixed trial with a success or failure outcome.",
+    "Normal distribution, since the number of calls will approximate a bell-shaped curve.",
+    "Uniform distribution, since each possible number of calls is equally likely within the minute."
+   ],
+   "answer": 0,
+   "explanation": "The Poisson distribution models counts of independent, random events over a fixed interval at a constant average rate, exactly this scenario. Binomial needs a fixed number of discrete trials, and normal or uniform distributions don't fit low-count arrival data.",
+   "grounding": {
+    "source": "Wikipedia: Poisson distribution",
+    "note": "Describes the Poisson distribution as modeling the number of independent random events in a fixed interval at a constant average rate, such as call arrivals."
+   },
+   "difficulty_prior": 0.68,
+   "id": "probability-basics-009",
+   "status": "beta"
+  },
+  {
+   "concept": "probability-fundamentals",
+   "stem": "A portfolio manager estimates a 35% chance that inflation exceeds target this year and a 25% chance that GDP growth slows below trend. The two events overlap 10% of the time. What is the probability that at least one of these events occurs?",
+   "options": [
+    "50%",
+    "60%",
+    "40%",
+    "35%"
+   ],
+   "answer": 0,
+   "explanation": "P(A or B) = P(A) + P(B) − P(A and B) = 35% + 25% − 10% = 50%. Simply adding the two probabilities (60%) double-counts the 10% overlap; other adjustments (40%, 35%) misapply the overlap correction.",
+   "grounding": {
+    "source": "Inclusion–exclusion principle (Wikipedia)",
+    "note": "Supports P(A∪B) = P(A) + P(B) − P(A∩B) for two overlapping events."
+   },
+   "difficulty_prior": 0.55,
+   "id": "probability-basics-010",
+   "status": "beta"
+  },
+  {
+   "concept": "independence",
+   "stem": "A risk analyst measures a correlation coefficient of zero between the monthly returns of two market indices and concludes the indices are independent. Why is this conclusion not necessarily valid?",
+   "options": [
+    "Zero correlation rules out only linear dependence; the indices could still be related nonlinearly.",
+    "The correlation was likely computed from too small a sample to reliably estimate independence.",
+    "Statistical independence requires a formal hypothesis test in addition to a zero correlation coefficient.",
+    "A correlation coefficient of zero is mathematically equivalent to statistical independence for any joint distribution."
+   ],
+   "answer": 0,
+   "explanation": "Correlation captures only linear association; two variables can be uncorrelated yet dependent through a nonlinear relationship. Sample size concerns, requiring a separate hypothesis test, or treating zero correlation as equivalent to independence do not address this core limitation.",
+   "grounding": {
+    "source": "Correlation and dependence (Wikipedia)",
+    "note": "Explains that uncorrelated variables are not necessarily independent except under special distributional assumptions."
+   },
+   "difficulty_prior": 0.42,
+   "id": "probability-basics-011",
+   "status": "beta"
+  },
+  {
+   "concept": "expected-value",
+   "stem": "An investor can buy insurance on a bond position for $2,000. Without insurance, there is a 5% chance of a $50,000 loss from default and otherwise no loss. Based on expected value alone, should the investor buy the insurance?",
+   "options": [
+    "Yes, because the expected loss without insurance ($2,500) exceeds the $2,000 premium.",
+    "No, because a 5% default probability is too low to justify paying a premium.",
+    "Yes, because purchasing insurance always reduces risk regardless of its expected cost.",
+    "No, because no loss is the most likely outcome, occurring 95% of the time."
+   ],
+   "answer": 0,
+   "explanation": "Expected loss = 5% × $50,000 = $2,500, which exceeds the $2,000 premium, so expected value favors buying insurance. Focusing on the raw probability, assuming insurance always helps, or fixating on the most likely (no-loss) outcome all ignore this comparison.",
+   "grounding": {
+    "source": "Expected value (Wikipedia)",
+    "note": "Supports comparing probability-weighted outcomes (expected loss vs. cost) to guide a decision."
+   },
+   "difficulty_prior": 0.55,
+   "id": "probability-basics-012",
+   "status": "beta"
+  },
+  {
+   "concept": "binomial-distribution",
+   "stem": "A loan portfolio contains 8 loans, each with an independent 10% probability of default and 90% probability of repayment. What is the probability that none of the 8 loans default?",
+   "options": [
+    "43%",
+    "90%",
+    "57%",
+    "20%"
+   ],
+   "answer": 0,
+   "explanation": "P(no defaults) = 0.90^8 ≈ 43%. Using 90% ignores compounding across all 8 loans; 57% mistakenly gives the complement, P(at least one default); 20% linearly subtracts 8×10% instead of compounding survival probabilities.",
+   "grounding": {
+    "source": "Binomial distribution (Wikipedia)",
+    "note": "Supports P(X=0) = (1−p)^n for n independent Bernoulli trials."
+   },
+   "difficulty_prior": 0.45,
+   "id": "probability-basics-013",
+   "status": "beta"
+  },
+  {
+   "concept": "normal-poisson-fit",
+   "stem": "A factory inspects batches of 10,000 electronic components. Historically, defects occur independently at a rate of 0.03% per component, averaging 3 defects per batch. Which distribution best approximates the number of defective components per batch for practical calculation?",
+   "options": [
+    "Poisson distribution, since n is large, p is small, and λ=3 is moderate.",
+    "Normal distribution, because a sample size of 10,000 components satisfies the central limit theorem.",
+    "Binomial distribution with exact parameters, because defects are discrete events requiring no approximation.",
+    "Exponential distribution, because defects occur continuously in time rather than as a discrete count."
+   ],
+   "answer": 0,
+   "explanation": "With large n, small p, and a moderate λ = np = 3, the Poisson distribution is the standard practical approximation to the binomial. The normal approximation fits poorly here since the count is low and right-skewed.",
+   "grounding": {
+    "source": "Poisson limit theorem (Wikipedia)",
+    "note": "Supports Poisson as the limiting approximation to the binomial when n is large, p is small, and np is moderate."
+   },
+   "difficulty_prior": 0.4,
+   "id": "probability-basics-014",
+   "status": "beta"
+  },
+  {
+   "concept": "probability-fundamentals",
+   "stem": "A credit analyst finds that 45% of bonds in a portfolio are investment-grade and 30% are floating-rate. 15% of bonds are both investment-grade and floating-rate. What is the probability a randomly selected bond is investment-grade, floating-rate, or both?",
+   "options": [
+    "75%",
+    "60%",
+    "45%",
+    "15%"
+   ],
+   "answer": 1,
+   "explanation": "P(IG or FR) = P(IG)+P(FR)-P(IG and FR) = 45%+30%-15% = 60%. Adding without subtracting the overlap (75%) double-counts bonds that are both investment-grade and floating-rate.",
+   "grounding": {
+    "source": "Wikipedia: Inclusion–exclusion principle",
+    "note": "Describes the addition rule for the union of two events, subtracting the overlap to avoid double counting."
+   },
+   "difficulty_prior": 0.32,
+   "id": "probability-basics-015",
+   "status": "beta"
+  },
+  {
+   "concept": "conditional-probability",
+   "stem": "A bank finds 25% of borrowers missed a payment in the past year. Of those, 40% eventually default. Of borrowers with no missed payment, 8% eventually default. What is the unconditional probability that a randomly selected borrower defaults?",
+   "options": [
+    "32%",
+    "16%",
+    "10%",
+    "24%"
+   ],
+   "answer": 1,
+   "explanation": "Total probability: P(default) = P(missed)×P(default|missed) + P(not missed)×P(default|not missed) = 0.25×0.40 + 0.75×0.08 = 0.16. Swapping the weights (32%) or averaging the conditional rates (24%) ignores the actual group sizes.",
+   "grounding": {
+    "source": "Wikipedia: Law of total probability",
+    "note": "Explains computing an unconditional probability as a weighted sum of conditional probabilities across a partition."
+   },
+   "difficulty_prior": 0.28,
+   "id": "probability-basics-016",
+   "status": "beta"
+  },
+  {
+   "concept": "independence",
+   "stem": "A quant analyzes two risk factors. P(Factor A triggers) = 0.20, P(Factor B triggers) = 0.25, and P(both trigger) = 0.06. What is P(Factor A | Factor B), and are the two factors independent?",
+   "options": [
+    "0.20 — the factors are independent",
+    "0.24 — the factors are not independent",
+    "0.30 — the factors are not independent",
+    "0.06 — the factors are independent"
+   ],
+   "answer": 1,
+   "explanation": "P(A|B) = P(A and B)/P(B) = 0.06/0.25 = 0.24, which is not equal to P(A) = 0.20, so the factors are not independent. Dividing by P(A) instead of P(B) gives the incorrect 0.30 figure.",
+   "grounding": {
+    "source": "Wikipedia: Independence (probability theory)",
+    "note": "Defines independence as P(A|B) = P(A), the test applied to check whether two events are independent."
+   },
+   "difficulty_prior": 0.27,
+   "id": "probability-basics-017",
+   "status": "beta"
+  },
+  {
+   "concept": "base-rate-diagnostic",
+   "stem": "A currency-sorting machine flags counterfeit banknotes with 98% sensitivity and a 3% false-positive rate on genuine notes. Only 0.5% of circulating notes are counterfeit. If a note is flagged, what is the probability it is actually counterfeit?",
+   "options": [
+    "98%",
+    "86%",
+    "14%",
+    "97%"
+   ],
+   "answer": 2,
+   "explanation": "Bayes' theorem: P(counterfeit|flag) = (0.005×0.98)/(0.005×0.98 + 0.995×0.03) ≈ 14%. Ignoring the low base rate and using sensitivity alone (98%) or the naive ratio 98/(98+3) (97%) overstates the true probability.",
+   "grounding": {
+    "source": "Wikipedia: Base rate fallacy",
+    "note": "Illustrates how a low base rate keeps the posterior probability of a true positive well below the test's sensitivity."
+   },
+   "difficulty_prior": 0.3,
+   "id": "probability-basics-018",
+   "status": "beta"
+  },
+  {
+   "concept": "normal-poisson-fit",
+   "stem": "A quality team inspects daily batches of 200 items, each independently defective with 15% probability. To avoid exact binomial calculations, which approximation is most appropriate for the number of defective items per batch?",
+   "options": [
+    "Poisson, since defects occur independently across many trials",
+    "Normal, since both np and n(1−p) exceed standard thresholds",
+    "Poisson, since the defect rate is low relative to batch size",
+    "Binomial cannot be approximated reliably; exact calculation is required"
+   ],
+   "answer": 1,
+   "explanation": "With np=30 and n(1−p)=170, both well above common thresholds (e.g., ≥5), the normal approximation to the binomial is appropriate. Poisson approximations require p to be small, which is not the case at p=0.15.",
+   "grounding": {
+    "source": "Wikipedia: Binomial distribution",
+    "note": "States the np ≥ 5 and n(1−p) ≥ 5 rule of thumb for using the normal approximation to the binomial distribution."
+   },
+   "difficulty_prior": 0.33,
+   "id": "probability-basics-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

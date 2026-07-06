@@ -1,0 +1,452 @@
+{
+ "id": "portfolio-risk-return",
+ "concepts": [
+  {
+   "id": "risk-return-tradeoff",
+   "label": "Risk-Return Tradeoff",
+   "definition": "Investors generally must accept greater potential variability in returns to have a chance at a higher expected return.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "correlation-and-comovement",
+   "label": "Correlation Between Assets",
+   "definition": "Correlation measures the degree to which two assets' returns move together, ranging from -1 (perfectly opposite) to +1 (perfectly aligned).",
+   "prereq": "risk-return-tradeoff",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "diversification-benefit",
+   "label": "Diversification Benefit",
+   "definition": "Combining assets that aren't perfectly correlated lowers a portfolio's overall volatility without necessarily reducing its expected return.",
+   "prereq": "correlation-and-comovement",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "systematic-vs-idiosyncratic-risk",
+   "label": "Systematic vs Idiosyncratic Risk",
+   "definition": "Idiosyncratic risk is specific to one company or asset and can be diversified away, while systematic risk affects the whole market and cannot.",
+   "prereq": "diversification-benefit",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "diversification-limits",
+   "label": "Limits of Diversification",
+   "definition": "Diversification stops reducing risk once idiosyncratic risk is gone, and its benefit shrinks further when correlations rise during market stress.",
+   "prereq": "systematic-vs-idiosyncratic-risk",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "beta-interpretation",
+   "label": "Beta Interpretation",
+   "definition": "Beta measures how sensitive an asset's returns are to overall market movements, quantifying its remaining systematic risk exposure.",
+   "prereq": "systematic-vs-idiosyncratic-risk",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "sharpe-ratio",
+   "label": "Sharpe Ratio Comparison",
+   "definition": "The Sharpe ratio divides a portfolio's excess return over the risk-free rate by its total volatility, enabling risk-adjusted comparisons across portfolios.",
+   "prereq": "risk-return-tradeoff",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "rebalancing-logic",
+   "label": "Portfolio Rebalancing Logic",
+   "definition": "Periodically buying and selling assets to restore target weights keeps a portfolio's risk profile and diversification benefits from drifting as prices move.",
+   "prereq": "diversification-limits",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "diversification-benefit",
+   "stem": "An investor holds two stocks with equal expected returns and volatility, and a correlation coefficient of 0.3 between their returns. Compared to holding either stock alone, a 50/50 portfolio of the two will most likely have:",
+   "options": [
+    "Higher volatility than either stock alone, with a higher expected return",
+    "Lower volatility than either stock alone, with the same expected return",
+    "The same volatility as either stock alone, with a lower expected return",
+    "Zero volatility, since the two stocks have positive correlation"
+   ],
+   "answer": 1,
+   "explanation": "Because correlation is 0.3 (less than 1), combining the assets lowers portfolio volatility below the average of the individual volatilities, while expected return stays at the weighted average. Positive correlation weakens but does not eliminate this benefit, so zero volatility is incorrect.",
+   "grounding": {
+    "source": "Wikipedia: Modern portfolio theory",
+    "note": "Diversification lowers portfolio risk when constituent asset returns are imperfectly correlated."
+   },
+   "difficulty_prior": 0.8,
+   "id": "portfolio-risk-return-000",
+   "status": "beta"
+  },
+  {
+   "concept": "correlation-and-comovement",
+   "stem": "A portfolio manager notes that two asset classes have a correlation coefficient of -0.20. This indicates that the two assets' returns:",
+   "options": [
+    "Always move in exactly opposite directions",
+    "Have no linear relationship at all",
+    "Tend to move oppositely, though only weakly",
+    "Move strongly together in the same direction"
+   ],
+   "answer": 2,
+   "explanation": "A correlation of -0.20 signals a weak negative linear relationship: the assets tend to move oppositely, but not consistently or strongly. It is neither a perfect inverse relationship (-1) nor zero relationship, nor positive co-movement.",
+   "grounding": {
+    "source": "Wikipedia: Pearson correlation coefficient",
+    "note": "Correlation ranges from -1 to +1, indicating direction and strength of linear co-movement."
+   },
+   "difficulty_prior": 0.82,
+   "id": "portfolio-risk-return-001",
+   "status": "beta"
+  },
+  {
+   "concept": "systematic-vs-idiosyncratic-risk",
+   "stem": "A biotech firm's stock drops sharply after its lead drug fails a clinical trial, while the broader market is unaffected that day. This decline best illustrates:",
+   "options": [
+    "Systematic risk affecting the whole market",
+    "Currency risk from international exposure",
+    "Interest rate risk shared by all bonds",
+    "Idiosyncratic risk specific to the firm"
+   ],
+   "answer": 3,
+   "explanation": "A firm-specific event like a failed trial affects only that company's value, not the broader market—this is idiosyncratic risk. Because it is unrelated to market-wide factors, diversification across many holdings can substantially reduce this type of risk.",
+   "grounding": {
+    "source": "Wikipedia: Systematic risk",
+    "note": "Distinguishes undiversifiable market-wide risk from diversifiable firm-specific (idiosyncratic) risk."
+   },
+   "difficulty_prior": 0.85,
+   "id": "portfolio-risk-return-002",
+   "status": "beta"
+  },
+  {
+   "concept": "beta-interpretation",
+   "stem": "A stock has a beta of 1.4 relative to the market index. If the market index rises 10% over a year, the stock's return, based on beta alone, is expected to be approximately:",
+   "options": [
+    "Approximately 10%, matching the market's return exactly",
+    "Approximately 14%, moving with the market's direction",
+    "Approximately 1.4%, a fraction of the market's move",
+    "Approximately -14%, moving opposite to the market"
+   ],
+   "answer": 1,
+   "explanation": "Beta measures sensitivity to market moves; a beta of 1.4 implies returns move about 1.4 times the market's, amplifying gains and losses. A 10% market rise corresponds to roughly a 14% move in the stock, not 10% or 1.4%.",
+   "grounding": {
+    "source": "Wikipedia: Beta (finance)",
+    "note": "Beta quantifies a security's expected return sensitivity to market movements."
+   },
+   "difficulty_prior": 0.75,
+   "id": "portfolio-risk-return-003",
+   "status": "beta"
+  },
+  {
+   "concept": "sharpe-ratio",
+   "stem": "Fund A returns 9% with a standard deviation of 12% and a risk-free rate of 3%. Fund B returns 12% with a standard deviation of 20% and the same risk-free rate. Which fund has the better risk-adjusted return, based on the Sharpe ratio?",
+   "options": [
+    "Fund B, since it earned the higher raw return of 12%",
+    "Fund B, since its Sharpe ratio is 0.60, the highest of the two",
+    "Both funds equally, since raw returns determine risk-adjusted performance",
+    "Fund A, since its Sharpe ratio of 0.50 exceeds Fund B's"
+   ],
+   "answer": 3,
+   "explanation": "Sharpe ratio = (return - risk-free rate) / standard deviation. Fund A: (9-3)/12 = 0.50; Fund B: (12-3)/20 = 0.45. Fund A offers better risk-adjusted return; the 0.60 figure wrongly omits subtracting the risk-free rate.",
+   "grounding": {
+    "source": "Wikipedia: Sharpe ratio",
+    "note": "Defines Sharpe ratio as excess return per unit of volatility, used to compare risk-adjusted performance."
+   },
+   "difficulty_prior": 0.72,
+   "id": "portfolio-risk-return-004",
+   "status": "beta"
+  },
+  {
+   "concept": "risk-return-tradeoff",
+   "stem": "A financial advisor explains to a client that a stock portfolio has historically earned more than a savings account over long periods. What is the most accurate reason for this higher long-run return?",
+   "options": [
+    "Stocks are more liquid than savings accounts, which mechanically raises their return",
+    "Regulators require banks to cap savings account rates below stock market averages",
+    "Investors demand greater compensation for the added risk of loss",
+    "Stock returns mainly reflect long-run economic growth, not compensation for risk"
+   ],
+   "answer": 2,
+   "explanation": "Per the risk-return tradeoff, the premium exists purely to compensate for bearing risk of loss - not liquidity differences, regulatory caps, or a direct return of economic growth, a common but incorrect conflation of growth with risk premium.",
+   "grounding": {
+    "source": "Wikipedia: Risk–return spectrum",
+    "note": "Describes how higher expected returns compensate investors for accepting greater risk of loss."
+   },
+   "difficulty_prior": 0.6,
+   "id": "portfolio-risk-return-005",
+   "status": "beta"
+  },
+  {
+   "concept": "diversification-limits",
+   "stem": "A portfolio manager keeps adding more randomly selected domestic stocks to a portfolio, expecting risk to keep falling steadily. After about 25-30 holdings, further additions barely reduce volatility. What best explains this pattern?",
+   "options": [
+    "Volatility will keep falling steadily as even more stocks are added",
+    "Remaining risk is mostly systematic and cannot be diversified away",
+    "Additional trading costs from further purchases offset any risk reduction",
+    "Idiosyncratic risk becomes larger as more holdings are added"
+   ],
+   "answer": 1,
+   "explanation": "Diversification eliminates only idiosyncratic (firm-specific) risk, which is mostly gone by 25-30 holdings. The remaining systematic risk affects every stock and cannot be reduced further, no matter how many more holdings are added.",
+   "grounding": {
+    "source": "Wikipedia: Diversification (finance)",
+    "note": "Explains that diversification reduces unsystematic risk with diminishing benefit after roughly 20-30 holdings, leaving systematic risk intact."
+   },
+   "difficulty_prior": 0.55,
+   "id": "portfolio-risk-return-006",
+   "status": "beta"
+  },
+  {
+   "concept": "rebalancing-logic",
+   "stem": "After a strong two-year equity rally, a portfolio's original 60% stock/40% bond allocation has drifted to 75% stocks. The advisor sells stocks and buys bonds to return to 60/40. What is the primary reason for doing this?",
+   "options": [
+    "To increase the portfolio's expected long-term return by selling high and buying low",
+    "To avoid paying any capital gains tax on the stock sale",
+    "To time the exact peak of the equity market before it falls",
+    "To restore the portfolio's risk exposure to the client's original target"
+   ],
+   "answer": 3,
+   "explanation": "Rebalancing's goal is to control risk by restoring the target allocation, not to boost returns via selling high/buying low, avoid taxes (selling appreciated stock can trigger capital gains), or time an unpredictable market peak.",
+   "grounding": {
+    "source": "Wikipedia: Rebalancing investments",
+    "note": "Describes periodic rebalancing to keep a portfolio's asset allocation aligned with its target risk profile."
+   },
+   "difficulty_prior": 0.55,
+   "id": "portfolio-risk-return-007",
+   "status": "beta"
+  },
+  {
+   "concept": "diversification-benefit",
+   "stem": "A manager combines a domestic equity fund with an international bond fund that have a low, positive correlation. Compared with holding the equity fund alone, the combined portfolio most likely offers which benefit?",
+   "options": [
+    "A guaranteed higher expected return than the equity fund alone",
+    "Lower overall portfolio volatility for a similar expected return",
+    "Complete elimination of the portfolio's exposure to market risk",
+    "Smaller losses in every possible future market scenario"
+   ],
+   "answer": 1,
+   "explanation": "Combining assets with low positive correlation lowers portfolio volatility because their returns don't move in lockstep, without guaranteeing a higher return, eliminating market risk, or ensuring smaller losses in every single scenario.",
+   "grounding": {
+    "source": "Wikipedia: Modern portfolio theory",
+    "note": "Shows that combining imperfectly correlated assets reduces portfolio variance versus holding either asset alone."
+   },
+   "difficulty_prior": 0.58,
+   "id": "portfolio-risk-return-008",
+   "status": "beta"
+  },
+  {
+   "concept": "systematic-vs-idiosyncratic-risk",
+   "stem": "Rising interest rates trigger a broad market selloff in which nearly all stocks fall together, regardless of each company's individual fundamentals. This shared, economy-wide decline is best described as evidence of which type of risk?",
+   "options": [
+    "Idiosyncratic risk, unique to that one company",
+    "A temporary mispricing that arbitrage will soon correct",
+    "Systematic risk, which cannot be diversified away",
+    "An unusual, temporary spike in each firm's beta"
+   ],
+   "answer": 2,
+   "explanation": "Because the decline stems from a market-wide factor (interest rates) rather than firm-specific news, it reflects systematic risk, which is undiversifiable, unlike idiosyncratic risk tied to one company's fundamentals, which this broad selloff clearly is not.",
+   "grounding": {
+    "source": "Wikipedia: Systematic risk",
+    "note": "Defines systematic risk as market-wide risk that cannot be reduced through diversification, unlike idiosyncratic risk."
+   },
+   "difficulty_prior": 0.6,
+   "id": "portfolio-risk-return-009",
+   "status": "beta"
+  },
+  {
+   "concept": "risk-return-tradeoff",
+   "stem": "An analyst argues that a stock's high total volatility alone justifies its high expected return, since investors deserve compensation for risk. A colleague disagrees. Which best explains the colleague's objection under modern portfolio theory?",
+   "options": [
+    "Total volatility is already systematic, so the analyst's claim is fully correct",
+    "Only systematic volatility is priced; diversifiable idiosyncratic risk earns no extra return",
+    "Expected return should track historical average returns instead of any volatility measure",
+    "Higher volatility signals added liquidity risk, which markets price separately from volatility"
+   ],
+   "answer": 1,
+   "explanation": "Only systematic (non-diversifiable) risk is compensated with expected return; idiosyncratic risk can be eliminated through diversification and earns no risk premium. The analyst wrongly conflates total volatility with priced risk.",
+   "grounding": {
+    "source": "CFA Institute, CFA Program Curriculum, Level I — Portfolio Risk and Return",
+    "note": "Supports that only systematic risk is compensated with expected return; idiosyncratic risk is diversifiable."
+   },
+   "difficulty_prior": 0.48,
+   "id": "portfolio-risk-return-010",
+   "status": "beta"
+  },
+  {
+   "concept": "diversification-limits",
+   "stem": "During the 2008 global financial crisis, correlations across international equity markets that had historically been low rose sharply toward 1. What does this best illustrate about the limits of diversification?",
+   "options": [
+    "Diversification benefits stay exactly the same no matter what happens in markets",
+    "Diversification benefits shrink most when investors need them most in a crisis",
+    "International diversification removes all systematic market risk during any crisis period",
+    "Rising correlations during a crisis mean that idiosyncratic risk rose for all individual firms"
+   ],
+   "answer": 1,
+   "explanation": "Diversification benefits depend on low correlations; during systemic stress, correlations across asset classes typically rise toward 1, reducing risk reduction exactly when it is most needed. Diversification never removes systematic risk.",
+   "grounding": {
+    "source": "CFA Institute, CFA Program Curriculum, Level I — Portfolio Risk and Return",
+    "note": "Supports that diversification benefits are correlation-dependent and shrink when correlations spike during market stress."
+   },
+   "difficulty_prior": 0.5,
+   "id": "portfolio-risk-return-011",
+   "status": "beta"
+  },
+  {
+   "concept": "systematic-vs-idiosyncratic-risk",
+   "stem": "An analyst separates a firm's total risk into a diversifiable component, eliminated by holding many unrelated stocks, and a non-diversifiable component driven by economy-wide factors. Which pairing correctly matches an example to each component?",
+   "options": [
+    "Diversifiable: a lawsuit against one company; Non-diversifiable: an unexpected rise in nationwide inflation",
+    "Diversifiable: a nationwide rise in unemployment; Non-diversifiable: a product recall at one company",
+    "Diversifiable: a central bank policy rate change; Non-diversifiable: a CEO resignation at one firm",
+    "Diversifiable: a global energy price shock; Non-diversifiable: a labor strike at one company"
+   ],
+   "answer": 0,
+   "explanation": "A lawsuit against one company is firm-specific (diversifiable) risk, while nationwide inflation affects nearly all securities simultaneously (non-diversifiable, systematic) risk. The other options reverse or mismatch this pairing.",
+   "grounding": {
+    "source": "CFA Institute, CFA Program Curriculum, Level I — Portfolio Risk and Return",
+    "note": "Supports the distinction between diversifiable (firm-specific) risk and non-diversifiable (systematic, market-wide) risk."
+   },
+   "difficulty_prior": 0.42,
+   "id": "portfolio-risk-return-012",
+   "status": "beta"
+  },
+  {
+   "concept": "beta-interpretation",
+   "stem": "A portfolio holds 60% in a stock with a beta of 1.5 and 40% in Treasury bills with a beta of zero. An advisor claims the portfolio's beta is still 1.5. What is the portfolio's actual beta?",
+   "options": [
+    "1.5, because beta depends only on the riskiest holding in a portfolio",
+    "0.90, because portfolio beta is the weighted average of each holding's beta",
+    "0.60, because the Treasury bill weight alone sets the portfolio's beta",
+    "1.5, because a zero-beta asset does not affect the portfolio's overall beta at all"
+   ],
+   "answer": 1,
+   "explanation": "Portfolio beta is the weighted average of its holdings' betas: (0.6 × 1.5) + (0.4 × 0) = 0.90. The zero-beta Treasury bills pull the portfolio beta below that of the stock alone.",
+   "grounding": {
+    "source": "CFA Institute, CFA Program Curriculum, Level I — Portfolio Risk and Return",
+    "note": "Supports that portfolio beta is a weighted average of the betas of its individual holdings."
+   },
+   "difficulty_prior": 0.55,
+   "id": "portfolio-risk-return-013",
+   "status": "beta"
+  },
+  {
+   "concept": "rebalancing-logic",
+   "stem": "An investment committee debates whether periodically rebalancing to a fixed target allocation adds value over time. Under which market condition would rebalancing most likely underperform a buy-and-hold, never-rebalance strategy?",
+   "options": [
+    "Asset class returns are mean-reverting, so recent strong performers tend to give back gains",
+    "Asset class returns show strong momentum, so recent winners keep outperforming for years",
+    "Correlations between asset classes stay low and stable across the full period",
+    "Volatility levels across all asset classes remain roughly equal and unchanging"
+   ],
+   "answer": 1,
+   "explanation": "Rebalancing sells recent winners and buys recent losers. When returns trend (momentum), winners keep winning, so rebalancing systematically sells assets that continue to outperform, causing it to lag buy-and-hold.",
+   "grounding": {
+    "source": "CFA Institute, CFA Program Curriculum, Level I — Portfolio Management",
+    "note": "Supports that rebalancing performance depends on whether asset returns are mean-reverting or trending (momentum)."
+   },
+   "difficulty_prior": 0.42,
+   "id": "portfolio-risk-return-014",
+   "status": "beta"
+  },
+  {
+   "concept": "risk-return-tradeoff",
+   "stem": "A pension fund can borrow or lend at a 3% risk-free rate. Portfolio A returns 8% with 10% standard deviation. A leveraged version returns 11% with 16% standard deviation. What does this best illustrate about the risk-return tradeoff?",
+   "options": [
+    "Leverage moves the portfolio along its capital allocation line, Sharpe ratio unchanged",
+    "Leverage raises the portfolio's Sharpe ratio because return grows faster than risk",
+    "Leverage violates the risk-return tradeoff because return rises without added compensation for risk",
+    "Leverage lowers the portfolio's systematic risk by adding a risk-free funding source"
+   ],
+   "answer": 0,
+   "explanation": "Sharpe ratio is 0.5 both before and after leverage: (8-3)/10 = (11-3)/16. Borrowing at the risk-free rate scales return and risk together along the CAL — it doesn't raise Sharpe, violate the tradeoff, or reduce systematic risk, since borrowed funds add risk.",
+   "grounding": {
+    "source": "Wikipedia: Capital allocation line",
+    "note": "Explains how borrowing/lending at the risk-free rate moves a portfolio along the CAL without changing its Sharpe ratio."
+   },
+   "difficulty_prior": 0.3,
+   "id": "portfolio-risk-return-015",
+   "status": "beta"
+  },
+  {
+   "concept": "correlation-and-comovement",
+   "stem": "Two assets have equal standard deviations of 20% and a correlation coefficient of -1.0. An investor wants to construct a zero-variance portfolio from these two assets. What weighting is required?",
+   "options": [
+    "Equal weights, 50% allocated to each of the two assets",
+    "Weight each asset inversely proportional to its expected return",
+    "Any combination of positive weights, since correlation of -1 always eliminates variance",
+    "Overweight the asset with the higher beta to offset the other asset's risk"
+   ],
+   "answer": 0,
+   "explanation": "With equal standard deviations, portfolio variance reduces to σ²(w1-w2)², which is zero only when w1=w2. Correlation of -1 alone does not guarantee zero variance at any weighting (C) — the weights must offset the specific standard deviations involved.",
+   "grounding": {
+    "source": "Wikipedia: Modern portfolio theory",
+    "note": "Covers the two-asset portfolio variance formula, showing perfect negative correlation permits zero variance only at specific weights."
+   },
+   "difficulty_prior": 0.32,
+   "id": "portfolio-risk-return-016",
+   "status": "beta"
+  },
+  {
+   "concept": "diversification-limits",
+   "stem": "An analyst decomposes a large, well-diversified equity portfolio's variance into an average-variance term and an average-covariance term. As the number of holdings n grows very large, which term dominates total portfolio variance?",
+   "options": [
+    "The average-covariance term, which sets a floor on diversifiable risk reduction",
+    "The average-variance term, since idiosyncratic risk dominates in large portfolios",
+    "Neither term matters, because variance falls to zero as n approaches infinity",
+    "The average-variance term, because covariance between unrelated stocks is always zero"
+   ],
+   "answer": 0,
+   "explanation": "Portfolio variance equals (1/n) times average variance plus (1-1/n) times average covariance. As n grows large, the variance term vanishes, but average covariance remains, creating a nonzero risk floor — it does not fall to zero, and unrelated stocks are not necessarily uncorrelated.",
+   "grounding": {
+    "source": "CFA Institute Level I Curriculum: Portfolio Risk and Return",
+    "note": "Shows portfolio variance decomposes into average-variance and average-covariance terms, with the latter setting the floor as n grows large."
+   },
+   "difficulty_prior": 0.28,
+   "id": "portfolio-risk-return-017",
+   "status": "beta"
+  },
+  {
+   "concept": "beta-interpretation",
+   "stem": "A regression of a stock's returns on the market index produces a beta of 0.2 with an R² of 0.05. What does the low R² most likely indicate?",
+   "options": [
+    "Only 5% of return variance is explained by the market, making the beta estimate unreliable",
+    "The stock has very low systematic risk and is an excellent diversifier in any period",
+    "The beta of 0.2 is invalid, since R² must exceed 0.5 for beta to be meaningful",
+    "The stock's returns are negatively correlated with the market, which explains the low R²"
+   ],
+   "answer": 0,
+   "explanation": "R² measures the share of return variance explained by the market. A value of 5% means 95% is firm-specific noise, so the 0.2 beta estimate carries a wide margin of error — not that the stock is a great diversifier or that beta was miscalculated.",
+   "grounding": {
+    "source": "Wikipedia: Coefficient of determination",
+    "note": "R² in a market-model regression indicates the share of return variance explained by the market factor, informing confidence in the beta estimate."
+   },
+   "difficulty_prior": 0.3,
+   "id": "portfolio-risk-return-018",
+   "status": "beta"
+  },
+  {
+   "concept": "rebalancing-logic",
+   "stem": "A portfolio maintains a strict monthly rebalancing schedule back to a fixed 70% equity/30% bond target. During a multi-year period when equities exhibit strong positive return momentum, this rigid discipline is most likely to have which effect versus a policy with wider rebalancing bands?",
+   "options": [
+    "It systematically trims equity exposure during rallies, reducing returns versus letting winners run",
+    "It has no effect on returns, since rebalancing frequency does not influence performance under trending markets",
+    "It increases exposure to systematic risk by concentrating holdings in the outperforming asset class",
+    "It eliminates transaction costs entirely by trading only on a fixed calendar schedule"
+   ],
+   "answer": 0,
+   "explanation": "Rebalancing to a fixed target each month sells outperforming equities, trimming exposure during a sustained rally. Wider bands let winners run longer, capturing more of the trend at the cost of drifting from target weights — rebalancing frequency clearly does affect returns in trending markets.",
+   "grounding": {
+    "source": "Wikipedia: Rebalancing investments",
+    "note": "Discusses how rebalancing to fixed targets versus tolerance bands affects returns during momentum-driven market trends."
+   },
+   "difficulty_prior": 0.27,
+   "id": "portfolio-risk-return-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

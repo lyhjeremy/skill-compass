@@ -1,0 +1,452 @@
+{
+ "id": "business-metrics-kpis",
+ "concepts": [
+  {
+   "id": "mrr-arr",
+   "label": "MRR and ARR",
+   "definition": "Monthly and annual recurring revenue are the standardized measures of predictable subscription income a business earns.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "conversion-funnel",
+   "label": "Conversion funnel analysis",
+   "definition": "A conversion funnel breaks a customer journey into stages so you can measure the drop-off rate between each step.",
+   "prereq": null,
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "churn-retention",
+   "label": "Churn vs retention math",
+   "definition": "Churn rate and retention rate are complementary measures of what fraction of customers or revenue a business keeps versus loses over a period.",
+   "prereq": "mrr-arr",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "cac",
+   "label": "Customer acquisition cost",
+   "definition": "CAC is the total sales and marketing spend divided by the number of new customers acquired in a period.",
+   "prereq": "conversion-funnel",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "ltv",
+   "label": "Customer lifetime value",
+   "definition": "LTV estimates the total revenue or profit a business expects from a customer over the entire span of their relationship, using retention and churn rates.",
+   "prereq": "churn-retention",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "ltv-cac-ratio",
+   "label": "LTV to CAC ratio",
+   "definition": "The LTV:CAC ratio compares what a customer is worth against what it costs to acquire them, indicating whether growth spending is sustainable.",
+   "prereq": "ltv",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "cohort-analysis",
+   "label": "Cohort retention views",
+   "definition": "Cohort analysis groups customers by shared start date and tracks how their behavior, revenue, or retention evolves over time relative to other cohorts.",
+   "prereq": "churn-retention",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "north-star-vanity",
+   "label": "North-star vs vanity metrics",
+   "definition": "A north-star metric captures the single measure most tied to sustainable value delivered to customers, in contrast to vanity metrics that look impressive but don't predict business health.",
+   "prereq": "ltv-cac-ratio",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "mrr-arr",
+   "stem": "A startup has 150 customers on a $200-per-month plan and 50 customers on a $500-per-month plan, with no other revenue sources. What is the company's current Monthly Recurring Revenue (MRR)?",
+   "options": [
+    "$55,000",
+    "$70,000",
+    "$30,000",
+    "$660,000"
+   ],
+   "answer": 0,
+   "explanation": "MRR sums each tier: (150×$200)+(50×$500)=$30,000+$25,000=$55,000. $70,000 wrongly averages the plan prices; $30,000 omits the $500 tier; $660,000 is the annualized (ARR) figure, not MRR.",
+   "grounding": {
+    "source": "Investopedia - Annual Recurring Revenue (ARR)",
+    "note": "Explains MRR as the monthly base and ARR as its annualized multiple, a common source of confusion."
+   },
+   "difficulty_prior": 0.8,
+   "id": "business-metrics-kpis-000",
+   "status": "beta"
+  },
+  {
+   "concept": "cac",
+   "stem": "In the last quarter, a company spent $120,000 total on sales and marketing and acquired 400 new paying customers during that period. What is the customer acquisition cost (CAC) per customer?",
+   "options": [
+    "$300",
+    "$3,000",
+    "$48,000",
+    "$0.003"
+   ],
+   "answer": 0,
+   "explanation": "CAC = total acquisition spend ÷ new customers = $120,000 ÷ 400 = $300. Dividing by 40 gives $3,000; multiplying gives $48,000; inverting the ratio (customers ÷ spend) gives $0.003, the wrong direction.",
+   "grounding": {
+    "source": "Investopedia - Customer Acquisition Cost (CAC)",
+    "note": "Defines CAC as total acquisition spend divided by number of customers acquired in the period."
+   },
+   "difficulty_prior": 0.78,
+   "id": "business-metrics-kpis-001",
+   "status": "beta"
+  },
+  {
+   "concept": "churn-retention",
+   "stem": "A subscription business begins the month with 1,000 customers and loses 40 of them by month's end, with no new signups that month. What is the monthly customer churn rate?",
+   "options": [
+    "4%",
+    "96%",
+    "4.17%",
+    "40%"
+   ],
+   "answer": 0,
+   "explanation": "Churn rate = customers lost ÷ starting customers = 40/1,000 = 4%. 96% is the retention rate (1 − churn), not churn itself; 4.17% mistakenly divides by the ending base; 40% misplaces the decimal.",
+   "grounding": {
+    "source": "Investopedia - Churn Rate",
+    "note": "Defines churn rate as customers lost during a period divided by customers at the start of the period."
+   },
+   "difficulty_prior": 0.75,
+   "id": "business-metrics-kpis-002",
+   "status": "beta"
+  },
+  {
+   "concept": "ltv-cac-ratio",
+   "stem": "A SaaS company calculates an average customer lifetime value (LTV) of $6,000 and a customer acquisition cost (CAC) of $2,000. Which statement about the resulting LTV:CAC ratio is most accurate?",
+   "options": [
+    "The ratio is 3:1, a level commonly cited as healthy for a SaaS business",
+    "The ratio is 1:3, meaning the company spends more acquiring customers than they are worth",
+    "The ratio is 3:1, which signals the company should raise its CAC to grow faster",
+    "The ratio cannot be determined without also knowing the monthly churn rate"
+   ],
+   "answer": 0,
+   "explanation": "LTV ÷ CAC = $6,000 ÷ $2,000 = 3:1, near the widely cited minimum-healthy benchmark for SaaS. Option B inverts the ratio; 3:1 is the target, not a signal to overspend; LTV and CAC alone fully determine it.",
+   "grounding": {
+    "source": "For Entrepreneurs (David Skok) - SaaS Metrics 2.0",
+    "note": "Widely cited framework establishing 3:1 LTV:CAC as the benchmark for healthy SaaS unit economics."
+   },
+   "difficulty_prior": 0.72,
+   "id": "business-metrics-kpis-003",
+   "status": "beta"
+  },
+  {
+   "concept": "north-star-vanity",
+   "stem": "A mobile app startup announces it has surpassed 10 million total downloads since launch. Why would a product leader caution against treating this cumulative number as a meaningful success metric?",
+   "options": [
+    "It only grows over time and reveals nothing about user engagement",
+    "Download counts are always inflated by app store tracking errors",
+    "The metric is meaningless because competitors likely have more downloads",
+    "Downloads equal purchases, so the count already reflects paying customers"
+   ],
+   "answer": 0,
+   "explanation": "Cumulative downloads only ever increase and say nothing about whether users stay active — the classic vanity-metric flaw. Downloads are not purchases (contra option D); store tracking accuracy and competitor totals (B, C) are beside the point.",
+   "grounding": {
+    "source": "Lean Analytics by Alistair Croll and Benjamin Yoskovitz",
+    "note": "Popularized the term 'vanity metric' for numbers that look good but don't inform decisions, like cumulative downloads."
+   },
+   "difficulty_prior": 0.75,
+   "id": "business-metrics-kpis-004",
+   "status": "beta"
+  },
+  {
+   "concept": "conversion-funnel",
+   "stem": "An e-commerce site's funnel over one month: 100,000 visitors, 8,000 add items to cart, 2,400 begin checkout, and 1,800 complete purchase. At which stage does the site lose the largest percentage of users entering that stage?",
+   "options": [
+    "Visitor to add-to-cart",
+    "Add-to-cart to checkout start",
+    "Checkout start to purchase completion",
+    "Overall visitor-to-purchase conversion"
+   ],
+   "answer": 0,
+   "explanation": "Visitor-to-cart converts only 8% (92% loss), the largest single-stage drop; cart-to-checkout loses 70% and checkout-to-purchase loses 25%. Option D spans multiple stages, not one transition.",
+   "grounding": {
+    "source": "Wikipedia: Purchase funnel",
+    "note": "Describes stage-by-stage conversion analysis within a marketing/sales funnel."
+   },
+   "difficulty_prior": 0.6,
+   "id": "business-metrics-kpis-005",
+   "status": "beta"
+  },
+  {
+   "concept": "cohort-analysis",
+   "stem": "A SaaS company tracks its January signup cohort's monthly recurring revenue over time. By month 6, that cohort's MRR equals 105% of its original value, even though several of its original customers have already churned. What best explains this?",
+   "options": [
+    "Upgrade and cross-sell revenue from remaining customers exceeds churn losses",
+    "Churned customers were mistakenly left in the revenue calculation",
+    "New customers who signed up after January were added into the January cohort",
+    "The company is reporting gross retention rather than net retention"
+   ],
+   "answer": 0,
+   "explanation": "Net revenue retention above 100% occurs when expansion revenue (upsells, seat growth) from surviving customers outweighs revenue lost to churn and downgrades within the same cohort.",
+   "grounding": {
+    "source": "SaaS Metrics 2.0 - David Skok, forEntrepreneurs.com",
+    "note": "Widely cited framework explaining net revenue retention exceeding 100% via expansion revenue."
+   },
+   "difficulty_prior": 0.55,
+   "id": "business-metrics-kpis-006",
+   "status": "beta"
+  },
+  {
+   "concept": "north-star-vanity",
+   "stem": "A collaboration app's leadership team is selecting a north-star metric. Which of the following candidates is most likely a vanity metric rather than a true north-star metric?",
+   "options": [
+    "Total registered accounts created since launch",
+    "Weekly active teams completing at least one shared project",
+    "Share of new teams returning for a second session within 7 days",
+    "Monthly recurring revenue per active team"
+   ],
+   "answer": 0,
+   "explanation": "Cumulative sign-ups only ever increase and don't reflect ongoing engagement or value delivered, making it a vanity metric; the other options tie directly to active usage or revenue value.",
+   "grounding": {
+    "source": "Lean Analytics by Alistair Croll and Benjamin Yoskovitz",
+    "note": "Contrasts vanity metrics with actionable, engagement-tied north-star metrics."
+   },
+   "difficulty_prior": 0.55,
+   "id": "business-metrics-kpis-007",
+   "status": "beta"
+  },
+  {
+   "concept": "mrr-arr",
+   "stem": "A company's MRR was $80,000 at the start of the month. During the month it added $15,000 in new-customer MRR and $5,000 in expansion MRR from upgrades, while losing $8,000 in MRR from cancellations. What is the ending MRR?",
+   "options": [
+    "$92,000",
+    "$100,000",
+    "$87,000",
+    "$77,000"
+   ],
+   "answer": 0,
+   "explanation": "Ending MRR = starting + new + expansion - churned = 80,000 + 15,000 + 5,000 - 8,000 = 92,000. Omitting the $8,000 churned MRR gives the common $100,000 error.",
+   "grounding": {
+    "source": "Investopedia: Monthly Recurring Revenue (MRR)",
+    "note": "Defines MRR components including new, expansion, and churned revenue used to compute period-over-period change."
+   },
+   "difficulty_prior": 0.6,
+   "id": "business-metrics-kpis-008",
+   "status": "beta"
+  },
+  {
+   "concept": "ltv-cac-ratio",
+   "stem": "A company compares two acquisition channels: Channel A has CAC $400 and LTV $1,000; Channel B has CAC $150 and LTV $600. Industry guidance treats an LTV:CAC ratio of at least 3:1 as healthy. Which statement is accurate?",
+   "options": [
+    "Channel B meets the healthy benchmark while Channel A does not",
+    "Channel A meets the healthy benchmark while Channel B does not",
+    "Both channels meet the healthy benchmark",
+    "Neither channel meets the healthy benchmark"
+   ],
+   "answer": 0,
+   "explanation": "Channel A's ratio is 1,000/400 = 2.5:1, below the 3:1 benchmark; Channel B's ratio is 600/150 = 4:1, above it. Only Channel B is efficient by this common threshold.",
+   "grounding": {
+    "source": "Investopedia: Customer Lifetime Value (CLV)",
+    "note": "Discusses the LTV:CAC ratio and the commonly cited 3:1 threshold for efficient customer acquisition."
+   },
+   "difficulty_prior": 0.65,
+   "id": "business-metrics-kpis-009",
+   "status": "beta"
+  },
+  {
+   "concept": "mrr-arr",
+   "stem": "A SaaS company's MRR is $250,000 at the start of the month. During the month, new customers add $30,000, upgrades add $12,000 in expansion revenue, downgrades cause $8,000 in contraction, and churned customers remove $18,000. What is the ending MRR?",
+   "options": [
+    "$266,000",
+    "$274,000",
+    "$254,000",
+    "$234,000"
+   ],
+   "answer": 0,
+   "explanation": "Ending MRR = Start + New + Expansion − Contraction − Churn = 250,000+30,000+12,000−8,000−18,000 = $266,000. The $274,000 distractor forgets to subtract contraction from downgrades.",
+   "grounding": {
+    "source": "SaaS Metrics 2.0, David Skok (For Entrepreneurs)",
+    "note": "Defines the MRR waterfall of new, expansion, contraction, and churned revenue used to roll MRR forward each month."
+   },
+   "difficulty_prior": 0.48,
+   "id": "business-metrics-kpis-010",
+   "status": "beta"
+  },
+  {
+   "concept": "conversion-funnel",
+   "stem": "An enterprise software funnel converts 5,000 leads to 1,200 demos, 1,200 demos to 480 trials, and 480 trials to 96 paying customers. Which stage has the highest drop-off rate as a percentage of entrants?",
+   "options": [
+    "Trial to paying customer (80% lost)",
+    "Lead to demo (76% lost)",
+    "Demo to trial (60% lost)",
+    "Lead to paying customer overall (98% lost)"
+   ],
+   "answer": 0,
+   "explanation": "Trial-to-paying loses 80% (384 of 480), the steepest single-stage drop. The overall lead-to-paying figure spans every stage combined, so it isn't a single-stage drop-off rate.",
+   "grounding": {
+    "source": "Purchase funnel - Wikipedia",
+    "note": "Explains analyzing conversion stage by stage rather than only via the overall funnel conversion rate."
+   },
+   "difficulty_prior": 0.5,
+   "id": "business-metrics-kpis-011",
+   "status": "beta"
+  },
+  {
+   "concept": "churn-retention",
+   "stem": "A SaaS cohort starts the quarter with $500,000 in revenue. Churned customers account for $40,000 lost, while expansion revenue from remaining customers adds $60,000. No new customers are included. What is the Net Revenue Retention (NRR)?",
+   "options": [
+    "104%",
+    "92%",
+    "112%",
+    "80%"
+   ],
+   "answer": 0,
+   "explanation": "NRR = (Start − Churn + Expansion) / Start = (500,000−40,000+60,000)/500,000 = 104%. The 92% distractor is Gross Revenue Retention, which excludes expansion revenue entirely.",
+   "grounding": {
+    "source": "SaaS Metrics 2.0, David Skok (For Entrepreneurs)",
+    "note": "Defines the net vs. gross revenue retention formulas widely used in SaaS benchmarking."
+   },
+   "difficulty_prior": 0.52,
+   "id": "business-metrics-kpis-012",
+   "status": "beta"
+  },
+  {
+   "concept": "north-star-vanity",
+   "stem": "A freelance marketplace connecting clients with contractors is choosing a north-star metric to guide the whole company. Which metric best reflects the core value the platform delivers?",
+   "options": [
+    "Number of paid projects completed each month",
+    "Total number of freelancer profiles created",
+    "Total number of in-app messages exchanged between users",
+    "Total website traffic to the platform's landing pages"
+   ],
+   "answer": 0,
+   "explanation": "Completed, paid projects reflect real value exchanged between both sides of the marketplace. Profile counts, messages, and traffic are activity or top-of-funnel signals that can rise without any transaction occurring.",
+   "grounding": {
+    "source": "Amplitude, North Star Playbook",
+    "note": "Explains selecting a north-star metric tied to delivered value rather than vanity activity metrics."
+   },
+   "difficulty_prior": 0.4,
+   "id": "business-metrics-kpis-013",
+   "status": "beta"
+  },
+  {
+   "concept": "ltv-cac-ratio",
+   "stem": "An enterprise SaaS company spends $12,000 in CAC per customer. Customers pay $1,000/month, average customer lifespan is 24 months, and gross margin is 70%. Using margin-adjusted LTV, what is the LTV:CAC ratio and what does it imply?",
+   "options": [
+    "1.4:1 — below the ~3:1 benchmark; acquisition cost is too high",
+    "2.0:1 — at the standard benchmark, indicating efficient acquisition spend",
+    "1.4:1 — comfortably sustainable, since any ratio above 1:1 means customers are profitable",
+    "3.5:1 — above benchmark, indicating room to increase acquisition spending"
+   ],
+   "answer": 0,
+   "explanation": "Margin-adjusted LTV = $1,000 × 0.70 × 24 = $16,800; ratio = 16,800/12,000 = 1.4:1, well under the ~3:1 benchmark. A ratio just above 1:1 still fails to cover overhead beyond gross margin, so it is not sustainable.",
+   "grounding": {
+    "source": "SaaS Metrics 2.0, David Skok (For Entrepreneurs)",
+    "note": "Establishes the ~3:1 LTV:CAC benchmark and the margin-adjusted LTV calculation."
+   },
+   "difficulty_prior": 0.55,
+   "id": "business-metrics-kpis-014",
+   "status": "beta"
+  },
+  {
+   "concept": "cac",
+   "stem": "A B2B SaaS company spends $240,000 in sales and marketing to acquire 200 new customers in a quarter. Each customer pays $100 per month at a 60% gross margin. Using gross profit (not revenue), what is the approximate CAC payback period?",
+   "options": [
+    "12 months",
+    "7 months",
+    "20 months",
+    "30 months"
+   ],
+   "answer": 2,
+   "explanation": "CAC payback should use gross profit, not raw revenue: $1,200 ÷ ($100 × 60%) = 20 months. Dividing by raw ARPU alone (12 months) ignores the cost of serving customers and overstates how fast the spend is recovered.",
+   "grounding": {
+    "source": "David Skok, 'SaaS Metrics 2.0', ForEntrepreneurs.com",
+    "note": "Defines CAC payback period using gross margin-adjusted revenue, not top-line revenue."
+   },
+   "difficulty_prior": 0.3,
+   "id": "business-metrics-kpis-015",
+   "status": "beta"
+  },
+  {
+   "concept": "ltv",
+   "stem": "A subscription analytics company reports $150 monthly ARPU, an 80% gross margin, and a 2.5% monthly customer churn rate. Using LTV = (ARPU × gross margin) ÷ churn rate, what is the customer's lifetime value?",
+   "options": [
+    "$6,000",
+    "$4,800",
+    "$1,200",
+    "$400"
+   ],
+   "answer": 1,
+   "explanation": "LTV = ($150 × 0.80) ÷ 0.025 = $4,800. Omitting gross margin ($150 ÷ 0.025 = $6,000) treats all revenue as profit and overstates the true value a customer generates.",
+   "grounding": {
+    "source": "Wikipedia, 'Customer lifetime value'",
+    "note": "Standard formula weights recurring revenue by gross margin before dividing by churn rate."
+   },
+   "difficulty_prior": 0.32,
+   "id": "business-metrics-kpis-016",
+   "status": "beta"
+  },
+  {
+   "concept": "churn-retention",
+   "stem": "An existing customer base generates $1,000,000 in MRR at the start of the month. During the month, churn and downgrades remove $40,000 while upsells to current customers add $70,000. No new customers are added. What is net revenue retention?",
+   "options": [
+    "96%",
+    "107%",
+    "103%",
+    "89%"
+   ],
+   "answer": 2,
+   "explanation": "NRR = ($1,000,000 − $40,000 + $70,000) ÷ $1,000,000 = 103%. The 96% figure is gross revenue retention, which excludes expansion revenue and understates how upsells offset churn within the same cohort.",
+   "grounding": {
+    "source": "Bessemer Venture Partners, 'State of the Cloud' report",
+    "note": "Distinguishes net revenue retention (includes expansion) from gross revenue retention (excludes it)."
+   },
+   "difficulty_prior": 0.35,
+   "id": "business-metrics-kpis-017",
+   "status": "beta"
+  },
+  {
+   "concept": "cohort-analysis",
+   "stem": "A cohort of 1,000 signups retains 650 users in month 2, 500 in month 3, 430 in month 4, 410 in month 5, and 405 in month 6. Which conclusion best fits this retention pattern?",
+   "options": [
+    "Churn is constant across months, so LTV can be derived directly from month-2 churn.",
+    "The retention curve flattens after month 4, showing a stable core of users.",
+    "The cohort will keep declining linearly, reaching zero users by around month 12.",
+    "Since over half the users churned by month 3, the product is clearly failing."
+   ],
+   "answer": 1,
+   "explanation": "Month-over-month losses shrink sharply (350, 150, 70, 20, 5), so the curve is flattening, not declining at a constant rate or heading to zero — a pattern typical of a durable retained core.",
+   "grounding": {
+    "source": "Wikipedia, 'Cohort analysis'",
+    "note": "Retention curves that flatten over time indicate a stable retained user base rather than continued decay."
+   },
+   "difficulty_prior": 0.3,
+   "id": "business-metrics-kpis-018",
+   "status": "beta"
+  },
+  {
+   "concept": "mrr-arr",
+   "stem": "A SaaS company starts the month with $500,000 MRR. It adds $60,000 in new business MRR and $25,000 in expansion MRR, while losing $15,000 to contraction and $40,000 to churn. What is the ending ARR?",
+   "options": [
+    "$6,000,000",
+    "$530,000",
+    "$6,360,000",
+    "$7,020,000"
+   ],
+   "answer": 2,
+   "explanation": "Ending MRR = $500,000 + $60,000 + $25,000 − $15,000 − $40,000 = $530,000; ARR = $530,000 × 12 = $6,360,000. Reporting $530,000 confuses MRR with ARR by skipping annualization.",
+   "grounding": {
+    "source": "David Skok, 'SaaS Metrics 2.0', ForEntrepreneurs.com",
+    "note": "Describes MRR movement components (new, expansion, contraction, churn) that roll up into ARR."
+   },
+   "difficulty_prior": 0.28,
+   "id": "business-metrics-kpis-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

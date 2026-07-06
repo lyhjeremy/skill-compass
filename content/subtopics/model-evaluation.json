@@ -1,0 +1,452 @@
+{
+ "id": "model-evaluation",
+ "concepts": [
+  {
+   "id": "confusion-matrix",
+   "label": "Confusion Matrix",
+   "definition": "A table that breaks down a classifier's predictions into true positives, false positives, true negatives, and false negatives.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "accuracy-under-imbalance",
+   "label": "Accuracy Under Imbalance",
+   "definition": "Plain accuracy can look high even when a model just predicts the majority class, so it is misleading on imbalanced datasets.",
+   "prereq": "confusion-matrix",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "precision-recall-tradeoff",
+   "label": "Precision vs Recall Tradeoff",
+   "definition": "Precision measures how many predicted positives are correct while recall measures how many actual positives were found, and improving one often lowers the other.",
+   "prereq": "confusion-matrix",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "f1-score",
+   "label": "F1 Score",
+   "definition": "The F1 score is the harmonic mean of precision and recall, giving a single number that balances both.",
+   "prereq": "precision-recall-tradeoff",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "roc-auc-vs-pr-curve",
+   "label": "ROC-AUC vs PR Curve",
+   "definition": "ROC curves plot true positive rate against false positive rate across thresholds while precision-recall curves plot precision against recall, with PR curves being more informative when positives are rare.",
+   "prereq": "f1-score",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "threshold-selection",
+   "label": "Threshold Selection",
+   "definition": "Choosing the probability cutoff that separates predicted positive from negative lets you trade off precision and recall to match the cost of different error types.",
+   "prereq": "roc-auc-vs-pr-curve",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "probability-calibration",
+   "label": "Probability Calibration",
+   "definition": "Calibration checks whether a model's predicted probabilities match real-world frequencies, which matters for setting thresholds and trusting confidence scores.",
+   "prereq": "threshold-selection",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "validation-vs-test-sets",
+   "label": "Validation vs Test Sets",
+   "definition": "The validation set is used to tune thresholds and hyperparameters while the test set gives an unbiased final estimate of performance, and mixing the two roles inflates reported results.",
+   "prereq": "probability-calibration",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "accuracy-under-imbalance",
+   "stem": "A fraud detection model on a dataset where 990 of 1,000 transactions are legitimate reaches 99% accuracy by predicting \"legitimate\" for every case, catching zero fraud. What does this demonstrate?",
+   "options": [
+    "Accuracy hides the model's failure to detect the minority class.",
+    "Accuracy confirms the model is ready for production deployment.",
+    "Accuracy would improve simply by collecting more of the same data.",
+    "Accuracy treats both classes equally, so it fairly reflects true performance."
+   ],
+   "answer": 0,
+   "explanation": "The model never flags fraud yet scores 99% accuracy because the majority class dominates the metric. Accuracy weights each instance, not each class, so it can look excellent while completely failing the minority class; more of the same data would not fix this.",
+   "grounding": {
+    "source": "Wikipedia: Accuracy paradox",
+    "note": "Describes how accuracy can be misleadingly high on imbalanced class distributions."
+   },
+   "difficulty_prior": 0.75,
+   "id": "model-evaluation-000",
+   "status": "beta"
+  },
+  {
+   "concept": "confusion-matrix",
+   "stem": "A binary classifier's confusion matrix shows 40 true positives, 10 false positives, 5 false negatives, and 45 true negatives. How many actual positive cases are in the dataset?",
+   "options": [
+    "45",
+    "50",
+    "85",
+    "55"
+   ],
+   "answer": 0,
+   "explanation": "Actual positives equal true positives plus false negatives (cases that were positive but missed): 40 + 5 = 45. 50 is predicted positives (TP+FP); 55 is actual negatives; 85 is total correct predictions.",
+   "grounding": {
+    "source": "Wikipedia: Confusion matrix",
+    "note": "Defines actual positive count as the sum of true positives and false negatives."
+   },
+   "difficulty_prior": 0.78,
+   "id": "model-evaluation-001",
+   "status": "beta"
+  },
+  {
+   "concept": "precision-recall-tradeoff",
+   "stem": "A spam filter is retuned to flag more emails as spam so it catches nearly every spam message. What is the most likely tradeoff?",
+   "options": [
+    "Recall rises while precision falls, as more legitimate mail is flagged.",
+    "Precision rises while recall falls, because most flagged mail is truly spam.",
+    "Both precision and recall increase together, with no tradeoff at all.",
+    "Accuracy improves automatically, so precision and recall no longer matter here."
+   ],
+   "answer": 0,
+   "explanation": "Casting a wider net catches more actual spam, raising recall, but also flags more legitimate emails as spam, lowering precision. Precision and recall typically move in opposite directions as the decision threshold shifts.",
+   "grounding": {
+    "source": "Wikipedia: Precision and recall",
+    "note": "Explains the inverse relationship between precision and recall as classification thresholds change."
+   },
+   "difficulty_prior": 0.68,
+   "id": "model-evaluation-002",
+   "status": "beta"
+  },
+  {
+   "concept": "validation-vs-test-sets",
+   "stem": "A data scientist tunes hyperparameters by repeatedly checking performance on the test set and picks the settings that score highest there. What problem does this create?",
+   "options": [
+    "The test set no longer gives an unbiased performance estimate.",
+    "The model becomes better at generalizing to entirely new, unseen data.",
+    "The test set effectively becomes additional training data for the model.",
+    "The reported accuracy will always underestimate the model's true performance."
+   ],
+   "answer": 0,
+   "explanation": "Repeatedly selecting hyperparameters based on test performance leaks information into model selection, making the score optimistic rather than an honest generalization estimate. Unlike training, this doesn't update model weights, but it still biases evaluation; tuning should use a separate validation set.",
+   "grounding": {
+    "source": "Wikipedia: Training, validation, and test data sets",
+    "note": "Explains that the test set must stay unused during model selection to give an unbiased performance estimate."
+   },
+   "difficulty_prior": 0.78,
+   "id": "model-evaluation-003",
+   "status": "beta"
+  },
+  {
+   "concept": "probability-calibration",
+   "stem": "A weather model predicts a 70% chance of rain on many different days. If the model is well-calibrated, what should be observed across all days it gave that prediction?",
+   "options": [
+    "Close to 70% of those days actually had rain.",
+    "The model correctly classifies 70% of individual predictions as rain or not.",
+    "Exactly 70% of all days in the dataset had rain.",
+    "The model can perfectly distinguish rainy days from non-rainy days."
+   ],
+   "answer": 0,
+   "explanation": "Calibration means predicted probabilities match observed frequencies: among days assigned 70%, about 70% should see rain. This differs from discrimination (e.g., AUC), which measures ranking ability, and from overall accuracy or base rate, which are separate concepts.",
+   "grounding": {
+    "source": "Wikipedia: Calibration (statistics)",
+    "note": "Defines a well-calibrated probabilistic forecast as one where predicted probabilities match observed outcome frequencies."
+   },
+   "difficulty_prior": 0.7,
+   "id": "model-evaluation-004",
+   "status": "beta"
+  },
+  {
+   "concept": "confusion-matrix",
+   "stem": "A factory's defect-detection system inspected 500 parts. Its confusion matrix reports 30 defective parts correctly flagged, 5 defective parts missed, 20 good parts incorrectly flagged as defective, and 445 good parts correctly passed. How many parts were false positives?",
+   "options": [
+    "20 good parts wrongly flagged as defective",
+    "5 defective parts wrongly passed as good",
+    "30 defective parts correctly flagged as defective",
+    "445 good parts correctly passed as good"
+   ],
+   "answer": 0,
+   "explanation": "A false positive is a negative case (a good part) incorrectly predicted positive. The 5 missed defects are false negatives instead, a common mix-up between the two error types in a confusion matrix.",
+   "grounding": {
+    "source": "Wikipedia: Confusion matrix",
+    "note": "Defines false positive as a negative instance incorrectly predicted positive."
+   },
+   "difficulty_prior": 0.65,
+   "id": "model-evaluation-005",
+   "status": "beta"
+  },
+  {
+   "concept": "f1-score",
+   "stem": "A legal team's contract-flagging classifier achieves precision of 0.80 and recall of 0.40 on a review set. Using the standard F1 formula, the harmonic mean of precision and recall, what is the model's F1 score, rounded to two decimals?",
+   "options": [
+    "0.53",
+    "0.60",
+    "0.40",
+    "0.80"
+   ],
+   "answer": 0,
+   "explanation": "F1 = 2×(0.80×0.40)/(0.80+0.40) ≈ 0.53. A simple average of precision and recall gives 0.60, but F1 uses the harmonic mean, which weights the lower value more heavily and penalizes imbalance between the two.",
+   "grounding": {
+    "source": "Wikipedia: F-score",
+    "note": "Defines F1 as the harmonic mean of precision and recall."
+   },
+   "difficulty_prior": 0.55,
+   "id": "model-evaluation-006",
+   "status": "beta"
+  },
+  {
+   "concept": "roc-auc-vs-pr-curve",
+   "stem": "Two fraud-detection models both score 0.95 ROC-AUC, but fraud makes up only 0.5% of transactions. To see which model actually performs better at catching fraud, which curve should the team examine instead?",
+   "options": [
+    "Precision-recall curve, because it focuses on the rare positive class",
+    "ROC curve, because it already adjusts for class imbalance",
+    "Calibration curve, because it shows how well probabilities match outcomes",
+    "Learning curve, because it shows performance versus training set size"
+   ],
+   "answer": 0,
+   "explanation": "Under severe imbalance, ROC-AUC can look similar across models because true negatives dominate the score. The precision-recall curve ignores true negatives and exposes differences in catching the rare fraud cases.",
+   "grounding": {
+    "source": "scikit-learn documentation: Precision-Recall",
+    "note": "States that precision-recall curves are more informative than ROC curves on imbalanced datasets."
+   },
+   "difficulty_prior": 0.55,
+   "id": "model-evaluation-007",
+   "status": "beta"
+  },
+  {
+   "concept": "threshold-selection",
+   "stem": "A bank's loan-default model outputs a probability score for each applicant. Approving a bad loan is far costlier than denying a good one. How should the bank choose its decision threshold for classifying applicants as high-risk?",
+   "options": [
+    "Base the threshold on the relative costs of each error",
+    "Always use 0.5, the conventional midpoint for probability scores",
+    "Set the threshold to whichever value maximizes overall accuracy",
+    "Set the threshold low to approve as many applicants as possible"
+   ],
+   "answer": 0,
+   "explanation": "Threshold choice should reflect the asymmetric costs of errors, not a fixed default. Maximizing accuracy or using 0.5 ignores that missing a bad loan here costs more than denying a good one.",
+   "grounding": {
+    "source": "Google Machine Learning Crash Course: Classification thresholding",
+    "note": "Explains choosing thresholds based on the relative cost of false positives versus false negatives."
+   },
+   "difficulty_prior": 0.6,
+   "id": "model-evaluation-008",
+   "status": "beta"
+  },
+  {
+   "concept": "probability-calibration",
+   "stem": "A payment processor's fraud model is described as well-calibrated. In practice, this means that among all transactions it scores as 80% likely to be fraudulent, roughly what fraction are actually fraudulent?",
+   "options": [
+    "About 80% of them are actually fraudulent",
+    "About 80% of all transactions are correctly classified",
+    "The model's ROC-AUC score is approximately 0.80",
+    "About 80% of transactions are flagged as fraud"
+   ],
+   "answer": 0,
+   "explanation": "Calibration means predicted probabilities match observed outcome frequencies, so 80% predicted risk should correspond to about 80% actual fraud among those cases. This differs from overall accuracy or AUC, which don't depend on probability values.",
+   "grounding": {
+    "source": "Wikipedia: Calibration (statistics)",
+    "note": "Defines a well-calibrated model as one whose predicted probabilities match observed frequencies."
+   },
+   "difficulty_prior": 0.58,
+   "id": "model-evaluation-009",
+   "status": "beta"
+  },
+  {
+   "concept": "confusion-matrix",
+   "stem": "A hospital's sepsis-alert system screened 800 patients. It flagged 90 as high-risk: 60 later developed sepsis, 30 did not. Of the 710 not flagged, 10 developed sepsis. What is the recall of this system?",
+   "options": [
+    "66.7%",
+    "75.0%",
+    "85.7%",
+    "95.0%"
+   ],
+   "answer": 2,
+   "explanation": "Recall = TP/(TP+FN) = 60/70 ≈ 85.7%. The 66.7% distractor is precision (TP/(TP+FP)); 95% is overall accuracy; 75% is the F1 score, which blends precision and recall rather than measuring recall alone.",
+   "grounding": {
+    "source": "Wikipedia: Confusion matrix",
+    "note": "Defines precision, recall, and related formulas derived from a 2x2 confusion matrix."
+   },
+   "difficulty_prior": 0.45,
+   "id": "model-evaluation-010",
+   "status": "beta"
+  },
+  {
+   "concept": "accuracy-under-imbalance",
+   "stem": "A hospital deploys a disease-screening model where only 1% of 10,000 patients truly have the disease. The model achieves 99% accuracy. A colleague argues this proves the model is highly effective. What is the flaw in this argument?",
+   "options": [
+    "Because the model achieved 99% accuracy, its precision and recall for detecting the disease must also be approximately 99%.",
+    "A model that always predicts 'no disease' would also score about 99% accuracy, without detecting any true case.",
+    "Under class imbalance, accuracy must be rescaled by the class prior before it can be compared across models.",
+    "The 99% figure is misleading because accuracy formulas actually give equal weight to false positives and false negatives."
+   ],
+   "answer": 1,
+   "explanation": "With 1% prevalence, predicting the majority class for every patient yields about 99% accuracy without identifying a single true case, illustrating the accuracy paradox under class imbalance. Recall or F1 on the minority class is far more informative than accuracy alone.",
+   "grounding": {
+    "source": "Google Machine Learning Crash Course: Classification",
+    "note": "Explains the accuracy paradox and why accuracy is misleading on imbalanced class distributions."
+   },
+   "difficulty_prior": 0.5,
+   "id": "model-evaluation-011",
+   "status": "beta"
+  },
+  {
+   "concept": "precision-recall-tradeoff",
+   "stem": "A recruiting tool flags resumes as 'strong candidate.' Increasing the flagging threshold so only the most confident predictions are labeled positive typically has what effect on precision and recall?",
+   "options": [
+    "Both precision and recall tend to rise together, since higher-confidence predictions are inherently more accurate overall.",
+    "Precision and recall stay constant across thresholds; only overall accuracy changes as the threshold shifts.",
+    "Precision tends to fall while recall tends to rise, since a stricter threshold captures more true candidates.",
+    "Precision tends to rise while recall falls, since fewer but more confident predictions are flagged positive."
+   ],
+   "answer": 3,
+   "explanation": "Raising the threshold means only the highest-confidence cases are labeled positive, so a larger share of flagged candidates are truly strong (precision rises), while some genuine strong candidates near the old cutoff are now missed (recall falls).",
+   "grounding": {
+    "source": "Wikipedia: Precision and recall",
+    "note": "Describes the inverse relationship between precision and recall as the decision threshold changes."
+   },
+   "difficulty_prior": 0.55,
+   "id": "model-evaluation-012",
+   "status": "beta"
+  },
+  {
+   "concept": "roc-auc-vs-pr-curve",
+   "stem": "A team evaluates a single wildfire-detection model on satellite images where positive (fire) pixels make up less than 0.1% of all pixels. The model's ROC-AUC looks excellent, but its precision-recall AUC is much lower. What does this gap most likely indicate?",
+   "options": [
+    "The model is broken, since ROC-AUC and precision-recall AUC must always agree for any well-trained classifier.",
+    "The gap merely reflects noise from a small test set and would vanish given more labeled images.",
+    "The model is actually stronger than ROC-AUC suggests, since precision-recall AUC penalizes models unfairly on rare classes.",
+    "The model produces many false positives relative to true fires, a weakness ROC-AUC masks since negatives dominate."
+   ],
+   "answer": 3,
+   "explanation": "Because fire pixels are extremely rare, the huge number of true negatives lets ROC-AUC stay high even when many predicted positives are false alarms. Precision-recall AUC ignores true negatives, exposing this false-positive-heavy behavior that ROC-AUC hides.",
+   "grounding": {
+    "source": "Davis & Goadrich, 'The Relationship Between Precision-Recall and ROC Curves' (2006)",
+    "note": "Shows PR curves reveal performance gaps that ROC curves obscure under severe class imbalance."
+   },
+   "difficulty_prior": 0.4,
+   "id": "model-evaluation-013",
+   "status": "beta"
+  },
+  {
+   "concept": "threshold-selection",
+   "stem": "A hospital triage system scores each incoming patient by likelihood of critical illness. Because missing a truly critical patient is far more costly than ordering unnecessary follow-up tests on a stable one, how should the classification threshold be adjusted from the default 0.5?",
+   "options": [
+    "Higher than 0.5, flagging only the most confident predictions to minimize the number of unnecessary follow-up tests.",
+    "Exactly 0.5, since this threshold always maximizes accuracy regardless of the relative costs of different errors.",
+    "Lower than 0.5, so more patients are flagged as critical and fewer emergencies are missed.",
+    "Whatever threshold maximizes the model's ROC-AUC score, since AUC alone determines where to set the cutoff."
+   ],
+   "answer": 2,
+   "explanation": "When false negatives (missed critical patients) are far costlier than false positives (extra tests), the optimal operating point shifts below 0.5, increasing sensitivity to catch more emergencies. Note that AUC is threshold-independent and does not by itself specify a cutoff.",
+   "grounding": {
+    "source": "Google Machine Learning Crash Course: Classification thresholding",
+    "note": "Explains that threshold choice should reflect the relative costs of false positives versus false negatives."
+   },
+   "difficulty_prior": 0.45,
+   "id": "model-evaluation-014",
+   "status": "beta"
+  },
+  {
+   "concept": "f1-score",
+   "stem": "A churn-prediction model (Model A) has precision 0.90 and recall 0.30. A second model (Model B) has precision 0.60 and recall 0.60. Both are compared using F1 score. Which statement is correct?",
+   "options": [
+    "Model A has the higher F1 score, because F1 is dominated by precision when recall is low.",
+    "Both models have identical F1 scores, since F1 is just the simple average of precision and recall.",
+    "Model B has the higher F1 score (0.60 vs 0.45), despite Model A's much higher precision.",
+    "Model A has the higher F1 score, because avoiding false alarms matters more than catching every churn case."
+   ],
+   "answer": 2,
+   "explanation": "F1 is the harmonic mean, which penalizes imbalance between precision and recall more than a simple average. Model B's balanced 0.60/0.60 gives F1=0.60, while Model A's skewed 0.90/0.30 gives F1=0.45, despite equal arithmetic means.",
+   "grounding": {
+    "source": "Wikipedia: F1 score",
+    "note": "F1 is the harmonic mean of precision and recall, which penalizes large gaps between them more than an arithmetic mean would."
+   },
+   "difficulty_prior": 0.3,
+   "id": "model-evaluation-015",
+   "status": "beta"
+  },
+  {
+   "concept": "precision-recall-tradeoff",
+   "stem": "A content-moderation model can run at Threshold X (precision 0.95, recall 0.40) or Threshold Y (precision 0.70, recall 0.85). Platform policy prioritizes minimizing missed violations, even at the cost of more manual review. Which threshold fits this policy?",
+   "options": [
+    "Threshold X, because its higher precision means moderators review fewer false alarms.",
+    "Threshold Y, because its higher recall means fewer actual violations go undetected.",
+    "Threshold Y, because balanced precision and recall always beats an imbalanced tradeoff.",
+    "Threshold X, because minimizing missed violations requires maximizing precision rather than recall."
+   ],
+   "answer": 1,
+   "explanation": "Missed violations are false negatives, so minimizing them means maximizing recall, favoring Threshold Y. Threshold X's higher precision reduces false alarms but leaves more violations undetected, conflicting with the stated policy priority.",
+   "grounding": {
+    "source": "Google Machine Learning Crash Course: Classification (Precision and Recall)",
+    "note": "Explains the precision/recall tradeoff and how threshold choice should match the relative cost of false negatives vs. false positives."
+   },
+   "difficulty_prior": 0.3,
+   "id": "model-evaluation-016",
+   "status": "beta"
+  },
+  {
+   "concept": "roc-auc-vs-pr-curve",
+   "stem": "A model is evaluated on two test sets from the same population: Set A has 50% positive cases, Set B has 2% positive cases. ROC-AUC is nearly identical on both sets, but PR-AUC differs sharply. What explains this?",
+   "options": [
+    "ROC-AUC rises automatically as class imbalance increases, which hides the true drop shown by PR-AUC.",
+    "PR-AUC and ROC-AUC are mathematically equivalent once adjusted for prevalence, so the gap indicates a computation error.",
+    "The model's underlying discrimination ability genuinely changed between the two test sets, despite being the same trained model.",
+    "ROC-AUC is computed from within-class rates, so it stays stable across prevalence, unlike precision-based PR-AUC."
+   ],
+   "answer": 3,
+   "explanation": "ROC-AUC is built from true/false positive rates computed separately within the positive and negative classes, so it barely shifts with prevalence. Precision mixes both classes, so PR-AUC drops sharply as positives become rarer, even for an unchanged model.",
+   "grounding": {
+    "source": "Davis & Goadrich, \"The Relationship Between Precision-Recall and ROC Curves\" (2006)",
+    "note": "Shows ROC curves are insensitive to class skew while precision-recall curves shift substantially with it."
+   },
+   "difficulty_prior": 0.28,
+   "id": "model-evaluation-017",
+   "status": "beta"
+  },
+  {
+   "concept": "validation-vs-test-sets",
+   "stem": "A team tunes its classification threshold on the validation set, then reports the resulting precision and recall on that same validation set as the estimate of real-world performance. What is the main problem?",
+   "options": [
+    "The estimate is optimistically biased, since the threshold was fit to that very validation set.",
+    "Precision and recall cannot be computed on a validation set, only on a held-out test set.",
+    "There is no problem, since validation and test sets are interchangeable once training has finished.",
+    "Validation sets are always smaller than test sets, so the estimate is noisy but not biased."
+   ],
+   "answer": 0,
+   "explanation": "Tuning a threshold to a validation set and then evaluating on that same set overstates performance, since the set influenced the choice. A separate, untouched test set is required to estimate true generalization.",
+   "grounding": {
+    "source": "Wikipedia: Training, validation, and test data sets",
+    "note": "Describes why the test set must remain unused during model or threshold selection to yield an unbiased performance estimate."
+   },
+   "difficulty_prior": 0.32,
+   "id": "model-evaluation-018",
+   "status": "beta"
+  },
+  {
+   "concept": "accuracy-under-imbalance",
+   "stem": "A predictive-maintenance model is evaluated on 1,000 sensor readings: 970 indicate normal operation and 30 indicate impending failure. The model achieves 96% accuracy overall. Which conclusion is best supported?",
+   "options": [
+    "The model clearly outperforms a naive baseline, since 96% accuracy is high in absolute terms.",
+    "The model correctly identifies most impending failures, since failures make up only 3% of the data.",
+    "The model could perform worse than always predicting \"normal,\" which alone would yield 97% accuracy.",
+    "The 96% accuracy figure is invalid, since accuracy cannot be computed on imbalanced datasets."
+   ],
+   "answer": 2,
+   "explanation": "Always predicting the majority class (\"normal\") achieves 970/1000 = 97% accuracy, higher than the model's 96%. This is the accuracy paradox: high accuracy can still mean underperforming a trivial baseline under imbalance.",
+   "grounding": {
+    "source": "Wikipedia: Accuracy paradox",
+    "note": "Defines the accuracy paradox, where high accuracy on imbalanced data can still underperform predicting only the majority class."
+   },
+   "difficulty_prior": 0.3,
+   "id": "model-evaluation-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

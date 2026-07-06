@@ -1,0 +1,452 @@
+{
+ "id": "forecasting-basics",
+ "concepts": [
+  {
+   "id": "time-series-components",
+   "label": "trend, seasonality, noise",
+   "definition": "Any historical business series can be decomposed into a long-term trend, a repeating seasonal pattern, and leftover random noise.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "naive-baseline-forecast",
+   "label": "naive baseline forecast",
+   "definition": "A naive baseline simply forecasts the next period using the last observed value (or the same period last year), giving a minimum bar any model must beat.",
+   "prereq": "time-series-components",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "moving-averages",
+   "label": "moving averages",
+   "definition": "A moving average smooths out noise by averaging the most recent N periods, revealing the underlying trend more clearly.",
+   "prereq": "naive-baseline-forecast",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "exponential-smoothing",
+   "label": "exponential smoothing",
+   "definition": "Exponential smoothing forecasts the next value as a weighted average of past observations that gives more weight to recent data than a simple moving average does.",
+   "prereq": "moving-averages",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "forecast-error-measures",
+   "label": "forecast error measures",
+   "definition": "MAE and MAPE quantify how far forecasts deviate from actuals, in absolute units or as a percentage, so accuracy can be compared across models.",
+   "prereq": "naive-baseline-forecast",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "forecast-bias",
+   "label": "forecast bias",
+   "definition": "Bias measures whether a forecast consistently over- or under-predicts on average, which is a distinct problem from simply having large errors.",
+   "prereq": "forecast-error-measures",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "forecast-horizon-uncertainty",
+   "label": "forecast horizon uncertainty",
+   "definition": "Forecast uncertainty grows the further out the horizon extends, so a next-week forecast is inherently more reliable than a next-year one.",
+   "prereq": "exponential-smoothing",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "judgment-override",
+   "label": "judgment overriding models",
+   "definition": "When known upcoming events or structural changes aren't reflected in historical data, human judgment should adjust or override the statistical forecast.",
+   "prereq": "forecast-horizon-uncertainty",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "time-series-components",
+   "stem": "A retailer's monthly sales rise every November-December from holiday shopping, show a gradual upward climb over years due to store openings, and fluctuate slightly week to week for no clear reason. Which set of terms correctly labels these three patterns respectively?",
+   "options": [
+    "Seasonality, trend, noise",
+    "Trend, seasonality, noise",
+    "Noise, trend, seasonality",
+    "Trend, noise, seasonality"
+   ],
+   "answer": 0,
+   "explanation": "Recurring calendar-linked swings are seasonality, the gradual multi-year rise is trend, and unexplained short-term wiggle is noise (the irregular component). The other orderings mismatch each pattern with the wrong label.",
+   "grounding": {
+    "source": "Wikipedia: Decomposition of time series",
+    "note": "Defines trend, seasonal, and irregular (noise) components as the standard building blocks of a time series."
+   },
+   "difficulty_prior": 0.8,
+   "id": "forecasting-basics-000",
+   "status": "beta"
+  },
+  {
+   "concept": "naive-baseline-forecast",
+   "stem": "A demand planner wants a simple benchmark to judge whether a new forecasting model earns its added complexity. Which of the following defines the classic naive baseline forecast for next month's sales?",
+   "options": [
+    "Next month's sales equal actual sales from the most recent month",
+    "Next month's sales equal the average of the last 12 months",
+    "Next month's sales equal a regression forecast using advertising spend",
+    "Next month's sales equal an exponentially smoothed average of past sales"
+   ],
+   "answer": 0,
+   "explanation": "The naive method simply carries forward the last observed value as the forecast, giving a minimal-effort benchmark any real model should beat. The other options describe averaging, regression, or smoothing methods, not naive forecasting.",
+   "grounding": {
+    "source": "Hyndman & Athanasopoulos, Forecasting: Principles and Practice",
+    "note": "Describes the naive method as setting all forecasts equal to the value of the last observation."
+   },
+   "difficulty_prior": 0.78,
+   "id": "forecasting-basics-001",
+   "status": "beta"
+  },
+  {
+   "concept": "moving-averages",
+   "stem": "An analyst switches from a 3-month to a 12-month moving average to smooth a noisy sales series. What is the most likely effect of this change?",
+   "options": [
+    "The forecast becomes smoother but reacts more slowly to recent turning points",
+    "The forecast becomes noisier but reacts faster to recent turning points",
+    "The forecast weights the most recent month much more heavily than older months",
+    "The forecast eliminates seasonality without changing the underlying trend estimate"
+   ],
+   "answer": 0,
+   "explanation": "A longer moving average window averages over more periods with equal weight, increasing smoothness but adding lag in detecting turning points. It does not upweight recent data, that describes exponential smoothing instead.",
+   "grounding": {
+    "source": "Wikipedia: Moving average",
+    "note": "Explains that a wider moving average window increases smoothing but lags behind recent changes in the series."
+   },
+   "difficulty_prior": 0.72,
+   "id": "forecasting-basics-002",
+   "status": "beta"
+  },
+  {
+   "concept": "forecast-error-measures",
+   "stem": "A team reports last quarter's forecast had a Mean Absolute Percentage Error (MAPE) of 8%. Which statement best interprets this figure?",
+   "options": [
+    "Forecast errors averaged 8% of actual values, regardless of direction",
+    "Forecasts were on average 8% higher than actual sales values",
+    "Forecasts stayed within an 8-unit absolute margin every period",
+    "The forecasting model explains 8% of the variance in sales"
+   ],
+   "answer": 0,
+   "explanation": "MAPE averages the absolute value of percentage errors, capturing typical error size regardless of over- or under-forecasting. A consistent 8% overshoot would instead describe bias, and variance explained describes R-squared, not MAPE.",
+   "grounding": {
+    "source": "Wikipedia: Mean absolute percentage error",
+    "note": "Defines MAPE as the average of the absolute percentage errors between forecasts and actual values."
+   },
+   "difficulty_prior": 0.74,
+   "id": "forecasting-basics-003",
+   "status": "beta"
+  },
+  {
+   "concept": "judgment-override",
+   "stem": "A statistical forecast projects steady umbrella demand next month, but the planner knows a major promotion and an unusually wet season both start next week. What is the most appropriate action?",
+   "options": [
+    "Adjust the forecast upward to reflect the promotion and wet season",
+    "Use the statistical forecast unchanged, since models are always more objective",
+    "Wait for next month's actual sales data before making any adjustment",
+    "Discard the statistical forecast entirely and rely only on intuition"
+   ],
+   "answer": 0,
+   "explanation": "Judgment should adjust a statistical forecast when the planner has specific, model-external knowledge like a planned promotion or weather event. Ignoring that information or discarding the model entirely both waste useful signal.",
+   "grounding": {
+    "source": "Hyndman & Athanasopoulos, Forecasting: Principles and Practice",
+    "note": "Discusses judgmental adjustments to statistical forecasts when planners hold relevant information the model cannot capture."
+   },
+   "difficulty_prior": 0.76,
+   "id": "forecasting-basics-004",
+   "status": "beta"
+  },
+  {
+   "concept": "time-series-components",
+   "stem": "An ice cream stand's daily sales have risen gradually over the past three years as the shop's reputation has grown, show a predictable spike every weekend, and dropped sharply one day when an unexpected storm hit. Which components make up this pattern?",
+   "options": [
+    "Trend (gradual rise), seasonality (weekly spike), and noise (storm-driven drop)",
+    "Trend and noise only, since the weekly spike is just random noise",
+    "Seasonality and noise only, since the three-year rise is coincidental, not a trend",
+    "Trend and seasonality only, since the storm-driven drop is part of the seasonal pattern"
+   ],
+   "answer": 0,
+   "explanation": "The gradual rise over three years is trend, the recurring weekly spike is seasonality, and the storm-driven drop is noise—an irregular, one-off shock, not a repeating pattern.",
+   "grounding": {
+    "source": "Wikipedia: Decomposition of time series",
+    "note": "Standard framework splitting a series into trend, seasonal, and irregular (noise) components."
+   },
+   "difficulty_prior": 0.65,
+   "id": "forecasting-basics-005",
+   "status": "beta"
+  },
+  {
+   "concept": "exponential-smoothing",
+   "stem": "A planner configures an exponential smoothing model using a smoothing parameter (alpha) close to 1 rather than close to 0. What effect does this have on the resulting forecast?",
+   "options": [
+    "The forecast reacts quickly to recent changes but is more sensitive to random noise",
+    "The forecast changes very slowly and heavily reflects distant past observations",
+    "The forecast becomes identical to a simple unweighted average of all historical data",
+    "The forecast ignores recent data and instead repeats the prior seasonal cycle"
+   ],
+   "answer": 0,
+   "explanation": "A smoothing parameter near 1 weights the most recent observation heavily, making the forecast track recent changes quickly but wobble with each noisy data point. A parameter near 0 would behave oppositely.",
+   "grounding": {
+    "source": "NIST/SEMATECH e-Handbook of Statistical Methods - Single Exponential Smoothing",
+    "note": "Explains that a higher smoothing constant places more weight on recent observations, increasing responsiveness but noise sensitivity."
+   },
+   "difficulty_prior": 0.55,
+   "id": "forecasting-basics-006",
+   "status": "beta"
+  },
+  {
+   "concept": "forecast-error-measures",
+   "stem": "A demand planner compares two models over the same 12 months of forecasts: Model A has a lower Mean Absolute Error (MAE) than Model B. What can be concluded about Model A?",
+   "options": [
+    "Model A's average error magnitude is smaller, regardless of error direction",
+    "Model A's forecasts are always higher than the actual demand values",
+    "Model A's forecasts are unbiased, while Model B's forecasts are systematically biased",
+    "Model A will have a lower error than Model B in every individual month"
+   ],
+   "answer": 0,
+   "explanation": "MAE averages the absolute size of errors regardless of direction, so it reveals nothing about whether errors run high or low (that's bias) or how any single month performed individually.",
+   "grounding": {
+    "source": "Hyndman & Athanasopoulos, 'Forecasting: Principles and Practice'",
+    "note": "Defines MAE as average absolute error magnitude, distinct from bias which captures systematic direction."
+   },
+   "difficulty_prior": 0.6,
+   "id": "forecasting-basics-007",
+   "status": "beta"
+  },
+  {
+   "concept": "forecast-bias",
+   "stem": "Over the past six months, a supply planner's forecasts have come in below actual demand in five of the six months, causing frequent stockouts. What does this pattern indicate about the forecast?",
+   "options": [
+    "The forecast is systematically biased low, not simply randomly inaccurate",
+    "The forecast has high MAPE but no bias, since errors are expected to average out",
+    "The forecast is unbiased, since errors of this size are common in short-term data",
+    "The forecast's variance is too low, which is unrelated to whether it runs high or low"
+   ],
+   "answer": 0,
+   "explanation": "Missing actual demand in nearly every period signals a systematic directional tendency (bias), not random scatter—true random error would miss high and low roughly equally often.",
+   "grounding": {
+    "source": "Hyndman & Athanasopoulos, 'Forecasting: Principles and Practice'",
+    "note": "Bias, the mean signed forecast error, reveals systematic over- or under-forecasting distinct from average error magnitude."
+   },
+   "difficulty_prior": 0.62,
+   "id": "forecasting-basics-008",
+   "status": "beta"
+  },
+  {
+   "concept": "forecast-horizon-uncertainty",
+   "stem": "A company generates sales forecasts 1 month, 6 months, and 12 months ahead using the same underlying model. Which statement about the resulting prediction intervals is most accurate?",
+   "options": [
+    "The 12-month forecast has the widest interval, since uncertainty compounds over a longer horizon",
+    "All three horizons have equally wide intervals, since the underlying model doesn't change",
+    "The 1-month forecast has the widest interval, since near-term demand is the most volatile",
+    "Interval width depends only on historical data volume, not on the length of the horizon"
+   ],
+   "answer": 0,
+   "explanation": "Forecast uncertainty compounds with horizon length, since more unknown future shocks accumulate the further out you project, widening the prediction interval relative to near-term forecasts.",
+   "grounding": {
+    "source": "Hyndman & Athanasopoulos, 'Forecasting: Principles and Practice'",
+    "note": "Prediction intervals widen as forecast horizon increases, reflecting compounding uncertainty over time."
+   },
+   "difficulty_prior": 0.68,
+   "id": "forecasting-basics-009",
+   "status": "beta"
+  },
+  {
+   "concept": "exponential-smoothing",
+   "stem": "A beverage company's weekly sales jump permanently higher after a successful relaunch. A forecaster must choose between a 6-week moving average and exponential smoothing with a high smoothing constant (alpha=0.8) to update next week's forecast. Which adapts faster?",
+   "options": [
+    "The moving average, because it fully drops old low-level data once it exits the averaging window",
+    "The exponential smoothing model, because a high alpha places most weight on the most recent observation",
+    "Both adapt at the same speed, since each method uses a fixed number of past periods",
+    "The moving average, because averaging reduces the influence of noise faster than exponential weighting"
+   ],
+   "answer": 1,
+   "explanation": "High alpha weights the most recent point heavily, so the forecast reacts almost immediately to a level shift; a moving average must wait for old data to age out of the window, causing a lag.",
+   "grounding": {
+    "source": "Wikipedia: Exponential smoothing",
+    "note": "Larger smoothing constants weight recent observations more heavily, letting the forecast adapt to level shifts faster than a fixed-window moving average."
+   },
+   "difficulty_prior": 0.45,
+   "id": "forecasting-basics-010",
+   "status": "beta"
+  },
+  {
+   "concept": "forecast-horizon-uncertainty",
+   "stem": "A supply chain analyst's forecasting tool reports a 90% confidence interval of plus or minus 5% for both the 1-month-ahead and 12-month-ahead demand forecast. A colleague finds this suspicious. What is the most likely explanation for the colleague's concern?",
+   "options": [
+    "Confidence intervals should narrow at longer horizons because more historical data becomes available over time",
+    "Forecast uncertainty typically widens with a longer horizon, so equal-width intervals suggest the model understates long-horizon risk",
+    "Interval width depends only on historical variance and has no relationship to the forecast horizon",
+    "A 90% interval must have identical width at every horizon by definition, so there is no real issue"
+   ],
+   "answer": 1,
+   "explanation": "Prediction intervals normally widen with horizon because more future periods compound uncertainty from trend, seasonality, and random shocks; a constant-width interval across horizons signals the model isn't propagating that growth.",
+   "grounding": {
+    "source": "Hyndman & Athanasopoulos, Forecasting: Principles and Practice",
+    "note": "Prediction intervals widen as the forecast horizon increases because uncertainty compounds over more future periods."
+   },
+   "difficulty_prior": 0.5,
+   "id": "forecasting-basics-011",
+   "status": "beta"
+  },
+  {
+   "concept": "naive-baseline-forecast",
+   "stem": "A retailer wants a naive baseline to benchmark a new forecasting model for a product with strong weekly seasonality, where weekend sales are always much higher than weekday sales. Which naive method is the most appropriate baseline?",
+   "options": [
+    "Simple naive: forecast equals yesterday's actual value, regardless of the day of week",
+    "Naive drift: forecast equals yesterday's value plus the average daily change over history",
+    "Seasonal naive: forecast equals the actual value from the same day last week",
+    "Mean forecast: forecast equals the overall historical average across all days combined"
+   ],
+   "answer": 2,
+   "explanation": "Seasonal naive reuses last week's same-day value, giving a realistic benchmark that reflects the weekly cycle; plain naive, drift, and mean forecasts all ignore that seasonal pattern.",
+   "grounding": {
+    "source": "Hyndman & Athanasopoulos, Forecasting: Principles and Practice",
+    "note": "The seasonal naive method forecasts using the observation from the same point in the previous seasonal cycle, a standard benchmark for seasonal series."
+   },
+   "difficulty_prior": 0.48,
+   "id": "forecasting-basics-012",
+   "status": "beta"
+  },
+  {
+   "concept": "forecast-bias",
+   "stem": "A demand forecast has a Mean Absolute Error (MAE) of 20 units per month, but its Mean Error (bias), the average signed forecast error, is close to zero. What does this combination suggest about the forecast's performance?",
+   "options": [
+    "The forecast is highly accurate overall, since a bias near zero means mistakes are rarely large",
+    "There is no systematic over- or under-prediction, but individual monthly errors are still sizable in both directions",
+    "The two metrics are inconsistent, so at least one of them must have been miscalculated",
+    "The forecast systematically overpredicts in some months and underpredicts by more in others, since bias near zero implies hidden skew"
+   ],
+   "answer": 1,
+   "explanation": "MAE measures average error size regardless of direction, while bias measures average signed error; a near-zero bias with a large MAE means errors are sizable but roughly balanced between over- and under-forecasts.",
+   "grounding": {
+    "source": "Hyndman & Athanasopoulos, Forecasting: Principles and Practice",
+    "note": "Mean Error (bias) can be near zero even when MAE is large, since positive and negative errors offset in the average."
+   },
+   "difficulty_prior": 0.52,
+   "id": "forecasting-basics-013",
+   "status": "beta"
+  },
+  {
+   "concept": "judgment-override",
+   "stem": "A regional sales forecast model predicts flat demand next month based on two stable years of history. The sales director learns that the only nearby competing store just closed permanently. Which action best reflects appropriate judgmental override of the model?",
+   "options": [
+    "Leave the forecast unchanged, since two stable years of history outweigh one anecdotal competitive event",
+    "Lower the forecast slightly, since any new competitive information always increases uncertainty and should reduce estimates",
+    "Raise the forecast to reflect the closure, since the model cannot learn from an unprecedented event",
+    "Stop using the statistical model entirely and rely only on the director's personal judgment from now on"
+   ],
+   "answer": 2,
+   "explanation": "A structural, one-off event like a competitor's permanent closure has no precedent in the historical data, so the model can't anticipate it; judgment should adjust the forecast upward to reflect the likely demand shift.",
+   "grounding": {
+    "source": "Hyndman & Athanasopoulos, Forecasting: Principles and Practice",
+    "note": "Judgmental adjustments are warranted when forecasters hold information about one-off events the statistical model cannot capture from history."
+   },
+   "difficulty_prior": 0.42,
+   "id": "forecasting-basics-014",
+   "status": "beta"
+  },
+  {
+   "concept": "time-series-components",
+   "stem": "A company's sales dip every 3-4 years in tandem with broader economic recessions, with no fixed calendar timing. Which time-series component best describes this pattern?",
+   "options": [
+    "Seasonal component",
+    "Cyclical component",
+    "Trend component",
+    "Irregular component"
+   ],
+   "answer": 1,
+   "explanation": "Cyclical fluctuations recur at irregular, multi-year intervals tied to economic conditions, unlike seasonality, which follows a fixed calendar period. Seasonality is the tempting wrong answer since both look like repeating dips, but its cycle length is fixed and shorter.",
+   "grounding": {
+    "source": "Forecasting: Principles and Practice (Hyndman & Athanasopoulos)",
+    "note": "Distinguishes trend, seasonal, cyclic, and irregular components of a time series."
+   },
+   "difficulty_prior": 0.3,
+   "id": "forecasting-basics-015",
+   "status": "beta"
+  },
+  {
+   "concept": "moving-averages",
+   "stem": "A planner tracks demand using a 12-month trailing moving average. Demand turns sharply downward starting this month. Compared to the true turning point, the moving average will:",
+   "options": [
+    "Immediately reflect the downturn, since it applies equal weight to all months",
+    "Lag behind the true turn, since older high-demand months remain in the average",
+    "Overstate the downturn's speed, since it weights recent months most heavily",
+    "Fully cancel the downturn, since averaging removes genuine shifts in demand"
+   ],
+   "answer": 1,
+   "explanation": "A trailing average still contains several pre-downturn months, so it stays elevated until enough new, lower values enter and offset the old ones. Option C describes exponential smoothing behavior, not a simple moving average, which weights all included months equally.",
+   "grounding": {
+    "source": "Moving average (Wikipedia)",
+    "note": "Explains that moving averages smooth data but lag turning points because older values remain in the window."
+   },
+   "difficulty_prior": 0.35,
+   "id": "forecasting-basics-016",
+   "status": "beta"
+  },
+  {
+   "concept": "exponential-smoothing",
+   "stem": "A planner sets the smoothing constant (alpha) to 0.9 in a simple exponential smoothing model, while a colleague uses 0.1 on the same noisy weekly series. Relative to the low-alpha model, the high-alpha model will:",
+   "options": [
+    "React quickly to real shifts but also amplify random noise into the forecast",
+    "Produce a smoother forecast that responds slowly to genuine changes in demand",
+    "Automatically detect and remove seasonal patterns from the series",
+    "Assign more weight to older observations than to the most recent one"
+   ],
+   "answer": 0,
+   "explanation": "A high alpha weights the latest observation most heavily, so the forecast tracks real changes fast but also chases noise. Option B actually describes the low-alpha (0.1) model's behavior, the reverse of what's asked.",
+   "grounding": {
+    "source": "Exponential smoothing (Wikipedia)",
+    "note": "Higher smoothing constants weight recent observations more heavily, increasing responsiveness but also noise sensitivity."
+   },
+   "difficulty_prior": 0.35,
+   "id": "forecasting-basics-017",
+   "status": "beta"
+  },
+  {
+   "concept": "forecast-bias",
+   "stem": "A retailer's monthly forecast errors, calculated as forecast minus actual, average +150 units over the past year, even though individual monthly errors vary widely. What does this positive average most directly indicate?",
+   "options": [
+    "The forecast systematically overforecasts demand, a bias problem distinct from accuracy",
+    "The forecast is highly inaccurate, since individual errors vary widely",
+    "The forecast has no bias, since errors can be positive or negative",
+    "The forecast's MAPE must be increasing over time as well"
+   ],
+   "answer": 0,
+   "explanation": "A consistently positive average error signals systematic overforecasting (bias), separate from accuracy measures like MAE or MAPE that capture typical error size regardless of direction. Wide variation in individual errors reflects imprecision, not bias, so option B conflates the two.",
+   "grounding": {
+    "source": "Forecasting: Principles and Practice (Hyndman & Athanasopoulos)",
+    "note": "Distinguishes bias (mean error) from accuracy measures such as MAE and MAPE."
+   },
+   "difficulty_prior": 0.3,
+   "id": "forecasting-basics-018",
+   "status": "beta"
+  },
+  {
+   "concept": "forecast-horizon-uncertainty",
+   "stem": "A company applies the same percentage safety-stock buffer to both its 1-month-ahead and 6-month-ahead demand forecasts. What is the main risk, given how forecast uncertainty typically behaves across horizons?",
+   "options": [
+    "It will be too small at 6 months and too generous at 1 month",
+    "The buffer will suit both horizons equally, since uncertainty stays constant over time",
+    "The buffer will be too large at 6 months, since longer horizons average out noise",
+    "The buffer should instead be based on MAPE alone, regardless of horizon length"
+   ],
+   "answer": 0,
+   "explanation": "Forecast uncertainty widens with horizon length because more unknown future events can occur, so a fixed percentage buffer under-protects the longer horizon and over-protects the shorter one. Uncertainty does not stay constant, nor does averaging shrink it at longer horizons.",
+   "grounding": {
+    "source": "Forecasting: Principles and Practice (Hyndman & Athanasopoulos)",
+    "note": "Explains that prediction intervals widen as the forecast horizon increases."
+   },
+   "difficulty_prior": 0.3,
+   "id": "forecasting-basics-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

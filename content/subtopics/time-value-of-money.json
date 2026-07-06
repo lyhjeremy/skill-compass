@@ -1,0 +1,452 @@
+{
+ "id": "time-value-of-money",
+ "concepts": [
+  {
+   "id": "present-value-future-value",
+   "label": "Present vs future value",
+   "definition": "A dollar today is worth more than a dollar later, so we can convert amounts between today's value and a future value using a discount or growth rate.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "compounding-frequency",
+   "label": "Compounding frequency effects",
+   "definition": "How often interest is compounded per year (annually, monthly, daily) changes how fast money actually grows even at the same stated rate.",
+   "prereq": "present-value-future-value",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "effective-annual-rate",
+   "label": "Effective annual rate",
+   "definition": "The effective annual rate converts a stated rate with any compounding frequency into one true annual rate that lets you fairly compare different loans or investments.",
+   "prereq": "compounding-frequency",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "annuity-valuation",
+   "label": "Annuities: PV and FV",
+   "definition": "An annuity is a series of equal, evenly-spaced cash flows, and its present or future value can be found with a formula instead of discounting each payment one by one.",
+   "prereq": "effective-annual-rate",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "perpetuity-valuation",
+   "label": "Perpetuities intuition",
+   "definition": "A perpetuity is an annuity that pays forever, and its present value is simply the payment divided by the discount rate.",
+   "prereq": "annuity-valuation",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "npv-decision-rule",
+   "label": "NPV decision rule",
+   "definition": "Net present value sums the discounted values of all a project's cash flows, and the rule says to accept the project only if that sum is positive.",
+   "prereq": "perpetuity-valuation",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "irr-pitfalls",
+   "label": "IRR and its pitfalls",
+   "definition": "The internal rate of return is the discount rate that makes NPV zero, but it can mislead or give multiple answers when cash flows change sign more than once or projects differ in scale.",
+   "prereq": "npv-decision-rule",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "discount-rate-selection",
+   "label": "Choosing discount rates",
+   "definition": "The discount rate used in NPV should reflect the riskiness and opportunity cost of the specific cash flows being valued, not an arbitrary or universal number.",
+   "prereq": "irr-pitfalls",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "present-value-future-value",
+   "stem": "An investor deposits $1,000 today in an account earning 10% annual interest, compounded annually. What is the value of the investment after 2 years?",
+   "options": [
+    "$1,100",
+    "$1,200",
+    "$1,210",
+    "$1,331"
+   ],
+   "answer": 2,
+   "explanation": "FV = PV × (1+r)^n = $1,000 × 1.10² = $1,210. $1,200 assumes simple interest, and $1,331 mistakenly compounds for 3 years instead of 2.",
+   "grounding": {
+    "source": "Wikipedia: Future value",
+    "note": "Defines future value as principal compounded at a periodic rate over time, FV = PV(1+r)^n."
+   },
+   "difficulty_prior": 0.82,
+   "id": "time-value-of-money-000",
+   "status": "beta"
+  },
+  {
+   "concept": "effective-annual-rate",
+   "stem": "A bank advertises a savings account with a stated annual interest rate of 12%, compounded monthly. Which value is closest to the account's effective annual rate?",
+   "options": [
+    "12.00%",
+    "12.36%",
+    "12.68%",
+    "13.00%"
+   ],
+   "answer": 2,
+   "explanation": "EAR = (1 + 0.12/12)^12 − 1 ≈ 12.68%. Using 12.00% ignores compounding entirely, and 12.36% mistakenly assumes semiannual rather than monthly compounding.",
+   "grounding": {
+    "source": "Wikipedia: Effective interest rate",
+    "note": "Defines EAR as (1 + i/m)^m − 1 for a nominal rate i compounded m times per year."
+   },
+   "difficulty_prior": 0.75,
+   "id": "time-value-of-money-001",
+   "status": "beta"
+  },
+  {
+   "concept": "annuity-valuation",
+   "stem": "An investor will receive $100 at the end of each year for 3 years. Using a 10% discount rate, which amount is closest to the present value of this ordinary annuity?",
+   "options": [
+    "$248.70",
+    "$270.00",
+    "$300.00",
+    "$331.00"
+   ],
+   "answer": 0,
+   "explanation": "PV = 100 × [(1 − 1.10⁻³)/0.10] ≈ $248.70. $300.00 wrongly sums the raw cash flows without discounting, and $331.00 is the annuity's future value, not present value.",
+   "grounding": {
+    "source": "Wikipedia: Annuity (finance theory)",
+    "note": "Gives the ordinary annuity present-value formula PV = C×[(1−(1+r)⁻ⁿ)/r]."
+   },
+   "difficulty_prior": 0.72,
+   "id": "time-value-of-money-002",
+   "status": "beta"
+  },
+  {
+   "concept": "npv-decision-rule",
+   "stem": "A project requires an initial investment of $1,000 today and returns a single cash inflow of $1,200 in one year. At a 10% discount rate, what is the project's NPV, and should the firm accept it?",
+   "options": [
+    "NPV is about $91; accept, since NPV is positive",
+    "NPV is about $200; accept, since NPV is positive",
+    "NPV is about -$91; reject, since NPV is negative",
+    "NPV is about $1,200; accept, since it exceeds cost"
+   ],
+   "answer": 0,
+   "explanation": "NPV = −$1,000 + $1,200/1.10 ≈ $91, so the firm should accept. $200 is the undiscounted profit, ignoring time value of money; $1,200 is just the future inflow, not netted against cost.",
+   "grounding": {
+    "source": "Wikipedia: Net present value",
+    "note": "Defines NPV as discounted cash flows minus initial investment, with a positive NPV signaling value creation."
+   },
+   "difficulty_prior": 0.78,
+   "id": "time-value-of-money-003",
+   "status": "beta"
+  },
+  {
+   "concept": "irr-pitfalls",
+   "stem": "A project has cash flows of -$100 at time 0, +$230 at time 1, and -$132 at time 2. What pitfall does this cash flow pattern create for the IRR decision rule?",
+   "options": [
+    "Sign changes in the cash flows may yield multiple IRRs",
+    "IRR cannot be calculated when a later cash flow is negative",
+    "IRR assumes all cash flows are reinvested at the IRR itself",
+    "NPV cannot be found unless a single IRR is identified first"
+   ],
+   "answer": 0,
+   "explanation": "With cash flows changing sign twice, the IRR equation has multiple valid roots (here, 10% and 20%), making the accept/reject rule ambiguous. The reinvestment-rate assumption is a separate, general IRR limitation, not one caused by sign changes.",
+   "grounding": {
+    "source": "Wikipedia: Internal rate of return",
+    "note": "Discusses how non-conventional cash flows with more than one sign change can produce multiple IRRs."
+   },
+   "difficulty_prior": 0.6,
+   "id": "time-value-of-money-004",
+   "status": "beta"
+  },
+  {
+   "concept": "present-value-future-value",
+   "stem": "A firm needs $20,000 in 4 years to replace equipment. If it can invest today at an annual rate of 8% compounded annually, how much must it invest now (to the nearest $100)?",
+   "options": [
+    "$15,900",
+    "$20,000",
+    "$14,700",
+    "$15,200"
+   ],
+   "answer": 2,
+   "explanation": "PV = FV / (1+r)^n = 20,000 / 1.08^4 ≈ $14,700. Discounting only 3 years overstates the deposit ($15,900); using simple interest instead of compounding also overstates it ($15,200); ignoring discounting entirely gives $20,000.",
+   "grounding": {
+    "source": "CFA Institute Level I Curriculum – Quantitative Methods (Time Value of Money)",
+    "note": "Covers the present value discounting formula PV = FV / (1+r)^n."
+   },
+   "difficulty_prior": 0.6,
+   "id": "time-value-of-money-005",
+   "status": "beta"
+  },
+  {
+   "concept": "compounding-frequency",
+   "stem": "Two banks offer a stated annual rate of 6% on a $5,000 deposit for one year. Bank A compounds semiannually; Bank B compounds monthly. Which statement is correct?",
+   "options": [
+    "Bank A has a higher future value, since semiannual compounding earns larger interest amounts at each payment date.",
+    "Bank B has a higher future value, since more frequent compounding raises the effective rate.",
+    "Both banks have identical future values, since the stated annual rate is the same for both.",
+    "Bank B has a lower future value, since monthly compounding applies a smaller rate each period, reducing total growth."
+   ],
+   "answer": 1,
+   "explanation": "More frequent compounding raises the effective annual rate because interest earns interest sooner, even though each period's rate is smaller. Bank B (monthly) therefore has a higher future value than Bank A (semiannual), despite the smaller per-period rate cited in the incorrect options.",
+   "grounding": {
+    "source": "Wikipedia – Compound interest",
+    "note": "Explains how increasing compounding frequency raises the effective return for a given stated annual rate."
+   },
+   "difficulty_prior": 0.65,
+   "id": "time-value-of-money-006",
+   "status": "beta"
+  },
+  {
+   "concept": "perpetuity-valuation",
+   "stem": "A preferred stock pays a fixed dividend of $6 per share at the end of each year forever. If investors require an 8% annual return, what is the stock's fair value today?",
+   "options": [
+    "$75",
+    "$81",
+    "$60",
+    "$48"
+   ],
+   "answer": 0,
+   "explanation": "Perpetuity value = payment / rate = 6/0.08 = $75. Treating the first payment as due today gives $81 (perpetuity due); inverting the formula to dividend × rate gives $48; using a 10% rate instead of 8% gives $60.",
+   "grounding": {
+    "source": "Wikipedia – Perpetuity (finance)",
+    "note": "Defines the perpetuity valuation formula PV = payment / discount rate."
+   },
+   "difficulty_prior": 0.6,
+   "id": "time-value-of-money-007",
+   "status": "beta"
+  },
+  {
+   "concept": "npv-decision-rule",
+   "stem": "A capital project has a required return of 9% and an NPV of $1,200 when discounted at that rate. According to the NPV decision rule, what should the firm do, and why?",
+   "options": [
+    "Reject the project, because the NPV should equal zero for an acceptable investment.",
+    "Reject the project, because a positive NPV of only $1,200 is too small to be economically meaningful.",
+    "Accept the project only if the initial investment is recovered within a set payback period.",
+    "Accept the project, because a positive NPV indicates it is expected to increase shareholder wealth."
+   ],
+   "answer": 3,
+   "explanation": "NPV rule: accept if NPV > 0, regardless of dollar size. The $1,200 magnitude is irrelevant, and payback period is a separate, inferior criterion not required once NPV is positive.",
+   "grounding": {
+    "source": "Wikipedia – Net present value",
+    "note": "States the standard NPV decision rule: accept projects with NPV greater than zero."
+   },
+   "difficulty_prior": 0.68,
+   "id": "time-value-of-money-008",
+   "status": "beta"
+  },
+  {
+   "concept": "discount-rate-selection",
+   "stem": "A firm is evaluating a new project with risk similar to its existing operations. Which discount rate is most appropriate for computing the project's NPV?",
+   "options": [
+    "The current risk-free Treasury bill rate.",
+    "The firm's weighted average cost of capital (WACC).",
+    "The average historical return earned by the firm's common stock alone.",
+    "The project's own internal rate of return."
+   ],
+   "answer": 1,
+   "explanation": "WACC blends the cost of debt and equity and matches the risk of average firm operations. The risk-free rate or equity-only return understates required compensation for risk, and using the project's own IRR is circular.",
+   "grounding": {
+    "source": "Wikipedia – Weighted average cost of capital",
+    "note": "Explains WACC as the appropriate discount rate for average-risk projects."
+   },
+   "difficulty_prior": 0.6,
+   "id": "time-value-of-money-009",
+   "status": "beta"
+  },
+  {
+   "concept": "present-value-future-value",
+   "stem": "An investor can choose to receive $1,600 in 4 years or $1,200 in 2 years, valued at an 8% annual discount rate. Which choice has the higher present value, and by approximately how much?",
+   "options": [
+    "$1,600 in 4 years; PV is about $147 higher",
+    "$1,200 in 2 years; PV is about $147 higher",
+    "$1,600 in 4 years; PV is about $400 higher",
+    "The two present values are approximately equal"
+   ],
+   "answer": 0,
+   "explanation": "PV of $1,600/1.08⁴ ≈ $1,176; PV of $1,200/1.08² ≈ $1,029. The later, larger payment is worth about $147 more today; comparing nominal amounts or timing alone reverses the ranking.",
+   "grounding": {
+    "source": "Wikipedia: Time value of money",
+    "note": "PV = FV/(1+r)^n underlies comparing cash flows received at different future dates."
+   },
+   "difficulty_prior": 0.45,
+   "id": "time-value-of-money-010",
+   "status": "beta"
+  },
+  {
+   "concept": "effective-annual-rate",
+   "stem": "A credit card issuer charges interest of 1.5% per month on unpaid balances, compounded monthly. What effective annual rate (EAR) is the cardholder actually paying?",
+   "options": [
+    "18.0%",
+    "19.6%",
+    "16.5%",
+    "21.0%"
+   ],
+   "answer": 1,
+   "explanation": "EAR = (1.015)^12 − 1 ≈ 19.6%. Simply multiplying the monthly rate by 12 (18.0%) ignores compounding and understates the true annual cost of borrowing.",
+   "grounding": {
+    "source": "Investopedia: Effective Annual Interest Rate (EAR)",
+    "note": "EAR = (1 + periodic rate)^m − 1 converts a stated periodic rate into a true annualized compounded rate."
+   },
+   "difficulty_prior": 0.5,
+   "id": "time-value-of-money-011",
+   "status": "beta"
+  },
+  {
+   "concept": "annuity-valuation",
+   "stem": "A borrower takes out a $10,000 loan at a 6% annual interest rate, to be repaid in three equal payments at the end of each year for the next three years. What is the approximate annual payment?",
+   "options": [
+    "$3,333",
+    "$3,741",
+    "$3,530",
+    "$3,933"
+   ],
+   "answer": 1,
+   "explanation": "Payment = $10,000 ÷ [1−1.06⁻³]/0.06 ≈ $10,000 ÷ 2.673 ≈ $3,741. An annuity-due factor (payments at year-start) gives $3,530; dividing principal evenly by 3 ($3,333) or spreading simple total interest evenly ($3,933) both ignore proper compounding.",
+   "grounding": {
+    "source": "CFA Institute Level I Curriculum – Time Value of Money (Annuities)",
+    "note": "Ordinary annuity payment for a loan equals PV divided by the present-value annuity factor [1−(1+r)^−n]/r."
+   },
+   "difficulty_prior": 0.5,
+   "id": "time-value-of-money-012",
+   "status": "beta"
+  },
+  {
+   "concept": "npv-decision-rule",
+   "stem": "A firm is considering two independent projects, each requiring a $2,000 initial investment. Project X returns $2,500 after one year; Project Y returns $1,300 after each of the next two years. Using a 10% discount rate, what should the firm do?",
+   "options": [
+    "Accept both, since both have positive NPV and are independent",
+    "Accept only Project X, since it has the higher NPV",
+    "Reject both, since neither NPV exceeds the initial outlay",
+    "Accept only Project Y, since it has cash flows in more periods"
+   ],
+   "answer": 0,
+   "explanation": "NPV(X) ≈ $273 and NPV(Y) ≈ $256; both exceed zero. Because the projects are independent, not mutually exclusive, the firm should accept every project with positive NPV rather than picking only the higher one.",
+   "grounding": {
+    "source": "CFA Institute Level I Curriculum – Net Present Value and the NPV Rule",
+    "note": "For independent projects, the NPV rule accepts every project with NPV greater than zero, not just the single best one."
+   },
+   "difficulty_prior": 0.5,
+   "id": "time-value-of-money-013",
+   "status": "beta"
+  },
+  {
+   "concept": "irr-pitfalls",
+   "stem": "Mutually exclusive Project A (cost $1,000, 1-year IRR 30%) and Project B (cost $10,000, 1-year IRR 20%) are evaluated at a 10% cost of capital. Project A's NPV is $182; Project B's NPV is $909. Which project should be chosen, and why?",
+   "options": [
+    "Project B, because NPV reflects the larger dollar value created",
+    "Project A, because a higher IRR always signals greater profitability",
+    "Project A, because smaller investments are always less risky",
+    "Either project, since IRR and NPV always rank projects identically"
+   ],
+   "answer": 0,
+   "explanation": "IRR ignores project scale, so a smaller project can show a higher percentage return yet create less wealth. NPV, which measures dollar value added, correctly favors Project B despite its lower IRR.",
+   "grounding": {
+    "source": "Ross, Westerfield & Jaffe, Corporate Finance – NPV versus IRR",
+    "note": "IRR ignores project scale, so ranking mutually exclusive projects by IRR can conflict with the wealth-maximizing NPV ranking."
+   },
+   "difficulty_prior": 0.55,
+   "id": "time-value-of-money-014",
+   "status": "beta"
+  },
+  {
+   "concept": "effective-annual-rate",
+   "stem": "Two savings accounts each advertise a stated annual rate of 12%. Account A compounds monthly and Account B compounds daily (365 days). Which statement correctly compares their effective annual rates (EARs)?",
+   "options": [
+    "Account A's EAR is higher than Account B's, because fewer compounding periods let each interval earn more interest",
+    "Both accounts have the same 12% EAR, since the stated annual rate alone determines the EAR",
+    "Account B's EAR is only slightly higher, since gains from more frequent compounding shrink at higher frequencies",
+    "Account B's EAR is higher than Account A's, and the gap widens without bound as frequency increases"
+   ],
+   "answer": 2,
+   "explanation": "More frequent compounding raises the EAR, so Account B's daily compounding (~12.75%) is marginally higher than Account A's monthly compounding (~12.68%). Each additional compounding period yields smaller gains, converging toward the continuous-compounding limit (e^0.12−1≈12.75%), so the difference stays small.",
+   "grounding": {
+    "source": "Effective interest rate — Wikipedia",
+    "note": "Shows EAR rises with compounding frequency and converges to the continuous-compounding limit e^r−1."
+   },
+   "difficulty_prior": 0.32,
+   "id": "time-value-of-money-015",
+   "status": "beta"
+  },
+  {
+   "concept": "irr-pitfalls",
+   "stem": "An analyst finds a project's IRR equals 35% and argues the firm can reinvest every intermediate cash flow at 35% for the rest of the project's life. What is the key flaw in this claim?",
+   "options": [
+    "IRR implicitly assumes reinvestment at the IRR itself, unrealistic since 35% likely exceeds comparable-risk market returns",
+    "IRR assumes reinvestment at the risk-free rate, so the true realized return actually exceeds 35%",
+    "IRR involves no reinvestment assumption at all, unlike NPV, so the analyst's claim is essentially meaningless",
+    "NPV suffers the same reinvestment-rate flaw as IRR, so switching decision rules would not fix the problem"
+   ],
+   "answer": 0,
+   "explanation": "The internal rate of return implicitly assumes reinvestment of intermediate cash flows at the IRR itself, not at a market-based rate, which is unrealistic when the IRR is very high. NPV avoids this issue by discounting at the more realistic cost of capital.",
+   "grounding": {
+    "source": "CFA Institute Level I Curriculum, Quantitative Methods: Internal Rate of Return",
+    "note": "Identifies the reinvestment-rate assumption as a key limitation of IRR compared with NPV."
+   },
+   "difficulty_prior": 0.27,
+   "id": "time-value-of-money-016",
+   "status": "beta"
+  },
+  {
+   "concept": "discount-rate-selection",
+   "stem": "A firm's core business has low risk, but it is evaluating a new venture into a much riskier, unrelated industry. Which discount rate is most appropriate for valuing the new venture's cash flows?",
+   "options": [
+    "The firm's existing weighted average cost of capital (WACC), since it reflects the firm's overall financing structure",
+    "A project-specific rate reflecting the venture's own risk, likely higher than the firm's existing WACC",
+    "The risk-free rate, since the venture's cash flows are unrelated to the firm's core operations",
+    "The firm's after-tax cost of debt, since debt is generally the cheapest source of financing"
+   ],
+   "answer": 1,
+   "explanation": "Discount rates must reflect the risk of the cash flows being valued, not the firm's overall risk profile. Applying the firm's existing WACC to a much riskier venture understates the required return and could cause the firm to accept a value-destroying project.",
+   "grounding": {
+    "source": "Weighted average cost of capital — Wikipedia",
+    "note": "Notes that project-specific risk, not firm-wide WACC, should set the discount rate for projects with atypical risk."
+   },
+   "difficulty_prior": 0.35,
+   "id": "time-value-of-money-017",
+   "status": "beta"
+  },
+  {
+   "concept": "annuity-valuation",
+   "stem": "A retiree needs an account that pays exactly $5,000 at the beginning of each year for 10 years, with the account earning 7% annually. How does the required deposit compare to one funding otherwise identical year-end (ordinary annuity) withdrawals?",
+   "options": [
+    "The required deposit is identical, because the number and size of payments are unchanged",
+    "The required deposit must be about 7% smaller, since the account has one fewer year to earn interest overall",
+    "The required deposit must be about 7% larger, since each payment arrives one period earlier, losing interest",
+    "The required deposit depends only on the total amount withdrawn, not on the timing of individual payments"
+   ],
+   "answer": 2,
+   "explanation": "An annuity due's present value equals an ordinary annuity's present value multiplied by (1+r). Because each payment arrives one period earlier, the retiree loses one period of discounting on every cash flow, raising the required deposit by roughly the periodic rate, here about 7%.",
+   "grounding": {
+    "source": "CFA Institute Level I Curriculum, Quantitative Methods: The Time Value of Money",
+    "note": "Gives the relationship PV(annuity due) = PV(ordinary annuity) × (1+r)."
+   },
+   "difficulty_prior": 0.3,
+   "id": "time-value-of-money-018",
+   "status": "beta"
+  },
+  {
+   "concept": "perpetuity-valuation",
+   "stem": "A stock just paid an annual dividend of $4 (D0), and dividends are expected to grow at a constant 3% per year forever. With a required return of 9%, which calculation gives the correct intrinsic value today?",
+   "options": [
+    "$4 / (0.09 − 0.03) = $66.67, using the dividend that was just paid",
+    "$4 × 1.03 / (0.09 − 0.03) = $68.67, using next year's expected dividend",
+    "$4 / (0.09 + 0.03) = $33.33, discounting at the sum of the two rates",
+    "$4 × 1.03 / (0.09 + 0.03) = $34.33, using next year's dividend and the summed rates"
+   ],
+   "answer": 1,
+   "explanation": "The constant-growth (Gordon growth) model values a stock using next period's expected dividend, D1 = D0×(1+g), divided by (r−g). Using the dividend just paid, D0, instead of D1 is a common error that understates the correct intrinsic value of $68.67.",
+   "grounding": {
+    "source": "Gordon growth model — Wikipedia",
+    "note": "States the model as V0 = D1 / (r − g), requiring next period's dividend."
+   },
+   "difficulty_prior": 0.33,
+   "id": "time-value-of-money-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

@@ -1,0 +1,452 @@
+{
+ "id": "statistical-inference",
+ "concepts": [
+  {
+   "id": "sample-vs-population",
+   "label": "Sample vs Population",
+   "definition": "A population includes every member of a group, while a sample is a smaller subset drawn from it used to estimate the population's characteristics.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "standard-error-vs-sd",
+   "label": "Standard Error vs Deviation",
+   "definition": "Standard deviation measures how spread out individual data points are, while standard error measures how much a sample statistic like the mean would vary across repeated samples.",
+   "prereq": "sample-vs-population",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "central-limit-theorem",
+   "label": "Central Limit Theorem",
+   "definition": "The Central Limit Theorem states that the distribution of sample means becomes approximately normal as sample size increases, regardless of the population's underlying shape.",
+   "prereq": "standard-error-vs-sd",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "confidence-intervals",
+   "label": "Confidence Intervals",
+   "definition": "A confidence interval is a range of values, calculated from sample data, that is expected to contain the true population parameter a stated percentage of the time under repeated sampling.",
+   "prereq": "central-limit-theorem",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "hypothesis-testing-basics",
+   "label": "Hypothesis Testing Basics",
+   "definition": "Hypothesis testing evaluates whether an observed result is unlikely enough under a null hypothesis of no effect to conclude something real is happening.",
+   "prereq": "confidence-intervals",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "t-tests",
+   "label": "T-Tests",
+   "definition": "A t-test compares the means of one or two groups to judge whether an observed difference is likely real or could be explained by sample variability.",
+   "prereq": "hypothesis-testing-basics",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "type-i-vs-type-ii-errors",
+   "label": "Type I vs Type II Errors",
+   "definition": "A Type I error means wrongly rejecting a true null hypothesis, while a Type II error means failing to detect a real effect that actually exists.",
+   "prereq": "hypothesis-testing-basics",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "statistical-vs-practical-significance",
+   "label": "Statistical vs Practical Significance",
+   "definition": "Statistical significance means a result is unlikely due to chance, but practical significance asks whether the size of that effect is actually meaningful in the real world.",
+   "prereq": "t-tests",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "confidence-intervals",
+   "stem": "A pollster reports a 95% confidence interval of 48% to 52% for a candidate's support level. Which interpretation is correct?",
+   "options": [
+    "About 95% of intervals from repeated polls would contain the true support level.",
+    "There is a 95% probability that the true support level lies between 48% and 52%.",
+    "About 95% of individual voters surveyed support the candidate somewhere in that range.",
+    "Repeating this poll would yield the same 48%-to-52% interval 95% of the time."
+   ],
+   "answer": 0,
+   "explanation": "A confidence interval describes the long-run coverage rate of the procedure across repeated samples, not a probability about this one fixed interval. Once computed, the interval either contains the true value or it doesn't; the 95% applies to the method, not this instance.",
+   "grounding": {
+    "source": "Wikipedia: Confidence interval",
+    "note": "Explains the frequentist interpretation: repeated sampling produces intervals that contain the true parameter about 95% of the time."
+   },
+   "difficulty_prior": 0.55,
+   "id": "statistical-inference-000",
+   "status": "beta"
+  },
+  {
+   "concept": "standard-error-vs-sd",
+   "stem": "A study measures cholesterol levels in a sample of 400 patients, finding a sample standard deviation of 40 mg/dL. What is the standard error of the mean?",
+   "options": [
+    "2 mg/dL",
+    "40 mg/dL",
+    "0.1 mg/dL",
+    "800 mg/dL"
+   ],
+   "answer": 0,
+   "explanation": "Standard error equals the standard deviation divided by the square root of sample size: 40 / sqrt(400) = 40/20 = 2 mg/dL. Answering 40 mg/dL confuses the standard error with the standard deviation itself, ignoring that SE shrinks as sample size grows.",
+   "grounding": {
+    "source": "Wikipedia: Standard error",
+    "note": "Defines the standard error of the mean as the sample standard deviation divided by the square root of sample size."
+   },
+   "difficulty_prior": 0.78,
+   "id": "statistical-inference-001",
+   "status": "beta"
+  },
+  {
+   "concept": "central-limit-theorem",
+   "stem": "A quality analyst repeatedly draws random samples of size 50 from a strongly right-skewed distribution of part weights and plots the sample means. According to the Central Limit Theorem, what should this plot increasingly resemble?",
+   "options": [
+    "A normal distribution, regardless of the shape of the original population.",
+    "The same right-skewed shape as the original population distribution.",
+    "A uniform distribution spread evenly across all possible weights.",
+    "A distribution that grows narrower but keeps the original skew."
+   ],
+   "answer": 0,
+   "explanation": "The Central Limit Theorem states the sampling distribution of the mean approaches normality as sample size grows, even from a skewed population. The distractor claiming the distribution merely narrows while keeping its skew wrongly assumes skewness persists rather than fading toward symmetry.",
+   "grounding": {
+    "source": "Wikipedia: Central limit theorem",
+    "note": "States that the distribution of sample means approaches normality as sample size increases, regardless of the population's original shape."
+   },
+   "difficulty_prior": 0.75,
+   "id": "statistical-inference-002",
+   "status": "beta"
+  },
+  {
+   "concept": "type-i-vs-type-ii-errors",
+   "stem": "A clinical trial concludes a new drug works better than placebo when, in reality, the drug has no true effect. What type of statistical error does this represent?",
+   "options": [
+    "Type I error",
+    "Type II error",
+    "Sampling error",
+    "Measurement error"
+   ],
+   "answer": 0,
+   "explanation": "Rejecting a true null hypothesis, concluding an effect exists when it does not, is a Type I error. A Type II error is the opposite: failing to detect a real effect. Sampling and measurement error describe data variability, not a hypothesis-test conclusion.",
+   "grounding": {
+    "source": "Wikipedia: Type I and type II errors",
+    "note": "Defines Type I error as incorrectly rejecting a true null hypothesis."
+   },
+   "difficulty_prior": 0.82,
+   "id": "statistical-inference-003",
+   "status": "beta"
+  },
+  {
+   "concept": "statistical-vs-practical-significance",
+   "stem": "A study of 2 million website visitors finds that a redesigned page increases average time-on-page by 0.2 seconds, a difference that is statistically significant (p < 0.001). What does this most likely indicate?",
+   "options": [
+    "The effect is statistically significant yet may be too small to matter.",
+    "The effect is both statistically and practically significant given the tiny p-value.",
+    "The tiny p-value means the effect must be large and important.",
+    "The tiny p-value likely signals a false positive from the large sample size."
+   ],
+   "answer": 0,
+   "explanation": "With huge sample sizes, even trivially small effects become statistically significant, so p < 0.001 does not guarantee practical importance. The 'false positive' distractor is wrong because Type I error rate is fixed by the chosen alpha level, not inflated by sample size.",
+   "grounding": {
+    "source": "Wikipedia: Statistical significance",
+    "note": "Notes that with large samples even negligible effects can be statistically significant, which does not imply practical importance."
+   },
+   "difficulty_prior": 0.7,
+   "id": "statistical-inference-004",
+   "status": "beta"
+  },
+  {
+   "concept": "sample-vs-population",
+   "stem": "A researcher wants to estimate the average commute time for all 5,000 employees at a company. Rather than surveying everyone, she randomly selects 200 employees and records their commute times. In statistical terms, what do these 200 employees represent?",
+   "options": [
+    "The population, since random selection covers every subgroup",
+    "A census, because each selected employee was directly measured",
+    "A sample used to estimate the full population's characteristics",
+    "A parameter, because it summarizes the company's true average"
+   ],
+   "answer": 2,
+   "explanation": "The 200 employees form a sample, a subset used to estimate the full 5,000-employee population. Random selection makes it representative but not the population itself; a census would require measuring all 5,000, and the sample average is a statistic, not a parameter.",
+   "grounding": {
+    "source": "Wikipedia: Sample (statistics)",
+    "note": "Defines a sample as a subset of a population selected to draw inferences about the whole population."
+   },
+   "difficulty_prior": 0.72,
+   "id": "statistical-inference-005",
+   "status": "beta"
+  },
+  {
+   "concept": "hypothesis-testing-basics",
+   "stem": "A researcher tests whether a new teaching method improves test scores, obtaining a p-value of 0.03 when comparing average scores against the null hypothesis of no difference. What does this p-value represent?",
+   "options": [
+    "The probability that the null hypothesis is true, given the data",
+    "The probability of an effect this large if none truly exists",
+    "The probability the observed improvement happened purely by random chance",
+    "The probability that repeating the study would replicate this result"
+   ],
+   "answer": 1,
+   "explanation": "A p-value is the probability, assuming the null hypothesis is true, of observing a result this extreme or more so. It is not the probability the null is true, not a measure of chance causation, and it says nothing about replication.",
+   "grounding": {
+    "source": "American Statistical Association: Statement on Statistical Significance and P-Values (2016)",
+    "note": "Clarifies that a p-value is the probability of the observed data under the null hypothesis, not the probability the null hypothesis is true."
+   },
+   "difficulty_prior": 0.48,
+   "id": "statistical-inference-006",
+   "status": "beta"
+  },
+  {
+   "concept": "t-tests",
+   "stem": "A researcher compares average test scores between two independent classes of 15 students each, with unknown population standard deviation. Which test is most appropriate to determine if the difference in means is statistically significant?",
+   "options": [
+    "A paired t-test, since both classes took the same test",
+    "A z-test, since the sample means are approximately normal",
+    "A chi-square test, since we are comparing two groups",
+    "An independent two-sample t-test, since the classes are separate groups"
+   ],
+   "answer": 3,
+   "explanation": "Two independent groups with unknown population standard deviation call for an independent two-sample t-test. A paired t-test applies only when the same subjects are measured twice, not separate classes; z-tests require known population variance, and chi-square tests suit categorical data.",
+   "grounding": {
+    "source": "Wikipedia: Student's t-test",
+    "note": "Describes the independent two-sample t-test for comparing means of two independent groups when population standard deviation is unknown."
+   },
+   "difficulty_prior": 0.62,
+   "id": "statistical-inference-007",
+   "status": "beta"
+  },
+  {
+   "concept": "confidence-intervals",
+   "stem": "A company's 95% confidence interval for average customer satisfaction is 7.2 to 7.8, based on a sample of 50 customers. If the company surveyed 500 customers instead, with the same variability, how would the confidence interval most likely change?",
+   "options": [
+    "It would widen, since more customers add response variability",
+    "It would narrow, since a larger sample reduces the standard error",
+    "It would stay the same width, since sample size doesn't affect it",
+    "It would shift higher, since more data reduces overall bias"
+   ],
+   "answer": 1,
+   "explanation": "A larger sample lowers the standard error, which narrows the confidence interval, holding variability constant. Sample size affects precision, not the center or bias of the estimate, so the interval tightens around roughly the same value rather than widening or shifting.",
+   "grounding": {
+    "source": "Wikipedia: Confidence interval",
+    "note": "Explains that confidence interval width decreases as sample size increases because the standard error shrinks."
+   },
+   "difficulty_prior": 0.68,
+   "id": "statistical-inference-008",
+   "status": "beta"
+  },
+  {
+   "concept": "type-i-vs-type-ii-errors",
+   "stem": "A factory's quality-control test rejects a batch if defects exceed 2%. A batch that truly has 5% defects passes inspection anyway. Treating 'the batch meets quality standards' as the null hypothesis, what type of error occurred?",
+   "options": [
+    "Type II error, since a false null hypothesis was not rejected",
+    "Type I error, since a true null hypothesis was wrongly rejected",
+    "Sampling error, since the batch size was too small",
+    "Measurement error, since the defect count was inaccurate"
+   ],
+   "answer": 0,
+   "explanation": "The null hypothesis 'batch meets standards' is false since true defects are 5%, but the test failed to reject it, a Type II error. A Type I error would mean wrongly rejecting a truly good batch; sampling and measurement error describe data quality, not the test's conclusion.",
+   "grounding": {
+    "source": "Wikipedia: Type I and type II errors",
+    "note": "Defines Type II error as failing to reject a false null hypothesis."
+   },
+   "difficulty_prior": 0.6,
+   "id": "statistical-inference-009",
+   "status": "beta"
+  },
+  {
+   "concept": "standard-error-vs-sd",
+   "stem": "A quality engineer measures the tensile strength of a random sample of 100 steel rods from a production line and calculates both the sample standard deviation and the standard error of the mean. Which statement correctly distinguishes the two statistics?",
+   "options": [
+    "Standard deviation measures spread among individual rods; standard error measures precision of the sample mean.",
+    "Standard error reflects variability among individual rods, while standard deviation reflects the precision of the sample mean estimate.",
+    "Standard deviation and standard error measure the same quantity and converge as sample size increases.",
+    "Standard error is always larger than standard deviation because it also captures sampling variability."
+   ],
+   "answer": 0,
+   "explanation": "Standard error equals the standard deviation divided by the square root of n, so it measures how precisely the sample mean estimates the population mean, not the spread of individual measurements; it is smaller than SD, not larger.",
+   "grounding": {
+    "source": "Wikipedia: Standard error",
+    "note": "Defines standard error as the standard deviation divided by the square root of sample size, distinguishing it from the standard deviation of raw data."
+   },
+   "difficulty_prior": 0.45,
+   "id": "statistical-inference-010",
+   "status": "beta"
+  },
+  {
+   "concept": "central-limit-theorem",
+   "stem": "A courier company's individual delivery times are heavily right-skewed. An analyst draws a random sample of 200 deliveries to build a confidence interval for the mean. Why can the sampling distribution of the sample mean still be treated as approximately normal?",
+   "options": [
+    "Because the Central Limit Theorem says the sampling distribution of the mean approaches normal as sample size grows, regardless of population shape.",
+    "Because a sample of 200 delivery times is itself automatically transformed into a normal distribution, regardless of how skewed the original data was.",
+    "Because the Central Limit Theorem only applies when the underlying population distribution is already close to normal.",
+    "Because averaging removes skew only once the sample exceeds the commonly cited rule-of-thumb size of 30 observations."
+   ],
+   "answer": 0,
+   "explanation": "The Central Limit Theorem guarantees the sampling distribution of the mean approaches normality as sample size grows, regardless of population shape and without an exact cutoff like 30; individual data points remain skewed, and the theorem does not require the population itself to be normal.",
+   "grounding": {
+    "source": "Wikipedia: Central limit theorem",
+    "note": "States that the sampling distribution of the mean tends toward normal as sample size increases, regardless of the population's original distribution."
+   },
+   "difficulty_prior": 0.5,
+   "id": "statistical-inference-011",
+   "status": "beta"
+  },
+  {
+   "concept": "confidence-intervals",
+   "stem": "A study reports that the 95% confidence interval for the mean recovery time after a procedure is 4.2 to 6.8 days. Which interpretation of this interval is statistically correct?",
+   "options": [
+    "About 95% of confidence intervals from repeated samples would contain the true population mean.",
+    "There is a 95% probability that the true population mean falls between 4.2 and 6.8 days.",
+    "95% of individual patients recover somewhere between 4.2 and 6.8 days after the procedure.",
+    "The sample mean has a 95% chance of landing between 4.2 and 6.8 days in a repeat study."
+   ],
+   "answer": 0,
+   "explanation": "A 95% CI means that if the sampling process were repeated many times, about 95% of the resulting intervals would capture the true mean; it does not assign a probability to this one fixed interval or describe individual patients.",
+   "grounding": {
+    "source": "Wikipedia: Confidence interval",
+    "note": "Clarifies the frequentist interpretation: the confidence level describes the long-run capture rate of the interval procedure, not a probability about one realized interval."
+   },
+   "difficulty_prior": 0.42,
+   "id": "statistical-inference-012",
+   "status": "beta"
+  },
+  {
+   "concept": "t-tests",
+   "stem": "A physical therapist measures grip strength in the same 18 patients before and after a 6-week rehabilitation program and wants to test whether the average change differs from zero. Which test is most appropriate?",
+   "options": [
+    "A paired-samples t-test, since the same individuals are measured twice under different conditions.",
+    "An independent-samples t-test, since before and after values come from two separate groups.",
+    "A one-sample z-test, since population standard deviation is assumed to be known in advance.",
+    "A chi-square test, since the outcome of interest is categorical rather than continuous."
+   ],
+   "answer": 0,
+   "explanation": "Because the same patients are measured twice, the before and after values are dependent, requiring a paired-samples t-test rather than treating them as independent groups; a z-test needs known population SD, and grip strength change is continuous, not categorical.",
+   "grounding": {
+    "source": "Wikipedia: Student's t-test",
+    "note": "Distinguishes the paired-samples t-test for dependent measurements on the same subjects from independent-samples and one-sample tests."
+   },
+   "difficulty_prior": 0.5,
+   "id": "statistical-inference-013",
+   "status": "beta"
+  },
+  {
+   "concept": "type-i-vs-type-ii-errors",
+   "stem": "A spam filter flags a legitimate email as spam and moves it out of the inbox. In hypothesis-testing terms, treating 'the email is legitimate' as the null hypothesis, what type of error occurred?",
+   "options": [
+    "A Type I error, since a true null hypothesis was incorrectly rejected.",
+    "A Type II error, since a false null hypothesis was not rejected.",
+    "A sampling error, since the filter was trained on a biased sample of emails.",
+    "A measurement error, since the filter misclassified the email's content features."
+   ],
+   "answer": 0,
+   "explanation": "The null hypothesis ('the email is legitimate') was true but rejected, which defines a Type I error, a false positive. A Type II error would instead be failing to flag actual spam; sampling and measurement error are unrelated concepts.",
+   "grounding": {
+    "source": "Wikipedia: Type I and type II errors",
+    "note": "Defines a Type I error as rejecting a true null hypothesis (a false positive)."
+   },
+   "difficulty_prior": 0.48,
+   "id": "statistical-inference-014",
+   "status": "beta"
+  },
+  {
+   "concept": "sample-vs-population",
+   "stem": "A researcher draws one random sample of 200 patients from a hospital's population of 50,000 and reports a sample mean blood pressure of 128 mmHg. A colleague claims this proves the true population mean is exactly 128 mmHg. What is the flaw in this claim?",
+   "options": [
+    "The sample mean estimates the fixed population mean but can differ due to sampling variability.",
+    "The population mean itself changes with each new sample drawn from the same 50,000 patients.",
+    "The claim would be valid if the sample size were larger than the common threshold of 30.",
+    "A sample mean can never estimate a population mean unless the entire population is measured."
+   ],
+   "answer": 0,
+   "explanation": "The population mean is a fixed, unknown value; it does not change between samples. The sample mean is a random variable subject to sampling error, so it may differ from 128 mmHg even though it is an unbiased estimate. A sample size above 30 does not guarantee an exact match to the population mean.",
+   "grounding": {
+    "source": "Wikipedia: Statistical parameter",
+    "note": "Defines a population parameter as a fixed, generally unknown value, distinct from the sample statistic used to estimate it."
+   },
+   "difficulty_prior": 0.45,
+   "id": "statistical-inference-015",
+   "status": "beta"
+  },
+  {
+   "concept": "standard-error-vs-sd",
+   "stem": "A factory quality team increases the number of bolts sampled from a production line from 16 to 256 when estimating average bolt length. Which statement correctly describes the effect on the standard deviation and the standard error of the mean?",
+   "options": [
+    "The standard error drops sharply while the standard deviation stays about the same.",
+    "The standard deviation drops sharply while the standard error stays about the same.",
+    "Both the standard deviation and the standard error drop by roughly the same amount.",
+    "Neither the standard deviation nor the standard error changes as more bolts are sampled."
+   ],
+   "answer": 0,
+   "explanation": "Standard deviation measures inherent variability among individual bolts and doesn't shrink just from sampling more; standard error equals standard deviation divided by the square root of sample size, so it falls substantially, here by a factor of 4, as n grows from 16 to 256.",
+   "grounding": {
+    "source": "Wikipedia: Standard error",
+    "note": "Defines standard error as standard deviation divided by the square root of sample size, which decreases as n increases unlike the standard deviation itself."
+   },
+   "difficulty_prior": 0.4,
+   "id": "statistical-inference-016",
+   "status": "beta"
+  },
+  {
+   "concept": "hypothesis-testing-basics",
+   "stem": "A researcher tests whether a new fertilizer increases crop yield versus the standard fertilizer. The resulting p-value is 0.09, so at the standard alpha = 0.05 threshold, the researcher fails to reject the null hypothesis. Which conclusion is correctly justified by this result?",
+   "options": [
+    "The data do not support concluding the fertilizer increases yield.",
+    "The new fertilizer has been proven to have no effect on crop yield.",
+    "There is a 9% probability that the null hypothesis is actually true.",
+    "The null hypothesis has been confirmed as the correct explanation for the data."
+   ],
+   "answer": 0,
+   "explanation": "Failing to reject H0 means insufficient evidence against it, not that H0 is proven true. A p-value gives the probability of data this extreme assuming H0 is true, not the probability that H0 itself is true, so a 9% figure misstates what p=0.09 represents.",
+   "grounding": {
+    "source": "Wikipedia: p-value",
+    "note": "Clarifies that a p-value is the probability of the observed data under the null hypothesis, not the probability that the null hypothesis is true."
+   },
+   "difficulty_prior": 0.35,
+   "id": "statistical-inference-017",
+   "status": "beta"
+  },
+  {
+   "concept": "type-i-vs-type-ii-errors",
+   "stem": "A lab tightens its significance threshold from 0.05 to 0.01 to reduce false alarms, testing whether a new alloy is stronger than the standard, with sample size and effect size unchanged. What happens to the two error types?",
+   "options": [
+    "The Type I error rate falls while the Type II error rate rises.",
+    "Both error rates fall together, since a stricter threshold simply makes the test more accurate overall.",
+    "The Type I error rate rises while the Type II error rate falls, appearing more sensitive to true effects.",
+    "Neither error rate changes, since the sample size and effect size were both held constant."
+   ],
+   "answer": 0,
+   "explanation": "Lowering alpha makes rejecting the null harder, directly cutting Type I errors (false alarms) but raising Type II errors (missed real effects) when sample size and effect size stay fixed. A stricter threshold makes the test more conservative, not more sensitive, so power drops.",
+   "grounding": {
+    "source": "Wikipedia: Type I and type II errors",
+    "note": "Explains that lowering the Type I error rate (alpha) increases the Type II error rate when sample size and effect size are unchanged."
+   },
+   "difficulty_prior": 0.4,
+   "id": "statistical-inference-018",
+   "status": "beta"
+  },
+  {
+   "concept": "statistical-vs-practical-significance",
+   "stem": "A study with 500,000 participants finds a new drug lowers blood pressure by an average of 0.3 mmHg, a difference statistically significant at p < 0.001. A doctor considers switching patients to this drug. What should most inform that decision?",
+   "options": [
+    "Whether a 0.3 mmHg reduction is large enough to matter clinically, regardless of its statistical significance.",
+    "The p-value alone, since p < 0.001 confirms the effect is both real and clinically meaningful.",
+    "The sample size alone, since 500,000 participants guarantees the result generalizes to all patients.",
+    "The direction of the effect alone, since any blood pressure reduction is beneficial no matter how small."
+   ],
+   "answer": 0,
+   "explanation": "With very large samples, even tiny, clinically meaningless differences can reach statistical significance. Practical significance requires judging whether the effect size, here 0.3 mmHg, is large enough to matter, independent of how small the p-value is.",
+   "grounding": {
+    "source": "Wikipedia: Statistical significance",
+    "note": "Distinguishes statistical significance from practical significance, noting that large samples can make trivial effects statistically significant."
+   },
+   "difficulty_prior": 0.45,
+   "id": "statistical-inference-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

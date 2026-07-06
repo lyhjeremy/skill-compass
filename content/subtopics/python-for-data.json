@@ -1,0 +1,452 @@
+{
+ "id": "python-for-data",
+ "concepts": [
+  {
+   "id": "dataframe-vs-series",
+   "label": "DataFrame vs Series",
+   "definition": "A DataFrame is a 2D labeled table of columns while a Series is a single labeled 1D column, and DataFrames are built from one or more Series.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "boolean-mask-filtering",
+   "label": "Boolean Mask Filtering",
+   "definition": "Boolean mask filtering selects rows from a DataFrame or Series by applying a condition that produces a True/False array used to index the data.",
+   "prereq": "dataframe-vs-series",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "handling-missing-data",
+   "label": "Handling Missing Data",
+   "definition": "Handling missing data means detecting NaN values with methods like isna() and deciding whether to fill, drop, or otherwise account for them before analysis.",
+   "prereq": "boolean-mask-filtering",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "chained-indexing-pitfalls",
+   "label": "Chained Indexing Pitfalls",
+   "definition": "Chained indexing pitfalls occur when two indexing operations are strung together (like df[df.x>0]['y'] = 1), which can silently fail to modify the original DataFrame and triggers pandas' SettingWithCopyWarning.",
+   "prereq": "boolean-mask-filtering",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "vectorization-vs-loops",
+   "label": "Vectorization vs Loops",
+   "definition": "Vectorization applies operations to entire Series or DataFrame columns at once using pandas' and NumPy's optimized code, which is far faster than looping row by row in Python.",
+   "prereq": "dataframe-vs-series",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "groupby-aggregation",
+   "label": "GroupBy Aggregation",
+   "definition": "Groupby aggregation splits a DataFrame into groups based on key values, applies a summary function like sum or mean to each group, and combines the results into a new table.",
+   "prereq": "vectorization-vs-loops",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "merge-join-types",
+   "label": "Merge Join Types",
+   "definition": "Merge and join types (inner, left, right, outer) control which rows from two DataFrames are kept when combining them based on matching key columns.",
+   "prereq": "dataframe-vs-series",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "row-explosion-pitfalls",
+   "label": "Row Explosion Pitfalls",
+   "definition": "Row-explosion pitfalls happen when a merge key has duplicate values in one or both DataFrames, causing the joined result to contain far more rows than either original table.",
+   "prereq": "merge-join-types",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "dataframe-vs-series",
+   "stem": "A pandas DataFrame df has several columns. What is the type of the object returned by df['price']?",
+   "options": [
+    "A single-column pandas DataFrame",
+    "A one-dimensional pandas Series",
+    "A pandas Index object",
+    "A plain Python list"
+   ],
+   "answer": 1,
+   "explanation": "Selecting a single column with df['col'] always returns a one-dimensional Series, never a DataFrame. Using double brackets, df[['col']], is required to keep the result as a DataFrame instead.",
+   "grounding": {
+    "source": "pandas documentation: Intro to data structures",
+    "note": "Defines Series as the 1-D labeled array returned when a single column is selected from a DataFrame."
+   },
+   "difficulty_prior": 0.82,
+   "id": "python-for-data-000",
+   "status": "beta"
+  },
+  {
+   "concept": "boolean-mask-filtering",
+   "stem": "A DataFrame df has a column 'age'. Which expression correctly returns the full rows where age is greater than 30?",
+   "options": [
+    "df[df['age'] > 30]",
+    "df.filter(df['age'] > 30)",
+    "df.loc[df['age'] > 30, 'age']",
+    "df.sort_values('age').head(30)"
+   ],
+   "answer": 0,
+   "explanation": "df[mask] returns every row where the boolean mask is True. df.filter() selects columns or labels, not rows by value; the .loc example returns only the age column, not full rows; sort_values().head(30) ignores the actual age threshold.",
+   "grounding": {
+    "source": "pandas documentation: Boolean indexing",
+    "note": "Describes df[mask] as the standard way to select rows where a boolean condition is True."
+   },
+   "difficulty_prior": 0.78,
+   "id": "python-for-data-001",
+   "status": "beta"
+  },
+  {
+   "concept": "handling-missing-data",
+   "stem": "A DataFrame column 'revenue' contains NaN values that should be replaced with 0 before summing. Which method accomplishes this?",
+   "options": [
+    "df['revenue'].fillna(0)",
+    "df['revenue'].dropna()",
+    "df['revenue'].isna()",
+    "df['revenue'].interpolate()"
+   ],
+   "answer": 0,
+   "explanation": "fillna(0) replaces every NaN with 0, keeping the row count intact. dropna() removes rows with NaN entirely; isna() only flags missingness as True/False; interpolate() estimates gaps from neighboring values, not a fixed constant.",
+   "grounding": {
+    "source": "pandas documentation: Working with missing data",
+    "note": "Documents fillna() for replacing NaN values, as distinct from dropna() and isna()."
+   },
+   "difficulty_prior": 0.8,
+   "id": "python-for-data-002",
+   "status": "beta"
+  },
+  {
+   "concept": "groupby-aggregation",
+   "stem": "A DataFrame orders has columns 'region' and 'amount'. Which code correctly computes the total 'amount' for each 'region'?",
+   "options": [
+    "orders.groupby('region')['amount'].sum()",
+    "orders.groupby('amount')['region'].sum()",
+    "orders['amount'].sum()",
+    "orders.groupby('region')['amount'].mean()"
+   ],
+   "answer": 0,
+   "explanation": "groupby('region') partitions rows by region before summing 'amount'. Grouping by 'amount' instead swaps the key and target; summing the whole column skips the split entirely; taking the mean gives an average, not a total.",
+   "grounding": {
+    "source": "pandas documentation: Group by: split-apply-combine",
+    "note": "Explains that groupby(key)[column].agg() splits data by key before aggregating the target column."
+   },
+   "difficulty_prior": 0.75,
+   "id": "python-for-data-003",
+   "status": "beta"
+  },
+  {
+   "concept": "vectorization-vs-loops",
+   "stem": "An analyst needs to increase every value in a 1-million-row 'price' column by 10%. Which approach is fastest and most idiomatic in pandas?",
+   "options": [
+    "df['price'] = df['price'] * 1.1",
+    "for i in range(len(df)): df.loc[i, 'price'] *= 1.1",
+    "df['price'] = df['price'].apply(lambda x: x * 1.1)",
+    "df['price'] = [x * 1.1 for x in df['price']]"
+   ],
+   "answer": 0,
+   "explanation": "Vectorized arithmetic applies the operation to the whole column at once using compiled code. The for-loop, .apply(), and list comprehension all iterate element by element in Python, adding overhead that scales badly with row count.",
+   "grounding": {
+    "source": "pandas documentation: Enhancing performance",
+    "note": "Recommends vectorized operations over Python loops or apply() for elementwise column arithmetic."
+   },
+   "difficulty_prior": 0.72,
+   "id": "python-for-data-004",
+   "status": "beta"
+  },
+  {
+   "concept": "chained-indexing-pitfalls",
+   "stem": "An analyst runs `df[df['status'] == 'active']['score'] = 100` to update scores for active rows, but the source DataFrame remains unchanged after the line executes. Which best explains why?",
+   "options": [
+    "Chained indexing returns a copy, so the assignment never updates the original DataFrame",
+    "The line raises a SettingWithCopyWarning that halts execution, preventing the update from completing",
+    "Pandas silently discards any assignment that doesn't use .loc or .iloc indexing",
+    "The boolean comparison converts the 'score' column into a read-only view, blocking the assignment"
+   ],
+   "answer": 0,
+   "explanation": "df[mask]['score'] = 100 first selects a new object from the mask, then assigns onto it, leaving the original df untouched. This triggers SettingWithCopyWarning, which flags the risk but does not halt execution; df.loc[mask, 'score'] = 100 updates the original directly.",
+   "grounding": {
+    "source": "pandas documentation: Indexing and selecting data — Returning a view versus a copy",
+    "note": "Explains that chained indexing can return a copy, causing assignments to silently fail on the original object."
+   },
+   "difficulty_prior": 0.5,
+   "id": "python-for-data-005",
+   "status": "beta"
+  },
+  {
+   "concept": "merge-join-types",
+   "stem": "A table orders has 1,000 rows and a table customers has details for most but not all customer_ids in orders. An analyst runs pd.merge(orders, customers, on='customer_id', how='inner'). What happens to orders rows whose customer_id has no match?",
+   "options": [
+    "They remain in the result, with NaN filling every customer column",
+    "They cause pandas to raise a KeyError, stopping the merge immediately",
+    "They are dropped, since inner join retains only matching keys",
+    "They are dropped only if customer_id itself is null, not simply unmatched"
+   ],
+   "answer": 2,
+   "explanation": "An inner join keeps only rows whose key appears in both tables, so unmatched orders rows are dropped entirely. NaN-filling for unmatched rows happens only with how='left' or 'outer', not 'inner'; merge does not raise KeyError for non-matching values.",
+   "grounding": {
+    "source": "pandas documentation: Merge, join, concatenate and compare",
+    "note": "Documents that how='inner' returns only the intersection of keys present in both DataFrames."
+   },
+   "difficulty_prior": 0.65,
+   "id": "python-for-data-006",
+   "status": "beta"
+  },
+  {
+   "concept": "row-explosion-pitfalls",
+   "stem": "A sales table has one row per transaction_id. A promotions table has multiple rows per transaction_id when a transaction has several promo codes applied. After pd.merge(sales, promotions, on='transaction_id'), the result has more rows than sales. Why?",
+   "options": [
+    "Pandas performs a full cross-join, pairing every sales row with every promotions row regardless of key",
+    "Each sales row is paired with every matching promotions row, so matches multiply the count",
+    "The merge duplicates each sales row once for every column present in promotions",
+    "Rows are duplicated because promotions was not sorted by transaction_id before the merge"
+   ],
+   "answer": 1,
+   "explanation": "Merge pairs rows sharing the same transaction_id, so a transaction with three promotions rows appears three times in the output. This differs from a cross-join, which would ignore key equality entirely; sort order and column counts do not affect row counts.",
+   "grounding": {
+    "source": "pandas documentation: Merge, join, concatenate and compare",
+    "note": "Notes that merge results reflect the combination of all matching rows when keys are duplicated in either DataFrame."
+   },
+   "difficulty_prior": 0.5,
+   "id": "python-for-data-007",
+   "status": "beta"
+  },
+  {
+   "concept": "handling-missing-data",
+   "stem": "A DataFrame survey has 500 rows. An analyst wants to know how many missing (NaN) values exist in each column, not just the total across the whole DataFrame. Which expression provides that?",
+   "options": [
+    "survey.dropna().shape[0]",
+    "survey.isna().sum()",
+    "survey.notna().sum()",
+    "survey.isna().sum().sum()"
+   ],
+   "answer": 1,
+   "explanation": "isna() flags NaNs as True; summing per column (the default axis) totals missing values per column. notna().sum() instead counts non-missing values, and isna().sum().sum() collapses the per-column counts into one overall total across the DataFrame.",
+   "grounding": {
+    "source": "pandas documentation: Working with missing data",
+    "note": "Shows isna() combined with sum() as the standard way to count missing values per column."
+   },
+   "difficulty_prior": 0.6,
+   "id": "python-for-data-008",
+   "status": "beta"
+  },
+  {
+   "concept": "groupby-aggregation",
+   "stem": "A DataFrame trades has columns 'trader' and 'pnl'. An analyst wants, for each trader, both the average pnl and the maximum pnl returned in one call. Which code produces a DataFrame with both statistics per trader?",
+   "options": [
+    "trades.groupby('trader')['pnl'].mean().max()",
+    "trades[['pnl']].agg(['mean','max'])",
+    "trades.groupby('trader').pnl.agg(['mean','max'])",
+    "trades.groupby('trader').mean()['pnl'].max()"
+   ],
+   "answer": 2,
+   "explanation": "agg(['mean','max']) applied to the grouped 'pnl' Series returns one row per trader with both statistics as columns. Chaining .mean().max(), or aggregating without grouping by trader, collapses the per-trader breakdown into a single overall value.",
+   "grounding": {
+    "source": "pandas documentation: Group by: split-apply-combine",
+    "note": "Documents .agg() with a list of function names to compute multiple aggregations per group in one call."
+   },
+   "difficulty_prior": 0.6,
+   "id": "python-for-data-009",
+   "status": "beta"
+  },
+  {
+   "concept": "dataframe-vs-series",
+   "stem": "An analyst runs `df.groupby('dept')['salary'].mean()` and separately `df.groupby('dept')[['salary']].mean()`. Both compute mean salary per department. How do the two results differ in structure?",
+   "options": [
+    "The first returns a Series indexed by dept; the second, a single-column DataFrame.",
+    "The first returns a DataFrame; the second returns a Series, since double brackets convert to Series.",
+    "Both return identical Series objects, since only one column is aggregated.",
+    "Both return single-column DataFrames, because aggregating with `.mean()` always restores two-dimensional structure regardless of bracket notation."
+   ],
+   "answer": 0,
+   "explanation": "Single-bracket selection (a string) returns a Series; double-bracket selection (a list) preserves DataFrame structure, even after aggregation. The `.mean()` call does not convert one shape into the other, so results stay structurally different, contrary to the reversed and 'always 2D' claims.",
+   "grounding": {
+    "source": "pandas documentation: Group by: split-apply-combine",
+    "note": "Documents that selecting a column with a list (double brackets) after groupby returns a DataFrame rather than a Series."
+   },
+   "difficulty_prior": 0.45,
+   "id": "python-for-data-010",
+   "status": "beta"
+  },
+  {
+   "concept": "chained-indexing-pitfalls",
+   "stem": "An analyst writes `df.loc[df['region'] == 'West']['sales'] = df.loc[df['region'] == 'West']['sales'] * 1.1` to adjust sales for the West region. Pandas raises a SettingWithCopyWarning. What is the most likely cause and correct fix?",
+   "options": [
+    "Calling `.copy()` on the first `.loc[...]` result removes the warning and correctly updates the original DataFrame in place.",
+    "The warning is spurious and safe to ignore, since `.loc` indexing always returns a view.",
+    "`region` must first be set as the index; otherwise `.loc` cannot guarantee returning a view.",
+    "Chaining `.loc[...]` then `['sales']` may return a copy; use one call, `.loc[mask, 'sales'] *= 1.1`, instead."
+   ],
+   "answer": 3,
+   "explanation": "Chained indexing (`.loc[...]` then `[...]`) performs two separate operations, so pandas cannot confirm whether the first step returned a view or a copy. Calling `.copy()` there only silences the warning without guaranteeing the original DataFrame is updated; a single `.loc[mask, col]` call fixes both issues.",
+   "grounding": {
+    "source": "pandas documentation: Returning a view versus a copy",
+    "note": "Explains that chained indexing can trigger SettingWithCopyWarning and recommends a single loc-based assignment instead."
+   },
+   "difficulty_prior": 0.45,
+   "id": "python-for-data-011",
+   "status": "beta"
+  },
+  {
+   "concept": "merge-join-types",
+   "stem": "Two DataFrames, `product_catalog` (all products) and `warehouse_stock` (only products currently in stock) share key 'sku'. An analyst wants one row per sku appearing in EITHER table, with NaN where data is missing from the other side. Which merge call achieves this?",
+   "options": [
+    "`product_catalog.merge(warehouse_stock, on='sku', how='inner')`",
+    "`product_catalog.merge(warehouse_stock, on='sku', how='outer')`",
+    "`product_catalog.merge(warehouse_stock, on='sku', how='left')`",
+    "`pd.concat([product_catalog, warehouse_stock], axis=0)`"
+   ],
+   "answer": 1,
+   "explanation": "An outer join unions the keys from both frames, filling unmatched columns with NaN so every sku from either table appears once. Inner keeps only shared skus, left keeps only catalog skus, and concat stacks rows without aligning by key.",
+   "grounding": {
+    "source": "pandas documentation: Merge, join, concatenate and compare",
+    "note": "Defines the 'outer' join as the union of keys from both frames, filling missing values with NaN."
+   },
+   "difficulty_prior": 0.45,
+   "id": "python-for-data-012",
+   "status": "beta"
+  },
+  {
+   "concept": "row-explosion-pitfalls",
+   "stem": "Table `students` has 200 rows with duplicate `student_id` values due to re-enrollment records. Table `courses` also has 200 rows with duplicate `student_id` values, one per course taken. Merging on `student_id` produces far more than 200 rows. Why?",
+   "options": [
+    "Pandas merge silently drops duplicate keys, so the row count should stay at 200; the discrepancy indicates a bug.",
+    "Merging always sorts and deduplicates on the join key before combining, so any row increase must come from NaN padding.",
+    "Duplicate keys on each side match every duplicate on the other side, multiplying rows for that key (many-to-many join).",
+    "The `on` parameter requires a unique key in at least one table, so pandas raises an error instead of returning extra rows."
+   ],
+   "answer": 2,
+   "explanation": "When both merge keys contain duplicates, pandas matches every duplicate on one side against every duplicate of the same value on the other side, so a key appearing m times on the left and n times on the right yields m*n rows.",
+   "grounding": {
+    "source": "pandas documentation: Merge, join, concatenate and compare",
+    "note": "Describes many-to-many merges, where duplicate keys on both sides produce a Cartesian-style row expansion."
+   },
+   "difficulty_prior": 0.55,
+   "id": "python-for-data-013",
+   "status": "beta"
+  },
+  {
+   "concept": "vectorization-vs-loops",
+   "stem": "An analyst classifies 2 million rows as 'high' if `score` > 80, else 'low', by iterating with a Python for-loop and appending to a list. What is the main performance drawback of this approach compared to a vectorized alternative?",
+   "options": [
+    "Each iteration incurs Python-level overhead and repeated lookups, whereas vectorized calls like `np.where` execute in compiled, optimized loops.",
+    "Vectorized operations always run on multiple CPU cores in parallel, which fully explains the observed slowdown.",
+    "Appending to a Python list costs the same as vectorized array allocation, so performance should be identical.",
+    "The Global Interpreter Lock (GIL) blocks the loop from executing at all until other threads finish, causing the slowdown."
+   ],
+   "answer": 0,
+   "explanation": "Vectorized functions like `np.where` push the loop into compiled C code, avoiding per-element Python interpreter overhead that dominates explicit for-loops. The slowdown is due to interpreter overhead, not multithreading or the GIL, since a single-threaded loop runs to completion regardless of the GIL.",
+   "grounding": {
+    "source": "NumPy documentation: NumPy fundamentals - vectorization",
+    "note": "Explains that vectorized array operations avoid explicit Python loops, reducing per-element interpreter overhead."
+   },
+   "difficulty_prior": 0.35,
+   "id": "python-for-data-014",
+   "status": "beta"
+  },
+  {
+   "concept": "dataframe-vs-series",
+   "stem": "A DataFrame `orders` has 100 rows. An analyst runs `row = orders.iloc[0]` to inspect the first order. Which statement about `row` is correct?",
+   "options": [
+    "row is a Series whose index labels are orders' column names",
+    "row is a DataFrame containing a single row with orders' columns",
+    "row is a Series whose index is the integer 0",
+    "row is a NumPy array holding the values from the first row"
+   ],
+   "answer": 0,
+   "explanation": "`.iloc` with a single integer returns a Series indexed by the original column labels; using `.iloc[[0]]` (a list) would instead return a one-row DataFrame, a distinction analysts often miss.",
+   "grounding": {
+    "source": "pandas documentation: Indexing and selecting data",
+    "note": "Confirms that .iloc with a scalar returns a Series, while a list-based selector returns a DataFrame."
+   },
+   "difficulty_prior": 0.35,
+   "id": "python-for-data-015",
+   "status": "beta"
+  },
+  {
+   "concept": "boolean-mask-filtering",
+   "stem": "An analyst wants rows where `age` is over 30 and `income` is over 50000, and writes `df[df['age'] > 30 & df['income'] > 50000]`. Running this raises a TypeError. What is the most likely cause?",
+   "options": [
+    "`&` binds tighter than `>`, evaluating `30 & df['income']` first",
+    "`&` cannot be applied to boolean Series, only to integers",
+    "Boolean masks must be combined with `and`, never with `&`",
+    "The first comparison returns a NumPy array incompatible with the second"
+   ],
+   "answer": 0,
+   "explanation": "In Python, `&` has higher precedence than comparison operators, so `30 & df['income']` is evaluated before the `>` comparisons finish. Wrapping each condition in parentheses, e.g. `(df['age']>30) & (df['income']>50000)`, fixes it.",
+   "grounding": {
+    "source": "Python documentation: Operator precedence",
+    "note": "Shows bitwise operators like & bind tighter than comparison operators, causing this common pandas filtering error."
+   },
+   "difficulty_prior": 0.3,
+   "id": "python-for-data-016",
+   "status": "beta"
+  },
+  {
+   "concept": "handling-missing-data",
+   "stem": "A DataFrame `df` has a column `score` with some NaN values. An analyst runs `df[df['score'] == np.nan]` intending to find missing scores, but the result is always empty. Why?",
+   "options": [
+    "NaN never equals anything, including itself, per IEEE 754 rules",
+    "pandas silently converts NaN to 0 before comparing values",
+    "The `==` operator raises a hidden exception pandas quietly suppresses",
+    "`np.nan` is stored as text, so numeric comparisons fail"
+   ],
+   "answer": 0,
+   "explanation": "Under IEEE 754, NaN is defined as unequal to every value, including itself, so `== np.nan` never matches. `df['score'].isna()` or `pd.isna()` are the correct ways to detect missing values.",
+   "grounding": {
+    "source": "IEEE 754 (Wikipedia)",
+    "note": "Describes NaN as unordered and unequal to any value, including itself, which explains the failed equality comparison."
+   },
+   "difficulty_prior": 0.45,
+   "id": "python-for-data-017",
+   "status": "beta"
+  },
+  {
+   "concept": "merge-join-types",
+   "stem": "Table `shipments` has 3 rows for order_id 'X1' and table `tracking_events` has 5 rows for the same order_id. After `pd.merge(shipments, tracking_events, on='order_id', how='inner')`, how many result rows correspond to 'X1'?",
+   "options": [
+    "15, pairing every matching row from each side",
+    "5, matching the larger row count for that key",
+    "3, matching the smaller row count for that key",
+    "8, the sum of matching rows from both tables"
+   ],
+   "answer": 0,
+   "explanation": "When both sides of a merge contain duplicate keys, pandas performs a many-to-many join, pairing every matching left row with every matching right row (3 x 5 = 15), not the sum or larger count.",
+   "grounding": {
+    "source": "pandas documentation: Merge, join, concatenate and compare",
+    "note": "Explains that merges with duplicate keys on both sides produce a Cartesian product of matching rows per key."
+   },
+   "difficulty_prior": 0.32,
+   "id": "python-for-data-018",
+   "status": "beta"
+  },
+  {
+   "concept": "vectorization-vs-loops",
+   "stem": "An analyst replaces a for-loop with `df['flag'] = df['amount'].apply(lambda x: 1 if x > 1000 else 0)` on a 5-million-row DataFrame. Compared to `df['flag'] = (df['amount'] > 1000).astype(int)`, what is true?",
+   "options": [
+    "`.apply()` calls the function once per row, so it runs slower",
+    "`.apply()` compiles the lambda to machine code, making it faster",
+    "Both run at the same speed since pandas vectorizes every `.apply()` call",
+    "The comparison is slower since it builds an intermediate boolean array"
+   ],
+   "answer": 0,
+   "explanation": "`Series.apply()` invokes the Python function once per element, similar to a loop, gaining none of NumPy's vectorized speed. `(df['amount'] > 1000).astype(int)` operates on the whole array in compiled code, making it far faster.",
+   "grounding": {
+    "source": "pandas documentation: Enhancing performance",
+    "note": "Notes that .apply() is not vectorized and iterates element-wise, unlike direct vectorized operations on Series."
+   },
+   "difficulty_prior": 0.5,
+   "id": "python-for-data-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}
