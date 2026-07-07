@@ -1,5 +1,5 @@
-export interface Theme { id: string; title: string; color: string; status: 'live' | 'partial' | 'soon' }
-export interface TrackDef { id: string; title: string; status: string; blurb: string; subtopics: string[] }
+export interface Theme { id: string; title: string; color: string; status: 'live' | 'soon'; featured?: boolean }
+export interface TrackDef { id: string; title: string; status: 'live' | 'partial' | 'soon'; blurb: string; subtopics: string[]; ready?: number; total?: number }
 export interface CertDef { id: string; title: string; status: string; blurb: string }
 export interface SubtopicMeta { id: string; title: string; theme: string; track: string; status: string }
 export interface Manifest { version: number; themes: Theme[]; tracks: TrackDef[]; certs: CertDef[]; subtopics: SubtopicMeta[] }

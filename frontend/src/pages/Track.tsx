@@ -11,9 +11,10 @@ export default function Track() {
   if (!manifest) return <div className="container" style={{ padding: 48 }}><p className="muted">Loading…</p></div>
 
   const track = manifest.tracks.find(t => t.id === trackId)
-  if (!track || track.status !== 'live') return (
+  if (!track || track.status === 'soon') return (
     <div className="container" style={{ padding: 48, textAlign: 'center' }}>
       <h2>This track is coming soon</h2>
+      <p className="muted small" style={{ marginTop: 8 }}>Its topics are still being written and reviewed.</p>
       <Link className="btn" style={{ marginTop: 16 }} to="/explore">Browse what's live</Link>
     </div>
   )

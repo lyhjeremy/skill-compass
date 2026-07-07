@@ -14,7 +14,8 @@ export default function Home() {
   const returning = sessions.length > 0
   const lastSession = returning ? sessions[sessions.length - 1] : null
   const lastTrack = lastSession && manifest
-    ? manifest.tracks.find(t => t.status === 'live' && t.subtopics.includes(lastSession.subtopic)) ?? manifest.tracks[0]
+    ? manifest.tracks.find(t => t.status !== 'soon' && t.subtopics.includes(lastSession.subtopic))
+      ?? manifest.tracks.find(t => t.status !== 'soon') ?? null
     : null
   const assessed = lastTrack ? lastTrack.subtopics.filter(s => store.mastery(s) !== null).length : 0
 
@@ -29,8 +30,8 @@ export default function Home() {
     <div className="fade-in">
       <section style={{ textAlign: 'center', padding: '56px 20px 30px', background: 'linear-gradient(180deg, var(--tint) 0%, transparent 85%)' }}>
         <h1 style={{ maxWidth: 640, margin: '0 auto' }}>Where do you actually stand?</h1>
-        <p className="muted" style={{ marginTop: 10, maxWidth: 520, marginInline: 'auto' }}>
-          Calibrated 2-minute skill checks for data, analytics, and finance professionals. No sign-up.
+        <p className="muted" style={{ marginTop: 10, maxWidth: 540, marginInline: 'auto' }}>
+          Calibrated 2-minute skill checks across data, tech, business, finance, and more — wired to the live job market. No sign-up.
         </p>
         <button className="btn" style={{ marginTop: 22 }} onClick={() => setPicker(true)}>▶&nbsp; Take a 2-minute check</button>
       </section>
@@ -69,11 +70,11 @@ export default function Home() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
           <Link to="/explore" className="card lanecard" style={{ textDecoration: 'none', borderTopColor: 'var(--t-teal)' }}>
             <h3>Quick Topics</h3>
-            <p className="small muted" style={{ marginTop: 4 }}>5 themes · 2-minute checks</p>
+            <p className="small muted" style={{ marginTop: 4 }}>{manifest ? `${manifest.subtopics.filter(s => s.status === 'live').length} topics · 2-minute checks` : '2-minute checks'}</p>
           </Link>
           <Link to="/explore" className="card lanecard" style={{ textDecoration: 'none', borderTopColor: 'var(--t-violet)' }}>
             <h3>Career Tracks</h3>
-            <p className="small muted" style={{ marginTop: 4 }}>4 role-based paths, live</p>
+            <p className="small muted" style={{ marginTop: 4 }}>{manifest ? `${manifest.tracks.filter(t => t.status !== 'soon').length} role-based paths` : 'Role-based paths'}</p>
           </Link>
           <Link to="/explore" className="card lanecard" style={{ textDecoration: 'none', borderTopColor: 'var(--t-amber)' }}>
             <h3>Certificate Prep</h3>
@@ -94,18 +95,19 @@ export default function Home() {
             <p className="small muted" style={{ textAlign: 'center', margin: '6px 0 14px' }}>
               We'll start you with the right check — 6 questions, about 2 minutes, untimed.
             </p>
-            {manifest.themes.map(t => {
-              const hasLive = manifest.subtopics.some(s => s.theme === t.id && s.status === 'live')
-              return (
+            {manifest.themes
+              .filter(t => t.status === 'live')
+              .sort((a, b) => Number(!!b.featured) - Number(!!a.featured))
+              .slice(0, 8)
+              .map(t => (
                 <button key={t.id} className="opt" style={{ justifyContent: 'center', fontWeight: 600 }}
-                  disabled={!hasLive} onClick={() => pickTheme(t.id)}>
+                  onClick={() => pickTheme(t.id)}>
                   <i className="themedot" style={{ background: t.color }} />
-                  {t.title}{!hasLive && <span className="pill gray">soon</span>}
+                  {t.title}
                 </button>
-              )
-            })}
+              ))}
             <p style={{ textAlign: 'center', marginTop: 8 }}>
-              <Link className="small muted" to="/explore" onClick={() => setPicker(false)}>or browse all topics →</Link>
+              <Link className="small muted" to="/explore" onClick={() => setPicker(false)}>or browse all {manifest.subtopics.filter(s => s.status === 'live').length} topics →</Link>
             </p>
           </div>
         </>

@@ -1,57 +1,1735 @@
 {
-  "version": 2,
-  "themes": [
-    { "id": "ml-ai", "title": "Machine Learning & AI", "color": "#7C3AED", "status": "live" },
-    { "id": "stats", "title": "Statistics & Experimentation", "color": "#0891B2", "status": "live" },
-    { "id": "sql-data", "title": "SQL & Data", "color": "#D97706", "status": "live" },
-    { "id": "finance", "title": "Finance & Markets", "color": "#059669", "status": "live" },
-    { "id": "business", "title": "Business Analytics", "color": "#E11D48", "status": "live" }
-  ],
-  "tracks": [
-    {
-      "id": "data-analyst", "title": "Data Analyst", "status": "live",
-      "blurb": "SQL, spreadsheets, statistics, dashboards, experiments, and telling the story.",
-      "subtopics": ["sql-querying", "spreadsheets", "descriptive-stats", "dashboards-bi", "ab-testing", "data-storytelling"]
-    },
-    {
-      "id": "data-scientist", "title": "Data Scientist / ML", "status": "live",
-      "blurb": "ML fundamentals, data prep, regression, model evaluation, inference, and Python.",
-      "subtopics": ["ml-fundamentals", "feature-engineering-data-prep", "regression-basics", "model-evaluation", "statistical-inference", "python-for-data"]
-    },
-    {
-      "id": "business-analytics", "title": "Business / Product Analytics", "status": "live",
-      "blurb": "Metrics that matter, forecasting, experiments, dashboards, and the story behind them.",
-      "subtopics": ["business-metrics-kpis", "forecasting-basics", "descriptive-stats", "dashboards-bi", "ab-testing", "data-storytelling"]
-    },
-    {
-      "id": "quant", "title": "Quant / Investment Analytics", "status": "live",
-      "blurb": "Probability, time value of money, financial statements, and portfolio thinking.",
-      "subtopics": ["probability-basics", "time-value-of-money", "financial-statements", "portfolio-risk-return"]
-    }
-  ],
-  "certs": [
-    { "id": "cfa-l1", "title": "CFA Level I", "status": "soon", "blurb": "Practice across the 10 curriculum areas. Not affiliated with CFA Institute." },
-    { "id": "google-da", "title": "Google Data Analytics", "status": "soon", "blurb": "Practice aligned to the certificate's course topics. Not affiliated with Google." },
-    { "id": "aws-cp", "title": "AWS Cloud Practitioner", "status": "soon", "blurb": "Practice aligned to the official exam guide. Not affiliated with AWS." }
-  ],
-  "subtopics": [
-    { "id": "sql-querying", "title": "SQL & querying", "theme": "sql-data", "track": "data-analyst", "status": "live" },
-    { "id": "spreadsheets", "title": "Spreadsheets & Excel", "theme": "sql-data", "track": "data-analyst", "status": "live" },
-    { "id": "python-for-data", "title": "Python for data (pandas)", "theme": "sql-data", "track": "data-scientist", "status": "live" },
-    { "id": "descriptive-stats", "title": "Descriptive statistics", "theme": "stats", "track": "data-analyst", "status": "live" },
-    { "id": "ab-testing", "title": "A/B testing", "theme": "stats", "track": "data-analyst", "status": "live" },
-    { "id": "statistical-inference", "title": "Statistical inference", "theme": "stats", "track": "data-scientist", "status": "live" },
-    { "id": "probability-basics", "title": "Probability essentials", "theme": "stats", "track": "quant", "status": "live" },
-    { "id": "ml-fundamentals", "title": "ML fundamentals", "theme": "ml-ai", "track": "data-scientist", "status": "live" },
-    { "id": "feature-engineering-data-prep", "title": "Feature engineering & data prep", "theme": "ml-ai", "track": "data-scientist", "status": "live" },
-    { "id": "regression-basics", "title": "Regression essentials", "theme": "ml-ai", "track": "data-scientist", "status": "live" },
-    { "id": "model-evaluation", "title": "Model evaluation", "theme": "ml-ai", "track": "data-scientist", "status": "live" },
-    { "id": "time-value-of-money", "title": "Time value of money", "theme": "finance", "track": "quant", "status": "live" },
-    { "id": "financial-statements", "title": "Financial statements", "theme": "finance", "track": "quant", "status": "live" },
-    { "id": "portfolio-risk-return", "title": "Portfolio risk & return", "theme": "finance", "track": "quant", "status": "live" },
-    { "id": "dashboards-bi", "title": "Dashboards & BI", "theme": "business", "track": "data-analyst", "status": "live" },
-    { "id": "data-storytelling", "title": "Data storytelling", "theme": "business", "track": "data-analyst", "status": "live" },
-    { "id": "business-metrics-kpis", "title": "Business metrics & KPIs", "theme": "business", "track": "business-analytics", "status": "live" },
-    { "id": "forecasting-basics", "title": "Forecasting essentials", "theme": "business", "track": "business-analytics", "status": "live" }
-  ]
+ "version": 3,
+ "themes": [
+  {
+   "id": "programming",
+   "title": "Programming & CS",
+   "color": "#C026D3",
+   "featured": true,
+   "status": "soon"
+  },
+  {
+   "id": "ml-ai",
+   "title": "Machine Learning & AI",
+   "color": "#7C3AED",
+   "featured": true,
+   "status": "live"
+  },
+  {
+   "id": "sql-data",
+   "title": "SQL & Data Tools",
+   "color": "#D97706",
+   "featured": true,
+   "status": "live"
+  },
+  {
+   "id": "finance",
+   "title": "Finance & Markets",
+   "color": "#059669",
+   "featured": true,
+   "status": "live"
+  },
+  {
+   "id": "marketing",
+   "title": "Marketing & Growth",
+   "color": "#E11D48",
+   "featured": true,
+   "status": "soon"
+  },
+  {
+   "id": "communication",
+   "title": "Communication & Leadership",
+   "color": "#0284C7",
+   "featured": true,
+   "status": "soon"
+  },
+  {
+   "id": "stats",
+   "title": "Statistics & Experimentation",
+   "color": "#0891B2",
+   "status": "live"
+  },
+  {
+   "id": "web-dev",
+   "title": "Web Development",
+   "color": "#0284C7",
+   "status": "soon"
+  },
+  {
+   "id": "data-eng",
+   "title": "Data Engineering",
+   "color": "#65A30D",
+   "status": "soon"
+  },
+  {
+   "id": "cloud-devops",
+   "title": "Cloud & DevOps",
+   "color": "#EA580C",
+   "status": "soon"
+  },
+  {
+   "id": "cybersecurity",
+   "title": "Cybersecurity",
+   "color": "#E11D48",
+   "status": "soon"
+  },
+  {
+   "id": "business",
+   "title": "Business & Strategy",
+   "color": "#059669",
+   "status": "live"
+  },
+  {
+   "id": "accounting",
+   "title": "Accounting & Audit",
+   "color": "#D97706",
+   "status": "soon"
+  },
+  {
+   "id": "economics",
+   "title": "Economics",
+   "color": "#7C3AED",
+   "status": "soon"
+  },
+  {
+   "id": "product",
+   "title": "Product & Design",
+   "color": "#C026D3",
+   "status": "soon"
+  },
+  {
+   "id": "project-mgmt",
+   "title": "Project & Operations",
+   "color": "#EA580C",
+   "status": "soon"
+  },
+  {
+   "id": "hr-people",
+   "title": "HR & People",
+   "color": "#65A30D",
+   "status": "soon"
+  },
+  {
+   "id": "healthcare",
+   "title": "Healthcare & Life Sciences",
+   "color": "#0891B2",
+   "status": "soon"
+  },
+  {
+   "id": "sustainability",
+   "title": "Energy & Sustainability",
+   "color": "#059669",
+   "status": "soon"
+  },
+  {
+   "id": "legal",
+   "title": "Law & Compliance",
+   "color": "#64748B",
+   "status": "soon"
+  },
+  {
+   "id": "math",
+   "title": "Mathematics",
+   "color": "#7C3AED",
+   "status": "soon"
+  },
+  {
+   "id": "psychology",
+   "title": "Psychology & Behavior",
+   "color": "#E11D48",
+   "status": "soon"
+  }
+ ],
+ "tracks": [
+  {
+   "id": "data-analyst",
+   "title": "Data Analyst",
+   "blurb": "SQL, spreadsheets, statistics, dashboards, experiments, and telling the story.",
+   "subtopics": [
+    "sql-querying",
+    "spreadsheets",
+    "descriptive-stats",
+    "dashboards-bi",
+    "ab-testing",
+    "data-storytelling"
+   ],
+   "status": "live",
+   "ready": 6,
+   "total": 6
+  },
+  {
+   "id": "data-scientist",
+   "title": "Data Scientist / ML",
+   "blurb": "ML fundamentals, data prep, regression, model evaluation, inference, and Python.",
+   "subtopics": [
+    "ml-fundamentals",
+    "feature-engineering-data-prep",
+    "regression-basics",
+    "model-evaluation",
+    "statistical-inference",
+    "python-for-data"
+   ],
+   "status": "live",
+   "ready": 6,
+   "total": 6
+  },
+  {
+   "id": "ml-engineer",
+   "title": "ML Engineer",
+   "blurb": "From notebooks to production: deep learning, deployment, and the engineering around models.",
+   "subtopics": [
+    "ml-fundamentals",
+    "deep-learning-basics",
+    "mlops-deployment",
+    "docker-containers",
+    "model-evaluation",
+    "python-fundamentals"
+   ],
+   "status": "partial",
+   "ready": 2,
+   "total": 6
+  },
+  {
+   "id": "data-engineer",
+   "title": "Data Engineer",
+   "blurb": "Pipelines, warehouses, orchestration, and data that arrives correct.",
+   "subtopics": [
+    "etl-pipelines",
+    "data-warehousing",
+    "advanced-sql",
+    "spark-big-data",
+    "airflow-orchestration",
+    "database-design"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "bi-analyst",
+   "title": "BI Analyst",
+   "blurb": "Power BI, Tableau, SQL, and dashboards decision-makers actually use.",
+   "subtopics": [
+    "power-bi",
+    "tableau",
+    "advanced-sql",
+    "dashboards-bi",
+    "data-storytelling",
+    "business-metrics-kpis"
+   ],
+   "status": "partial",
+   "ready": 3,
+   "total": 6
+  },
+  {
+   "id": "business-analytics",
+   "title": "Business / Product Analytics",
+   "blurb": "Metrics that matter, forecasting, experiments, dashboards, and the story behind them.",
+   "subtopics": [
+    "business-metrics-kpis",
+    "forecasting-basics",
+    "descriptive-stats",
+    "dashboards-bi",
+    "ab-testing",
+    "data-storytelling"
+   ],
+   "status": "live",
+   "ready": 6,
+   "total": 6
+  },
+  {
+   "id": "quant",
+   "title": "Quant / Investment Analytics",
+   "blurb": "Probability, markets, and portfolio thinking — CFA-flavored foundations.",
+   "subtopics": [
+    "probability-basics",
+    "time-value-of-money",
+    "financial-statements",
+    "portfolio-risk-return",
+    "fixed-income-basics",
+    "derivatives-basics"
+   ],
+   "status": "partial",
+   "ready": 4,
+   "total": 6
+  },
+  {
+   "id": "financial-analyst",
+   "title": "Financial Analyst",
+   "blurb": "Statements, valuation, corporate finance, and Excel — the FP&A and IB toolkit.",
+   "subtopics": [
+    "financial-statements",
+    "equity-valuation",
+    "corporate-finance",
+    "time-value-of-money",
+    "fixed-income-basics",
+    "spreadsheets"
+   ],
+   "status": "partial",
+   "ready": 3,
+   "total": 6
+  },
+  {
+   "id": "accountant",
+   "title": "Accountant",
+   "blurb": "From journal entries to audit: the accounting core, CPA-flavored.",
+   "subtopics": [
+    "double-entry-bookkeeping",
+    "managerial-accounting",
+    "audit-basics",
+    "tax-fundamentals",
+    "ifrs-gaap",
+    "spreadsheets"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "economist",
+   "title": "Economics & Policy Analyst",
+   "blurb": "Micro, macro, trade, and the behavioral twist — economics that explains the news.",
+   "subtopics": [
+    "microeconomics",
+    "macroeconomics",
+    "game-theory-basics",
+    "behavioral-economics",
+    "international-trade",
+    "statistical-inference"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "software-engineer",
+   "title": "Software Engineer",
+   "blurb": "The fundamentals interviews test: code, data structures, algorithms, and craft.",
+   "subtopics": [
+    "python-fundamentals",
+    "data-structures",
+    "algorithms-basics",
+    "git-version-control",
+    "clean-code-testing",
+    "apis-http"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "frontend-developer",
+   "title": "Frontend Developer",
+   "blurb": "HTML/CSS to React and TypeScript — building interfaces that work for everyone.",
+   "subtopics": [
+    "html-css",
+    "javascript-fundamentals",
+    "react-fundamentals",
+    "responsive-design",
+    "typescript-essentials",
+    "web-accessibility"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "backend-developer",
+   "title": "Backend Developer",
+   "blurb": "APIs, databases, security, and the server side of the web.",
+   "subtopics": [
+    "apis-http",
+    "node-backend",
+    "database-design",
+    "web-security-basics",
+    "docker-containers",
+    "linux-command-line"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "devops-engineer",
+   "title": "DevOps / SRE",
+   "blurb": "Containers, pipelines, infrastructure as code, and keeping systems observable.",
+   "subtopics": [
+    "docker-containers",
+    "kubernetes-basics",
+    "ci-cd",
+    "terraform-iac",
+    "monitoring-observability",
+    "linux-command-line"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "cloud-architect",
+   "title": "Cloud Architect",
+   "blurb": "AWS, Azure, and GCP fundamentals with the security to match.",
+   "subtopics": [
+    "aws-fundamentals",
+    "azure-fundamentals",
+    "gcp-fundamentals",
+    "kubernetes-basics",
+    "terraform-iac",
+    "security-fundamentals"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "security-analyst",
+   "title": "Cybersecurity Analyst",
+   "blurb": "From fundamentals to incident response — the defender's curriculum.",
+   "subtopics": [
+    "security-fundamentals",
+    "network-security",
+    "identity-access-mgmt",
+    "social-engineering-phishing",
+    "incident-response",
+    "security-compliance"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "product-manager",
+   "title": "Product Manager",
+   "blurb": "Discovery, prioritization, metrics, and the experiments in between.",
+   "subtopics": [
+    "product-management-fundamentals",
+    "user-research",
+    "roadmap-prioritization",
+    "business-metrics-kpis",
+    "ab-testing",
+    "presentation-skills"
+   ],
+   "status": "partial",
+   "ready": 2,
+   "total": 6
+  },
+  {
+   "id": "ux-designer",
+   "title": "UX Designer",
+   "blurb": "Research, principles, prototypes, and interfaces that respect users.",
+   "subtopics": [
+    "ux-design-principles",
+    "user-research",
+    "ui-visual-design",
+    "wireframing-prototyping",
+    "design-systems",
+    "web-accessibility"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "digital-marketer",
+   "title": "Digital Marketer",
+   "blurb": "Channels, SEO, paid, lifecycle, and the analytics to prove it worked.",
+   "subtopics": [
+    "digital-marketing-fundamentals",
+    "seo-basics",
+    "paid-ads-ppc",
+    "email-crm-marketing",
+    "content-marketing",
+    "marketing-analytics-attribution"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "project-manager",
+   "title": "Project Manager",
+   "blurb": "Scope, risk, agile, and stakeholders — PMP-flavored delivery skills.",
+   "subtopics": [
+    "project-management-fundamentals",
+    "agile-scrum",
+    "risk-stakeholder-mgmt",
+    "kanban-lean",
+    "presentation-skills",
+    "negotiation"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "operations-manager",
+   "title": "Operations / Supply Chain",
+   "blurb": "Processes, forecasting, quality, and inventory — making the machine run.",
+   "subtopics": [
+    "operations-management",
+    "supply-chain-basics",
+    "six-sigma-quality",
+    "inventory-logistics",
+    "forecasting-basics",
+    "unit-economics"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "hr-people-analyst",
+   "title": "HR & People Analytics",
+   "blurb": "Hiring, comp, performance, and the data behind people decisions.",
+   "subtopics": [
+    "recruiting-talent",
+    "people-analytics",
+    "compensation-benefits",
+    "performance-management",
+    "org-behavior",
+    "workplace-law-basics"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "management-consultant",
+   "title": "Management Consultant",
+   "blurb": "Frameworks, unit economics, and communication — the consulting toolkit.",
+   "subtopics": [
+    "strategy-frameworks",
+    "unit-economics",
+    "pricing-strategy",
+    "financial-statements",
+    "critical-thinking",
+    "presentation-skills"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "team-leader",
+   "title": "People Leadership",
+   "blurb": "Feedback, delegation, EQ, and decisions — for new and aspiring managers.",
+   "subtopics": [
+    "leadership-management",
+    "emotional-intelligence",
+    "negotiation",
+    "performance-management",
+    "decision-making",
+    "business-writing"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "healthcare-analyst",
+   "title": "Healthcare Analyst",
+   "blurb": "Systems, epidemiology, trials, and the privacy rules around health data.",
+   "subtopics": [
+    "healthcare-systems",
+    "epidemiology",
+    "clinical-trials-basics",
+    "health-data-privacy",
+    "descriptive-stats",
+    "dashboards-bi"
+   ],
+   "status": "partial",
+   "ready": 2,
+   "total": 6
+  },
+  {
+   "id": "sustainability-analyst",
+   "title": "Sustainability / ESG Analyst",
+   "blurb": "Climate science to carbon accounting — the ESG analyst's foundations.",
+   "subtopics": [
+    "climate-science-basics",
+    "esg-reporting",
+    "carbon-accounting",
+    "renewable-energy",
+    "circular-economy",
+    "data-storytelling"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "compliance-officer",
+   "title": "Compliance Officer",
+   "blurb": "Privacy, contracts, ethics, and the frameworks auditors ask about.",
+   "subtopics": [
+    "compliance-ethics",
+    "data-privacy-law",
+    "contract-law-basics",
+    "business-law-basics",
+    "security-compliance",
+    "audit-basics"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "job-seeker",
+   "title": "Job Search Ready",
+   "blurb": "Interviews, negotiation, writing, and the psychology of standing out.",
+   "subtopics": [
+    "interviewing-skills",
+    "negotiation",
+    "business-writing",
+    "presentation-skills",
+    "cognitive-biases",
+    "personal-finance"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  }
+ ],
+ "certs": [
+  {
+   "id": "cfa-l1",
+   "title": "CFA Level I",
+   "status": "soon",
+   "blurb": "Practice across the 10 curriculum areas. Not affiliated with CFA Institute."
+  },
+  {
+   "id": "google-da",
+   "title": "Google Data Analytics",
+   "status": "soon",
+   "blurb": "Practice aligned to the certificate's course topics. Not affiliated with Google."
+  },
+  {
+   "id": "aws-cp",
+   "title": "AWS Cloud Practitioner",
+   "status": "soon",
+   "blurb": "Practice aligned to the official exam guide. Not affiliated with AWS."
+  }
+ ],
+ "subtopics": [
+  {
+   "id": "sql-querying",
+   "title": "SQL & querying",
+   "theme": "sql-data",
+   "track": "data-analyst",
+   "status": "live"
+  },
+  {
+   "id": "spreadsheets",
+   "title": "Spreadsheets & Excel",
+   "theme": "sql-data",
+   "track": "data-analyst",
+   "status": "live"
+  },
+  {
+   "id": "python-for-data",
+   "title": "Python for data (pandas)",
+   "theme": "sql-data",
+   "track": "data-scientist",
+   "status": "live"
+  },
+  {
+   "id": "advanced-sql",
+   "title": "Advanced SQL",
+   "theme": "sql-data",
+   "track": "data-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "power-bi",
+   "title": "Power BI",
+   "theme": "sql-data",
+   "track": "bi-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "tableau",
+   "title": "Tableau",
+   "theme": "sql-data",
+   "track": "bi-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "r-for-data",
+   "title": "R for data analysis",
+   "theme": "sql-data",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "descriptive-stats",
+   "title": "Descriptive statistics",
+   "theme": "stats",
+   "track": "data-analyst",
+   "status": "live"
+  },
+  {
+   "id": "ab-testing",
+   "title": "A/B testing",
+   "theme": "stats",
+   "track": "data-analyst",
+   "status": "live"
+  },
+  {
+   "id": "statistical-inference",
+   "title": "Statistical inference",
+   "theme": "stats",
+   "track": "data-scientist",
+   "status": "live"
+  },
+  {
+   "id": "probability-basics",
+   "title": "Probability essentials",
+   "theme": "stats",
+   "track": "quant",
+   "status": "live"
+  },
+  {
+   "id": "bayesian-thinking",
+   "title": "Bayesian thinking",
+   "theme": "stats",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "causal-inference",
+   "title": "Causal inference",
+   "theme": "stats",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "experimental-design",
+   "title": "Experimental design",
+   "theme": "stats",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "survey-design",
+   "title": "Survey design & measurement",
+   "theme": "stats",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "ml-fundamentals",
+   "title": "ML fundamentals",
+   "theme": "ml-ai",
+   "track": "data-scientist",
+   "status": "live"
+  },
+  {
+   "id": "feature-engineering-data-prep",
+   "title": "Feature engineering & data prep",
+   "theme": "ml-ai",
+   "track": "data-scientist",
+   "status": "live"
+  },
+  {
+   "id": "regression-basics",
+   "title": "Regression essentials",
+   "theme": "ml-ai",
+   "track": "data-scientist",
+   "status": "live"
+  },
+  {
+   "id": "model-evaluation",
+   "title": "Model evaluation",
+   "theme": "ml-ai",
+   "track": "data-scientist",
+   "status": "live"
+  },
+  {
+   "id": "deep-learning-basics",
+   "title": "Deep learning basics",
+   "theme": "ml-ai",
+   "track": "ml-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "nlp-basics",
+   "title": "NLP essentials",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "llm-prompting",
+   "title": "Working with LLMs",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "clustering-unsupervised",
+   "title": "Clustering & unsupervised learning",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "recommender-systems",
+   "title": "Recommender systems",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "time-series-ml",
+   "title": "Time series analysis",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "mlops-deployment",
+   "title": "MLOps & model deployment",
+   "theme": "ml-ai",
+   "track": "ml-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "python-fundamentals",
+   "title": "Python fundamentals",
+   "theme": "programming",
+   "track": "ml-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "javascript-fundamentals",
+   "title": "JavaScript fundamentals",
+   "theme": "programming",
+   "track": "frontend-developer",
+   "status": "soon"
+  },
+  {
+   "id": "git-version-control",
+   "title": "Git & version control",
+   "theme": "programming",
+   "track": "software-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "data-structures",
+   "title": "Data structures",
+   "theme": "programming",
+   "track": "software-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "algorithms-basics",
+   "title": "Algorithms",
+   "theme": "programming",
+   "track": "software-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "oop-design",
+   "title": "OOP & software design",
+   "theme": "programming",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "clean-code-testing",
+   "title": "Testing & code quality",
+   "theme": "programming",
+   "track": "software-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "linux-command-line",
+   "title": "Linux & command line",
+   "theme": "programming",
+   "track": "backend-developer",
+   "status": "soon"
+  },
+  {
+   "id": "regex-text-processing",
+   "title": "Regular expressions",
+   "theme": "programming",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "apis-http",
+   "title": "APIs & HTTP",
+   "theme": "programming",
+   "track": "software-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "html-css",
+   "title": "HTML & CSS",
+   "theme": "web-dev",
+   "track": "frontend-developer",
+   "status": "soon"
+  },
+  {
+   "id": "responsive-design",
+   "title": "Responsive design",
+   "theme": "web-dev",
+   "track": "frontend-developer",
+   "status": "soon"
+  },
+  {
+   "id": "react-fundamentals",
+   "title": "React fundamentals",
+   "theme": "web-dev",
+   "track": "frontend-developer",
+   "status": "soon"
+  },
+  {
+   "id": "typescript-essentials",
+   "title": "TypeScript essentials",
+   "theme": "web-dev",
+   "track": "frontend-developer",
+   "status": "soon"
+  },
+  {
+   "id": "node-backend",
+   "title": "Node.js backend",
+   "theme": "web-dev",
+   "track": "backend-developer",
+   "status": "soon"
+  },
+  {
+   "id": "web-security-basics",
+   "title": "Web application security",
+   "theme": "web-dev",
+   "track": "backend-developer",
+   "status": "soon"
+  },
+  {
+   "id": "frontend-performance",
+   "title": "Web performance",
+   "theme": "web-dev",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "web-accessibility",
+   "title": "Web accessibility",
+   "theme": "web-dev",
+   "track": "frontend-developer",
+   "status": "soon"
+  },
+  {
+   "id": "etl-pipelines",
+   "title": "ETL & data pipelines",
+   "theme": "data-eng",
+   "track": "data-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "data-warehousing",
+   "title": "Data warehousing",
+   "theme": "data-eng",
+   "track": "data-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "database-design",
+   "title": "Database design",
+   "theme": "data-eng",
+   "track": "data-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "nosql-databases",
+   "title": "NoSQL databases",
+   "theme": "data-eng",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "spark-big-data",
+   "title": "Spark & big data",
+   "theme": "data-eng",
+   "track": "data-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "streaming-basics",
+   "title": "Streaming & event data",
+   "theme": "data-eng",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "airflow-orchestration",
+   "title": "Workflow orchestration",
+   "theme": "data-eng",
+   "track": "data-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "data-quality-governance",
+   "title": "Data quality & governance",
+   "theme": "data-eng",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "aws-fundamentals",
+   "title": "AWS fundamentals",
+   "theme": "cloud-devops",
+   "track": "cloud-architect",
+   "status": "soon"
+  },
+  {
+   "id": "azure-fundamentals",
+   "title": "Azure fundamentals",
+   "theme": "cloud-devops",
+   "track": "cloud-architect",
+   "status": "soon"
+  },
+  {
+   "id": "gcp-fundamentals",
+   "title": "Google Cloud fundamentals",
+   "theme": "cloud-devops",
+   "track": "cloud-architect",
+   "status": "soon"
+  },
+  {
+   "id": "docker-containers",
+   "title": "Docker & containers",
+   "theme": "cloud-devops",
+   "track": "ml-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "kubernetes-basics",
+   "title": "Kubernetes basics",
+   "theme": "cloud-devops",
+   "track": "devops-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "ci-cd",
+   "title": "CI/CD",
+   "theme": "cloud-devops",
+   "track": "devops-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "terraform-iac",
+   "title": "Infrastructure as code",
+   "theme": "cloud-devops",
+   "track": "devops-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "monitoring-observability",
+   "title": "Monitoring & observability",
+   "theme": "cloud-devops",
+   "track": "devops-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "security-fundamentals",
+   "title": "Security fundamentals",
+   "theme": "cybersecurity",
+   "track": "cloud-architect",
+   "status": "soon"
+  },
+  {
+   "id": "network-security",
+   "title": "Network security",
+   "theme": "cybersecurity",
+   "track": "security-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "cryptography-basics",
+   "title": "Cryptography essentials",
+   "theme": "cybersecurity",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "identity-access-mgmt",
+   "title": "Identity & access management",
+   "theme": "cybersecurity",
+   "track": "security-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "social-engineering-phishing",
+   "title": "Social engineering & phishing",
+   "theme": "cybersecurity",
+   "track": "security-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "incident-response",
+   "title": "Incident response",
+   "theme": "cybersecurity",
+   "track": "security-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "security-compliance",
+   "title": "Security compliance & frameworks",
+   "theme": "cybersecurity",
+   "track": "security-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "time-value-of-money",
+   "title": "Time value of money",
+   "theme": "finance",
+   "track": "quant",
+   "status": "live"
+  },
+  {
+   "id": "financial-statements",
+   "title": "Financial statements",
+   "theme": "finance",
+   "track": "quant",
+   "status": "live"
+  },
+  {
+   "id": "portfolio-risk-return",
+   "title": "Portfolio risk & return",
+   "theme": "finance",
+   "track": "quant",
+   "status": "live"
+  },
+  {
+   "id": "equity-valuation",
+   "title": "Equity valuation",
+   "theme": "finance",
+   "track": "financial-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "fixed-income-basics",
+   "title": "Fixed income",
+   "theme": "finance",
+   "track": "quant",
+   "status": "soon"
+  },
+  {
+   "id": "derivatives-basics",
+   "title": "Derivatives essentials",
+   "theme": "finance",
+   "track": "quant",
+   "status": "soon"
+  },
+  {
+   "id": "corporate-finance",
+   "title": "Corporate finance",
+   "theme": "finance",
+   "track": "financial-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "personal-finance",
+   "title": "Personal finance",
+   "theme": "finance",
+   "track": "job-seeker",
+   "status": "soon"
+  },
+  {
+   "id": "risk-management",
+   "title": "Financial risk management",
+   "theme": "finance",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "crypto-blockchain",
+   "title": "Crypto & blockchain basics",
+   "theme": "finance",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "double-entry-bookkeeping",
+   "title": "Bookkeeping & the ledger",
+   "theme": "accounting",
+   "track": "accountant",
+   "status": "soon"
+  },
+  {
+   "id": "managerial-accounting",
+   "title": "Managerial accounting",
+   "theme": "accounting",
+   "track": "accountant",
+   "status": "soon"
+  },
+  {
+   "id": "audit-basics",
+   "title": "Audit fundamentals",
+   "theme": "accounting",
+   "track": "accountant",
+   "status": "soon"
+  },
+  {
+   "id": "tax-fundamentals",
+   "title": "Tax fundamentals",
+   "theme": "accounting",
+   "track": "accountant",
+   "status": "soon"
+  },
+  {
+   "id": "ifrs-gaap",
+   "title": "IFRS vs US GAAP",
+   "theme": "accounting",
+   "track": "accountant",
+   "status": "soon"
+  },
+  {
+   "id": "microeconomics",
+   "title": "Microeconomics",
+   "theme": "economics",
+   "track": "economist",
+   "status": "soon"
+  },
+  {
+   "id": "macroeconomics",
+   "title": "Macroeconomics",
+   "theme": "economics",
+   "track": "economist",
+   "status": "soon"
+  },
+  {
+   "id": "game-theory-basics",
+   "title": "Game theory",
+   "theme": "economics",
+   "track": "economist",
+   "status": "soon"
+  },
+  {
+   "id": "behavioral-economics",
+   "title": "Behavioral economics",
+   "theme": "economics",
+   "track": "economist",
+   "status": "soon"
+  },
+  {
+   "id": "international-trade",
+   "title": "International trade & FX",
+   "theme": "economics",
+   "track": "economist",
+   "status": "soon"
+  },
+  {
+   "id": "business-metrics-kpis",
+   "title": "Business metrics & KPIs",
+   "theme": "business",
+   "track": "bi-analyst",
+   "status": "live"
+  },
+  {
+   "id": "forecasting-basics",
+   "title": "Forecasting essentials",
+   "theme": "business",
+   "track": "business-analytics",
+   "status": "live"
+  },
+  {
+   "id": "dashboards-bi",
+   "title": "Dashboards & BI",
+   "theme": "business",
+   "track": "data-analyst",
+   "status": "live"
+  },
+  {
+   "id": "data-storytelling",
+   "title": "Data storytelling",
+   "theme": "business",
+   "track": "data-analyst",
+   "status": "live"
+  },
+  {
+   "id": "strategy-frameworks",
+   "title": "Strategy frameworks",
+   "theme": "business",
+   "track": "management-consultant",
+   "status": "soon"
+  },
+  {
+   "id": "unit-economics",
+   "title": "Unit economics",
+   "theme": "business",
+   "track": "operations-manager",
+   "status": "soon"
+  },
+  {
+   "id": "pricing-strategy",
+   "title": "Pricing strategy",
+   "theme": "business",
+   "track": "management-consultant",
+   "status": "soon"
+  },
+  {
+   "id": "entrepreneurship-basics",
+   "title": "Entrepreneurship & startups",
+   "theme": "business",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "digital-marketing-fundamentals",
+   "title": "Digital marketing fundamentals",
+   "theme": "marketing",
+   "track": "digital-marketer",
+   "status": "soon"
+  },
+  {
+   "id": "seo-basics",
+   "title": "SEO",
+   "theme": "marketing",
+   "track": "digital-marketer",
+   "status": "soon"
+  },
+  {
+   "id": "paid-ads-ppc",
+   "title": "Paid advertising (PPC)",
+   "theme": "marketing",
+   "track": "digital-marketer",
+   "status": "soon"
+  },
+  {
+   "id": "content-marketing",
+   "title": "Content marketing",
+   "theme": "marketing",
+   "track": "digital-marketer",
+   "status": "soon"
+  },
+  {
+   "id": "email-crm-marketing",
+   "title": "Email & CRM marketing",
+   "theme": "marketing",
+   "track": "digital-marketer",
+   "status": "soon"
+  },
+  {
+   "id": "social-media-marketing",
+   "title": "Social media marketing",
+   "theme": "marketing",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "marketing-analytics-attribution",
+   "title": "Marketing analytics & attribution",
+   "theme": "marketing",
+   "track": "digital-marketer",
+   "status": "soon"
+  },
+  {
+   "id": "brand-positioning",
+   "title": "Brand & positioning",
+   "theme": "marketing",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "product-management-fundamentals",
+   "title": "Product management",
+   "theme": "product",
+   "track": "product-manager",
+   "status": "soon"
+  },
+  {
+   "id": "user-research",
+   "title": "User research",
+   "theme": "product",
+   "track": "product-manager",
+   "status": "soon"
+  },
+  {
+   "id": "ux-design-principles",
+   "title": "UX design principles",
+   "theme": "product",
+   "track": "ux-designer",
+   "status": "soon"
+  },
+  {
+   "id": "ui-visual-design",
+   "title": "UI & visual design",
+   "theme": "product",
+   "track": "ux-designer",
+   "status": "soon"
+  },
+  {
+   "id": "wireframing-prototyping",
+   "title": "Wireframing & prototyping",
+   "theme": "product",
+   "track": "ux-designer",
+   "status": "soon"
+  },
+  {
+   "id": "design-systems",
+   "title": "Design systems",
+   "theme": "product",
+   "track": "ux-designer",
+   "status": "soon"
+  },
+  {
+   "id": "roadmap-prioritization",
+   "title": "Prioritization & roadmaps",
+   "theme": "product",
+   "track": "product-manager",
+   "status": "soon"
+  },
+  {
+   "id": "agile-scrum",
+   "title": "Agile & Scrum",
+   "theme": "project-mgmt",
+   "track": "project-manager",
+   "status": "soon"
+  },
+  {
+   "id": "project-management-fundamentals",
+   "title": "Project management",
+   "theme": "project-mgmt",
+   "track": "project-manager",
+   "status": "soon"
+  },
+  {
+   "id": "kanban-lean",
+   "title": "Kanban & lean thinking",
+   "theme": "project-mgmt",
+   "track": "project-manager",
+   "status": "soon"
+  },
+  {
+   "id": "risk-stakeholder-mgmt",
+   "title": "Risk & stakeholder management",
+   "theme": "project-mgmt",
+   "track": "project-manager",
+   "status": "soon"
+  },
+  {
+   "id": "operations-management",
+   "title": "Operations management",
+   "theme": "project-mgmt",
+   "track": "operations-manager",
+   "status": "soon"
+  },
+  {
+   "id": "supply-chain-basics",
+   "title": "Supply chain fundamentals",
+   "theme": "project-mgmt",
+   "track": "operations-manager",
+   "status": "soon"
+  },
+  {
+   "id": "six-sigma-quality",
+   "title": "Six Sigma & quality",
+   "theme": "project-mgmt",
+   "track": "operations-manager",
+   "status": "soon"
+  },
+  {
+   "id": "inventory-logistics",
+   "title": "Inventory & logistics",
+   "theme": "project-mgmt",
+   "track": "operations-manager",
+   "status": "soon"
+  },
+  {
+   "id": "business-writing",
+   "title": "Business writing",
+   "theme": "communication",
+   "track": "team-leader",
+   "status": "soon"
+  },
+  {
+   "id": "presentation-skills",
+   "title": "Presentation skills",
+   "theme": "communication",
+   "track": "product-manager",
+   "status": "soon"
+  },
+  {
+   "id": "negotiation",
+   "title": "Negotiation",
+   "theme": "communication",
+   "track": "project-manager",
+   "status": "soon"
+  },
+  {
+   "id": "leadership-management",
+   "title": "Leadership & management",
+   "theme": "communication",
+   "track": "team-leader",
+   "status": "soon"
+  },
+  {
+   "id": "emotional-intelligence",
+   "title": "Emotional intelligence",
+   "theme": "communication",
+   "track": "team-leader",
+   "status": "soon"
+  },
+  {
+   "id": "critical-thinking",
+   "title": "Critical thinking",
+   "theme": "communication",
+   "track": "management-consultant",
+   "status": "soon"
+  },
+  {
+   "id": "interviewing-skills",
+   "title": "Job interviewing",
+   "theme": "communication",
+   "track": "job-seeker",
+   "status": "soon"
+  },
+  {
+   "id": "recruiting-talent",
+   "title": "Recruiting & hiring",
+   "theme": "hr-people",
+   "track": "hr-people-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "people-analytics",
+   "title": "People analytics",
+   "theme": "hr-people",
+   "track": "hr-people-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "compensation-benefits",
+   "title": "Compensation & benefits",
+   "theme": "hr-people",
+   "track": "hr-people-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "performance-management",
+   "title": "Performance management",
+   "theme": "hr-people",
+   "track": "hr-people-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "org-behavior",
+   "title": "Organizational behavior",
+   "theme": "hr-people",
+   "track": "hr-people-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "workplace-law-basics",
+   "title": "Employment law basics",
+   "theme": "hr-people",
+   "track": "hr-people-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "healthcare-systems",
+   "title": "Healthcare systems",
+   "theme": "healthcare",
+   "track": "healthcare-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "epidemiology",
+   "title": "Epidemiology",
+   "theme": "healthcare",
+   "track": "healthcare-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "clinical-trials-basics",
+   "title": "Clinical trials",
+   "theme": "healthcare",
+   "track": "healthcare-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "medical-terminology",
+   "title": "Medical terminology",
+   "theme": "healthcare",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "health-data-privacy",
+   "title": "Health data & privacy",
+   "theme": "healthcare",
+   "track": "healthcare-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "nutrition-science",
+   "title": "Nutrition science",
+   "theme": "healthcare",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "mental-health-basics",
+   "title": "Mental health literacy",
+   "theme": "healthcare",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "public-health",
+   "title": "Public health",
+   "theme": "healthcare",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "genetics-basics",
+   "title": "Genetics essentials",
+   "theme": "healthcare",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "climate-science-basics",
+   "title": "Climate science",
+   "theme": "sustainability",
+   "track": "sustainability-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "renewable-energy",
+   "title": "Renewable energy",
+   "theme": "sustainability",
+   "track": "sustainability-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "esg-reporting",
+   "title": "ESG & sustainability reporting",
+   "theme": "sustainability",
+   "track": "sustainability-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "carbon-accounting",
+   "title": "Carbon accounting",
+   "theme": "sustainability",
+   "track": "sustainability-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "circular-economy",
+   "title": "Circular economy",
+   "theme": "sustainability",
+   "track": "sustainability-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "contract-law-basics",
+   "title": "Contract fundamentals",
+   "theme": "legal",
+   "track": "compliance-officer",
+   "status": "soon"
+  },
+  {
+   "id": "intellectual-property",
+   "title": "Intellectual property",
+   "theme": "legal",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "data-privacy-law",
+   "title": "Data privacy regulation",
+   "theme": "legal",
+   "track": "compliance-officer",
+   "status": "soon"
+  },
+  {
+   "id": "business-law-basics",
+   "title": "Business law essentials",
+   "theme": "legal",
+   "track": "compliance-officer",
+   "status": "soon"
+  },
+  {
+   "id": "compliance-ethics",
+   "title": "Compliance & ethics",
+   "theme": "legal",
+   "track": "compliance-officer",
+   "status": "soon"
+  },
+  {
+   "id": "linear-algebra-basics",
+   "title": "Linear algebra",
+   "theme": "math",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "calculus-essentials",
+   "title": "Calculus essentials",
+   "theme": "math",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "discrete-math",
+   "title": "Discrete mathematics",
+   "theme": "math",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "optimization-basics",
+   "title": "Optimization",
+   "theme": "math",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "logic-proofs",
+   "title": "Logic & proof techniques",
+   "theme": "math",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "cognitive-biases",
+   "title": "Cognitive biases",
+   "theme": "psychology",
+   "track": "job-seeker",
+   "status": "soon"
+  },
+  {
+   "id": "decision-making",
+   "title": "Decision science",
+   "theme": "psychology",
+   "track": "team-leader",
+   "status": "soon"
+  },
+  {
+   "id": "learning-science",
+   "title": "Learning how to learn",
+   "theme": "psychology",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "motivation-habits",
+   "title": "Motivation & habits",
+   "theme": "psychology",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "social-psychology",
+   "title": "Social psychology",
+   "theme": "psychology",
+   "track": null,
+   "status": "soon"
+  }
+ ]
 }

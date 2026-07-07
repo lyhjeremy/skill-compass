@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
 """SkillCompass content pipeline: draft -> adversarial verify -> difficulty prior.
 
-Uses the local `claude -p` CLI (Claude Max, $0 marginal). Two independent passes
-per batch mirror the pattern proven in cantonese-learner-v2: a generator drafts
-questions, then a separate reviewer persona hunts for exactly the failure modes
-in the item rubric (ambiguous keys, giveaway option lengths, trick phrasing)
-and repairs or rejects. Human review remains the final gate before launch.
+Catalog-driven. Reads content/catalog.json for each subtopic's brief and target
+`size`, then for each subtopic: generates a concept map, drafts questions in
+difficulty-graded batches, and runs an independent skeptical reviewer pass that
+repairs or rejects against the item rubric. Human review is the final gate.
+
+Resumable and quota-friendly: a subtopic already at (or above) its target size is
+skipped; one that exists but is short is EXTENDED with additional batches. Safe to
+kill and rerun — it picks up where it left off. Runs sequentially so it degrades
+gracefully when the Claude Max CLI rate-limits.
 
 Usage:
+  python3 scripts/gen_questions.py --all              # every catalog subtopic, resume
   python3 scripts/gen_questions.py --subtopic sql-querying
-  python3 scripts/gen_questions.py --all
+  python3 scripts/gen_questions.py --all --limit 20   # stop after 20 subtopics this run
 """
-import argparse, json, re, subprocess, sys, time
+import argparse, json, re, subprocess, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -20,32 +25,10 @@ WORKING = CONTENT / "_working"
 OUT = CONTENT / "subtopics"
 MODEL = "sonnet"
 PER_BATCH = 5
-BATCHES = 4  # 20 items per subtopic
 
-SUBTOPIC_BRIEFS = {
-    "sql-querying": "SQL for analysts: SELECT/WHERE/GROUP BY, joins (inner/left/anti), aggregation, window functions, CTEs, NULL semantics, query correctness pitfalls. Ground in PostgreSQL documentation concepts.",
-    "spreadsheets": "Excel/Google Sheets for analysts: lookups (VLOOKUP/XLOOKUP/INDEX-MATCH), absolute vs relative references, pivot tables, common formula errors, data cleaning, when spreadsheets break down.",
-    "descriptive-stats": "Descriptive statistics: mean vs median under skew, standard deviation, percentiles, distributions, correlation vs causation, sampling basics, misleading summary statistics.",
-    "dashboards-bi": "Dashboards & BI: choosing chart types, KPI design, dashboard layout principles, misleading visualizations, aggregation granularity, BI tool concepts (filters, drill-down, refresh).",
-    "ab-testing": "A/B testing for analysts: hypothesis setup, significance and p-values, power and sample size, common pitfalls (peeking, multiple comparisons, novelty effects), interpreting results honestly.",
-    "data-storytelling": "Data storytelling: structuring an insight narrative, leading with the answer, audience-appropriate framing, honest uncertainty communication, chart annotation, executive summaries.",
-    # --- Data Scientist / ML track (Coursera ML & IBM DS inspired) ---
-    "ml-fundamentals": "Machine learning fundamentals: supervised vs unsupervised learning, classification vs regression tasks, train/validation/test splits, overfitting and underfitting, bias-variance tradeoff, why cross-validation. Coursera Machine Learning-level intuition, scenario-based, no heavy math.",
-    "feature-engineering-data-prep": "Preparing data for models: handling missing values, one-hot vs label encoding, feature scaling and when it matters, target leakage, outlier treatment, class imbalance handling. Practical scenarios an ML practitioner faces.",
-    "regression-basics": "Regression for analysts: interpreting linear regression coefficients and intercepts, R-squared meaning and limits, residual patterns, multicollinearity symptoms, when logistic regression applies, odds ratios, extrapolation dangers.",
-    "model-evaluation": "Evaluating ML models: accuracy limits under class imbalance, precision vs recall tradeoffs, F1, confusion matrices, ROC-AUC vs precision-recall curves, classification threshold selection, probability calibration, validation vs test sets.",
-    "python-for-data": "Python for data analysis with pandas: DataFrame vs Series, filtering with boolean masks, groupby aggregations, merge/join types and row-explosion pitfalls, handling NaN, vectorization vs loops, common gotchas (SettingWithCopyWarning, chained indexing).",
-    "statistical-inference": "Statistical inference: interpreting confidence intervals correctly, standard error vs standard deviation, Central Limit Theorem in practice, t-tests, Type I vs Type II errors, sample vs population, statistical vs practical significance.",
-    # --- Stats & Quant (edX MITx / Kaplan CFA quant methods inspired) ---
-    "probability-basics": "Applied probability: conditional probability, independence, Bayes' theorem with base rates (diagnostic-test and fraud-detection scenarios), expected value decisions, binomial vs normal vs Poisson and when each applies. CFA quantitative-methods level, simple numbers.",
-    # --- Finance & Markets (Kaplan / CFA Level I inspired; conceptual, calculator-free) ---
-    "time-value-of-money": "Time value of money: present vs future value intuition, compounding frequency effects, annuities vs perpetuities, NPV decision rule, IRR and its pitfalls, choosing discount rates. CFA Level I quant-methods style with simple round numbers.",
-    "financial-statements": "Reading financial statements: what lives on the income statement vs balance sheet vs cash flow statement, gross/operating/net margins, accrual vs cash accounting, working capital, current ratio, ROE, debt-to-equity, linking the three statements. CFA Level I FRA-inspired.",
-    "portfolio-risk-return": "Portfolio risk and return: why diversification works and its limits, correlation's role, systematic vs idiosyncratic risk, beta interpretation, Sharpe ratio comparisons, risk-return tradeoff, rebalancing logic. CFA Level I portfolio-management-inspired, conceptual.",
-    # --- Business Analytics (Coursera business analytics inspired) ---
-    "business-metrics-kpis": "Business and product metrics: CAC and LTV and their ratio, churn vs retention math, conversion funnel analysis, MRR/ARR, cohort views, choosing a north-star metric, spotting vanity metrics. Realistic startup/enterprise scenarios.",
-    "forecasting-basics": "Business forecasting: separating trend, seasonality, and noise; moving averages and exponential smoothing intuition; forecast error measures (MAE, MAPE, bias); naive baselines as benchmarks; forecast horizons and uncertainty growth; when judgment should override the model.",
-}
+CATALOG = json.loads((CONTENT / "catalog.json").read_text())
+BRIEF = {s["id"]: s["brief"] for s in CATALOG["subtopics"]}
+SIZE = {s["id"]: s.get("size", 20) for s in CATALOG["subtopics"]}
 
 RUBRIC = """Every question MUST pass ALL of these:
 1. Exactly one defensible correct answer; a domain expert would not argue.
@@ -55,16 +38,14 @@ RUBRIC = """Every question MUST pass ALL of these:
 5. Stem <= 45 words, self-contained, scenario-based where possible, no trick phrasing or trivia.
 6. Explanation <= 60 words; names why the key distractor is wrong when non-obvious.
 7. grounding.source is a real, well-known public reference (official docs, Wikipedia article title, widely-known textbook); grounding.note is one line on what it supports. Do not invent URLs.
-8. Plain professional English; no culture-specific idioms."""
+8. Plain professional English; no culture-specific idioms. Content must be timeless — no "as of" dates, current office-holders, or latest-version numbers."""
 
 
 def claude(prompt: str, retries: int = 3) -> str:
     for attempt in range(retries):
         try:
-            r = subprocess.run(
-                ["claude", "-p", prompt, "--model", MODEL],
-                capture_output=True, text=True, timeout=420,
-            )
+            r = subprocess.run(["claude", "-p", prompt, "--model", MODEL],
+                               capture_output=True, text=True, timeout=420)
             if r.returncode == 0 and r.stdout.strip():
                 return r.stdout.strip()
             print(f"  retry {attempt+1}: rc={r.returncode} {r.stderr[:120]}", flush=True)
@@ -82,28 +63,39 @@ def parse_json(text: str):
     return json.loads(text[start:])
 
 
-def gen_concepts(sid: str, brief: str):
-    prompt = f"""You are designing the concept map for a skill-assessment subtopic.
-Subtopic: {SUBTOPIC_BRIEFS and brief}
-Return ONLY a JSON array of exactly 8 concepts, ordered roughly from prerequisite to advanced:
-[{{"id":"kebab-case-id","label":"2-4 word label","definition":"one plain-English sentence","prereq":"id of the single most direct prerequisite concept in this list, or null"}}]"""
-    concepts = parse_json(claude(prompt))
-    # deterministic two-row layout for the knowledge map (viewBox 340x150)
+def layout(concepts):
+    """Deterministic two-row layout for the knowledge map (viewBox 340x150)."""
     for i, c in enumerate(concepts):
-        row, col = divmod(i, 4)
-        c["x"] = 50 + col * 80
-        c["y"] = 38 + row * 74
+        c["x"] = 50 + (i % 4) * 80
+        c["y"] = 38 + (i // 4) * 74
     return concepts
 
 
-def gen_batch(sid: str, brief: str, concepts, batch_idx: int, seen_stems):
+def gen_concepts(brief: str):
+    prompt = f"""You are designing the concept map for a skill-assessment subtopic.
+Subtopic: {brief}
+Return ONLY a JSON array of exactly 8 concepts, ordered roughly from prerequisite to advanced:
+[{{"id":"kebab-case-id","label":"2-4 word label","definition":"one plain-English sentence","prereq":"id of the single most direct prerequisite concept in this list, or null"}}]"""
+    return layout(parse_json(claude(prompt)))
+
+
+def band(frac: float) -> str:
+    """Map a 0..1 position through the batch sequence to a difficulty band."""
+    if frac < 0.30:
+        return "mostly easy (p~0.72-0.85)"
+    if frac < 0.55:
+        return "easy-to-medium (p~0.55-0.7)"
+    if frac < 0.80:
+        return "medium-to-hard (p~0.4-0.55)"
+    return "hard (p~0.25-0.4)"
+
+
+def gen_batch(brief, concepts, frac, seen_stems):
     concept_ids = [c["id"] for c in concepts]
-    difficulty_slice = ["mostly easy (p~0.7-0.85)", "easy-to-medium (p~0.55-0.7)",
-                        "medium-to-hard (p~0.4-0.55)", "hard (p~0.25-0.4)"][batch_idx]
-    avoid = "\n".join(f"- {s}" for s in seen_stems[-25:]) or "(none yet)"
+    avoid = "\n".join(f"- {s}" for s in seen_stems[-30:]) or "(none yet)"
     prompt = f"""Write {PER_BATCH} original multiple-choice questions for a professional skill assessment.
 Subtopic: {brief}
-Difficulty band for THIS batch: {difficulty_slice} (p = probability a median professional answers correctly).
+Difficulty band for THIS batch: {band(frac)} (p = probability a median professional answers correctly).
 Tag each question with exactly one concept id from: {concept_ids}
 Cover different concepts across the batch. Do NOT duplicate or closely resemble these existing stems:
 {avoid}
@@ -116,7 +108,7 @@ Return ONLY a JSON array:
     return parse_json(claude(prompt))
 
 
-def verify_batch(brief: str, items):
+def verify_batch(brief, items):
     prompt = f"""You are an independent, skeptical exam reviewer. You did NOT write these questions.
 Subtopic: {brief}
 For EACH question below: check it against every rubric rule; fix any violation by rewriting
@@ -134,44 +126,73 @@ Return ONLY the corrected JSON array, same schema plus "verdict"."""
 
 
 def build_subtopic(sid: str):
-    brief = SUBTOPIC_BRIEFS[sid]
+    brief, target = BRIEF[sid], SIZE[sid]
     WORKING.mkdir(parents=True, exist_ok=True)
     OUT.mkdir(parents=True, exist_ok=True)
-    print(f"[{sid}] concepts...", flush=True)
-    concepts = gen_concepts(sid, brief)
-    items, seen = [], []
-    for b in range(BATCHES):
-        print(f"[{sid}] batch {b+1}/{BATCHES} draft...", flush=True)
-        draft = gen_batch(sid, brief, concepts, b, seen)
+    out_path = OUT / f"{sid}.json"
+
+    if out_path.exists():
+        data = json.loads(out_path.read_text())
+        concepts, items = data["concepts"], data["items"]
+        if len(items) >= target:
+            print(f"[{sid}] complete ({len(items)}/{target}), skipping", flush=True)
+            return
+        print(f"[{sid}] extending {len(items)} -> {target}", flush=True)
+    else:
+        print(f"[{sid}] concepts...", flush=True)
+        concepts, items = gen_concepts(brief), []
+
+    seen = [it["stem"][:80] for it in items]
+    total_batches = -(-target // PER_BATCH)  # ceil
+    while len(items) < target:
+        b = len(items) // PER_BATCH
+        frac = b / max(1, total_batches - 1)
+        print(f"[{sid}] batch {b+1}/{total_batches} draft...", flush=True)
+        draft = gen_batch(brief, concepts, frac, seen)
         (WORKING / f"{sid}-b{b}-draft.json").write_text(json.dumps(draft, indent=1))
-        print(f"[{sid}] batch {b+1}/{BATCHES} verify...", flush=True)
+        print(f"[{sid}] batch {b+1}/{total_batches} verify...", flush=True)
         checked = verify_batch(brief, draft)
         (WORKING / f"{sid}-b{b}-verified.json").write_text(json.dumps(checked, indent=1))
+        added = 0
         for q in checked:
             if q.get("verdict") == "keep" and q.get("concept") and len(q.get("options", [])) == 4:
                 q.pop("verdict", None)
                 q["id"] = f"{sid}-{len(items):03d}"
-                q["status"] = "beta"  # pending human review
+                q["status"] = "beta"
                 items.append(q)
                 seen.append(q["stem"][:80])
-    out = {"id": sid, "concepts": concepts, "items": items,
-           "generated": "claude sonnet draft+verify, pending human review"}
-    (OUT / f"{sid}.json").write_text(json.dumps(out, ensure_ascii=False, indent=1))
-    print(f"[{sid}] DONE: {len(items)} items kept", flush=True)
+                added += 1
+        # persist incrementally so a kill never loses a completed batch
+        json.dump({"id": sid, "concepts": concepts, "items": items,
+                   "generated": "claude sonnet draft+verify, pending human review"},
+                  open(out_path, "w"), ensure_ascii=False, indent=1)
+        if added == 0:  # avoid an infinite loop if a batch fully rejects
+            print(f"[{sid}] batch produced 0 keepers; stopping this subtopic", flush=True)
+            break
+    print(f"[{sid}] DONE: {len(items)} items", flush=True)
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--subtopic")
     ap.add_argument("--all", action="store_true")
-    ap.add_argument("--force", action="store_true", help="regenerate even if output exists")
+    ap.add_argument("--limit", type=int, default=0, help="stop after N subtopics this run")
     args = ap.parse_args()
-    targets = list(SUBTOPIC_BRIEFS) if args.all else [args.subtopic]
+    targets = [s["id"] for s in CATALOG["subtopics"]] if args.all else [args.subtopic]
+    done, consecutive_fail = 0, 0
     for sid in targets:
-        if not args.force and (OUT / f"{sid}.json").exists():
-            print(f"[{sid}] exists, skipping (use --force to regenerate)", flush=True)
-            continue
+        if args.limit and done >= args.limit:
+            print(f"limit {args.limit} reached; stopping run", flush=True)
+            break
         try:
+            before = (OUT / f"{sid}.json").exists() and len(json.loads((OUT / f"{sid}.json").read_text())["items"]) >= SIZE[sid]
             build_subtopic(sid)
+            consecutive_fail = 0
+            if not before:
+                done += 1
         except Exception as e:
             print(f"[{sid}] FAILED: {e}", flush=True)
+            consecutive_fail += 1
+            if consecutive_fail >= 3:
+                print("3 consecutive failures — likely rate-limited. Stopping; rerun to resume.", flush=True)
+                break

@@ -43,6 +43,18 @@ in-browser and sends only text, processed in memory.
   generating the first six subtopics. Verified end-to-end with a scripted
   click-through on a 390px viewport, light and dark.
 
+- **2026-07-07 — 10× catalog scale-up.** Introduced `content/catalog.json` as the
+  single source of truth: 160+ subtopics across 22 fields (software, web, cloud,
+  security, marketing, product/UX, PM, HR, healthcare, sustainability, law, econ,
+  accounting, math, psychology, + the original data/finance core) and 28 career
+  tracks, referencing Coursera/edX/Kaplan curricula. `build_manifest.py` derives
+  live/partial/soon status from whatever content exists, so subtopics, themes, and
+  tracks flip live automatically as banks land — no manual edits. The generator is
+  now catalog-driven, variable-sized (popular topics target 30 questions), and both
+  resumable and rate-limit aware (extends short topics, stops cleanly on quota).
+  Explore/Home/Track pages redesigned to stay scannable at this scale (ready-first
+  sorting, collapsed upcoming fields, per-track readiness badges).
+
 ## Next
 
 Phase 2: anonymous event log → Supabase, live Elo recalibration, real

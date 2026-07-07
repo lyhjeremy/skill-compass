@@ -446,6 +446,101 @@
    "difficulty_prior": 0.32,
    "id": "sql-querying-019",
    "status": "beta"
+  },
+  {
+   "concept": "select-where",
+   "stem": "An analyst writes SELECT * FROM sales WHERE region = 'West' OR region = 'East' AND amount > 1000, intending West-region rows plus East-region rows over 1000. Which best describes the actual result set returned?",
+   "options": [
+    "All West-region rows regardless of amount, plus East-region rows only where amount exceeds 1000",
+    "Only rows where the region is West or East and amount exceeds 1000 in both cases",
+    "Only East-region rows with amount exceeding 1000, since AND takes precedence over the entire expression",
+    "A syntax error, since OR and AND cannot appear in the same WHERE clause without parentheses"
+   ],
+   "answer": 0,
+   "explanation": "AND binds tighter than OR, so the condition is really region='West' OR (region='East' AND amount>1000); parentheses are needed to get the intended filter.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: SQL Syntax - Operator Precedence",
+    "note": "Documents that AND has higher precedence than OR in boolean expressions."
+   },
+   "difficulty_prior": 0.4,
+   "id": "sql-querying-020",
+   "status": "beta"
+  },
+  {
+   "concept": "group-by-aggregation",
+   "stem": "A report runs SELECT department, region, SUM(sales) AS total FROM deals GROUP BY ROLLUP (department, region). Which row represents the grand total across every department and region combined?",
+   "options": [
+    "The row where both department and region are NULL, aggregating all rows",
+    "No such row appears; ROLLUP only produces subtotals per department, not a grand total",
+    "A row labeled 'TOTAL' in the department column, with region left blank",
+    "The row where region is NULL but department shows the first value alphabetically"
+   ],
+   "answer": 0,
+   "explanation": "ROLLUP produces hierarchical subtotals ending in a grand-total row where all grouping columns are NULL, representing the aggregate across all departments and regions.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: GROUP BY, GROUPING SETS, CUBE, and ROLLUP",
+    "note": "Describes ROLLUP producing subtotal rows and a final grand-total row with NULL grouping columns."
+   },
+   "difficulty_prior": 0.35,
+   "id": "sql-querying-021",
+   "status": "beta"
+  },
+  {
+   "concept": "window-functions",
+   "stem": "A query computes LAG(discount, 1, 0) OVER (PARTITION BY customer_id ORDER BY order_date) AS prev_discount. A customer's first order has discount NULL. For that customer's second order, what value does prev_discount hold?",
+   "options": [
+    "NULL, since LAG returns the prior row's real value, not the default",
+    "0, because the default value replaces any NULL found in the partition",
+    "0, since LAG treats NULL as a missing row and applies the default",
+    "An error, since default arguments cannot be used with nullable columns"
+   ],
+   "answer": 0,
+   "explanation": "LAG's default argument is used only when the offset falls outside the partition (no prior row exists); actual NULL values in prior rows are returned as-is, not replaced.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Window Functions - lag()",
+    "note": "Specifies that the default value applies only when the offset row does not exist, not to replace NULL values."
+   },
+   "difficulty_prior": 0.28,
+   "id": "sql-querying-022",
+   "status": "beta"
+  },
+  {
+   "concept": "cte",
+   "stem": "An analyst writes a query using a CTE to pre-filter a large table, assuming it always acts as an optimization fence executed independently before the outer query. In PostgreSQL, what actually happens?",
+   "options": [
+    "The planner may inline the CTE like a subquery, unless recursive or MATERIALIZED",
+    "The CTE always executes once, materializes fully, and is scanned by the outer query",
+    "The query fails unless NOT MATERIALIZED is explicitly specified in the CTE",
+    "The CTE is recomputed once per row of the outer query, like a correlated subquery"
+   ],
+   "answer": 0,
+   "explanation": "PostgreSQL's planner inlines non-recursive CTEs into the outer query by default, enabling standard optimizations; MATERIALIZED forces the CTE to execute separately and cache its result.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: WITH Queries (Common Table Expressions)",
+    "note": "Explains that non-recursive CTEs are inlined into the outer query unless MATERIALIZED is specified."
+   },
+   "difficulty_prior": 0.35,
+   "id": "sql-querying-023",
+   "status": "beta"
+  },
+  {
+   "concept": "query-correctness-pitfalls",
+   "stem": "An analyst combines two queries with UNION, expecting all rows from both sources including duplicate transactions. What is the likely effect of using UNION instead of UNION ALL?",
+   "options": [
+    "Rows that are exact duplicates across both result sets are silently removed, undercounting transactions",
+    "UNION raises an error whenever duplicate rows are present in either result set",
+    "UNION preserves every duplicate row, identical to UNION ALL, but sorts the output",
+    "UNION removes duplicates only within each individual query, never across the two"
+   ],
+   "answer": 0,
+   "explanation": "UNION implicitly performs DISTINCT-style de-duplication across the combined result set, removing exact-duplicate rows; UNION ALL retains all rows including duplicates.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Combining Queries (UNION, INTERSECT, EXCEPT)",
+    "note": "States that UNION eliminates duplicate rows from the combined result unless ALL is specified."
+   },
+   "difficulty_prior": 0.65,
+   "id": "sql-querying-024",
+   "status": "beta"
   }
  ],
  "generated": "claude sonnet draft+verify, pending human review"

@@ -17,7 +17,7 @@ export default function Results() {
     getSubtopic(session.subtopic).then(setContent).catch(console.error)
     getManifest().then(m => {
       setTitle(m.subtopics.find(s => s.id === session.subtopic)?.title ?? session.subtopic)
-      const t = m.tracks.find(t => t.status === 'live' && t.subtopics.includes(session.subtopic))
+      const t = m.tracks.find(t => t.status !== 'soon' && t.subtopics.includes(session.subtopic))
       if (t) setTrackId(t.id)
     }).catch(() => {})
   }, [sessionId])

@@ -149,7 +149,7 @@ button { font: inherit; cursor: pointer; }
 .modal {
   position: fixed; z-index: 50; left: 50%; top: 50%; transform: translate(-50%, -50%);
   background: var(--card); border-radius: 18px; padding: 26px; width: min(420px, calc(100vw - 32px));
-  box-shadow: 0 14px 44px rgba(31, 29, 25, .3);
+  box-shadow: 0 14px 44px rgba(31, 29, 25, .3); max-height: 88vh; overflow-y: auto;
 }
 .themedot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 .pulsebar {

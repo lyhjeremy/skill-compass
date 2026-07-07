@@ -2,8 +2,11 @@
 
 **Know where you stand. See exactly where to go.**
 
-A calibrated skill-assessment platform for data, analytics, and finance
-professionals — free, no sign-up, wired to the live job market.
+A calibrated skill-assessment platform spanning data, software, cloud, security,
+business, finance, marketing, product, and more — free, no sign-up, wired to the
+live job market. The content catalog (`content/catalog.json`) defines 160+
+subtopics across 22 fields and 28 career tracks; each goes live automatically as
+its reviewed question bank lands.
 
 **▶️ Live (beta): https://lyhjeremy.github.io/skill-compass/**
 
