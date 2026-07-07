@@ -446,6 +446,196 @@
    "difficulty_prior": 0.5,
    "id": "python-for-data-019",
    "status": "beta"
+  },
+  {
+   "concept": "dataframe-vs-series",
+   "stem": "A DataFrame orders has columns 'region' and 'amount'. An analyst compares `orders.groupby('region')['amount']` to `orders.groupby('region')[['amount']]`. Before any aggregation is applied, what is the key difference between the two resulting objects?",
+   "options": [
+    "The first returns a SeriesGroupBy; the second returns a DataFrameGroupBy, changing the result type.",
+    "Both forms are equivalent, always returning the same SeriesGroupBy object regardless of bracket style used.",
+    "The single-bracket form raises a KeyError immediately, while the double-bracket form always executes successfully.",
+    "The double-bracket form automatically sums the column, while the single-bracket form only supports counting rows."
+   ],
+   "answer": 0,
+   "explanation": "Single-bracket selection after groupby yields a SeriesGroupBy (aggregates return a Series); double brackets yield a DataFrameGroupBy (aggregates return a DataFrame), even though both select the same column.",
+   "grounding": {
+    "source": "pandas documentation: GroupBy",
+    "note": "Documents that column selection style on a GroupBy determines whether a Series or DataFrame is produced."
+   },
+   "difficulty_prior": 0.3,
+   "id": "python-for-data-020",
+   "status": "beta"
+  },
+  {
+   "concept": "merge-join-types",
+   "stem": "An analyst merges two DataFrames on a shared key and suspects one side may contain duplicate key values, which would silently multiply rows. Which pd.merge() argument makes pandas raise an error if the relationship is not actually one-to-one?",
+   "options": [
+    "Passing validate='one_to_one', which checks key uniqueness on both sides before merging.",
+    "Passing indicator=True, which adds a column showing each row's merge source.",
+    "Passing how='inner', which restricts the result to only matching keys on both sides.",
+    "Passing suffixes=('_x', '_y'), which renames columns that appear in both DataFrames."
+   ],
+   "answer": 0,
+   "explanation": "The validate parameter checks merge-key cardinality and raises a MergeError if the expected relationship is violated. indicator, how, and suffixes control output content or renaming, not row-multiplication safety.",
+   "grounding": {
+    "source": "pandas documentation: merge, join, and concatenate",
+    "note": "Describes the validate parameter for checking merge key uniqueness."
+   },
+   "difficulty_prior": 0.35,
+   "id": "python-for-data-021",
+   "status": "beta"
+  },
+  {
+   "concept": "row-explosion-pitfalls",
+   "stem": "Table A has 10 rows that all share the same key value 'K'. Table B has 15 rows that also all share key value 'K'. An inner join of A and B on that key produces how many rows?",
+   "options": [
+    "150 rows",
+    "25 rows",
+    "15 rows",
+    "10 rows"
+   ],
+   "answer": 0,
+   "explanation": "A join matches every row on one side with every row sharing the same key on the other side, producing a Cartesian product for that key: 10 x 15 = 150 rows, not a simple sum or maximum.",
+   "grounding": {
+    "source": "pandas documentation: merge, join, and concatenate",
+    "note": "Explains that non-unique keys produce a cross-product of matching rows."
+   },
+   "difficulty_prior": 0.3,
+   "id": "python-for-data-022",
+   "status": "beta"
+  },
+  {
+   "concept": "groupby-aggregation",
+   "stem": "A DataFrame sales has columns 'region' and 'amount' across 100 rows. An analyst wants to add a column 'region_avg' holding each row's region average, keeping the DataFrame at 100 rows. Which call accomplishes this?",
+   "options": [
+    "sales.groupby('region')['amount'].transform('mean')",
+    "sales.groupby('region')['amount'].agg('mean')",
+    "sales.groupby('region')['amount'].apply('mean')",
+    "sales.groupby('region')['amount'].filter('mean')"
+   ],
+   "answer": 0,
+   "explanation": "transform returns a result aligned to the original index and row count, ideal for broadcasting group statistics back onto every row. agg and typical apply usage collapse each group to one row, and filter selects whole groups.",
+   "grounding": {
+    "source": "pandas documentation: GroupBy",
+    "note": "Documents transform as the method that preserves the original DataFrame's shape."
+   },
+   "difficulty_prior": 0.35,
+   "id": "python-for-data-023",
+   "status": "beta"
+  },
+  {
+   "concept": "vectorization-vs-loops",
+   "stem": "A DataFrame has one integer column and one float column. An analyst loops with `for idx, row in df.iterrows(): process(row)` instead of using vectorized operations. What subtle problem does this introduce?",
+   "options": [
+    "Each row becomes a single-dtype Series, so integer values get silently upcast to float.",
+    "iterrows() permanently converts the DataFrame's integer column to float type in place.",
+    "iterrows() raises a TypeError whenever a DataFrame contains columns of mixed dtypes.",
+    "iterrows() automatically rewrites the loop body into a vectorized operation for speed."
+   ],
+   "answer": 0,
+   "explanation": "Because a Series holds one dtype, iterrows() builds each row as a Series that upcasts mixed int/float values to float, which can silently corrupt type-sensitive logic inside the loop even though the source DataFrame is unchanged.",
+   "grounding": {
+    "source": "pandas documentation: Iteration",
+    "note": "Warns that iterrows() may upcast values because rows are represented as a single-dtype Series."
+   },
+   "difficulty_prior": 0.35,
+   "id": "python-for-data-024",
+   "status": "beta"
+  },
+  {
+   "concept": "chained-indexing-pitfalls",
+   "stem": "An analyst runs `sub = df[df['flag'] == 1]` then `sub['adjusted'] = sub['value'] * 2`, intending `sub` to be a standalone copy for further analysis. Pandas raises a SettingWithCopyWarning. Which change most reliably eliminates the ambiguity?",
+   "options": [
+    "Insert `.copy()` when creating sub: `sub = df[df['flag'] == 1].copy()`",
+    "Suppress the warning via `pd.options.mode.chained_assignment = None` before running the code",
+    "Use `sub.loc[:, 'adjusted'] = sub['value'] * 2` in place of the bracket assignment",
+    "Use `sub['adjusted'] = sub['value'].mul(2)`, replacing `*` with the `.mul()` method"
+   ],
+   "answer": 0,
+   "explanation": "The warning stems from uncertainty over whether `sub` is a view or copy of `df`. Only `.copy()` at creation resolves that ambiguity; suppressing the warning, switching to `.loc`, or swapping `*` for `.mul()` all leave `sub` itself still ambiguous.",
+   "grounding": {
+    "source": "pandas documentation: Indexing and selecting data - Returning a view versus a copy",
+    "note": "Explains that chained indexing creates ambiguity resolved by explicit .copy()."
+   },
+   "difficulty_prior": 0.3,
+   "id": "python-for-data-025",
+   "status": "beta"
+  },
+  {
+   "concept": "merge-join-types",
+   "stem": "An analyst merges `orders` and `customers` on `customer_id`, expecting exactly one customer row per order. To catch cases where `customers` unexpectedly contains duplicate `customer_id` values, which merge call raises an error if that assumption is violated?",
+   "options": [
+    "Add `validate='many_to_one'` to catch duplicate keys on the right side",
+    "Add `how='inner'` to the merge call to keep only rows with matching keys on both sides",
+    "Add `indicator=True` to the merge call to label each row's match source in a new column",
+    "Chain `.drop_duplicates()` after the merge call to remove any resulting duplicate rows"
+   ],
+   "answer": 0,
+   "explanation": "`validate='many_to_one'` raises a MergeError if 'customer_id' is not unique in `customers`. `how='inner'`, `indicator=True`, and `.drop_duplicates()` do not verify or enforce that uniqueness assumption.",
+   "grounding": {
+    "source": "pandas documentation: DataFrame.merge",
+    "note": "Documents the validate parameter's one_to_one/one_to_many/many_to_one/many_to_many checks."
+   },
+   "difficulty_prior": 0.3,
+   "id": "python-for-data-026",
+   "status": "beta"
+  },
+  {
+   "concept": "groupby-aggregation",
+   "stem": "A DataFrame `sales` has columns 'region' and 'amount'. An analyst wants to add a column 'region_avg' to every row showing that row's region average, keeping all original rows and order intact. Which approach achieves this directly?",
+   "options": [
+    "`sales['region_avg'] = sales.groupby('region')['amount'].transform('mean')`",
+    "`sales['region_avg'] = sales.groupby('region')['amount'].mean()`",
+    "`sales['region_avg'] = sales.groupby('region')['amount'].agg('mean')`",
+    "`sales['region_avg'] = sales.groupby('region', as_index=False)['amount'].mean()`"
+   ],
+   "answer": 0,
+   "explanation": "`.transform` broadcasts each group's aggregate back to the original row shape and index. `.mean()` and `.agg()` return one value per group, causing index misalignment and NaNs when assigned to a full-length column.",
+   "grounding": {
+    "source": "pandas documentation: GroupBy.transform",
+    "note": "Confirms transform returns a result matching the original index, unlike aggregation methods."
+   },
+   "difficulty_prior": 0.35,
+   "id": "python-for-data-027",
+   "status": "beta"
+  },
+  {
+   "concept": "vectorization-vs-loops",
+   "stem": "An analyst has a DataFrame with a 'category_code' column (2 million rows) and a dictionary mapping codes to labels. Which approach converts codes to labels fastest while remaining correct?",
+   "options": [
+    "`df['label'] = df['category_code'].map(code_to_label)`",
+    "`df['label'] = df['category_code'].apply(lambda x: code_to_label[x])`",
+    "`df['label'] = [code_to_label[x] for x in df['category_code']]`",
+    "`for i in range(len(df)): df.loc[i, 'label'] = code_to_label[df.loc[i, 'category_code']]`"
+   ],
+   "answer": 0,
+   "explanation": "`.map` performs an optimized dictionary lookup with less per-element overhead than `.apply`'s repeated function calls or the row-by-row `.loc` loop, which is by far the slowest due to repeated label-based indexing.",
+   "grounding": {
+    "source": "pandas documentation: Series.map",
+    "note": "Describes map as the vectorized way to substitute values via a dict, avoiding explicit Python-level iteration."
+   },
+   "difficulty_prior": 0.28,
+   "id": "python-for-data-028",
+   "status": "beta"
+  },
+  {
+   "concept": "handling-missing-data",
+   "stem": "A DataFrame `contacts` has columns 'name', 'email', and 'phone'. Some rows have missing 'phone' values but complete 'name' and 'email'. An analyst runs `contacts.dropna()` intending to remove only rows missing an email, but too many rows are removed. Why?",
+   "options": [
+    "Default `dropna()` checks all columns; use `contacts.dropna(subset=['email'])` to check only 'email'",
+    "`dropna()` only checks the first column by default; reorder columns so 'email' is first",
+    "`dropna()` treats missing phone numbers as invalid strings, not NaN, so those rows are dropped unintentionally",
+    "`dropna()` requires `how='all'` to be set explicitly, otherwise it drops rows with any missing value in 'name'"
+   ],
+   "answer": 0,
+   "explanation": "By default `dropna()` uses `how='any'` across every column, so a missing 'phone' also triggers a drop. Restricting the check with `subset` targets only the intended column.",
+   "grounding": {
+    "source": "pandas documentation: DataFrame.dropna",
+    "note": "Documents default how='any' behavior across all columns and the subset parameter."
+   },
+   "difficulty_prior": 0.3,
+   "id": "python-for-data-029",
+   "status": "beta"
   }
  ],
  "generated": "claude sonnet draft+verify, pending human review"

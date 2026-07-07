@@ -541,6 +541,101 @@
    "difficulty_prior": 0.65,
    "id": "sql-querying-024",
    "status": "beta"
+  },
+  {
+   "concept": "query-correctness-pitfalls",
+   "stem": "An analyst runs SELECT * FROM transactions ORDER BY amount DESC LIMIT 10 to get the ten largest transactions, then reruns the identical query later expecting identical rows whenever amount ties exist. Why might the returned rows differ between runs?",
+   "options": [
+    "Ties on amount at the cutoff leave row order unspecified, so LIMIT may return different rows across runs.",
+    "LIMIT 10 always returns a different random sample of ten rows on every execution by design",
+    "PostgreSQL caches the first execution's result set and silently reuses it on later runs",
+    "ORDER BY DESC is unstable in PostgreSQL and gradually falls back to ascending order"
+   ],
+   "answer": 0,
+   "explanation": "When rows tie on the ORDER BY column, their relative order is unspecified, so LIMIT can return a different subset of the tied rows near the boundary on each run unless a unique tiebreaker column is added.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Chapter 7.6, LIMIT and OFFSET",
+    "note": "Warns that LIMIT gives unpredictable results unless ORDER BY constrains rows into a unique order, since ties leave row selection at the boundary unspecified."
+   },
+   "difficulty_prior": 0.35,
+   "id": "sql-querying-025",
+   "status": "beta"
+  },
+  {
+   "concept": "window-functions",
+   "stem": "An analyst runs LAST_VALUE(amount) OVER (PARTITION BY customer_id ORDER BY order_date) AS last_amt on an orders table, expecting each row to show that customer's most recent order amount. Instead, most rows show their own amount. What causes this?",
+   "options": [
+    "The default frame stops at the current row, so LAST_VALUE returns that row's value",
+    "LAST_VALUE ignores frame clauses entirely and always returns the actual last row of the partition",
+    "ORDER BY inside OVER() is ignored by LAST_VALUE, so it returns an arbitrary row's value",
+    "LAST_VALUE only computes correctly when paired with FIRST_VALUE in the same SELECT list"
+   ],
+   "answer": 0,
+   "explanation": "Without an explicit frame, PostgreSQL defaults to RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW, so LAST_VALUE only considers rows up to the current one; reaching the true last row requires widening the frame to UNBOUNDED FOLLOWING.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Chapter 3.5, Window Functions",
+    "note": "Documents the default frame as running from the partition start through the current row when ORDER BY is present, which limits LAST_VALUE unless the frame is explicitly widened."
+   },
+   "difficulty_prior": 0.3,
+   "id": "sql-querying-026",
+   "status": "beta"
+  },
+  {
+   "concept": "cte",
+   "stem": "An analyst writes WITH recent_orders AS (SELECT * FROM top_customers WHERE tier = 'gold'), top_customers AS (SELECT customer_id FROM customers WHERE lifetime_value > 10000) SELECT * FROM recent_orders; in standard, non-recursive PostgreSQL. What happens?",
+   "options": [
+    "PostgreSQL raises an error, since non-recursive CTEs may reference only earlier-defined CTEs",
+    "PostgreSQL evaluates top_customers first regardless of listing order, then runs recent_orders successfully",
+    "The query runs, but recent_orders silently returns zero rows since top_customers isn't ready yet",
+    "PostgreSQL automatically treats the WITH clause as WITH RECURSIVE to resolve the forward reference"
+   ],
+   "answer": 0,
+   "explanation": "PostgreSQL requires CTEs to reference only earlier-defined CTEs in the same WITH clause unless RECURSIVE is specified; a forward reference like this one is not resolved automatically and causes a parse-time error.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Chapter 7.8, WITH Queries (Common Table Expressions)",
+    "note": "States that a WITH query cannot reference a WITH query listed after it in the same clause unless RECURSIVE is used."
+   },
+   "difficulty_prior": 0.32,
+   "id": "sql-querying-027",
+   "status": "beta"
+  },
+  {
+   "concept": "left-anti-join",
+   "stem": "An analyst runs SELECT c.customer_id FROM customers c LEFT JOIN orders o ON c.customer_id = o.customer_id WHERE o.status = 'Shipped', intending to list all customers while showing shipped-order status. What happens to customers with no orders?",
+   "options": [
+    "They are dropped, since the WHERE clause runs after the join and rejects NULL status.",
+    "They remain in the result, since LEFT JOIN guarantees every customer row survives any later WHERE clause",
+    "They appear in the result with status shown as the literal text 'Shipped'",
+    "They are dropped only if the orders table enforces a NOT NULL constraint on status"
+   ],
+   "answer": 0,
+   "explanation": "A WHERE condition on the right-side table is applied after the join and evaluates to false for the NULLs a LEFT JOIN produces on unmatched rows, effectively turning it into an INNER JOIN; the condition belongs in ON instead.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Chapter 7.2.1.3, Joined Tables",
+    "note": "Explains that a right-table condition placed in WHERE rather than ON discards outer-joined rows with NULL, converting the LEFT JOIN into inner-join behavior."
+   },
+   "difficulty_prior": 0.35,
+   "id": "sql-querying-028",
+   "status": "beta"
+  },
+  {
+   "concept": "group-by-aggregation",
+   "stem": "An analyst runs SELECT EXTRACT(YEAR FROM order_date) AS order_year, SUM(amount) AS total FROM orders GROUP BY order_year, using the SELECT-list alias directly inside GROUP BY. What happens in PostgreSQL?",
+   "options": [
+    "The query runs successfully, since PostgreSQL allows GROUP BY to reference SELECT-list aliases",
+    "PostgreSQL raises an error, since GROUP BY cannot reference a SELECT-list alias, only input columns",
+    "The query runs but collapses all rows into a single group, ignoring order_year entirely",
+    "PostgreSQL silently regroups by the raw order_date expression instead of the alias, changing totals"
+   ],
+   "answer": 0,
+   "explanation": "Unlike WHERE, PostgreSQL's GROUP BY clause accepts output column names or ordinal positions from the SELECT list as an extension to the SQL standard, so the alias order_year correctly groups rows by the extracted year.",
+   "grounding": {
+    "source": "PostgreSQL Documentation - Chapter 7.2.3, The GROUP BY Clause",
+    "note": "States that GROUP BY expressions may be input column names or the name/ordinal number of an output column, unlike WHERE which cannot reference SELECT-list aliases."
+   },
+   "difficulty_prior": 0.32,
+   "id": "sql-querying-029",
+   "status": "beta"
   }
  ],
  "generated": "claude sonnet draft+verify, pending human review"

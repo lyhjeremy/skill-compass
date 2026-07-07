@@ -1,0 +1,452 @@
+{
+ "id": "power-bi",
+ "concepts": [
+  {
+   "id": "star-schema-modeling",
+   "label": "Star schema modeling",
+   "definition": "A star schema organizes data into central fact tables of measurable events surrounded by dimension tables that describe them.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "data-model-relationships",
+   "label": "Data model relationships",
+   "definition": "Relationships link tables in the model through matching keys, with a cardinality and direction that determine how filters flow between them.",
+   "prereq": "star-schema-modeling",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "refresh-modes-import-directquery",
+   "label": "Import vs DirectQuery",
+   "definition": "Import mode loads a compressed copy of the data into memory for fast performance, while DirectQuery sends live queries to the source without storing the data locally.",
+   "prereq": "data-model-relationships",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "calculated-columns",
+   "label": "Calculated columns",
+   "definition": "A calculated column is a DAX formula evaluated row-by-row and stored physically in the table, computed once at refresh time.",
+   "prereq": "data-model-relationships",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "dax-measures",
+   "label": "DAX measures",
+   "definition": "A measure is a DAX formula that aggregates data dynamically at query time based on whatever context it is viewed in, rather than being stored per row.",
+   "prereq": "calculated-columns",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "filter-context",
+   "label": "Filter context",
+   "definition": "Filter context is the set of filters—from slicers, rows, columns, and formulas—that is applied to the model before a measure's expression is evaluated.",
+   "prereq": "dax-measures",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "slicers-and-drillthrough",
+   "label": "Slicers and drill-through",
+   "definition": "Slicers and drill-through pages let report users interactively narrow or navigate the filter context to explore data at different levels of detail.",
+   "prereq": "filter-context",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "pl-300-applied-scenarios",
+   "label": "PL-300 applied scenarios",
+   "definition": "Applied PL-300-style scenarios combine modeling, DAX, and filter-context concepts to solve realistic business reporting problems under exam-style constraints.",
+   "prereq": "slicers-and-drillthrough",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "star-schema-modeling",
+   "stem": "An analyst is building a Power BI model with a Sales fact table and separate Date, Product, and Customer dimension tables. Which design follows star schema best practice?",
+   "options": [
+    "The fact table connects directly to each dimension table through one-to-many relationships",
+    "Dimension tables chain together, with only one linked to the fact table",
+    "All dimension attributes are merged into one wide fact table",
+    "Each dimension table stores its own copy of the fact table's measures"
+   ],
+   "answer": 0,
+   "explanation": "A star schema places the fact table at the center, directly related to each dimension via one-to-many relationships, avoiding snowflaking and redundant joins.",
+   "grounding": {
+    "source": "Microsoft Learn: Understand star schema and the importance for Power BI",
+    "note": "Documents the fact-table-centered, one-to-many star schema design."
+   },
+   "difficulty_prior": 0.8,
+   "id": "power-bi-000",
+   "status": "beta"
+  },
+  {
+   "concept": "data-model-relationships",
+   "stem": "In a Power BI model, the relationship between Date (one side) and Sales (many side) is set to single-direction filtering, from Date to Sales. What does this mean for report behavior?",
+   "options": [
+    "Date filters reach Sales visuals; Sales filters do not reach Date visuals",
+    "Filtering on either connected table affects the visuals of the other table equally",
+    "This setting changes only how DAX measures calculate, not how slicers filter visuals",
+    "Filters never pass from Date to Sales because the relationship is set inactive"
+   ],
+   "answer": 0,
+   "explanation": "Single-direction cross-filtering propagates from the 'one' side to the 'many' side only; reaching back from Sales to Date would require bidirectional filtering.",
+   "grounding": {
+    "source": "Microsoft Learn: Model relationships in Power BI Desktop",
+    "note": "Explains single-direction versus bidirectional cross-filter behavior."
+   },
+   "difficulty_prior": 0.75,
+   "id": "power-bi-001",
+   "status": "beta"
+  },
+  {
+   "concept": "dax-measures",
+   "stem": "An analyst wants a 'Total Sales' value that recalculates dynamically based on whichever slicers and visual filters a user applies, without storing a value in every row of the table. Which DAX object fits this need?",
+   "options": [
+    "A measure such as SUM(Sales[Amount])",
+    "A calculated column such as SUM(Sales[Amount])",
+    "A calculated table holding pre-aggregated totals",
+    "A Power Query custom column computed during data load"
+   ],
+   "answer": 0,
+   "explanation": "Measures evaluate using the current filter context at query time and are not stored per row, unlike calculated columns, which compute once per row and are stored in the model.",
+   "grounding": {
+    "source": "Microsoft Learn: DAX Basics in Power BI Desktop",
+    "note": "Contrasts measures (context-dependent, not stored) with calculated columns (stored, row-fixed)."
+   },
+   "difficulty_prior": 0.78,
+   "id": "power-bi-002",
+   "status": "beta"
+  },
+  {
+   "concept": "refresh-modes-import-directquery",
+   "stem": "A company wants a Power BI report to always reflect the latest transactions in a large SQL Server database, with minimal delay, and source-side query load is not a major concern. Which storage mode best fits this need?",
+   "options": [
+    "DirectQuery mode, querying the source at run-time",
+    "Import mode with a nightly scheduled refresh",
+    "Import mode with a weekly scheduled refresh",
+    "Import mode using a manually exported snapshot"
+   ],
+   "answer": 0,
+   "explanation": "DirectQuery sends queries to the source at report run-time, so results stay current; Import mode caches data and is only as fresh as its last scheduled refresh, however often that runs.",
+   "grounding": {
+    "source": "Microsoft Learn: Data sources in DirectQuery mode",
+    "note": "Explains the currency tradeoff between DirectQuery and Import refresh."
+   },
+   "difficulty_prior": 0.72,
+   "id": "power-bi-003",
+   "status": "beta"
+  },
+  {
+   "concept": "slicers-and-drillthrough",
+   "stem": "An analyst wants users to right-click a customer in a summary report and jump to a separate detail page already filtered to that customer, without adding a slicer to every page. Which Power BI feature should be configured?",
+   "options": [
+    "Drillthrough set up on the detail page",
+    "A slicer synced across all report pages",
+    "A bookmark linked to a report button",
+    "Cross-highlighting configured between related visuals"
+   ],
+   "answer": 0,
+   "explanation": "Drillthrough lets users right-click a data point and navigate to a detail page pre-filtered to that context, which is the built-in mechanism for this scenario, unlike synced slicers or bookmarks.",
+   "grounding": {
+    "source": "Microsoft Learn: Use drillthrough in Power BI Desktop",
+    "note": "Documents right-click drillthrough navigation to a filtered detail page."
+   },
+   "difficulty_prior": 0.8,
+   "id": "power-bi-004",
+   "status": "beta"
+  },
+  {
+   "concept": "calculated-columns",
+   "stem": "An analyst needs to label each product row as 'High' or 'Low' margin using only that row's own cost and price, and wants the label available inside a slicer. Which Power BI object should she create?",
+   "options": [
+    "A calculated column that stores a row-level IF result",
+    "A measure that evaluates the IF logic at query time",
+    "A calculated table listing only high-margin products",
+    "A Power Query parameter set at the dataset level"
+   ],
+   "answer": 0,
+   "explanation": "Calculated columns compute row-by-row and are stored in the table, so their values can populate slicers; measures compute at query time and cannot be placed directly in a slicer.",
+   "grounding": {
+    "source": "Microsoft Learn: Create calculated columns in Power BI Desktop",
+    "note": "Explains that calculated columns are stored per row and usable as slicer fields, unlike measures."
+   },
+   "difficulty_prior": 0.62,
+   "id": "power-bi-005",
+   "status": "beta"
+  },
+  {
+   "concept": "filter-context",
+   "stem": "A matrix visual shows Region on rows with a measure defined as CALCULATE(SUM(Sales[Amount]), ALL(Sales[Region])). What value appears in each region's row?",
+   "options": [
+    "The overall grand total, the same in every row",
+    "Each row's own region total, unaffected by the ALL function",
+    "A blank value, since ALL conflicts with the Region on rows",
+    "An error, because CALCULATE cannot combine SUM with ALL"
+   ],
+   "answer": 0,
+   "explanation": "ALL(Sales[Region]) removes the Region filter from the calculation, so CALCULATE returns the same grand-total figure in every row regardless of which region the row represents.",
+   "grounding": {
+    "source": "Microsoft Learn: CALCULATE function (DAX)",
+    "note": "Explains how ALL() removes existing filters so row-level context is ignored in the calculation."
+   },
+   "difficulty_prior": 0.58,
+   "id": "power-bi-006",
+   "status": "beta"
+  },
+  {
+   "concept": "pl-300-applied-scenarios",
+   "stem": "A Total Sales measure returns correct values on a Products page but blank on a Regions page, because the Region-to-Sales relationship is inactive while a different active relationship also joins the tables. What should the analyst do?",
+   "options": [
+    "Use CALCULATE with USERELATIONSHIP to activate that relationship",
+    "Delete the currently active relationship between the two tables",
+    "Change the inactive relationship's cardinality to many-to-many",
+    "Add a calculated column that duplicates the Region key in Sales"
+   ],
+   "answer": 0,
+   "explanation": "USERELATIONSHIP inside CALCULATE lets a measure use a specific inactive relationship for one calculation without changing the model's default active path, avoiding disruption to other reports.",
+   "grounding": {
+    "source": "Microsoft Learn: USERELATIONSHIP function (DAX)",
+    "note": "Documents activating an inactive relationship for a single calculation via CALCULATE."
+   },
+   "difficulty_prior": 0.55,
+   "id": "power-bi-007",
+   "status": "beta"
+  },
+  {
+   "concept": "refresh-modes-import-directquery",
+   "stem": "A dataset connects to a live SQL Server database using DirectQuery. Compared to the same model in Import mode, users notice slower interactive filtering and that some DAX functions cannot be used. What explains this?",
+   "options": [
+    "It queries the source live, restricting supported DAX functions",
+    "DirectQuery caches the entire dataset in memory just like Import mode",
+    "DirectQuery mode disables measures, requiring calculated columns for all logic",
+    "Import mode always runs slower because it stores data locally"
+   ],
+   "answer": 0,
+   "explanation": "DirectQuery executes against the source at query time rather than caching data, so performance depends on the source and only functions compatible with query folding are available, unlike Import mode.",
+   "grounding": {
+    "source": "Microsoft Learn: DirectQuery in Power BI Desktop",
+    "note": "Explains DirectQuery's live query execution and its more limited DAX function support compared to Import."
+   },
+   "difficulty_prior": 0.65,
+   "id": "power-bi-008",
+   "status": "beta"
+  },
+  {
+   "concept": "slicers-and-drillthrough",
+   "stem": "An analyst adds a Region slicer to page 1 of a report. She wants the same Region selection to also filter visuals on page 2 without recreating the slicer there. Which feature should she use?",
+   "options": [
+    "Sync slicers, so the same selection applies everywhere",
+    "Drillthrough, navigating to a page filtered by the selection",
+    "A bookmark that saves the current slicer state",
+    "Cross-highlighting between visuals on the same page"
+   ],
+   "answer": 0,
+   "explanation": "The Sync Slicers pane lets one slicer's selection filter visuals on other pages without duplicating the slicer; drillthrough instead navigates to a separate filtered page rather than filtering the current one.",
+   "grounding": {
+    "source": "Microsoft Learn: Sync slicers in Power BI Desktop reports",
+    "note": "Documents syncing a single slicer's selection across multiple report pages."
+   },
+   "difficulty_prior": 0.68,
+   "id": "power-bi-009",
+   "status": "beta"
+  },
+  {
+   "concept": "data-model-relationships",
+   "stem": "A model contains a bridge table linking Salesperson to Region in a many-to-many relationship, since one salesperson can cover several regions and one region can have several salespeople. When a Region slicer is applied, which Salesperson rows appear?",
+   "options": [
+    "Every salesperson linked to the selected region through the bridge table, based on row-level matches",
+    "Only the salesperson marked as primary contact for that region, since many-to-many keeps one active link",
+    "Every salesperson in the model, because many-to-many relationships do not propagate slicer filters",
+    "No salesperson rows, because slicers cannot filter across a many-to-many relationship"
+   ],
+   "answer": 0,
+   "explanation": "Many-to-many relationships propagate filters based on matching rows in the bridge table, so all salespeople sharing that region appear; there is no single 'primary' link that limits the result.",
+   "grounding": {
+    "source": "Microsoft Learn: Many-to-many relationships in Power BI Desktop",
+    "note": "Explains that many-to-many relationships filter based on matching bridge-table rows, not a single link."
+   },
+   "difficulty_prior": 0.45,
+   "id": "power-bi-010",
+   "status": "beta"
+  },
+  {
+   "concept": "dax-measures",
+   "stem": "An analyst creates a calculated column in the Products table: Margin % = [Total Margin] / [Total Sales], referencing two existing measures. Since calculated columns evaluate in row context, what determines the values these measures return in each row?",
+   "options": [
+    "Context transition converts the row context into an equivalent filter context for that row",
+    "The measures ignore row context and return the same grand-total figure in every row",
+    "DAX does not allow measures inside calculated columns, so the formula returns an error",
+    "The measures recalculate using only the columns named in their own definitions, ignoring the row"
+   ],
+   "answer": 0,
+   "explanation": "Referencing a measure inside a row context, such as a calculated column, triggers context transition, turning the current row's values into filters so each row's measures reflect that row rather than a grand total.",
+   "grounding": {
+    "source": "Microsoft Learn: Context transition in DAX formulas",
+    "note": "Documents how referencing a measure within row context converts that context into filters."
+   },
+   "difficulty_prior": 0.42,
+   "id": "power-bi-011",
+   "status": "beta"
+  },
+  {
+   "concept": "filter-context",
+   "stem": "A card visual shows a measure defined as CALCULATE(SUM(Sales[Amount]), Sales[Amount] > 100), on a page where a report-level filter restricts Sales[Region] to 'West'. What determines the value the measure returns?",
+   "options": [
+    "Both conditions apply together, since CALCULATE adds rather than replaces filters on unrelated columns",
+    "The Amount condition replaces the Region filter, showing all regions where Amount exceeds 100",
+    "The Region filter overrides CALCULATE, so the Amount condition inside CALCULATE is ignored",
+    "The two filters conflict on the same column, so the measure returns a blank value"
+   ],
+   "answer": 0,
+   "explanation": "CALCULATE's explicit filter arguments override existing filters only on the same column; filters on other columns, such as the report-level Region filter, remain in effect and combine with the new condition.",
+   "grounding": {
+    "source": "Microsoft Learn: CALCULATE function (DAX)",
+    "note": "Explains that CALCULATE filter arguments override prior filters on the same column but preserve filters on other columns."
+   },
+   "difficulty_prior": 0.48,
+   "id": "power-bi-012",
+   "status": "beta"
+  },
+  {
+   "concept": "calculated-columns",
+   "stem": "An analyst is deciding whether to add a Profit field as a calculated column or a measure in a large imported model with millions of rows. Which factor most directly favors a measure for controlling model size?",
+   "options": [
+    "Calculated columns are stored in the model, while measures compute only at query time",
+    "Measures are stored per row just like calculated columns, so model size is unaffected either way",
+    "Calculated columns refresh in real time, while measures refresh only on a fixed schedule",
+    "Measures cannot reference more than one column, so calculated columns are the only workable choice"
+   ],
+   "answer": 0,
+   "explanation": "Calculated columns are materialized and stored per row during refresh, increasing model size, while measures are calculated on demand at query time and contribute no additional stored data.",
+   "grounding": {
+    "source": "Microsoft Learn: Create calculated columns in Power BI Desktop",
+    "note": "Explains that calculated columns are computed and stored during refresh, unlike measures which compute at query time."
+   },
+   "difficulty_prior": 0.5,
+   "id": "power-bi-013",
+   "status": "beta"
+  },
+  {
+   "concept": "refresh-modes-import-directquery",
+   "stem": "A model uses DirectQuery for a large Transactions fact table and needs a Date dimension that performs well for both DirectQuery joins and cached, import-mode visuals. Which storage mode for the Date table fits both needs?",
+   "options": [
+    "Dual storage mode, caching Date for import visuals while querying it live for DirectQuery tables",
+    "Import mode only, which cannot coexist with a DirectQuery fact table in the same model",
+    "DirectQuery mode only, which prevents the Date table from ever being cached in memory",
+    "Composite mode applied to the Transactions table instead, while Date remains unchanged"
+   ],
+   "answer": 0,
+   "explanation": "Dual storage mode lets a table act as both cached (Import) and live (DirectQuery) depending on which other table it is queried alongside, balancing performance across both modes in a composite model.",
+   "grounding": {
+    "source": "Microsoft Learn: Storage mode in Power BI Desktop",
+    "note": "Documents Dual storage mode combining Import and DirectQuery behavior within composite models."
+   },
+   "difficulty_prior": 0.45,
+   "id": "power-bi-014",
+   "status": "beta"
+  },
+  {
+   "concept": "filter-context",
+   "stem": "A report page applies a page-level filter limiting data to the 'Electronics' category. A table visual breaks out sales by Region, using a measure with ALLSELECTED(Sales) in the denominator to compute percent of total. What does that denominator represent?",
+   "options": [
+    "Total Electronics sales across all regions on the page",
+    "Total sales across every product category, ignoring the page-level filter",
+    "Total sales for only the region shown in that table row",
+    "Total sales from the report's default state, before any filters were applied"
+   ],
+   "answer": 0,
+   "explanation": "ALLSELECTED clears filters from within the visual, such as the Region breakdown, but keeps filters applied outside it, like the page-level filter. Unlike ALL, it does not remove the Electronics filter, so the denominator stays confined to Electronics sales.",
+   "grounding": {
+    "source": "Microsoft Learn: ALLSELECTED function (DAX)",
+    "note": "Documents that ALLSELECTED removes visual-level context while preserving filters applied outside the visual."
+   },
+   "difficulty_prior": 0.32,
+   "id": "power-bi-015",
+   "status": "beta"
+  },
+  {
+   "concept": "dax-measures",
+   "stem": "A measure named [Avg Unit Sales] already exists in the model. An analyst writes a new measure: SUMX(Products, [Avg Unit Sales] * Products[Weight]). For each product row inside this iterator, how does [Avg Unit Sales] get evaluated?",
+   "options": [
+    "It recalculates using that row's filter context, since context transition applies automatically",
+    "It returns the same overall total for every row, ignoring the iterator's row context",
+    "It triggers a circular reference error, since measures cannot be called inside SUMX",
+    "It recalculates only when its own definition explicitly contains a CALCULATE function"
+   ],
+   "answer": 0,
+   "explanation": "Referencing a measure from inside an iterator like SUMX always triggers context transition, converting the current row into an equivalent filter context before evaluation. This happens automatically and is unrelated to whether the measure's own formula contains CALCULATE.",
+   "grounding": {
+    "source": "Microsoft Learn: Context transition in DAX formulas",
+    "note": "Explains that invoking a measure in row context automatically converts that row context into filter context."
+   },
+   "difficulty_prior": 0.28,
+   "id": "power-bi-016",
+   "status": "beta"
+  },
+  {
+   "concept": "data-model-relationships",
+   "stem": "A modeler links Promotions and Sales directly using a many-to-many relationship on PromotionID, since a promotion can cover many sales and a bundled sale can carry many promotions. Compared to routing this relationship through a bridge table, what risk does the direct link introduce?",
+   "options": [
+    "Rows can be double-counted, producing incorrect aggregated totals in visuals",
+    "Power BI automatically rewrites it as a one-to-many relationship at refresh time",
+    "The relationship is created but stays inactive until a bridge table is added",
+    "Any measure referencing either table returns a blank until a bridge table exists"
+   ],
+   "answer": 0,
+   "explanation": "Many-to-many relationships use a weaker join than one-to-many relationships, so matching rows can be counted more than once during aggregation. A bridge table normalizes the join and avoids the double-counting risk that a direct many-to-many link does not eliminate.",
+   "grounding": {
+    "source": "Microsoft Learn: Relationships in Power BI Desktop",
+    "note": "Covers many-to-many cardinality behavior and the double-counting risk it carries compared to bridge-table designs."
+   },
+   "difficulty_prior": 0.35,
+   "id": "power-bi-017",
+   "status": "beta"
+  },
+  {
+   "concept": "refresh-modes-import-directquery",
+   "stem": "A composite model combines a DirectQuery Sales fact table with an Import-mode Date dimension table from the same source. To avoid a slow-query warning and improve performance when both are used together, which storage mode should the Date table use instead of Import?",
+   "options": [
+    "Dual, so it can act as Import or DirectQuery depending on context",
+    "DirectQuery, so every lookup against the Date table is sent to the source live",
+    "Import, since dimension tables should always stay fully cached regardless of the fact table",
+    "Live connection, so the local model is bypassed entirely for the Date table"
+   ],
+   "answer": 0,
+   "explanation": "Dual storage mode lets a table act as Import or DirectQuery depending on which other tables a query touches, letting Power BI join it locally with a DirectQuery fact table from the same source instead of issuing a separate, slower cross-source query.",
+   "grounding": {
+    "source": "Microsoft Learn: Manage storage mode in Power BI Desktop",
+    "note": "Describes Dual storage mode's role in composite models mixing Import and DirectQuery tables from one source."
+   },
+   "difficulty_prior": 0.3,
+   "id": "power-bi-018",
+   "status": "beta"
+  },
+  {
+   "concept": "star-schema-modeling",
+   "stem": "A model contains two fact tables, Orders and Shipments, each already related to a shared Date dimension. An analyst also adds a direct one-to-many relationship from Orders to Shipments to link matching records. What problem does this introduce in a star schema design?",
+   "options": [
+    "It creates conflicting filter paths, since facts should relate only through dimensions",
+    "It doubles the model's file size, since two fact tables cannot share one dimension",
+    "It automatically disables the existing relationships to the Date dimension on both tables",
+    "It has no effect, since Power BI treats every relationship identically regardless of table role"
+   ],
+   "answer": 0,
+   "explanation": "Star schema design routes filter propagation between fact tables only through shared dimensions. A direct fact-to-fact relationship adds an extra, ambiguous filter path that can conflict with the Date-based path, producing unpredictable or incorrect results.",
+   "grounding": {
+    "source": "Microsoft Learn: Understand star schema and the importance for Power BI",
+    "note": "Explains that facts should relate through dimensions, not directly to each other, to avoid ambiguous filter propagation."
+   },
+   "difficulty_prior": 0.38,
+   "id": "power-bi-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

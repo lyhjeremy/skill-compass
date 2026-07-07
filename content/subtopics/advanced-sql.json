@@ -1,0 +1,452 @@
+{
+ "id": "advanced-sql",
+ "concepts": [
+  {
+   "id": "window-function-basics",
+   "label": "Window Function Basics",
+   "definition": "A window function computes a value across a set of related rows using PARTITION BY and ORDER BY without collapsing them into a single output row.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "window-frame-and-ranking",
+   "label": "Window Frames & Ranking",
+   "definition": "Frame clauses (ROWS/RANGE) control which rows a window function sees, and ranking functions like ROW_NUMBER, RANK, and DENSE_RANK differ in how they handle ties within a partition.",
+   "prereq": "window-function-basics",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "deduplication-patterns",
+   "label": "Deduplication Patterns",
+   "definition": "Duplicate rows can be identified and removed by numbering rows within a partition with ROW_NUMBER and filtering to the first occurrence per group.",
+   "prereq": "window-frame-and-ranking",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "pivoting-data",
+   "label": "Pivoting Data",
+   "definition": "Pivoting reshapes rows into columns using conditional aggregation (CASE plus GROUP BY) or a database's native PIVOT syntax.",
+   "prereq": "window-function-basics",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "recursive-cte",
+   "label": "Recursive CTEs",
+   "definition": "A recursive common table expression repeatedly references its own output to traverse hierarchical or graph-structured data, such as organizational charts or bill-of-materials trees.",
+   "prereq": null,
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "query-plans-and-indexes",
+   "label": "Query Plans & Indexes",
+   "definition": "An execution plan shows how the database engine will actually run a query, revealing whether indexes are used for seeks versus full scans.",
+   "prereq": null,
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "exists-vs-in-performance",
+   "label": "EXISTS vs IN Performance",
+   "definition": "EXISTS and IN can produce different execution plans and performance characteristics depending on subquery size, NULLs, and available indexes.",
+   "prereq": "query-plans-and-indexes",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "transaction-isolation-basics",
+   "label": "Transaction Isolation Basics",
+   "definition": "Isolation levels (such as read committed, repeatable read, and serializable) determine how concurrent transactions see and interfere with each other's uncommitted or changing data.",
+   "prereq": null,
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "window-frame-and-ranking",
+   "stem": "A query ranks employees within each department by salary using RANK() OVER (PARTITION BY dept ORDER BY salary DESC). Two employees in the same department are tied for the highest salary. What rank does the employee with the next-highest salary in that department receive?",
+   "options": [
+    "3, because RANK() skips a value for each tied row above it",
+    "2, because RANK() always increments by exactly one per row",
+    "1, because ties reset the ranking sequence",
+    "The rank is undefined until an ORDER BY tiebreaker column is added"
+   ],
+   "answer": 0,
+   "explanation": "RANK() assigns the same rank to ties, then skips ranks equal to the number of tied rows, so after two rows tied at rank 1, the next row gets rank 3.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Window Functions",
+    "note": "Describes RANK() leaving gaps after ties, unlike DENSE_RANK()."
+   },
+   "difficulty_prior": 0.75,
+   "id": "advanced-sql-000",
+   "status": "beta"
+  },
+  {
+   "concept": "recursive-cte",
+   "stem": "A recursive CTE is written to traverse an employee-manager hierarchy starting from a single top-level manager. The anchor member selects that manager's row, and the recursive member joins the CTE to the employee table on manager_id. What does the recursive member do?",
+   "options": [
+    "It repeatedly finds direct reports of rows already found, until no new rows appear",
+    "It re-executes the anchor query once for every row in the employee table",
+    "It sorts all employees by manager_id before the anchor query runs",
+    "It computes an aggregate total across every level of the hierarchy at once"
+   ],
+   "answer": 0,
+   "explanation": "The recursive member repeatedly joins new rows from the previous iteration to find their direct reports, accumulating results until an iteration produces no new rows.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: WITH Queries (Recursive)",
+    "note": "Explains iterative execution of recursive CTEs until no rows are added."
+   },
+   "difficulty_prior": 0.78,
+   "id": "advanced-sql-001",
+   "status": "beta"
+  },
+  {
+   "concept": "exists-vs-in-performance",
+   "stem": "A query needs to return customers who have placed at least one order, using a subquery against a very large orders table. Why would EXISTS typically perform better here than IN for this correlated check?",
+   "options": [
+    "EXISTS stops scanning at the first match; IN scans the entire result",
+    "EXISTS always uses a hash join for its subquery, while IN never does",
+    "EXISTS ignores every NULL value found in the orders table entirely",
+    "EXISTS converts the correlated subquery into a CROSS JOIN before filtering rows"
+   ],
+   "answer": 0,
+   "explanation": "EXISTS short-circuits on the first matching row per outer row, whereas IN commonly requires materializing the full subquery result, which is costlier against a large table.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: The Subquery Expressions",
+    "note": "Describes EXISTS short-circuit evaluation versus IN list evaluation."
+   },
+   "difficulty_prior": 0.72,
+   "id": "advanced-sql-002",
+   "status": "beta"
+  },
+  {
+   "concept": "deduplication-patterns",
+   "stem": "A table of customer records has no primary key and contains exact duplicate rows, with identical values in every column. Which approach correctly removes the duplicates while keeping exactly one copy of each distinct row?",
+   "options": [
+    "Partition rows by every column with ROW_NUMBER(), then delete rows numbered above one",
+    "Add a UNIQUE constraint to the table, which automatically deletes existing duplicate rows",
+    "Run SELECT DISTINCT * FROM table, which removes the duplicate rows from the table",
+    "Use GROUP BY on all columns alone, which permanently removes duplicate rows from the table"
+   ],
+   "answer": 0,
+   "explanation": "Partitioning by all columns and numbering rows lets you identify and delete every copy beyond the first; a UNIQUE constraint fails on existing duplicates instead of removing them, and SELECT DISTINCT only changes query output, not the table.",
+   "grounding": {
+    "source": "PostgreSQL Wiki: Deleting duplicate rows",
+    "note": "Documents the ROW_NUMBER partition-and-delete pattern for exact duplicates."
+   },
+   "difficulty_prior": 0.74,
+   "id": "advanced-sql-003",
+   "status": "beta"
+  },
+  {
+   "concept": "transaction-isolation-basics",
+   "stem": "Under the Read Committed isolation level, a transaction runs the same SELECT query twice, and another committed transaction changes matching rows in between. What is most likely to happen on the second SELECT?",
+   "options": [
+    "It can return different results, since Read Committed only guarantees no reads of uncommitted data",
+    "It always returns identical results, since Read Committed guarantees full repeatable reads",
+    "It fails with a serialization error, since Read Committed blocks all concurrent writes",
+    "It returns the uncommitted changes from the other transaction, since Read Committed allows dirty reads"
+   ],
+   "answer": 0,
+   "explanation": "Read Committed only prevents reading uncommitted data; it does not guarantee that repeated reads within one transaction see the same rows, unlike Repeatable Read or Serializable.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Transaction Isolation",
+    "note": "Defines Read Committed as allowing non-repeatable reads between statements."
+   },
+   "difficulty_prior": 0.73,
+   "id": "advanced-sql-004",
+   "status": "beta"
+  },
+  {
+   "concept": "window-function-basics",
+   "stem": "An analyst wants a query that returns every order row along with each customer's total lifetime spend, without collapsing the individual order rows into one row per customer. Which approach achieves this?",
+   "options": [
+    "A window function such as SUM(amount) OVER (PARTITION BY customer_id), adding the total as a new column",
+    "GROUP BY customer_id with SUM(amount), which keeps all individual order rows intact in the output",
+    "A HAVING clause filtering on SUM(amount), which aggregates without removing any of the original rows",
+    "A subquery in the SELECT list, since aggregates cannot appear next to detail columns without one"
+   ],
+   "answer": 0,
+   "explanation": "Window functions compute an aggregate per partition while leaving every underlying row visible; GROUP BY instead collapses rows into one per group, which loses the order-level detail the analyst needs.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Window Functions",
+    "note": "Explains that window functions retain row-level output, unlike GROUP BY aggregation."
+   },
+   "difficulty_prior": 0.62,
+   "id": "advanced-sql-005",
+   "status": "beta"
+  },
+  {
+   "concept": "pivoting-data",
+   "stem": "A sales table stores one row per region and quarter with a revenue column. A report needs one row per region with separate columns for Q1 through Q4 revenue. Which technique reshapes the data this way in standard SQL?",
+   "options": [
+    "Conditional aggregation with SUM(CASE WHEN quarter='Q1' THEN revenue END), grouped by region",
+    "GROUP BY quarter alone, which automatically produces one output row per region across all quarters",
+    "A self-join of the table to itself on region, lining up each quarter's revenue in one row",
+    "UNION ALL of four separately filtered SELECT statements, one for each quarter's revenue column"
+   ],
+   "answer": 0,
+   "explanation": "Conditional aggregation with CASE inside SUM, grouped by region, turns each quarter's values into its own column; GROUP BY quarter alone still yields one row per quarter, not per region.",
+   "grounding": {
+    "source": "Wikipedia: Pivot table",
+    "note": "Describes reshaping row values into columns, the pattern conditional aggregation implements in SQL."
+   },
+   "difficulty_prior": 0.6,
+   "id": "advanced-sql-006",
+   "status": "beta"
+  },
+  {
+   "concept": "query-plans-and-indexes",
+   "stem": "A query filters a 10-million-row table on an unindexed column, and its execution plan shows a Sequential Scan reading every row. What is the most direct way to let the engine avoid scanning the whole table for this filter?",
+   "options": [
+    "Create an index on the filtered column so the engine can seek matching rows directly",
+    "Rewrite the WHERE clause as a subquery, which lets the engine skip the full table scan",
+    "Add an ORDER BY clause, which causes the engine to sort and index the table automatically",
+    "Increase the database server's cache size so the full scan runs entirely from memory"
+   ],
+   "answer": 0,
+   "explanation": "An index on the filtered column lets the planner choose a seek instead of scanning every row; rewriting as a subquery or adding ORDER BY does not create an index, and caching still reads every row.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Using EXPLAIN",
+    "note": "Shows how Sequential Scan versus Index Scan plans reflect whether a usable index exists."
+   },
+   "difficulty_prior": 0.68,
+   "id": "advanced-sql-007",
+   "status": "beta"
+  },
+  {
+   "concept": "window-frame-and-ranking",
+   "stem": "A query computes SUM(amount) OVER (ORDER BY sale_date) with no explicit frame clause, to get a running total per row. What is the default frame that is used?",
+   "options": [
+    "RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW, summing all rows up through the current one",
+    "ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING, summing every row in the partition",
+    "ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING, summing only the current row's two neighbors",
+    "RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING, summing the current row through the last one"
+   ],
+   "answer": 0,
+   "explanation": "When ORDER BY is present without an explicit frame, the default is RANGE UNBOUNDED PRECEDING TO CURRENT ROW, producing a running total; the full-partition frame only applies when ORDER BY is absent.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Window Functions",
+    "note": "States the default frame is RANGE UNBOUNDED PRECEDING AND CURRENT ROW when ORDER BY is supplied."
+   },
+   "difficulty_prior": 0.58,
+   "id": "advanced-sql-008",
+   "status": "beta"
+  },
+  {
+   "concept": "transaction-isolation-basics",
+   "stem": "Transaction A updates a row but has not yet committed. Under the Read Committed isolation level, what does Transaction B see if it queries that same row at this moment?",
+   "options": [
+    "Transaction B sees the row's last committed value, not Transaction A's uncommitted change",
+    "Transaction B immediately sees Transaction A's uncommitted change, since Read Committed allows dirty reads",
+    "Transaction B's query blocks and waits until Transaction A commits or rolls back",
+    "Transaction B's query raises a serialization error because the row is being modified"
+   ],
+   "answer": 0,
+   "explanation": "Read Committed guarantees a transaction only ever sees committed data, so Transaction B reads the prior committed value; dirty reads of uncommitted changes are permitted only under Read Uncommitted.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Transaction Isolation",
+    "note": "Defines Read Committed as preventing dirty reads of another transaction's uncommitted changes."
+   },
+   "difficulty_prior": 0.63,
+   "id": "advanced-sql-009",
+   "status": "beta"
+  },
+  {
+   "concept": "window-frame-and-ranking",
+   "stem": "A query uses AVG(amount) OVER (ORDER BY sale_date ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) to compute a moving average. For the very first row in the partition, where no preceding row exists, what does this frame actually cover?",
+   "options": [
+    "An error, since the frame explicitly requires a preceding row that does not exist",
+    "The current row and following row, plus the partition's last row wrapping around",
+    "Just the current row and following row, since frames clip at partition edges",
+    "The current row and following row, with the missing preceding value treated as zero"
+   ],
+   "answer": 2,
+   "explanation": "Frame boundaries clip to whatever rows actually exist in the partition; SQL neither errors, zero-pads, nor wraps around for rows outside the partition.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Window Functions",
+    "note": "Explains that ROWS frames are limited to the rows actually present within the partition."
+   },
+   "difficulty_prior": 0.45,
+   "id": "advanced-sql-010",
+   "status": "beta"
+  },
+  {
+   "concept": "recursive-cte",
+   "stem": "A recursive CTE traverses a bill-of-materials table that may contain a cycle (a part that indirectly contains itself). Which technique, applied within the recursive query, correctly prevents infinite recursion?",
+   "options": [
+    "Wrap the entire recursive CTE in a WHERE clause that filters duplicate rows from the final output",
+    "Track visited ids in an array and stop once the next id is already present",
+    "Add a LIMIT clause on the final SELECT, expecting it to stop the recursion once enough rows exist",
+    "Replace UNION ALL with UNION, which detects and discards any cyclic rows automatically"
+   ],
+   "answer": 1,
+   "explanation": "Only an explicit visited-path check reliably detects cycles; UNION alone deduplicates identical full rows, which fails once accumulating columns like quantity differ between passes.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: WITH Queries (Recursive)",
+    "note": "Documents the path-array technique used to detect and stop cycles in recursive queries."
+   },
+   "difficulty_prior": 0.48,
+   "id": "advanced-sql-011",
+   "status": "beta"
+  },
+  {
+   "concept": "query-plans-and-indexes",
+   "stem": "A table has a composite index on (region, order_date). A query filters only WHERE order_date = '2024-01-15', with no predicate on region. Why does the planner most likely skip this index and scan the table instead?",
+   "options": [
+    "Composite indexes behave like independent indexes per column, so order_date alone should still work",
+    "Column order within a composite index has no effect on which searches it can support",
+    "Composite indexes can only ever be used when a query filters on all of their columns",
+    "It's sorted by region first, so a seek on order_date alone can't use it"
+   ],
+   "answer": 3,
+   "explanation": "A composite index is physically sorted by its leading column first, so filtering only on the second column can't narrow the search range. An index doesn't need filters on every column, just a usable prefix.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Multicolumn Indexes",
+    "note": "Explains that a multicolumn index is only efficiently searchable via its leading columns."
+   },
+   "difficulty_prior": 0.42,
+   "id": "advanced-sql-012",
+   "status": "beta"
+  },
+  {
+   "concept": "exists-vs-in-performance",
+   "stem": "A query filters WHERE customer_id NOT IN (SELECT customer_id FROM returns) to find customers with no returns. The returns.customer_id column allows NULLs, and at least one row holds a NULL. What is the result?",
+   "options": [
+    "The query returns exactly the customers with no matching row in returns, as intended",
+    "The query returns all customers, since NOT IN silently skips NULL values in the subquery",
+    "It returns zero rows, since one NULL in the list makes every comparison unknown",
+    "The query raises an error, because NOT IN cannot be used against a nullable column"
+   ],
+   "answer": 2,
+   "explanation": "NOT IN evaluates as a chain of x <> v AND comparisons; when any subquery value is NULL, that comparison is unknown, making the whole chain unknown, so no rows pass.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Subquery Expressions",
+    "note": "Documents that NOT IN returns no rows when the subquery result contains a NULL value."
+   },
+   "difficulty_prior": 0.5,
+   "id": "advanced-sql-013",
+   "status": "beta"
+  },
+  {
+   "concept": "deduplication-patterns",
+   "stem": "A customer table has several rows per customer_id from repeated imports, differing only in an updated_at timestamp. Only the most recently updated row per customer_id should be kept. Which approach correctly selects it?",
+   "options": [
+    "GROUP BY customer_id with MAX(updated_at), which returns each customer's full latest row automatically",
+    "ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY updated_at DESC), keeping only rows numbered 1",
+    "DISTINCT ON customer_id with no ORDER BY, which keeps the newest row for each id by default",
+    "ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY updated_at DESC), keeping only rows numbered 0"
+   ],
+   "answer": 1,
+   "explanation": "ROW_NUMBER numbering starts at 1, so filtering to number 1 keeps the newest row per group; filtering to 0 keeps nothing, since that value is never assigned.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Window Functions",
+    "note": "Confirms ROW_NUMBER assigns sequential integers starting at 1 within each partition."
+   },
+   "difficulty_prior": 0.44,
+   "id": "advanced-sql-014",
+   "status": "beta"
+  },
+  {
+   "concept": "window-function-basics",
+   "stem": "A query includes ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date DESC) AS rn in its SELECT list, and the query's WHERE clause contains rn = 1. Running this raises an error. Why?",
+   "options": [
+    "ROW_NUMBER() requires an explicit frame clause before it can be filtered in WHERE",
+    "WHERE clauses cannot reference any column computed using PARTITION BY",
+    "Window functions run after WHERE filtering, so the alias isn't available yet",
+    "The ORDER BY inside OVER() conflicts with the WHERE clause's own filtering logic"
+   ],
+   "answer": 2,
+   "explanation": "Window functions are computed in the same logical phase as SELECT, after WHERE has already run, so a window-function alias can't be referenced there. Filtering on rn requires wrapping the query in a subquery or CTE.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Window Functions",
+    "note": "Describes window functions as evaluated after the WHERE, GROUP BY, and HAVING clauses in query processing order."
+   },
+   "difficulty_prior": 0.32,
+   "id": "advanced-sql-015",
+   "status": "beta"
+  },
+  {
+   "concept": "pivoting-data",
+   "stem": "A report needs one column per distinct product category, but the set of categories changes over time and isn't known until query time. Using conditional aggregation (CASE WHEN ... THEN) to pivot this data faces which limitation?",
+   "options": [
+    "Conditional aggregation cannot pivot a table that has more than one category column",
+    "Result columns must be fixed in advance, so new categories need dynamic SQL",
+    "CASE WHEN silently drops any category value absent when the table was first created",
+    "Conditional aggregation only works on tables that define a composite primary key"
+   ],
+   "answer": 1,
+   "explanation": "SQL requires a query's output column list to be known when it is parsed, so conditional aggregation can only target a fixed set of categories; new or changing categories require regenerating the query text dynamically.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: tablefunc (crosstab)",
+    "note": "Notes that crosstab-style pivots must declare their output columns explicitly, illustrating the fixed-column-list constraint."
+   },
+   "difficulty_prior": 0.3,
+   "id": "advanced-sql-016",
+   "status": "beta"
+  },
+  {
+   "concept": "query-plans-and-indexes",
+   "stem": "A column last_name has a standard B-tree index. A query filters WHERE UPPER(last_name) = 'SMITH'. The execution plan shows a Sequential Scan instead of using the index. Why?",
+   "options": [
+    "B-tree indexes only support filters that use the equality operator, never functions",
+    "The planner always ignores indexes whenever the WHERE clause filters on a text column",
+    "UPPER() forces the engine to sort the entire table before filtering begins",
+    "The function changes the value, so raw index entries no longer match it"
+   ],
+   "answer": 3,
+   "explanation": "The function transforms the column's values, so raw index entries no longer match it. A matching expression index on UPPER(last_name) would let the planner use an index scan instead.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: Indexes on Expressions",
+    "note": "Explains that a plain index can't support a search on a function of a column unless a matching expression index exists."
+   },
+   "difficulty_prior": 0.34,
+   "id": "advanced-sql-017",
+   "status": "beta"
+  },
+  {
+   "concept": "transaction-isolation-basics",
+   "stem": "Under Repeatable Read isolation, a transaction runs SELECT COUNT(*) FROM orders WHERE status='pending' twice, while another transaction commits a new pending order in between. Standard SQL still permits which outcome on the second count?",
+   "options": [
+    "The count always stays identical, since Repeatable Read blocks any new matching rows",
+    "The transaction aborts immediately once a concurrent insert matches the same filter",
+    "The count can increase, since Repeatable Read protects read rows, not new ones",
+    "Repeatable Read only affects UPDATE statements, so SELECT counts are never affected"
+   ],
+   "answer": 2,
+   "explanation": "Repeatable Read prevents changes to rows already read, but standard SQL still permits phantom reads: new rows matching the same predicate can appear on a later query. Only Serializable rules this out.",
+   "grounding": {
+    "source": "Wikipedia: Isolation (database systems)",
+    "note": "Defines phantom reads and distinguishes them from the non-repeatable reads that Repeatable Read alone prevents."
+   },
+   "difficulty_prior": 0.3,
+   "id": "advanced-sql-018",
+   "status": "beta"
+  },
+  {
+   "concept": "recursive-cte",
+   "stem": "A recursive CTE's recursive term includes an aggregate function, such as COUNT(*), applied directly to the recursive reference itself. What happens when this query is executed?",
+   "options": [
+    "It runs normally, recomputing the aggregate fresh at every recursion level",
+    "Most engines reject it, since the recursive term can't self-aggregate",
+    "It runs, but silently ignores the aggregate function during each recursion",
+    "It executes for exactly one recursion level, then automatically stops itself"
+   ],
+   "answer": 1,
+   "explanation": "The recursive term must produce a well-defined set of new rows each pass; aggregating over the recursive reference (or using DISTINCT, GROUP BY, or an outer join on it) breaks that, so most engines disallow it outright.",
+   "grounding": {
+    "source": "PostgreSQL Documentation: WITH Queries (Recursive)",
+    "note": "Lists restrictions on the recursive term, including that it cannot use aggregate functions on the recursive self-reference."
+   },
+   "difficulty_prior": 0.3,
+   "id": "advanced-sql-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

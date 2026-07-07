@@ -1,5 +1,5 @@
 {
- "version": 3,
+ "version": 5,
  "themes": [
   {
    "id": "programming",
@@ -138,6 +138,150 @@
    "title": "Psychology & Behavior",
    "color": "#E11D48",
    "status": "soon"
+  },
+  {
+   "id": "design",
+   "title": "Design & Creative",
+   "color": "#DB2777",
+   "status": "soon"
+  },
+  {
+   "id": "writing-content",
+   "title": "Writing & Editing",
+   "color": "#0284C7",
+   "status": "soon"
+  },
+  {
+   "id": "teaching-education",
+   "title": "Education & Teaching",
+   "color": "#65A30D",
+   "status": "soon"
+  },
+  {
+   "id": "physical-sciences",
+   "title": "Physics & Chemistry",
+   "color": "#7C3AED",
+   "status": "soon"
+  },
+  {
+   "id": "life-sciences",
+   "title": "Biology & Life Sciences",
+   "color": "#059669",
+   "status": "soon"
+  },
+  {
+   "id": "engineering",
+   "title": "Engineering Disciplines",
+   "color": "#EA580C",
+   "status": "soon"
+  },
+  {
+   "id": "hardware-embedded",
+   "title": "Hardware & Embedded",
+   "color": "#64748B",
+   "status": "soon"
+  },
+  {
+   "id": "game-dev",
+   "title": "Game Development",
+   "color": "#C026D3",
+   "status": "soon"
+  },
+  {
+   "id": "media-production",
+   "title": "Media & Production",
+   "color": "#DB2777",
+   "status": "soon"
+  },
+  {
+   "id": "sales",
+   "title": "Sales",
+   "color": "#E11D48",
+   "status": "soon"
+  },
+  {
+   "id": "customer-experience",
+   "title": "Customer Success & Support",
+   "color": "#0891B2",
+   "status": "soon"
+  },
+  {
+   "id": "real-estate",
+   "title": "Real Estate & Property",
+   "color": "#D97706",
+   "status": "soon"
+  },
+  {
+   "id": "hospitality-tourism",
+   "title": "Hospitality & Tourism",
+   "color": "#0284C7",
+   "status": "soon"
+  },
+  {
+   "id": "manufacturing",
+   "title": "Manufacturing & Industry",
+   "color": "#EA580C",
+   "status": "soon"
+  },
+  {
+   "id": "public-policy",
+   "title": "Government & Public Policy",
+   "color": "#64748B",
+   "status": "soon"
+  },
+  {
+   "id": "languages-linguistics",
+   "title": "Languages & Linguistics",
+   "color": "#7C3AED",
+   "status": "soon"
+  },
+  {
+   "id": "architecture-construction",
+   "title": "Architecture & Construction",
+   "color": "#65A30D",
+   "status": "soon"
+  },
+  {
+   "id": "agriculture-food",
+   "title": "Agriculture & Food Science",
+   "color": "#059669",
+   "status": "soon"
+  },
+  {
+   "id": "earth-sciences",
+   "title": "Earth & Space Sciences",
+   "color": "#0891B2",
+   "status": "soon"
+  },
+  {
+   "id": "humanities",
+   "title": "History & Philosophy",
+   "color": "#B45309",
+   "status": "soon"
+  },
+  {
+   "id": "arts-music",
+   "title": "Arts & Music",
+   "color": "#DB2777",
+   "status": "soon"
+  },
+  {
+   "id": "skilled-trades",
+   "title": "Skilled Trades",
+   "color": "#EA580C",
+   "status": "soon"
+  },
+  {
+   "id": "fitness-wellness",
+   "title": "Fitness & Wellness",
+   "color": "#059669",
+   "status": "soon"
+  },
+  {
+   "id": "transportation-logistics",
+   "title": "Transportation & Logistics",
+   "color": "#64748B",
+   "status": "soon"
   }
  ],
  "tracks": [
@@ -201,8 +345,8 @@
     "airflow-orchestration",
     "database-design"
    ],
-   "status": "soon",
-   "ready": 0,
+   "status": "partial",
+   "ready": 1,
    "total": 6
   },
   {
@@ -218,7 +362,7 @@
     "business-metrics-kpis"
    ],
    "status": "partial",
-   "ready": 3,
+   "ready": 5,
    "total": 6
   },
   {
@@ -588,6 +732,1430 @@
    "status": "soon",
    "ready": 0,
    "total": 6
+  },
+  {
+   "id": "software-engineer-backend",
+   "title": "Backend Engineer (advanced)",
+   "blurb": "System design, databases, concurrency, and the craft behind reliable services.",
+   "subtopics": [
+    "system-design-basics",
+    "database-design",
+    "concurrency-parallelism",
+    "apis-http",
+    "clean-code-testing",
+    "debugging-troubleshooting"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "java-developer",
+   "title": "Java Developer",
+   "blurb": "Core Java, OOP, testing, and the JVM ecosystem interviews probe.",
+   "subtopics": [
+    "java-fundamentals",
+    "oop-design",
+    "data-structures",
+    "algorithms-basics",
+    "clean-code-testing",
+    "system-design-basics"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "mobile-developer",
+   "title": "Mobile Developer",
+   "blurb": "App architecture, JavaScript/TypeScript, and building for small screens.",
+   "subtopics": [
+    "mobile-dev-basics",
+    "javascript-fundamentals",
+    "typescript-essentials",
+    "apis-http",
+    "responsive-design",
+    "debugging-troubleshooting"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "fullstack-developer",
+   "title": "Full-Stack Developer",
+   "blurb": "Front to back: React, Node, databases, and everything between.",
+   "subtopics": [
+    "react-fundamentals",
+    "node-backend",
+    "database-design",
+    "apis-http",
+    "javascript-fundamentals",
+    "web-security-basics"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "qa-engineer",
+   "title": "QA / Test Engineer",
+   "blurb": "Testing strategy, code quality, and catching what others miss.",
+   "subtopics": [
+    "clean-code-testing",
+    "debugging-troubleshooting",
+    "apis-http",
+    "web-security-basics",
+    "algorithms-basics",
+    "ci-cd"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "computer-vision-engineer",
+   "title": "Computer Vision Engineer",
+   "blurb": "Deep learning for images, from CNNs to deployment.",
+   "subtopics": [
+    "computer-vision",
+    "deep-learning-basics",
+    "ml-fundamentals",
+    "feature-engineering-data-prep",
+    "mlops-deployment",
+    "python-for-data"
+   ],
+   "status": "partial",
+   "ready": 3,
+   "total": 6
+  },
+  {
+   "id": "nlp-engineer",
+   "title": "NLP / LLM Engineer",
+   "blurb": "Language models, embeddings, RAG, and agent systems.",
+   "subtopics": [
+    "nlp-basics",
+    "llm-prompting",
+    "embeddings-vector-search",
+    "generative-ai",
+    "ai-agents",
+    "mlops-deployment"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "ai-product-manager",
+   "title": "AI Product Manager",
+   "blurb": "Shipping AI products: LLMs, evaluation, ethics, and the metrics.",
+   "subtopics": [
+    "llm-prompting",
+    "generative-ai",
+    "ml-fairness-ethics",
+    "product-management-fundamentals",
+    "business-metrics-kpis",
+    "ab-testing"
+   ],
+   "status": "partial",
+   "ready": 2,
+   "total": 6
+  },
+  {
+   "id": "prompt-engineer",
+   "title": "Prompt Engineer",
+   "blurb": "Getting the most from LLMs — prompting, RAG, agents, and eval.",
+   "subtopics": [
+    "llm-prompting",
+    "generative-ai",
+    "embeddings-vector-search",
+    "ai-agents",
+    "nlp-basics",
+    "critical-thinking"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "analytics-engineer",
+   "title": "Analytics Engineer",
+   "blurb": "dbt, modeling, and turning raw data into trusted marts.",
+   "subtopics": [
+    "dbt-analytics-eng",
+    "advanced-sql",
+    "data-modeling",
+    "data-warehousing",
+    "data-quality-governance",
+    "python-for-data"
+   ],
+   "status": "partial",
+   "ready": 2,
+   "total": 6
+  },
+  {
+   "id": "database-administrator",
+   "title": "Database Administrator",
+   "blurb": "Design, performance, and reliability of the data layer.",
+   "subtopics": [
+    "database-design",
+    "advanced-sql",
+    "nosql-databases",
+    "data-warehousing",
+    "monitoring-observability",
+    "security-fundamentals"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "sre",
+   "title": "Site Reliability Engineer",
+   "blurb": "Observability, incident response, and systems that stay up.",
+   "subtopics": [
+    "monitoring-observability",
+    "kubernetes-basics",
+    "ci-cd",
+    "incident-response",
+    "system-design-basics",
+    "networking-fundamentals"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "network-engineer",
+   "title": "Network Engineer",
+   "blurb": "Networking, security, and the plumbing of the internet.",
+   "subtopics": [
+    "networking-fundamentals",
+    "network-security",
+    "cloud-security",
+    "linux-command-line",
+    "security-fundamentals",
+    "monitoring-observability"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "penetration-tester",
+   "title": "Penetration Tester",
+   "blurb": "Offensive security, done ethically and by authorization.",
+   "subtopics": [
+    "penetration-testing",
+    "application-security",
+    "network-security",
+    "web-security-basics",
+    "cryptography-basics",
+    "security-fundamentals"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "soc-analyst",
+   "title": "SOC Analyst",
+   "blurb": "Detection, triage, and response in a security operations center.",
+   "subtopics": [
+    "security-operations-siem",
+    "incident-response",
+    "network-security",
+    "digital-forensics",
+    "security-fundamentals",
+    "identity-access-mgmt"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "grc-analyst",
+   "title": "GRC / Compliance Analyst",
+   "blurb": "Governance, risk, and the frameworks auditors live by.",
+   "subtopics": [
+    "security-compliance",
+    "risk-management",
+    "data-privacy-law",
+    "compliance-ethics",
+    "audit-basics",
+    "security-fundamentals"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "technical-writer",
+   "title": "Technical Writer",
+   "blurb": "Docs that developers and users actually rely on.",
+   "subtopics": [
+    "technical-writing",
+    "writing-fundamentals",
+    "editing-proofreading",
+    "apis-http",
+    "ux-design-principles",
+    "critical-thinking"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "graphic-designer",
+   "title": "Graphic Designer",
+   "blurb": "The visual craft: type, color, layout, and brand.",
+   "subtopics": [
+    "design-principles",
+    "typography",
+    "color-theory",
+    "layout-composition",
+    "branding-identity",
+    "design-critique"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "motion-designer",
+   "title": "Motion Designer",
+   "blurb": "Animation with purpose, from micro-interactions to story.",
+   "subtopics": [
+    "motion-design",
+    "design-principles",
+    "video-editing",
+    "ui-visual-design",
+    "storytelling-narrative",
+    "design-critique"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "content-strategist",
+   "title": "Content Strategist",
+   "blurb": "Writing, editing, SEO, and content that drives outcomes.",
+   "subtopics": [
+    "writing-fundamentals",
+    "copywriting",
+    "content-marketing",
+    "seo-basics",
+    "editing-proofreading",
+    "marketing-analytics-attribution"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "copywriter",
+   "title": "Copywriter",
+   "blurb": "Words that persuade — copy, brand voice, and story.",
+   "subtopics": [
+    "copywriting",
+    "writing-fundamentals",
+    "storytelling-narrative",
+    "brand-positioning",
+    "grammar-usage",
+    "email-crm-marketing"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "seo-specialist",
+   "title": "SEO Specialist",
+   "blurb": "Search visibility from technical to content to analytics.",
+   "subtopics": [
+    "seo-basics",
+    "content-marketing",
+    "marketing-analytics-attribution",
+    "frontend-performance",
+    "web-accessibility",
+    "writing-fundamentals"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "social-media-manager",
+   "title": "Social Media Manager",
+   "blurb": "Strategy, content, community, and proving it worked.",
+   "subtopics": [
+    "social-media-marketing",
+    "content-marketing",
+    "brand-positioning",
+    "marketing-analytics-attribution",
+    "copywriting",
+    "streaming-content-creation"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "growth-marketer",
+   "title": "Growth Marketer",
+   "blurb": "Experiment-driven acquisition, activation, and retention.",
+   "subtopics": [
+    "digital-marketing-fundamentals",
+    "growth-product",
+    "ab-testing",
+    "marketing-analytics-attribution",
+    "paid-ads-ppc",
+    "email-crm-marketing"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "brand-manager",
+   "title": "Brand Manager",
+   "blurb": "Positioning, identity, and building brands that last.",
+   "subtopics": [
+    "brand-positioning",
+    "branding-identity",
+    "marketing-analytics-attribution",
+    "content-marketing",
+    "competitive-strategy",
+    "presentation-skills"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "sales-representative",
+   "title": "Sales Representative / AE",
+   "blurb": "Prospecting to closing, and everything in the pipeline.",
+   "subtopics": [
+    "sales-fundamentals",
+    "prospecting-lead-gen",
+    "negotiation-closing",
+    "sales-crm-process",
+    "account-management",
+    "emotional-intelligence"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "sales-engineer",
+   "title": "Sales Engineer",
+   "blurb": "Technical selling: demos, discovery, and translating value.",
+   "subtopics": [
+    "sales-fundamentals",
+    "apis-http",
+    "presentation-skills",
+    "product-management-fundamentals",
+    "negotiation-closing",
+    "critical-thinking"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "customer-success-manager",
+   "title": "Customer Success Manager",
+   "blurb": "Onboarding to expansion — driving customer outcomes.",
+   "subtopics": [
+    "customer-success-management",
+    "voice-of-customer",
+    "business-metrics-kpis",
+    "account-management",
+    "emotional-intelligence",
+    "presentation-skills"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "support-engineer",
+   "title": "Support Engineer",
+   "blurb": "Troubleshooting, empathy, and support at scale.",
+   "subtopics": [
+    "customer-support-fundamentals",
+    "support-metrics-ops",
+    "debugging-troubleshooting",
+    "apis-http",
+    "technical-writing",
+    "emotional-intelligence"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "game-developer",
+   "title": "Game Developer",
+   "blurb": "Game loops, physics, design, and shipping fun.",
+   "subtopics": [
+    "game-programming",
+    "game-design-fundamentals",
+    "game-physics-math",
+    "level-design",
+    "cpp-fundamentals",
+    "linear-algebra-basics"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "embedded-engineer",
+   "title": "Embedded Engineer",
+   "blurb": "Firmware, hardware, and computing at the edge.",
+   "subtopics": [
+    "embedded-systems",
+    "digital-logic",
+    "electronics-basics",
+    "cpp-fundamentals",
+    "iot-fundamentals",
+    "control-systems"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "iot-engineer",
+   "title": "IoT Engineer",
+   "blurb": "Connected devices from sensor to cloud, securely.",
+   "subtopics": [
+    "iot-fundamentals",
+    "embedded-systems",
+    "networking-fundamentals",
+    "cloud-security",
+    "streaming-basics",
+    "electronics-basics"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "mechanical-engineer",
+   "title": "Mechanical Engineer",
+   "blurb": "Mechanics, materials, controls, and design fundamentals.",
+   "subtopics": [
+    "mechanical-engineering-basics",
+    "cad-engineering-drawing",
+    "control-systems",
+    "physics-mechanics",
+    "physics-thermodynamics",
+    "quality-control-manufacturing"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "electrical-engineer",
+   "title": "Electrical Engineer",
+   "blurb": "Circuits, electronics, and signals from theory to board.",
+   "subtopics": [
+    "electrical-engineering-basics",
+    "electronics-basics",
+    "digital-logic",
+    "physics-electromagnetism",
+    "control-systems",
+    "embedded-systems"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "civil-engineer",
+   "title": "Civil Engineer",
+   "blurb": "Structures, loads, and the built environment.",
+   "subtopics": [
+    "civil-structural-basics",
+    "cad-engineering-drawing",
+    "physics-mechanics",
+    "construction-management",
+    "sustainable-building",
+    "mathematical-modeling"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "architect",
+   "title": "Architect",
+   "blurb": "Design, building systems, and sustainable construction.",
+   "subtopics": [
+    "architecture-fundamentals",
+    "building-systems-mep",
+    "sustainable-building",
+    "construction-management",
+    "design-principles",
+    "cad-engineering-drawing"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "construction-manager",
+   "title": "Construction Manager",
+   "blurb": "Delivering buildings on time, on budget, and safe.",
+   "subtopics": [
+    "construction-management",
+    "project-management-fundamentals",
+    "building-systems-mep",
+    "industrial-safety",
+    "risk-stakeholder-mgmt",
+    "unit-economics"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "teacher",
+   "title": "Teacher / Instructor",
+   "blurb": "Pedagogy, assessment, and how people actually learn.",
+   "subtopics": [
+    "pedagogy-teaching-methods",
+    "instructional-design",
+    "assessment-evaluation",
+    "learning-theory",
+    "learning-science",
+    "edtech-online-learning"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "instructional-designer",
+   "title": "Instructional Designer",
+   "blurb": "Designing learning that works, online and off.",
+   "subtopics": [
+    "instructional-design",
+    "learning-theory",
+    "assessment-evaluation",
+    "edtech-online-learning",
+    "ux-design-principles",
+    "writing-fundamentals"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "research-scientist",
+   "title": "Research Scientist",
+   "blurb": "Experimental design, statistics, and rigorous inference.",
+   "subtopics": [
+    "experimental-design",
+    "statistical-inference",
+    "causal-inference",
+    "statistics-math",
+    "critical-thinking",
+    "technical-writing"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "lab-scientist",
+   "title": "Lab Scientist",
+   "blurb": "Molecular and cell biology with the stats to back it.",
+   "subtopics": [
+    "molecular-biology",
+    "cell-biology",
+    "microbiology",
+    "statistical-inference",
+    "medical-ethics",
+    "clinical-trials-basics"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "clinical-research-associate",
+   "title": "Clinical Research Associate",
+   "blurb": "Trials from protocol to data, ethically run.",
+   "subtopics": [
+    "clinical-trials-basics",
+    "epidemiology",
+    "medical-ethics",
+    "health-data-privacy",
+    "statistical-inference",
+    "healthcare-analytics"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "nurse-clinical",
+   "title": "Clinical Foundations",
+   "blurb": "Anatomy, pharmacology, and the science behind care.",
+   "subtopics": [
+    "human-anatomy-physiology",
+    "pharmacology-basics",
+    "microbiology",
+    "medical-terminology",
+    "medical-ethics",
+    "nutrition-science"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "financial-planner",
+   "title": "Financial Planner (CFP)",
+   "blurb": "Holistic planning: goals, tax, insurance, and investing.",
+   "subtopics": [
+    "financial-planning",
+    "personal-finance",
+    "insurance-fundamentals",
+    "portfolio-risk-return",
+    "tax-fundamentals",
+    "banking-fundamentals"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "investment-banker",
+   "title": "Investment Banking Analyst",
+   "blurb": "Valuation, modeling, and the statements behind deals.",
+   "subtopics": [
+    "equity-valuation",
+    "financial-modeling",
+    "financial-statements",
+    "corporate-finance",
+    "time-value-of-money",
+    "financial-reporting"
+   ],
+   "status": "partial",
+   "ready": 2,
+   "total": 6
+  },
+  {
+   "id": "actuary",
+   "title": "Actuary",
+   "blurb": "Probability, risk, and the math of insurance.",
+   "subtopics": [
+    "probability-basics",
+    "statistics-math",
+    "insurance-fundamentals",
+    "risk-management",
+    "time-value-of-money",
+    "financial-modeling"
+   ],
+   "status": "partial",
+   "ready": 2,
+   "total": 6
+  },
+  {
+   "id": "auditor",
+   "title": "Auditor",
+   "blurb": "Evidence, controls, and the integrity of the numbers.",
+   "subtopics": [
+    "audit-basics",
+    "double-entry-bookkeeping",
+    "financial-reporting",
+    "forensic-accounting",
+    "compliance-ethics",
+    "cost-accounting"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "tax-advisor",
+   "title": "Tax Advisor",
+   "blurb": "Tax rules, planning, and the statements they touch.",
+   "subtopics": [
+    "tax-fundamentals",
+    "double-entry-bookkeeping",
+    "financial-statements",
+    "financial-planning",
+    "compliance-ethics",
+    "ifrs-gaap"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "real-estate-agent",
+   "title": "Real Estate Agent",
+   "blurb": "Valuation, financing, and the transaction end to end.",
+   "subtopics": [
+    "real-estate-fundamentals",
+    "mortgage-lending",
+    "negotiation",
+    "sales-fundamentals",
+    "personal-finance",
+    "contract-law-basics"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "real-estate-investor",
+   "title": "Real Estate Investor",
+   "blurb": "Cash flow, leverage, and building a property portfolio.",
+   "subtopics": [
+    "real-estate-investing",
+    "mortgage-lending",
+    "property-management",
+    "personal-finance",
+    "unit-economics",
+    "risk-management"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "restaurant-manager",
+   "title": "Restaurant / F&B Manager",
+   "blurb": "Ops, cost control, and the guest experience.",
+   "subtopics": [
+    "restaurant-operations",
+    "hospitality-management",
+    "food-safety-haccp",
+    "inventory-logistics",
+    "unit-economics",
+    "leadership-management"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "hotel-manager",
+   "title": "Hotel / Hospitality Manager",
+   "blurb": "Revenue, service, and running the property.",
+   "subtopics": [
+    "hospitality-management",
+    "business-metrics-kpis",
+    "customer-success-management",
+    "operations-management",
+    "leadership-management",
+    "event-management"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "supply-chain-manager",
+   "title": "Supply Chain Manager",
+   "blurb": "Planning, inventory, and lean flow end to end.",
+   "subtopics": [
+    "supply-chain-basics",
+    "production-planning",
+    "inventory-logistics",
+    "lean-manufacturing",
+    "forecasting-basics",
+    "operations-management"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "manufacturing-engineer",
+   "title": "Manufacturing Engineer",
+   "blurb": "Lean, quality, and production that scales.",
+   "subtopics": [
+    "lean-manufacturing",
+    "production-planning",
+    "quality-control-manufacturing",
+    "six-sigma-quality",
+    "industrial-safety",
+    "control-systems"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "policy-analyst",
+   "title": "Policy Analyst",
+   "blurb": "Evidence, cost-benefit, and how government works.",
+   "subtopics": [
+    "public-policy-analysis",
+    "political-science-basics",
+    "microeconomics",
+    "statistical-inference",
+    "critical-thinking",
+    "business-writing"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "urban-planner",
+   "title": "Urban Planner",
+   "blurb": "Land use, transit, housing, and the shape of cities.",
+   "subtopics": [
+    "urban-planning",
+    "public-policy-analysis",
+    "environmental-economics",
+    "architecture-fundamentals",
+    "sustainable-building",
+    "data-storytelling"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "nonprofit-leader",
+   "title": "Nonprofit Leader",
+   "blurb": "Mission, funding, impact, and running the organization.",
+   "subtopics": [
+    "nonprofit-management",
+    "grant-writing-fundraising",
+    "leadership-management",
+    "business-metrics-kpis",
+    "change-management",
+    "public-policy-analysis"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "executive-assistant",
+   "title": "Executive Assistant / Ops",
+   "blurb": "Coordination, communication, and making leaders effective.",
+   "subtopics": [
+    "project-management-fundamentals",
+    "business-writing",
+    "facilitation-meetings",
+    "emotional-intelligence",
+    "negotiation",
+    "critical-thinking"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "recruiter",
+   "title": "Recruiter / Talent",
+   "blurb": "Sourcing, structured hiring, and candidate experience.",
+   "subtopics": [
+    "recruiting-talent",
+    "people-analytics",
+    "negotiation",
+    "diversity-inclusion",
+    "workplace-law-basics",
+    "emotional-intelligence"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "data-journalist",
+   "title": "Data Journalist",
+   "blurb": "Finding, checking, and telling stories with data.",
+   "subtopics": [
+    "data-storytelling",
+    "descriptive-stats",
+    "statistical-inference",
+    "writing-fundamentals",
+    "critical-thinking",
+    "dashboards-bi"
+   ],
+   "status": "partial",
+   "ready": 4,
+   "total": 6
+  },
+  {
+   "id": "sustainability-manager",
+   "title": "Sustainability Manager",
+   "blurb": "Carbon, ESG, and driving change through the org.",
+   "subtopics": [
+    "carbon-accounting",
+    "esg-reporting",
+    "climate-science-basics",
+    "change-management",
+    "environmental-economics",
+    "data-storytelling"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "science-communicator",
+   "title": "Science Communicator",
+   "blurb": "Explaining science clearly and honestly to the public.",
+   "subtopics": [
+    "writing-fundamentals",
+    "storytelling-narrative",
+    "critical-thinking",
+    "statistical-inference",
+    "presentation-skills",
+    "climate-science-basics"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "aspiring-founder",
+   "title": "Aspiring Founder",
+   "blurb": "Idea to traction: models, GTM, finance, and selling.",
+   "subtopics": [
+    "entrepreneurship-basics",
+    "business-model-design",
+    "go-to-market",
+    "unit-economics",
+    "sales-fundamentals",
+    "personal-finance"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "rust-developer",
+   "title": "Rust / Systems Developer",
+   "blurb": "Ownership, systems thinking, and safe low-level code.",
+   "subtopics": [
+    "rust-fundamentals",
+    "concurrency-parallelism",
+    "data-structures",
+    "system-design-basics",
+    "debugging-troubleshooting",
+    "linux-command-line"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "platform-architect",
+   "title": "Software Architect",
+   "blurb": "Systems, services, and the big technical decisions.",
+   "subtopics": [
+    "system-design-basics",
+    "microservices-architecture",
+    "api-design",
+    "caching-strategies",
+    "event-driven-architecture",
+    "database-design"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "staff-engineer",
+   "title": "Staff / Senior Engineer",
+   "blurb": "Depth, breadth, and the judgment interviews probe at senior level.",
+   "subtopics": [
+    "system-design-basics",
+    "refactoring-tech-debt",
+    "code-review-collaboration",
+    "algorithms-basics",
+    "debugging-troubleshooting",
+    "clean-code-testing"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "web3-developer",
+   "title": "Web3 / Blockchain Developer",
+   "blurb": "Blockchain concepts, security, and decentralized apps.",
+   "subtopics": [
+    "crypto-blockchain",
+    "cryptography-basics",
+    "web-security-basics",
+    "javascript-fundamentals",
+    "apis-http",
+    "system-design-basics"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "game-designer",
+   "title": "Game Designer",
+   "blurb": "Systems, levels, and the craft of fun.",
+   "subtopics": [
+    "game-design-fundamentals",
+    "level-design",
+    "game-physics-math",
+    "user-research",
+    "motivation-habits",
+    "product-analytics"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "meteorologist",
+   "title": "Meteorology & Climate",
+   "blurb": "Weather, climate systems, and the science of the atmosphere.",
+   "subtopics": [
+    "meteorology-weather",
+    "climate-systems",
+    "climate-science-basics",
+    "physics-thermodynamics",
+    "statistical-inference",
+    "data-storytelling"
+   ],
+   "status": "partial",
+   "ready": 2,
+   "total": 6
+  },
+  {
+   "id": "environmental-scientist",
+   "title": "Environmental Scientist",
+   "blurb": "Ecosystems, climate, and human impact with the data to prove it.",
+   "subtopics": [
+    "environmental-science",
+    "ecology-environment",
+    "climate-science-basics",
+    "statistical-inference",
+    "environmental-economics",
+    "geology-basics"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "historian",
+   "title": "History & Humanities",
+   "blurb": "Sources, arguments, and reasoning about the past.",
+   "subtopics": [
+    "world-history-basics",
+    "philosophy-basics",
+    "critical-thinking",
+    "writing-fundamentals",
+    "world-religions",
+    "art-history"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "philosopher-ethicist",
+   "title": "Ethics & Philosophy",
+   "blurb": "Arguments, ethics, and clear reasoning.",
+   "subtopics": [
+    "philosophy-basics",
+    "ethics-applied",
+    "critical-thinking",
+    "logic-proofs",
+    "business-ethics",
+    "medical-ethics"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "musician",
+   "title": "Musician / Producer",
+   "blurb": "Theory, production, and performance.",
+   "subtopics": [
+    "music-theory",
+    "music-production",
+    "music-performance",
+    "audio-podcasting",
+    "creative-writing",
+    "motivation-habits"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "electrician",
+   "title": "Electrician",
+   "blurb": "Wiring, code, safety, and the electrical trade.",
+   "subtopics": [
+    "electrical-trade",
+    "electronics-basics",
+    "digital-logic",
+    "industrial-safety",
+    "physics-electromagnetism",
+    "hvac-fundamentals"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "plumber",
+   "title": "Plumber",
+   "blurb": "Water systems, fixtures, and the plumbing trade.",
+   "subtopics": [
+    "plumbing-basics",
+    "hvac-fundamentals",
+    "building-systems-mep",
+    "industrial-safety",
+    "construction-management",
+    "physics-thermodynamics"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "hvac-technician",
+   "title": "HVAC Technician",
+   "blurb": "Heating, cooling, refrigeration, and controls.",
+   "subtopics": [
+    "hvac-fundamentals",
+    "electrical-trade",
+    "physics-thermodynamics",
+    "control-systems",
+    "industrial-safety",
+    "building-systems-mep"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "automotive-technician",
+   "title": "Automotive Technician",
+   "blurb": "Engines, systems, diagnostics, and repair.",
+   "subtopics": [
+    "automotive-basics",
+    "electronics-basics",
+    "mechanical-engineering-basics",
+    "control-systems",
+    "industrial-safety",
+    "debugging-troubleshooting"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "personal-trainer",
+   "title": "Personal Trainer / Coach",
+   "blurb": "Exercise science, nutrition, and coaching that works.",
+   "subtopics": [
+    "exercise-science",
+    "nutrition-fitness",
+    "sleep-recovery",
+    "human-anatomy-physiology",
+    "motivation-habits",
+    "emotional-intelligence"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "nutritionist",
+   "title": "Nutrition & Dietetics",
+   "blurb": "Evidence-based nutrition for health and performance.",
+   "subtopics": [
+    "nutrition-science",
+    "nutrition-fitness",
+    "human-anatomy-physiology",
+    "statistical-inference",
+    "public-health",
+    "critical-thinking"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "wellness-coach",
+   "title": "Wellness Coach",
+   "blurb": "Habits, mental wellness, and sustainable change.",
+   "subtopics": [
+    "mental-wellness-practices",
+    "motivation-habits",
+    "sleep-recovery",
+    "emotional-intelligence",
+    "positive-psychology",
+    "learning-science"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "logistics-coordinator",
+   "title": "Logistics Coordinator",
+   "blurb": "Freight, fleets, and moving goods efficiently.",
+   "subtopics": [
+    "logistics-fundamentals",
+    "fleet-management",
+    "supply-chain-basics",
+    "inventory-logistics",
+    "operations-management",
+    "forecasting-basics"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "venture-analyst",
+   "title": "Venture / Startup Analyst",
+   "blurb": "Startup finance, models, and market judgment.",
+   "subtopics": [
+    "venture-capital",
+    "financial-modeling",
+    "unit-economics",
+    "business-model-design",
+    "competitive-strategy",
+    "go-to-market"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "trader",
+   "title": "Trader / Markets",
+   "blurb": "Options, volatility, and reading the economy.",
+   "subtopics": [
+    "options-trading",
+    "derivatives-basics",
+    "macroeconomic-indicators",
+    "probability-basics",
+    "risk-management",
+    "portfolio-risk-return"
+   ],
+   "status": "partial",
+   "ready": 2,
+   "total": 6
+  },
+  {
+   "id": "economist-macro",
+   "title": "Macro / Central Bank Economist",
+   "blurb": "Monetary policy, public finance, and the big picture.",
+   "subtopics": [
+    "monetary-policy",
+    "public-finance",
+    "macroeconomics",
+    "macroeconomic-indicators",
+    "statistical-inference",
+    "data-storytelling"
+   ],
+   "status": "partial",
+   "ready": 2,
+   "total": 6
+  },
+  {
+   "id": "journalist",
+   "title": "Journalist / Reporter",
+   "blurb": "Reporting, verification, and telling true stories.",
+   "subtopics": [
+    "journalism-fundamentals",
+    "writing-fundamentals",
+    "critical-thinking",
+    "data-storytelling",
+    "editing-proofreading",
+    "ethics-applied"
+   ],
+   "status": "partial",
+   "ready": 1,
+   "total": 6
+  },
+  {
+   "id": "content-designer",
+   "title": "Content Designer / UX Writer",
+   "blurb": "Words in products, content strategy, and clarity.",
+   "subtopics": [
+    "ux-writing",
+    "content-strategy",
+    "writing-fundamentals",
+    "ux-design-principles",
+    "user-research",
+    "web-accessibility"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "innovation-lead",
+   "title": "Innovation / Strategy Lead",
+   "blurb": "Frameworks, innovation, and business models.",
+   "subtopics": [
+    "innovation-management",
+    "competitive-strategy",
+    "business-model-design",
+    "strategy-frameworks",
+    "critical-thinking",
+    "go-to-market"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
+  },
+  {
+   "id": "health-informatics-analyst",
+   "title": "Health Informatics Analyst",
+   "blurb": "Clinical data, EHRs, and health IT systems.",
+   "subtopics": [
+    "health-informatics",
+    "healthcare-analytics",
+    "health-data-privacy",
+    "sql-querying",
+    "descriptive-stats",
+    "medical-terminology"
+   ],
+   "status": "partial",
+   "ready": 2,
+   "total": 6
+  },
+  {
+   "id": "aviation-professional",
+   "title": "Aviation Professional",
+   "blurb": "How flight, airspace, and aviation systems work.",
+   "subtopics": [
+    "aviation-basics",
+    "physics-mechanics",
+    "control-systems",
+    "networking-fundamentals",
+    "risk-stakeholder-mgmt",
+    "critical-thinking"
+   ],
+   "status": "soon",
+   "ready": 0,
+   "total": 6
   }
  ],
  "certs": [
@@ -637,14 +2205,14 @@
    "title": "Advanced SQL",
    "theme": "sql-data",
    "track": "data-engineer",
-   "status": "soon"
+   "status": "live"
   },
   {
    "id": "power-bi",
    "title": "Power BI",
    "theme": "sql-data",
    "track": "bi-analyst",
-   "status": "soon"
+   "status": "live"
   },
   {
    "id": "tableau",
@@ -699,14 +2267,14 @@
    "id": "causal-inference",
    "title": "Causal inference",
    "theme": "stats",
-   "track": null,
+   "track": "research-scientist",
    "status": "soon"
   },
   {
    "id": "experimental-design",
    "title": "Experimental design",
    "theme": "stats",
-   "track": null,
+   "track": "research-scientist",
    "status": "soon"
   },
   {
@@ -755,14 +2323,14 @@
    "id": "nlp-basics",
    "title": "NLP essentials",
    "theme": "ml-ai",
-   "track": null,
+   "track": "nlp-engineer",
    "status": "soon"
   },
   {
    "id": "llm-prompting",
    "title": "Working with LLMs",
    "theme": "ml-ai",
-   "track": null,
+   "track": "nlp-engineer",
    "status": "soon"
   },
   {
@@ -832,7 +2400,7 @@
    "id": "oop-design",
    "title": "OOP & software design",
    "theme": "programming",
-   "track": null,
+   "track": "java-developer",
    "status": "soon"
   },
   {
@@ -909,7 +2477,7 @@
    "id": "frontend-performance",
    "title": "Web performance",
    "theme": "web-dev",
-   "track": null,
+   "track": "seo-specialist",
    "status": "soon"
   },
   {
@@ -944,7 +2512,7 @@
    "id": "nosql-databases",
    "title": "NoSQL databases",
    "theme": "data-eng",
-   "track": null,
+   "track": "database-administrator",
    "status": "soon"
   },
   {
@@ -958,7 +2526,7 @@
    "id": "streaming-basics",
    "title": "Streaming & event data",
    "theme": "data-eng",
-   "track": null,
+   "track": "iot-engineer",
    "status": "soon"
   },
   {
@@ -972,7 +2540,7 @@
    "id": "data-quality-governance",
    "title": "Data quality & governance",
    "theme": "data-eng",
-   "track": null,
+   "track": "analytics-engineer",
    "status": "soon"
   },
   {
@@ -1049,7 +2617,7 @@
    "id": "cryptography-basics",
    "title": "Cryptography essentials",
    "theme": "cybersecurity",
-   "track": null,
+   "track": "penetration-tester",
    "status": "soon"
   },
   {
@@ -1140,14 +2708,14 @@
    "id": "risk-management",
    "title": "Financial risk management",
    "theme": "finance",
-   "track": null,
+   "track": "grc-analyst",
    "status": "soon"
   },
   {
    "id": "crypto-blockchain",
    "title": "Crypto & blockchain basics",
    "theme": "finance",
-   "track": null,
+   "track": "web3-developer",
    "status": "soon"
   },
   {
@@ -1273,7 +2841,7 @@
    "id": "entrepreneurship-basics",
    "title": "Entrepreneurship & startups",
    "theme": "business",
-   "track": null,
+   "track": "aspiring-founder",
    "status": "soon"
   },
   {
@@ -1315,7 +2883,7 @@
    "id": "social-media-marketing",
    "title": "Social media marketing",
    "theme": "marketing",
-   "track": null,
+   "track": "social-media-manager",
    "status": "soon"
   },
   {
@@ -1329,7 +2897,7 @@
    "id": "brand-positioning",
    "title": "Brand & positioning",
    "theme": "marketing",
-   "track": null,
+   "track": "copywriter",
    "status": "soon"
   },
   {
@@ -1553,7 +3121,7 @@
    "id": "medical-terminology",
    "title": "Medical terminology",
    "theme": "healthcare",
-   "track": null,
+   "track": "nurse-clinical",
    "status": "soon"
   },
   {
@@ -1567,7 +3135,7 @@
    "id": "nutrition-science",
    "title": "Nutrition science",
    "theme": "healthcare",
-   "track": null,
+   "track": "nurse-clinical",
    "status": "soon"
   },
   {
@@ -1581,7 +3149,7 @@
    "id": "public-health",
    "title": "Public health",
    "theme": "healthcare",
-   "track": null,
+   "track": "nutritionist",
    "status": "soon"
   },
   {
@@ -1665,7 +3233,7 @@
    "id": "linear-algebra-basics",
    "title": "Linear algebra",
    "theme": "math",
-   "track": null,
+   "track": "game-developer",
    "status": "soon"
   },
   {
@@ -1693,7 +3261,7 @@
    "id": "logic-proofs",
    "title": "Logic & proof techniques",
    "theme": "math",
-   "track": null,
+   "track": "philosopher-ethicist",
    "status": "soon"
   },
   {
@@ -1714,20 +3282,1595 @@
    "id": "learning-science",
    "title": "Learning how to learn",
    "theme": "psychology",
-   "track": null,
+   "track": "teacher",
    "status": "soon"
   },
   {
    "id": "motivation-habits",
    "title": "Motivation & habits",
    "theme": "psychology",
-   "track": null,
+   "track": "game-designer",
    "status": "soon"
   },
   {
    "id": "social-psychology",
    "title": "Social psychology",
    "theme": "psychology",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "java-fundamentals",
+   "title": "Java fundamentals",
+   "theme": "programming",
+   "track": "java-developer",
+   "status": "soon"
+  },
+  {
+   "id": "cpp-fundamentals",
+   "title": "C++ fundamentals",
+   "theme": "programming",
+   "track": "game-developer",
+   "status": "soon"
+  },
+  {
+   "id": "go-fundamentals",
+   "title": "Go fundamentals",
+   "theme": "programming",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "concurrency-parallelism",
+   "title": "Concurrency & parallelism",
+   "theme": "programming",
+   "track": "software-engineer-backend",
+   "status": "soon"
+  },
+  {
+   "id": "functional-programming",
+   "title": "Functional programming",
+   "theme": "programming",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "debugging-troubleshooting",
+   "title": "Debugging & troubleshooting",
+   "theme": "programming",
+   "track": "software-engineer-backend",
+   "status": "soon"
+  },
+  {
+   "id": "system-design-basics",
+   "title": "System design basics",
+   "theme": "programming",
+   "track": "software-engineer-backend",
+   "status": "soon"
+  },
+  {
+   "id": "mobile-dev-basics",
+   "title": "Mobile development basics",
+   "theme": "programming",
+   "track": "mobile-developer",
+   "status": "soon"
+  },
+  {
+   "id": "shell-scripting",
+   "title": "Shell scripting",
+   "theme": "programming",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "code-review-collaboration",
+   "title": "Code review & collaboration",
+   "theme": "programming",
+   "track": "staff-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "computer-vision",
+   "title": "Computer vision",
+   "theme": "ml-ai",
+   "track": "computer-vision-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "reinforcement-learning",
+   "title": "Reinforcement learning",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "generative-ai",
+   "title": "Generative AI",
+   "theme": "ml-ai",
+   "track": "nlp-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "ai-agents",
+   "title": "AI agents & tool use",
+   "theme": "ml-ai",
+   "track": "nlp-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "embeddings-vector-search",
+   "title": "Embeddings & vector search",
+   "theme": "ml-ai",
+   "track": "nlp-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "model-interpretability",
+   "title": "Model interpretability",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "ml-fairness-ethics",
+   "title": "ML fairness & ethics",
+   "theme": "ml-ai",
+   "track": "ai-product-manager",
+   "status": "soon"
+  },
+  {
+   "id": "gradient-boosting",
+   "title": "Gradient boosting & trees",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "anomaly-detection",
+   "title": "Anomaly detection",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "ml-system-design",
+   "title": "ML system design",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "dbt-analytics-eng",
+   "title": "Analytics engineering (dbt)",
+   "theme": "data-eng",
+   "track": "analytics-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "data-modeling",
+   "title": "Data modeling",
+   "theme": "data-eng",
+   "track": "analytics-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "data-observability",
+   "title": "Data observability",
+   "theme": "data-eng",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "realtime-analytics",
+   "title": "Real-time analytics",
+   "theme": "data-eng",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "serverless-architecture",
+   "title": "Serverless architecture",
+   "theme": "cloud-devops",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "networking-fundamentals",
+   "title": "Networking fundamentals",
+   "theme": "cloud-devops",
+   "track": "sre",
+   "status": "soon"
+  },
+  {
+   "id": "cost-optimization-cloud",
+   "title": "Cloud cost optimization",
+   "theme": "cloud-devops",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "platform-engineering",
+   "title": "Platform engineering",
+   "theme": "cloud-devops",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "application-security",
+   "title": "Application security",
+   "theme": "cybersecurity",
+   "track": "penetration-tester",
+   "status": "soon"
+  },
+  {
+   "id": "penetration-testing",
+   "title": "Penetration testing",
+   "theme": "cybersecurity",
+   "track": "penetration-tester",
+   "status": "soon"
+  },
+  {
+   "id": "cloud-security",
+   "title": "Cloud security",
+   "theme": "cybersecurity",
+   "track": "network-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "security-operations-siem",
+   "title": "Security operations (SOC)",
+   "theme": "cybersecurity",
+   "track": "soc-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "digital-forensics",
+   "title": "Digital forensics",
+   "theme": "cybersecurity",
+   "track": "soc-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "design-principles",
+   "title": "Design principles",
+   "theme": "design",
+   "track": "graphic-designer",
+   "status": "soon"
+  },
+  {
+   "id": "typography",
+   "title": "Typography",
+   "theme": "design",
+   "track": "graphic-designer",
+   "status": "soon"
+  },
+  {
+   "id": "color-theory",
+   "title": "Color theory",
+   "theme": "design",
+   "track": "graphic-designer",
+   "status": "soon"
+  },
+  {
+   "id": "layout-composition",
+   "title": "Layout & composition",
+   "theme": "design",
+   "track": "graphic-designer",
+   "status": "soon"
+  },
+  {
+   "id": "branding-identity",
+   "title": "Brand identity design",
+   "theme": "design",
+   "track": "graphic-designer",
+   "status": "soon"
+  },
+  {
+   "id": "motion-design",
+   "title": "Motion & animation",
+   "theme": "design",
+   "track": "motion-designer",
+   "status": "soon"
+  },
+  {
+   "id": "design-critique",
+   "title": "Design critique & process",
+   "theme": "design",
+   "track": "graphic-designer",
+   "status": "soon"
+  },
+  {
+   "id": "writing-fundamentals",
+   "title": "Writing fundamentals",
+   "theme": "writing-content",
+   "track": "technical-writer",
+   "status": "soon"
+  },
+  {
+   "id": "copywriting",
+   "title": "Copywriting",
+   "theme": "writing-content",
+   "track": "content-strategist",
+   "status": "soon"
+  },
+  {
+   "id": "editing-proofreading",
+   "title": "Editing & proofreading",
+   "theme": "writing-content",
+   "track": "technical-writer",
+   "status": "soon"
+  },
+  {
+   "id": "storytelling-narrative",
+   "title": "Storytelling & narrative",
+   "theme": "writing-content",
+   "track": "motion-designer",
+   "status": "soon"
+  },
+  {
+   "id": "technical-writing",
+   "title": "Technical writing",
+   "theme": "writing-content",
+   "track": "technical-writer",
+   "status": "soon"
+  },
+  {
+   "id": "grammar-usage",
+   "title": "Grammar & usage",
+   "theme": "writing-content",
+   "track": "copywriter",
+   "status": "soon"
+  },
+  {
+   "id": "instructional-design",
+   "title": "Instructional design",
+   "theme": "teaching-education",
+   "track": "teacher",
+   "status": "soon"
+  },
+  {
+   "id": "pedagogy-teaching-methods",
+   "title": "Teaching methods",
+   "theme": "teaching-education",
+   "track": "teacher",
+   "status": "soon"
+  },
+  {
+   "id": "assessment-evaluation",
+   "title": "Assessment & evaluation",
+   "theme": "teaching-education",
+   "track": "teacher",
+   "status": "soon"
+  },
+  {
+   "id": "learning-theory",
+   "title": "Learning theory",
+   "theme": "teaching-education",
+   "track": "teacher",
+   "status": "soon"
+  },
+  {
+   "id": "edtech-online-learning",
+   "title": "EdTech & online learning",
+   "theme": "teaching-education",
+   "track": "teacher",
+   "status": "soon"
+  },
+  {
+   "id": "physics-mechanics",
+   "title": "Classical mechanics",
+   "theme": "physical-sciences",
+   "track": "mechanical-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "physics-electromagnetism",
+   "title": "Electricity & magnetism",
+   "theme": "physical-sciences",
+   "track": "electrical-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "physics-thermodynamics",
+   "title": "Thermodynamics",
+   "theme": "physical-sciences",
+   "track": "mechanical-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "chemistry-general",
+   "title": "General chemistry",
+   "theme": "physical-sciences",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "chemistry-organic",
+   "title": "Organic chemistry basics",
+   "theme": "physical-sciences",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "astronomy-basics",
+   "title": "Astronomy & cosmology",
+   "theme": "physical-sciences",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "cell-biology",
+   "title": "Cell biology",
+   "theme": "life-sciences",
+   "track": "lab-scientist",
+   "status": "soon"
+  },
+  {
+   "id": "molecular-biology",
+   "title": "Molecular biology",
+   "theme": "life-sciences",
+   "track": "lab-scientist",
+   "status": "soon"
+  },
+  {
+   "id": "evolution-genetics",
+   "title": "Evolution & genetics",
+   "theme": "life-sciences",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "ecology-environment",
+   "title": "Ecology",
+   "theme": "life-sciences",
+   "track": "environmental-scientist",
+   "status": "soon"
+  },
+  {
+   "id": "human-anatomy-physiology",
+   "title": "Anatomy & physiology",
+   "theme": "life-sciences",
+   "track": "nurse-clinical",
+   "status": "soon"
+  },
+  {
+   "id": "microbiology",
+   "title": "Microbiology",
+   "theme": "life-sciences",
+   "track": "lab-scientist",
+   "status": "soon"
+  },
+  {
+   "id": "mechanical-engineering-basics",
+   "title": "Mechanical engineering",
+   "theme": "engineering",
+   "track": "mechanical-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "electrical-engineering-basics",
+   "title": "Electrical engineering",
+   "theme": "engineering",
+   "track": "electrical-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "civil-structural-basics",
+   "title": "Civil & structural engineering",
+   "theme": "engineering",
+   "track": "civil-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "control-systems",
+   "title": "Control systems",
+   "theme": "engineering",
+   "track": "embedded-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "cad-engineering-drawing",
+   "title": "CAD & engineering drawing",
+   "theme": "engineering",
+   "track": "mechanical-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "embedded-systems",
+   "title": "Embedded systems",
+   "theme": "hardware-embedded",
+   "track": "embedded-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "iot-fundamentals",
+   "title": "IoT fundamentals",
+   "theme": "hardware-embedded",
+   "track": "embedded-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "electronics-basics",
+   "title": "Electronics basics",
+   "theme": "hardware-embedded",
+   "track": "embedded-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "digital-logic",
+   "title": "Digital logic",
+   "theme": "hardware-embedded",
+   "track": "embedded-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "game-design-fundamentals",
+   "title": "Game design fundamentals",
+   "theme": "game-dev",
+   "track": "game-developer",
+   "status": "soon"
+  },
+  {
+   "id": "game-programming",
+   "title": "Game programming",
+   "theme": "game-dev",
+   "track": "game-developer",
+   "status": "soon"
+  },
+  {
+   "id": "game-physics-math",
+   "title": "Game physics & math",
+   "theme": "game-dev",
+   "track": "game-developer",
+   "status": "soon"
+  },
+  {
+   "id": "level-design",
+   "title": "Level design",
+   "theme": "game-dev",
+   "track": "game-developer",
+   "status": "soon"
+  },
+  {
+   "id": "photography",
+   "title": "Photography",
+   "theme": "media-production",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "video-production",
+   "title": "Video production",
+   "theme": "media-production",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "video-editing",
+   "title": "Video editing",
+   "theme": "media-production",
+   "track": "motion-designer",
+   "status": "soon"
+  },
+  {
+   "id": "audio-podcasting",
+   "title": "Audio & podcasting",
+   "theme": "media-production",
+   "track": "musician",
+   "status": "soon"
+  },
+  {
+   "id": "streaming-content-creation",
+   "title": "Content creation & streaming",
+   "theme": "media-production",
+   "track": "social-media-manager",
+   "status": "soon"
+  },
+  {
+   "id": "sales-fundamentals",
+   "title": "Sales fundamentals",
+   "theme": "sales",
+   "track": "sales-representative",
+   "status": "soon"
+  },
+  {
+   "id": "prospecting-lead-gen",
+   "title": "Prospecting & lead gen",
+   "theme": "sales",
+   "track": "sales-representative",
+   "status": "soon"
+  },
+  {
+   "id": "negotiation-closing",
+   "title": "Negotiation & closing",
+   "theme": "sales",
+   "track": "sales-representative",
+   "status": "soon"
+  },
+  {
+   "id": "account-management",
+   "title": "Account management",
+   "theme": "sales",
+   "track": "sales-representative",
+   "status": "soon"
+  },
+  {
+   "id": "sales-crm-process",
+   "title": "Sales process & CRM",
+   "theme": "sales",
+   "track": "sales-representative",
+   "status": "soon"
+  },
+  {
+   "id": "customer-support-fundamentals",
+   "title": "Customer support",
+   "theme": "customer-experience",
+   "track": "support-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "customer-success-management",
+   "title": "Customer success",
+   "theme": "customer-experience",
+   "track": "customer-success-manager",
+   "status": "soon"
+  },
+  {
+   "id": "support-metrics-ops",
+   "title": "Support metrics & operations",
+   "theme": "customer-experience",
+   "track": "support-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "voice-of-customer",
+   "title": "Voice of the customer",
+   "theme": "customer-experience",
+   "track": "customer-success-manager",
+   "status": "soon"
+  },
+  {
+   "id": "real-estate-fundamentals",
+   "title": "Real estate fundamentals",
+   "theme": "real-estate",
+   "track": "real-estate-agent",
+   "status": "soon"
+  },
+  {
+   "id": "real-estate-investing",
+   "title": "Real estate investing",
+   "theme": "real-estate",
+   "track": "real-estate-investor",
+   "status": "soon"
+  },
+  {
+   "id": "property-management",
+   "title": "Property management",
+   "theme": "real-estate",
+   "track": "real-estate-investor",
+   "status": "soon"
+  },
+  {
+   "id": "mortgage-lending",
+   "title": "Mortgage & lending",
+   "theme": "real-estate",
+   "track": "real-estate-agent",
+   "status": "soon"
+  },
+  {
+   "id": "hospitality-management",
+   "title": "Hospitality management",
+   "theme": "hospitality-tourism",
+   "track": "restaurant-manager",
+   "status": "soon"
+  },
+  {
+   "id": "restaurant-operations",
+   "title": "Restaurant operations",
+   "theme": "hospitality-tourism",
+   "track": "restaurant-manager",
+   "status": "soon"
+  },
+  {
+   "id": "tourism-travel",
+   "title": "Tourism & travel",
+   "theme": "hospitality-tourism",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "event-management",
+   "title": "Event management",
+   "theme": "hospitality-tourism",
+   "track": "hotel-manager",
+   "status": "soon"
+  },
+  {
+   "id": "lean-manufacturing",
+   "title": "Lean manufacturing",
+   "theme": "manufacturing",
+   "track": "supply-chain-manager",
+   "status": "soon"
+  },
+  {
+   "id": "production-planning",
+   "title": "Production planning",
+   "theme": "manufacturing",
+   "track": "supply-chain-manager",
+   "status": "soon"
+  },
+  {
+   "id": "quality-control-manufacturing",
+   "title": "Quality control",
+   "theme": "manufacturing",
+   "track": "mechanical-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "industrial-safety",
+   "title": "Industrial safety",
+   "theme": "manufacturing",
+   "track": "construction-manager",
+   "status": "soon"
+  },
+  {
+   "id": "public-policy-analysis",
+   "title": "Public policy analysis",
+   "theme": "public-policy",
+   "track": "policy-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "political-science-basics",
+   "title": "Political science",
+   "theme": "public-policy",
+   "track": "policy-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "urban-planning",
+   "title": "Urban planning",
+   "theme": "public-policy",
+   "track": "urban-planner",
+   "status": "soon"
+  },
+  {
+   "id": "nonprofit-management",
+   "title": "Nonprofit management",
+   "theme": "public-policy",
+   "track": "nonprofit-leader",
+   "status": "soon"
+  },
+  {
+   "id": "grant-writing-fundraising",
+   "title": "Grant writing & fundraising",
+   "theme": "public-policy",
+   "track": "nonprofit-leader",
+   "status": "soon"
+  },
+  {
+   "id": "linguistics-fundamentals",
+   "title": "Linguistics fundamentals",
+   "theme": "languages-linguistics",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "second-language-learning",
+   "title": "Language learning methods",
+   "theme": "languages-linguistics",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "english-esl",
+   "title": "English & ESL essentials",
+   "theme": "languages-linguistics",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "translation-localization",
+   "title": "Translation & localization",
+   "theme": "languages-linguistics",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "architecture-fundamentals",
+   "title": "Architecture fundamentals",
+   "theme": "architecture-construction",
+   "track": "architect",
+   "status": "soon"
+  },
+  {
+   "id": "construction-management",
+   "title": "Construction management",
+   "theme": "architecture-construction",
+   "track": "civil-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "building-systems-mep",
+   "title": "Building systems (MEP)",
+   "theme": "architecture-construction",
+   "track": "architect",
+   "status": "soon"
+  },
+  {
+   "id": "sustainable-building",
+   "title": "Sustainable building",
+   "theme": "architecture-construction",
+   "track": "civil-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "agriculture-fundamentals",
+   "title": "Agriculture fundamentals",
+   "theme": "agriculture-food",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "food-science",
+   "title": "Food science",
+   "theme": "agriculture-food",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "food-safety-haccp",
+   "title": "Food safety (HACCP)",
+   "theme": "agriculture-food",
+   "track": "restaurant-manager",
+   "status": "soon"
+  },
+  {
+   "id": "sustainable-agriculture",
+   "title": "Sustainable agriculture",
+   "theme": "agriculture-food",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "financial-planning",
+   "title": "Financial planning (CFP)",
+   "theme": "finance",
+   "track": "financial-planner",
+   "status": "soon"
+  },
+  {
+   "id": "banking-fundamentals",
+   "title": "Banking & credit",
+   "theme": "finance",
+   "track": "financial-planner",
+   "status": "soon"
+  },
+  {
+   "id": "insurance-fundamentals",
+   "title": "Insurance",
+   "theme": "finance",
+   "track": "financial-planner",
+   "status": "soon"
+  },
+  {
+   "id": "financial-modeling",
+   "title": "Financial modeling",
+   "theme": "finance",
+   "track": "investment-banker",
+   "status": "soon"
+  },
+  {
+   "id": "negotiation-business",
+   "title": "Business negotiation",
+   "theme": "business",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "business-model-design",
+   "title": "Business models",
+   "theme": "business",
+   "track": "aspiring-founder",
+   "status": "soon"
+  },
+  {
+   "id": "go-to-market",
+   "title": "Go-to-market strategy",
+   "theme": "business",
+   "track": "aspiring-founder",
+   "status": "soon"
+  },
+  {
+   "id": "competitive-strategy",
+   "title": "Competitive strategy",
+   "theme": "business",
+   "track": "brand-manager",
+   "status": "soon"
+  },
+  {
+   "id": "product-analytics",
+   "title": "Product analytics",
+   "theme": "product",
+   "track": "game-designer",
+   "status": "soon"
+  },
+  {
+   "id": "product-strategy",
+   "title": "Product strategy",
+   "theme": "product",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "growth-product",
+   "title": "Growth & experimentation",
+   "theme": "product",
+   "track": "growth-marketer",
+   "status": "soon"
+  },
+  {
+   "id": "service-design",
+   "title": "Service design",
+   "theme": "product",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "public-speaking",
+   "title": "Public speaking",
+   "theme": "communication",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "facilitation-meetings",
+   "title": "Facilitation & meetings",
+   "theme": "communication",
+   "track": "executive-assistant",
+   "status": "soon"
+  },
+  {
+   "id": "conflict-resolution",
+   "title": "Conflict resolution",
+   "theme": "communication",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "cross-cultural-communication",
+   "title": "Cross-cultural communication",
+   "theme": "communication",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "learning-development",
+   "title": "Learning & development",
+   "theme": "hr-people",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "diversity-inclusion",
+   "title": "Diversity, equity & inclusion",
+   "theme": "hr-people",
+   "track": "recruiter",
+   "status": "soon"
+  },
+  {
+   "id": "employee-engagement",
+   "title": "Employee engagement",
+   "theme": "hr-people",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "change-management",
+   "title": "Change management",
+   "theme": "hr-people",
+   "track": "nonprofit-leader",
+   "status": "soon"
+  },
+  {
+   "id": "statistics-math",
+   "title": "Statistics (mathematical)",
+   "theme": "math",
+   "track": "research-scientist",
+   "status": "soon"
+  },
+  {
+   "id": "mathematical-modeling",
+   "title": "Mathematical modeling",
+   "theme": "math",
+   "track": "civil-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "number-theory-basics",
+   "title": "Number theory",
+   "theme": "math",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "geometry-trigonometry",
+   "title": "Geometry & trigonometry",
+   "theme": "math",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "behavioral-psychology",
+   "title": "Behavioral psychology",
+   "theme": "psychology",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "cognitive-psychology",
+   "title": "Cognitive psychology",
+   "theme": "psychology",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "developmental-psychology",
+   "title": "Developmental psychology",
+   "theme": "psychology",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "positive-psychology",
+   "title": "Positive psychology & wellbeing",
+   "theme": "psychology",
+   "track": "wellness-coach",
+   "status": "soon"
+  },
+  {
+   "id": "cost-accounting",
+   "title": "Cost accounting",
+   "theme": "accounting",
+   "track": "auditor",
+   "status": "soon"
+  },
+  {
+   "id": "financial-reporting",
+   "title": "Financial reporting",
+   "theme": "accounting",
+   "track": "investment-banker",
+   "status": "soon"
+  },
+  {
+   "id": "forensic-accounting",
+   "title": "Forensic accounting",
+   "theme": "accounting",
+   "track": "auditor",
+   "status": "soon"
+  },
+  {
+   "id": "development-economics",
+   "title": "Development economics",
+   "theme": "economics",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "labor-economics",
+   "title": "Labor economics",
+   "theme": "economics",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "environmental-economics",
+   "title": "Environmental economics",
+   "theme": "economics",
+   "track": "urban-planner",
+   "status": "soon"
+  },
+  {
+   "id": "pharmacology-basics",
+   "title": "Pharmacology basics",
+   "theme": "healthcare",
+   "track": "nurse-clinical",
+   "status": "soon"
+  },
+  {
+   "id": "healthcare-analytics",
+   "title": "Healthcare analytics",
+   "theme": "healthcare",
+   "track": "clinical-research-associate",
+   "status": "soon"
+  },
+  {
+   "id": "medical-ethics",
+   "title": "Medical ethics",
+   "theme": "healthcare",
+   "track": "lab-scientist",
+   "status": "soon"
+  },
+  {
+   "id": "rust-fundamentals",
+   "title": "Rust fundamentals",
+   "theme": "programming",
+   "track": "rust-developer",
+   "status": "soon"
+  },
+  {
+   "id": "api-design",
+   "title": "API design",
+   "theme": "programming",
+   "track": "platform-architect",
+   "status": "soon"
+  },
+  {
+   "id": "microservices-architecture",
+   "title": "Microservices",
+   "theme": "programming",
+   "track": "platform-architect",
+   "status": "soon"
+  },
+  {
+   "id": "caching-strategies",
+   "title": "Caching strategies",
+   "theme": "programming",
+   "track": "platform-architect",
+   "status": "soon"
+  },
+  {
+   "id": "refactoring-tech-debt",
+   "title": "Refactoring & tech debt",
+   "theme": "programming",
+   "track": "staff-engineer",
+   "status": "soon"
+  },
+  {
+   "id": "event-driven-architecture",
+   "title": "Event-driven architecture",
+   "theme": "programming",
+   "track": "platform-architect",
+   "status": "soon"
+  },
+  {
+   "id": "transfer-learning",
+   "title": "Transfer learning",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "data-labeling-annotation",
+   "title": "Data labeling",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "ab-testing-for-ml",
+   "title": "Online ML evaluation",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "bayesian-ml",
+   "title": "Bayesian methods",
+   "theme": "ml-ai",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "state-management",
+   "title": "Frontend state management",
+   "theme": "web-dev",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "browser-apis",
+   "title": "Browser APIs & the DOM",
+   "theme": "web-dev",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "frontend-testing",
+   "title": "Frontend testing",
+   "theme": "web-dev",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "graphql",
+   "title": "GraphQL",
+   "theme": "web-dev",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "change-data-capture",
+   "title": "Change data capture",
+   "theme": "data-eng",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "sql-performance-tuning",
+   "title": "SQL performance tuning",
+   "theme": "data-eng",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "data-lakes-lakehouse",
+   "title": "Data lakes & lakehouse",
+   "theme": "data-eng",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "threat-modeling",
+   "title": "Threat modeling",
+   "theme": "cybersecurity",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "malware-analysis",
+   "title": "Malware & threats",
+   "theme": "cybersecurity",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "privacy-engineering",
+   "title": "Privacy engineering",
+   "theme": "cybersecurity",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "design-thinking",
+   "title": "Design thinking",
+   "theme": "design",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "iconography-illustration",
+   "title": "Iconography & illustration",
+   "theme": "design",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "data-visualization-design",
+   "title": "Data visualization",
+   "theme": "design",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "content-strategy",
+   "title": "Content strategy",
+   "theme": "writing-content",
+   "track": "content-designer",
+   "status": "soon"
+  },
+  {
+   "id": "ux-writing",
+   "title": "UX writing",
+   "theme": "writing-content",
+   "track": "content-designer",
+   "status": "soon"
+  },
+  {
+   "id": "journalism-fundamentals",
+   "title": "Journalism fundamentals",
+   "theme": "writing-content",
+   "track": "journalist",
+   "status": "soon"
+  },
+  {
+   "id": "geology-basics",
+   "title": "Geology",
+   "theme": "earth-sciences",
+   "track": "environmental-scientist",
+   "status": "soon"
+  },
+  {
+   "id": "meteorology-weather",
+   "title": "Meteorology",
+   "theme": "earth-sciences",
+   "track": "meteorologist",
+   "status": "soon"
+  },
+  {
+   "id": "oceanography",
+   "title": "Oceanography",
+   "theme": "earth-sciences",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "environmental-science",
+   "title": "Environmental science",
+   "theme": "earth-sciences",
+   "track": "environmental-scientist",
+   "status": "soon"
+  },
+  {
+   "id": "climate-systems",
+   "title": "Climate systems",
+   "theme": "earth-sciences",
+   "track": "meteorologist",
+   "status": "soon"
+  },
+  {
+   "id": "world-history-basics",
+   "title": "World history",
+   "theme": "humanities",
+   "track": "historian",
+   "status": "soon"
+  },
+  {
+   "id": "philosophy-basics",
+   "title": "Philosophy",
+   "theme": "humanities",
+   "track": "historian",
+   "status": "soon"
+  },
+  {
+   "id": "ethics-applied",
+   "title": "Applied ethics",
+   "theme": "humanities",
+   "track": "philosopher-ethicist",
+   "status": "soon"
+  },
+  {
+   "id": "art-history",
+   "title": "Art history",
+   "theme": "humanities",
+   "track": "historian",
+   "status": "soon"
+  },
+  {
+   "id": "world-religions",
+   "title": "World religions",
+   "theme": "humanities",
+   "track": "historian",
+   "status": "soon"
+  },
+  {
+   "id": "music-theory",
+   "title": "Music theory",
+   "theme": "arts-music",
+   "track": "musician",
+   "status": "soon"
+  },
+  {
+   "id": "music-production",
+   "title": "Music production",
+   "theme": "arts-music",
+   "track": "musician",
+   "status": "soon"
+  },
+  {
+   "id": "music-performance",
+   "title": "Music performance & practice",
+   "theme": "arts-music",
+   "track": "musician",
+   "status": "soon"
+  },
+  {
+   "id": "creative-writing",
+   "title": "Creative writing",
+   "theme": "arts-music",
+   "track": "musician",
+   "status": "soon"
+  },
+  {
+   "id": "electrical-trade",
+   "title": "Electrical trade",
+   "theme": "skilled-trades",
+   "track": "electrician",
+   "status": "soon"
+  },
+  {
+   "id": "plumbing-basics",
+   "title": "Plumbing",
+   "theme": "skilled-trades",
+   "track": "plumber",
+   "status": "soon"
+  },
+  {
+   "id": "hvac-fundamentals",
+   "title": "HVAC",
+   "theme": "skilled-trades",
+   "track": "electrician",
+   "status": "soon"
+  },
+  {
+   "id": "automotive-basics",
+   "title": "Automotive fundamentals",
+   "theme": "skilled-trades",
+   "track": "automotive-technician",
+   "status": "soon"
+  },
+  {
+   "id": "welding-fabrication",
+   "title": "Welding & fabrication",
+   "theme": "skilled-trades",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "exercise-science",
+   "title": "Exercise science",
+   "theme": "fitness-wellness",
+   "track": "personal-trainer",
+   "status": "soon"
+  },
+  {
+   "id": "nutrition-fitness",
+   "title": "Nutrition for performance",
+   "theme": "fitness-wellness",
+   "track": "personal-trainer",
+   "status": "soon"
+  },
+  {
+   "id": "sleep-recovery",
+   "title": "Sleep & recovery",
+   "theme": "fitness-wellness",
+   "track": "personal-trainer",
+   "status": "soon"
+  },
+  {
+   "id": "mental-wellness-practices",
+   "title": "Mental wellness practices",
+   "theme": "fitness-wellness",
+   "track": "wellness-coach",
+   "status": "soon"
+  },
+  {
+   "id": "logistics-fundamentals",
+   "title": "Logistics fundamentals",
+   "theme": "transportation-logistics",
+   "track": "logistics-coordinator",
+   "status": "soon"
+  },
+  {
+   "id": "fleet-management",
+   "title": "Fleet management",
+   "theme": "transportation-logistics",
+   "track": "logistics-coordinator",
+   "status": "soon"
+  },
+  {
+   "id": "aviation-basics",
+   "title": "Aviation basics",
+   "theme": "transportation-logistics",
+   "track": "aviation-professional",
+   "status": "soon"
+  },
+  {
+   "id": "maritime-shipping",
+   "title": "Maritime & shipping",
+   "theme": "transportation-logistics",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "venture-capital",
+   "title": "Venture capital & startups",
+   "theme": "finance",
+   "track": "venture-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "options-trading",
+   "title": "Options & volatility",
+   "theme": "finance",
+   "track": "trader",
+   "status": "soon"
+  },
+  {
+   "id": "macroeconomic-indicators",
+   "title": "Reading the economy",
+   "theme": "finance",
+   "track": "trader",
+   "status": "soon"
+  },
+  {
+   "id": "okrs-goal-setting",
+   "title": "OKRs & goal setting",
+   "theme": "business",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "business-ethics",
+   "title": "Business ethics",
+   "theme": "business",
+   "track": "philosopher-ethicist",
+   "status": "soon"
+  },
+  {
+   "id": "innovation-management",
+   "title": "Innovation management",
+   "theme": "business",
+   "track": "innovation-lead",
+   "status": "soon"
+  },
+  {
+   "id": "technical-product-management",
+   "title": "Technical PM",
+   "theme": "product",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "product-discovery",
+   "title": "Product discovery",
+   "theme": "product",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "storytelling-business",
+   "title": "Storytelling for business",
+   "theme": "communication",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "influence-persuasion",
+   "title": "Influence & persuasion",
+   "theme": "communication",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "health-informatics",
+   "title": "Health informatics",
+   "theme": "healthcare",
+   "track": "health-informatics-analyst",
+   "status": "soon"
+  },
+  {
+   "id": "global-health",
+   "title": "Global & population health",
+   "theme": "healthcare",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "monetary-policy",
+   "title": "Monetary policy & central banking",
+   "theme": "economics",
+   "track": "economist-macro",
+   "status": "soon"
+  },
+  {
+   "id": "public-finance",
+   "title": "Public finance & taxation",
+   "theme": "economics",
+   "track": "economist-macro",
+   "status": "soon"
+  },
+  {
+   "id": "probability-theory",
+   "title": "Probability theory",
+   "theme": "math",
+   "track": null,
+   "status": "soon"
+  },
+  {
+   "id": "graph-theory",
+   "title": "Graph theory",
+   "theme": "math",
    "track": null,
    "status": "soon"
   }

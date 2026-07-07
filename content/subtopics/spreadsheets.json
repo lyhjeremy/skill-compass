@@ -446,6 +446,196 @@
    "difficulty_prior": 0.4,
    "id": "spreadsheets-019",
    "status": "beta"
+  },
+  {
+   "concept": "index-match",
+   "stem": "A budget matrix lists quarters across B1:E1 and department names down A2:A10, with values in B2:E10. An analyst needs a formula that returns the correct value for any department and quarter, and keeps working if a column is inserted. Which formula works?",
+   "options": [
+    "=VLOOKUP(dept, A1:E10, MATCH(qtr,B1:E1,0), FALSE)",
+    "=INDEX(A2:E10, MATCH(qtr,B1:E1,0), MATCH(dept,A2:A10,0))",
+    "=INDEX(B2:E10, MATCH(dept,A2:A10,0), MATCH(qtr,B1:E1,0))",
+    "=INDEX(B1:E10, MATCH(dept,A2:A10,0), MATCH(qtr,B1:E1,0))"
+   ],
+   "answer": 2,
+   "explanation": "INDEX/MATCH matches the department row and quarter column independently, so inserted rows or columns don't break it. The VLOOKUP version uses the quarter's MATCH position as col_index_num but forgets the offset for column A, shifting the result by one column.",
+   "grounding": {
+    "source": "Microsoft Support: INDEX function",
+    "note": "INDEX combined with two MATCH calls performs a two-way lookup that stays accurate regardless of row or column insertions."
+   },
+   "difficulty_prior": 0.3,
+   "id": "spreadsheets-020",
+   "status": "beta"
+  },
+  {
+   "concept": "formula-error-types",
+   "stem": "An analyst enters =SUMIFS(Sales, Region, \"West\", Date, \">=\"&Start_Date) in a worksheet, but a colleague deletes the defined name \"Start_Date\" earlier that day. What error does the formula now return?",
+   "options": [
+    "#REF!",
+    "#NAME?",
+    "#VALUE!",
+    "#N/A"
+   ],
+   "answer": 1,
+   "explanation": "#NAME? appears when Excel encounters text it can't resolve, such as reference to a deleted defined name. #REF! is reserved for formulas whose referenced cells or ranges were deleted directly, which is not the case here.",
+   "grounding": {
+    "source": "Microsoft Support: #NAME? error in Excel",
+    "note": "Documents that #NAME? results from unrecognized text in a formula, including references to deleted defined names."
+   },
+   "difficulty_prior": 0.35,
+   "id": "spreadsheets-021",
+   "status": "beta"
+  },
+  {
+   "concept": "pivot-tables",
+   "stem": "A pivot table includes a calculated field defined as =Profit/Revenue to show margin by region. The Grand Total row's margin does not equal the average of the regional margins shown above it. What explains this?",
+   "options": [
+    "The pivot table cache has not been refreshed since the field was added",
+    "The total row divides summed Profit by summed Revenue, not the average of the ratios above",
+    "Calculated fields skip the Grand Total row and display a default value of zero",
+    "The Grand Total row sums each region's margin percentage instead of computing a new ratio"
+   ],
+   "answer": 1,
+   "explanation": "Calculated fields apply their formula to the total sum of each underlying field, not to each row before averaging. The total margin reflects total Profit divided by total Revenue, which rarely equals the average of the regional ratios.",
+   "grounding": {
+    "source": "Microsoft Support: Calculated fields and items in a PivotTable",
+    "note": "Explains that calculated fields compute using the sum of source data, not row-level averages."
+   },
+   "difficulty_prior": 0.3,
+   "id": "spreadsheets-022",
+   "status": "beta"
+  },
+  {
+   "concept": "spreadsheet-limitations",
+   "stem": "An analyst imports a 2-million-row transaction log into a single Excel worksheet, but only 1,048,576 rows appear after the import finishes. What is the most likely explanation?",
+   "options": [
+    "The CSV file was corrupted during export, dropping later rows",
+    "Excel automatically continues extra rows onto a new worksheet",
+    "Excel's AutoFilter was silently applied, hiding rows beyond view",
+    "Excel caps every worksheet at a fixed row limit"
+   ],
+   "answer": 3,
+   "explanation": "Excel worksheets are capped at 1,048,576 rows; extra rows are excluded when loading into a single sheet. Excel does not auto-continue overflow onto another sheet, apply filters automatically, or reject files for corruption in this scenario.",
+   "grounding": {
+    "source": "Microsoft Support: Excel specifications and limits",
+    "note": "States the maximum worksheet size is 1,048,576 rows by 16,384 columns."
+   },
+   "difficulty_prior": 0.35,
+   "id": "spreadsheets-023",
+   "status": "beta"
+  },
+  {
+   "concept": "xlookup-function",
+   "stem": "An analyst needs the ID of the most recently listed transaction for a given customer in a column sorted chronologically, without adding helper columns. Which XLOOKUP configuration accomplishes this?",
+   "options": [
+    "=XLOOKUP(customer, CustomerRange, IDRange, , 0, 1)",
+    "=XLOOKUP(customer, CustomerRange, IDRange, , -1, 1)",
+    "=XLOOKUP(customer, CustomerRange, IDRange, , 0, -1)",
+    "=XLOOKUP(customer, CustomerRange, IDRange, , 1, 1)"
+   ],
+   "answer": 2,
+   "explanation": "Setting search_mode to -1 scans from the last row to the first, so the first match found is the most recent one. The default search_mode of 1 would instead return the earliest matching transaction.",
+   "grounding": {
+    "source": "Microsoft Support: XLOOKUP function",
+    "note": "Documents the search_mode parameter, where -1 searches from the last item to the first."
+   },
+   "difficulty_prior": 0.28,
+   "id": "spreadsheets-024",
+   "status": "beta"
+  },
+  {
+   "concept": "index-match",
+   "stem": "An analyst uses =INDEX(C2:C500, MATCH(120, B2:B500, 1)) to find a shipping rate for a weight of 120. Column B2:B500 is not sorted in ascending order. What is the most likely result?",
+   "options": [
+    "MATCH returns #N/A, since approximate match requires sorted lookup data",
+    "The formula returns an incorrect rate without any error message",
+    "Excel automatically re-sorts the range before evaluating the formula",
+    "The formula returns #REF!, since MATCH cannot use unsorted ranges"
+   ],
+   "answer": 1,
+   "explanation": "With match_type 1, MATCH assumes ascending order and performs a binary-style search; on unsorted data it can return a plausible-looking but wrong position, with no error raised.",
+   "grounding": {
+    "source": "Microsoft Support: MATCH function",
+    "note": "Documents that match_type 1 requires data sorted ascending, otherwise results are unreliable."
+   },
+   "difficulty_prior": 0.3,
+   "id": "spreadsheets-025",
+   "status": "beta"
+  },
+  {
+   "concept": "xlookup-function",
+   "stem": "An analyst replaces =VLOOKUP(A2, B:C, 2, TRUE) with =XLOOKUP(A2, B:B, C:C), leaving the match_mode argument unspecified, expecting identical results. What actually happens?",
+   "options": [
+    "XLOOKUP returns the same approximate matches as VLOOKUP, since both default to approximate matching",
+    "XLOOKUP returns a #NAME? error because match_mode must always be specified",
+    "XLOOKUP returns #N/A for values VLOOKUP matched approximately, since XLOOKUP defaults to exact match",
+    "XLOOKUP automatically detects that the original VLOOKUP formula used approximate matching and silently replicates that same default behavior"
+   ],
+   "answer": 2,
+   "explanation": "XLOOKUP's match_mode argument is optional but defaults to exact match (0), unlike VLOOKUP's TRUE default of approximate match, so lookups that relied on approximation now fail with #N/A.",
+   "grounding": {
+    "source": "Microsoft Support: XLOOKUP function",
+    "note": "States the default match_mode is exact match, differing from VLOOKUP's approximate default."
+   },
+   "difficulty_prior": 0.3,
+   "id": "spreadsheets-026",
+   "status": "beta"
+  },
+  {
+   "concept": "data-cleaning-basics",
+   "stem": "After importing data from a system export, a column of 'Amount' values is left-aligned, and =SUM(B2:B100) returns a total far lower than expected with no error shown. What most likely explains this?",
+   "options": [
+    "The values are stored as text rather than numbers, so SUM silently ignores them",
+    "Some rows are hidden by a filter, and SUM automatically excludes hidden rows from its total",
+    "The column contains trailing non-breaking spaces, which SUM rounds down to zero",
+    "SUM stops calculating as soon as it encounters the first blank cell in the range"
+   ],
+   "answer": 0,
+   "explanation": "Left alignment signals text-formatted numbers. SUM ignores text values entirely rather than converting them, understating the total silently. SUM does not exclude hidden rows; that behavior belongs to SUBTOTAL.",
+   "grounding": {
+    "source": "Microsoft Support: SUM function",
+    "note": "Notes SUM ignores text and treats non-numeric cells as excluded from the total, not as zero-forced errors."
+   },
+   "difficulty_prior": 0.35,
+   "id": "spreadsheets-027",
+   "status": "beta"
+  },
+  {
+   "concept": "formula-error-types",
+   "stem": "A formula =VLOOKUP(A2, Prices, 2, FALSE) returns #NAME? on one colleague's computer but works correctly for everyone else using the same shared file. What is the most likely cause?",
+   "options": [
+    "That workstation's calculation mode is set to Manual instead of Automatic",
+    "That version of Excel requires a separate add-in to enable VLOOKUP",
+    "Regional settings on that workstation use semicolons instead of commas as separators",
+    "The defined name 'Prices' does not exist in that workbook copy"
+   ],
+   "answer": 3,
+   "explanation": "#NAME? typically means Excel does not recognize a name used in the formula. If the defined name 'Prices' was not saved or synced in that copy, the reference fails, regardless of calculation mode or VLOOKUP being built-in.",
+   "grounding": {
+    "source": "Microsoft Support: Correct a #NAME? error",
+    "note": "Lists missing or misspelled defined names as a primary cause of #NAME? errors."
+   },
+   "difficulty_prior": 0.3,
+   "id": "spreadsheets-028",
+   "status": "beta"
+  },
+  {
+   "concept": "spreadsheet-limitations",
+   "stem": "Two analysts each download and edit separate local copies of the same Excel workbook, then try to merge their changes afterward. Which limitation of spreadsheets does this scenario best illustrate?",
+   "options": [
+    "Excel workbooks automatically merge conflicting edits by timestamp priority",
+    "Spreadsheets lack built-in concurrent-editing and version control, making merges error-prone",
+    "Excel enforces a single-writer lock that prevents multiple copies from being edited",
+    "Saving the workbook to a shared cloud drive automatically reconciles both analysts' edits"
+   ],
+   "answer": 1,
+   "explanation": "Traditional desktop spreadsheets have no native mechanism to reconcile divergent copies edited offline; merging must be done manually, risking overwritten or lost changes, unlike database systems with transaction control.",
+   "grounding": {
+    "source": "Wikipedia: Spreadsheet",
+    "note": "Discusses spreadsheet limitations around version control and collaborative editing compared to dedicated data systems."
+   },
+   "difficulty_prior": 0.3,
+   "id": "spreadsheets-029",
+   "status": "beta"
   }
  ],
  "generated": "claude sonnet draft+verify, pending human review"
