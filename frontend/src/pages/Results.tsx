@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { KnowledgeMap } from '../components/KnowledgeMap'
+import { postSession } from '../lib/api'
 import { getManifest, getSubtopic } from '../lib/content'
 import { composeDiagnosis } from '../lib/diagnosis'
 import { store } from '../lib/store'
 import type { SubtopicContent } from '../lib/types'
+
+type Perc = { topPct?: number; n?: number; cold: boolean }
 
 export default function Results() {
   const { sessionId = '' } = useParams()
@@ -12,6 +15,11 @@ export default function Results() {
   const [content, setContent] = useState<SubtopicContent | null>(null)
   const [title, setTitle] = useState('')
   const [trackId, setTrackId] = useState('data-analyst')
+  const [posting, setPosting] = useState(false)
+  const [perc, setPerc] = useState<Perc | null>(
+    session?.posted ? { topPct: session.topPct, n: session.nPeers, cold: session.percentile == null } : null)
+  const postedRef = useRef(false)
+
   useEffect(() => {
     if (!session) return
     getSubtopic(session.subtopic).then(setContent).catch(console.error)
@@ -20,6 +28,22 @@ export default function Results() {
       const t = m.tracks.find(t => t.status !== 'soon' && t.subtopics.includes(session.subtopic))
       if (t) setTrackId(t.id)
     }).catch(() => {})
+
+    // Log the session once and pull back its live percentile (Phase 2).
+    if (!session.posted && !postedRef.current) {
+      postedRef.current = true
+      setPosting(true)
+      postSession(session).then(r => {
+        if (r && r.ok) {
+          store.patchSession(session.id, {
+            posted: true, percentile: r.percentile ?? null, topPct: r.top_pct, nPeers: r.n })
+          setPerc({ topPct: r.top_pct, n: r.n, cold: r.cold_start })
+        } else {
+          setPerc(null)  // backend off/unreachable -> stays "early data", retries next visit
+        }
+        setPosting(false)
+      })
+    }
   }, [sessionId])
 
   if (!session) return (
@@ -72,11 +96,22 @@ export default function Results() {
         <div className="display num" style={{ fontSize: '3rem', fontWeight: 800, marginTop: 8 }}>
           {session.correct}<span style={{ color: 'var(--faint)', fontSize: '1.8rem' }}>/{session.total}</span>
         </div>
-        <p className="small muted" style={{ marginTop: 6 }}>
-          <b style={{ color: 'var(--ink)' }}>Early data</b> — you're one of the first here.
-          Live percentiles switch on once this topic has 30+ sessions; your result is saved on this device.
-        </p>
-        <p className="small muted" style={{ marginTop: 4 }}>⏱ ~{avgSec}s per question{attempts > 1 ? ` · attempt ${attempts} (first attempt sets your percentile later)` : ''}</p>
+        {perc && !perc.cold && perc.topPct != null ? (
+          <>
+            <div className="display" style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--accent-dk)', marginTop: 2 }}>
+              Top {perc.topPct}%
+            </div>
+            <p className="small muted" style={{ marginTop: 2 }}>of {perc.n} people on this topic in the last 90 days</p>
+          </>
+        ) : posting ? (
+          <p className="small muted" style={{ marginTop: 6 }}>Placing your result…</p>
+        ) : (
+          <p className="small muted" style={{ marginTop: 6 }}>
+            <b style={{ color: 'var(--ink)' }}>Early data</b> — you're one of the first here.
+            Live percentiles switch on once this topic has 30+ sessions; your result is saved on this device.
+          </p>
+        )}
+        <p className="small muted" style={{ marginTop: 4 }}>⏱ ~{avgSec}s per question{attempts > 1 ? ` · attempt ${attempts}` : ''}</p>
       </div>
 
       {/* 2 · diagnosis */}

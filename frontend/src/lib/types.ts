@@ -11,9 +11,12 @@ export interface Item {
 }
 export interface SubtopicContent { id: string; concepts: Concept[]; items: Item[] }
 
-export interface AnswerRecord { itemId: string; concept: string; correct: boolean; ms: number }
+export interface AnswerRecord { itemId: string; concept: string; correct: boolean; ms: number; p?: number }
 export interface Session {
   id: string; subtopic: string; ts: number; variant: 'easy' | 'standard' | 'hard';
   correct: number; total: number; answers: AnswerRecord[]; avgMs: number;
+  finalRating?: number;
+  // filled in after the backend logs the session (Phase 2)
+  posted?: boolean; percentile?: number | null; topPct?: number; nPeers?: number;
 }
 export type ConceptState = 'strong' | 'shaky' | 'missed' | 'untested'

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { warmBackend } from '../lib/api'
 import { getManifest, getSubtopic } from '../lib/content'
 import { drawSet, placementItem, routePlacement } from '../lib/elo'
 import { store } from '../lib/store'
@@ -24,6 +25,7 @@ export default function Quiz() {
   const startedAt = useRef(Date.now())
 
   useEffect(() => {
+    warmBackend()  // pre-warm the Space so the percentile call isn't a cold start
     getSubtopic(subtopicId).then(setContent).catch(() => setError(true))
     getManifest().then(m => {
       const meta = m.subtopics.find(s => s.id === subtopicId)
@@ -58,7 +60,7 @@ export default function Quiz() {
       setTimeout(() => { setPicked(null); startQuiz(v, current.id) }, 1600)
       return
     }
-    setAnswers(a => [...a, { itemId: current.id, concept: current.concept, correct: i === current.answer, ms }])
+    setAnswers(a => [...a, { itemId: current.id, concept: current.concept, correct: i === current.answer, ms, p: current.difficulty_prior }])
   }
 
   function next() {

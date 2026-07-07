@@ -1,3 +1,4 @@
+import { PLACEMENT_START, itemRating, updateSession as eloUpdate } from './elo'
 import type { AnswerRecord, ConceptState, Session, SubtopicContent } from './types'
 
 /** All user state lives on-device: localStorage schema sc_v1 (spec §5.14). */
@@ -28,15 +29,28 @@ export const store = {
 
   addSession(subtopic: string, variant: Session['variant'], answers: AnswerRecord[]): Session {
     const s = load()
+    // final session ability: fold the Elo update over answers in order (spec §7)
+    let rating: number = PLACEMENT_START[variant]
+    for (const a of answers) {
+      if (typeof a.p === 'number') rating = eloUpdate(rating, itemRating(a.p), a.correct)
+    }
     const sess: Session = {
       id: `s${Date.now().toString(36)}${Math.floor(Math.random() * 1e4).toString(36)}`,
       subtopic, ts: Date.now(), variant,
       correct: answers.filter(a => a.correct).length, total: answers.length,
       answers, avgMs: Math.round(answers.reduce((t, a) => t + a.ms, 0) / Math.max(1, answers.length)),
+      finalRating: Math.round(rating),
     }
     s.sessions.push(sess)
     save(s)
     return sess
+  },
+
+  /** Patch a stored session (e.g. with the percentile the backend returned). */
+  patchSession(id: string, patch: Partial<Session>) {
+    const s = load()
+    const i = s.sessions.findIndex(x => x.id === id)
+    if (i >= 0) { s.sessions[i] = { ...s.sessions[i], ...patch }; save(s) }
   },
 
   setPlacement(subtopic: string, v: 'easy' | 'standard' | 'hard') {
