@@ -1,6 +1,17 @@
+---
+title: SkillCompass API
+emoji: 🧭
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # SkillCompass API
 
 FastAPI service deployed to a Hugging Face Space (Docker SDK, free CPU tier).
+The YAML block above is the Space config Hugging Face reads — keep it at the top.
 
 ## Deploy (one-time setup)
 
