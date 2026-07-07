@@ -361,8 +361,8 @@
     "data-storytelling",
     "business-metrics-kpis"
    ],
-   "status": "partial",
-   "ready": 5,
+   "status": "live",
+   "ready": 6,
    "total": 6
   },
   {
@@ -2219,7 +2219,7 @@
    "title": "Tableau",
    "theme": "sql-data",
    "track": "bi-analyst",
-   "status": "soon"
+   "status": "live"
   },
   {
    "id": "r-for-data",

@@ -1,0 +1,452 @@
+{
+ "id": "tableau",
+ "concepts": [
+  {
+   "id": "dimensions-vs-measures",
+   "label": "Dimensions vs Measures",
+   "definition": "Dimensions are qualitative fields that slice data into categories, while measures are quantitative fields that get aggregated.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "extracts-vs-live-connections",
+   "label": "Extracts vs Live Connections",
+   "definition": "An extract is a saved snapshot of data pulled into Tableau's fast engine, while a live connection queries the source database in real time.",
+   "prereq": null,
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "worksheets-vs-dashboards",
+   "label": "Worksheets vs Dashboards",
+   "definition": "A worksheet is a single view built from dimensions and measures, while a dashboard combines multiple worksheets into one interactive layout.",
+   "prereq": "dimensions-vs-measures",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "calculated-fields",
+   "label": "Calculated Fields",
+   "definition": "Calculated fields let you create new dimensions or measures using formulas based on existing fields.",
+   "prereq": "dimensions-vs-measures",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "filters-order-of-operations",
+   "label": "Filters Order of Operations",
+   "definition": "Tableau applies filters in a fixed pipeline (extract, data source, context, dimension, measure, table calculation) that determines what data is visible at each calculation stage.",
+   "prereq": "calculated-fields",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "lod-expressions-intuition",
+   "label": "LOD Expressions Intuition",
+   "definition": "Level of Detail expressions compute aggregations at a granularity different from the visualization's natural level of detail, independent of the view's filters.",
+   "prereq": "calculated-fields",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "table-calculations",
+   "label": "Table Calculations",
+   "definition": "Table calculations perform computations like running totals or rank on the values already aggregated and displayed in the view, after filters have been applied.",
+   "prereq": "filters-order-of-operations",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "lod-fixed-include-exclude",
+   "label": "FIXED, INCLUDE, EXCLUDE",
+   "definition": "FIXED, INCLUDE, and EXCLUDE are the three LOD keywords that respectively ignore view dimensions, add extra granularity, or remove specific dimensions from the aggregation.",
+   "prereq": "lod-expressions-intuition",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "dimensions-vs-measures",
+   "stem": "An analyst drags \"Region\" onto the Rows shelf in Tableau and it appears as a blue pill, while \"Sales\" appears green on the Columns shelf. What does the blue color indicate about Region?",
+   "options": [
+    "Region is a dimension, used to slice and categorize data",
+    "Region is a measure, used for numeric aggregation",
+    "Region is a table calculation applied across the view",
+    "Region is a continuous numeric field"
+   ],
+   "answer": 0,
+   "explanation": "Tableau automatically colors discrete, categorical fields like Region blue (dimensions) and continuous, aggregatable fields like Sales green (measures); the color itself signals this role.",
+   "grounding": {
+    "source": "Tableau Help: Dimensions and Measures",
+    "note": "Documents Tableau's default blue/green color coding for dimensions versus measures."
+   },
+   "difficulty_prior": 0.8,
+   "id": "tableau-000",
+   "status": "beta"
+  },
+  {
+   "concept": "extracts-vs-live-connections",
+   "stem": "A Tableau dashboard shows newly added source-table rows within seconds, even though no one has manually refreshed anything. Which connection type used in the workbook explains this behavior?",
+   "options": [
+    "A live connection, which sends queries to the source in real time",
+    "An extract, which stores a full snapshot refreshed only on a schedule",
+    "An extract, refreshed automatically every time the workbook opens",
+    "A live connection that caches results locally for offline analysis"
+   ],
+   "answer": 0,
+   "explanation": "Live connections query the source database on every interaction, so new rows appear immediately; extracts are static snapshots that only reflect source changes after a manual or scheduled refresh.",
+   "grounding": {
+    "source": "Tableau Help: Extract and Live Database Connections",
+    "note": "Explains that live connections query the source directly while extracts are static snapshots refreshed on demand."
+   },
+   "difficulty_prior": 0.75,
+   "id": "tableau-001",
+   "status": "beta"
+  },
+  {
+   "concept": "worksheets-vs-dashboards",
+   "stem": "An analyst has built three separate worksheets: one bar chart, one line chart, one map. She wants to combine all three into a single interactive view with shared filters for a stakeholder presentation. What should she build?",
+   "options": [
+    "A dashboard combining the three worksheets",
+    "A single new worksheet duplicating the three charts",
+    "A story combining the three worksheets in sequence",
+    "A second workbook merging all three data sources"
+   ],
+   "answer": 0,
+   "explanation": "A dashboard assembles multiple existing worksheets into one interactive view with shared filters and actions; a story instead sequences sheets one at a time to narrate insights, not combine them simultaneously.",
+   "grounding": {
+    "source": "Tableau Help: Dashboards",
+    "note": "Describes dashboards as combining multiple worksheets into one interactive view, distinct from stories."
+   },
+   "difficulty_prior": 0.82,
+   "id": "tableau-002",
+   "status": "beta"
+  },
+  {
+   "concept": "calculated-fields",
+   "stem": "An analyst needs a field labeled \"Profit Ratio\" that divides total profit by total sales at whatever level of aggregation is currently shown in a view. Which Tableau feature should be used to create this field?",
+   "options": [
+    "A calculated field, such as SUM(Profit)/SUM(Sales)",
+    "A parameter set to a fixed ratio value",
+    "A filter applied to the Sales field",
+    "A group combining Profit and Sales into one dimension"
+   ],
+   "answer": 0,
+   "explanation": "Calculated fields let analysts define custom formulas, such as SUM(Profit)/SUM(Sales), that recompute automatically at whatever aggregation level a view displays; parameters, filters, and groups do not create derived values like this.",
+   "grounding": {
+    "source": "Tableau Help: Create a Calculated Field",
+    "note": "Explains that calculated fields define custom formulas like ratio measures computed at view-time aggregation."
+   },
+   "difficulty_prior": 0.78,
+   "id": "tableau-003",
+   "status": "beta"
+  },
+  {
+   "concept": "filters-order-of-operations",
+   "stem": "An analyst applies a context filter to limit data to the current fiscal year, then adds a Top N filter on Customer by Sales. Why does setting the fiscal-year filter as a context filter make the Top N ranking correct?",
+   "options": [
+    "Context filters apply first, so Top N ranks only within that year",
+    "Context filters apply after Top N, adjusting the final ranked list",
+    "Filters apply in the order they were added to the Filters shelf, regardless of type",
+    "A context filter changes Top N into a quick filter automatically"
+   ],
+   "answer": 0,
+   "explanation": "Tableau's order of operations computes context filters before Top N (a table-calculation filter), so Top N ranks customers within the already-filtered fiscal year, not by shelf order or filter type conversion.",
+   "grounding": {
+    "source": "Tableau Help: Order of Operations",
+    "note": "Documents that context filters are computed before other filter types, including Top N."
+   },
+   "difficulty_prior": 0.72,
+   "id": "tableau-004",
+   "status": "beta"
+  },
+  {
+   "concept": "lod-expressions-intuition",
+   "stem": "A view is aggregated at the Region level, but an analyst wants to show each region's average of per-customer total sales, not the region's overall average order value. Which feature computes at a different granularity than the view to solve this?",
+   "options": [
+    "A Level of Detail (LOD) expression",
+    "A quick table calculation, such as a running total",
+    "A context filter applied to Region",
+    "A blended secondary data source"
+   ],
+   "answer": 0,
+   "explanation": "LOD expressions compute aggregations at a granularity independent of the view, such as average per-customer sales within each region; table calculations instead operate only on values already aggregated in the view.",
+   "grounding": {
+    "source": "Tableau Help: Level of Detail Expressions",
+    "note": "Explains that LOD expressions compute at a granularity finer or coarser than the view's own level of detail."
+   },
+   "difficulty_prior": 0.58,
+   "id": "tableau-005",
+   "status": "beta"
+  },
+  {
+   "concept": "table-calculations",
+   "stem": "An analyst adds a running total table calculation to a bar chart of monthly sales. After she adds a filter removing two regions, the running total's cumulative values change even though no months were filtered out. Why?",
+   "options": [
+    "Table calculations recompute on data remaining after filters apply",
+    "Running totals always use the full unfiltered data source",
+    "Removing regions converts the running total into an LOD expression",
+    "Table calculations are fixed permanently once added to the view"
+   ],
+   "answer": 0,
+   "explanation": "Table calculations run last in Tableau's order of operations, computing on whichever rows remain visible after all filters, so removing regions changes the sales values feeding the running sum.",
+   "grounding": {
+    "source": "Tableau Help: Transform Values with Table Calculations",
+    "note": "Documents that table calculations are computed on the aggregated results left in the view after filtering."
+   },
+   "difficulty_prior": 0.62,
+   "id": "tableau-006",
+   "status": "beta"
+  },
+  {
+   "concept": "lod-fixed-include-exclude",
+   "stem": "An analyst wants a calculated field that always shows the overall total Sales across all customers, unaffected by whichever dimensions are later placed on Rows or Columns in the view. Which LOD keyword should compute this constant, view-independent total?",
+   "options": [
+    "FIXED with no dimensions in the expression",
+    "INCLUDE, which adds extra detail beyond the view",
+    "EXCLUDE, which removes one dimension from the view",
+    "A quick table calculation applied to Sales"
+   ],
+   "answer": 0,
+   "explanation": "An empty FIXED expression, such as {FIXED : SUM([Sales])}, computes one constant value ignoring all view dimensions; INCLUDE and EXCLUDE instead adjust granularity relative to whatever dimensions are currently in the view.",
+   "grounding": {
+    "source": "Tableau Help: Fixed Level of Detail Expressions",
+    "note": "Explains that FIXED expressions compute using only the dimensions named in the expression, ignoring the view's dimensions."
+   },
+   "difficulty_prior": 0.65,
+   "id": "tableau-007",
+   "status": "beta"
+  },
+  {
+   "concept": "dimensions-vs-measures",
+   "stem": "A field named Zip Code is stored as a number, so Tableau automatically treats it as a measure and aggregates it as SUM(Zip Code) whenever it's placed in a view. To use Zip Code as a category instead, what should the analyst do?",
+   "options": [
+    "Convert Zip Code to a dimension",
+    "Convert Zip Code to a continuous measure",
+    "Apply an AVG aggregation to Zip Code",
+    "Create a table calculation that ranks Zip Code"
+   ],
+   "answer": 0,
+   "explanation": "Converting a numeric field to a dimension tells Tableau to treat each value as a discrete category rather than aggregate it, the standard fix for numeric fields like Zip Code or ID numbers that represent categories, not quantities.",
+   "grounding": {
+    "source": "Tableau Help: Dimensions and Measures",
+    "note": "Covers converting numeric fields between measure and dimension roles when they represent categories rather than quantities."
+   },
+   "difficulty_prior": 0.6,
+   "id": "tableau-008",
+   "status": "beta"
+  },
+  {
+   "concept": "worksheets-vs-dashboards",
+   "stem": "A dashboard combines a map worksheet and a bar chart worksheet. An analyst wants clicking a state on the map to automatically filter the bar chart to show only that state's data. Which dashboard feature should she configure?",
+   "options": [
+    "A filter action on the map mark",
+    "A quick filter shared manually across worksheets",
+    "A parameter action triggered by selecting a mark",
+    "A context filter applied to the map worksheet"
+   ],
+   "answer": 0,
+   "explanation": "Filter actions let a click on one worksheet, such as a map, filter the data shown in other worksheets on the same dashboard; parameter actions instead update a parameter value rather than filtering fields directly.",
+   "grounding": {
+    "source": "Tableau Help: Filter Actions",
+    "note": "Documents that filter actions pass values from a source sheet interaction to filter target sheets on a dashboard."
+   },
+   "difficulty_prior": 0.6,
+   "id": "tableau-009",
+   "status": "beta"
+  },
+  {
+   "concept": "extracts-vs-live-connections",
+   "stem": "A Tableau extract uses incremental refresh keyed on Order Date to add only new rows since the last refresh. After the source system corrects Sales values on orders from three months ago, those corrections never appear in the extract. Why?",
+   "options": [
+    "It appends only rows newer than the last refresh value, missing edits to old rows",
+    "It only detects source edits when a separate change-tracking column is configured",
+    "Order Date must be a measure, not a dimension, for it to detect edits",
+    "It automatically switches to a live connection whenever source data changes"
+   ],
+   "answer": 0,
+   "explanation": "Incremental refresh only appends rows with a refresh-value column newer than the last run; it cannot detect updates to rows already loaded. A full refresh is needed to capture edits to existing orders.",
+   "grounding": {
+    "source": "Tableau Help: Incrementally Refresh Extract Data",
+    "note": "Explains that incremental refresh appends new rows based on a chosen column and does not capture edits to previously loaded rows."
+   },
+   "difficulty_prior": 0.45,
+   "id": "tableau-010",
+   "status": "beta"
+  },
+  {
+   "concept": "calculated-fields",
+   "stem": "An analyst writes a calculated field, SUM([Profit]) / [Sales Target], where Sales Target is a non-aggregated field from a secondary table joined at a coarser grain. Tableau returns an error that aggregate and non-aggregate arguments cannot be mixed. What is the most direct fix?",
+   "options": [
+    "Aggregate Sales Target with SUM or ATTR",
+    "Convert SUM([Profit]) into a dimension before dividing",
+    "Remove the join and blend the two sources instead",
+    "Replace SUM with a quick table calculation total"
+   ],
+   "answer": 0,
+   "explanation": "Tableau requires both operands in a formula to share an aggregation state. Wrapping Sales Target in SUM or ATTR aggregates it so it can combine with SUM(Profit); dimension conversion or blending doesn't resolve the mismatch.",
+   "grounding": {
+    "source": "Tableau Knowledge Base: Mixing Aggregate and Non-Aggregate Arguments",
+    "note": "Documents that Tableau errors when a calculation mixes aggregated and non-aggregated fields, and that wrapping the non-aggregated field in an aggregation fixes it."
+   },
+   "difficulty_prior": 0.48,
+   "id": "tableau-011",
+   "status": "beta"
+  },
+  {
+   "concept": "filters-order-of-operations",
+   "stem": "An analyst builds a FIXED LOD calculation, {FIXED [Customer]: SUM([Sales])}, then adds a dimension filter on Region. The FIXED values still reflect nationwide totals and ignore the Region filter. What must the analyst do to make Region filter the FIXED values?",
+   "options": [
+    "Set the Region filter as a context filter",
+    "Change FIXED to INCLUDE, which automatically respects dimension filters",
+    "Move Region from the Filters shelf onto the Rows shelf",
+    "Wrap the FIXED expression inside a table calculation"
+   ],
+   "answer": 0,
+   "explanation": "Context filters execute before FIXED LOD expressions in Tableau's order of operations, while ordinary dimension filters execute after them. Making Region a context filter is the only way to have it apply before the FIXED calculation runs.",
+   "grounding": {
+    "source": "Tableau Help: Order of Operations",
+    "note": "Documents that context filters are computed before FIXED LOD expressions, while non-context dimension filters are computed after them."
+   },
+   "difficulty_prior": 0.42,
+   "id": "tableau-012",
+   "status": "beta"
+  },
+  {
+   "concept": "lod-fixed-include-exclude",
+   "stem": "A view is aggregated at the Category level, and a single order can include products from multiple categories. An analyst wants each category's total to include only the portion of that order's sales that fall within that category. Which LOD expression computes this correctly?",
+   "options": [
+    "{INCLUDE [Order ID]: SUM([Sales])}",
+    "{FIXED [Order ID]: SUM([Sales])}",
+    "{EXCLUDE [Category]: SUM([Sales])}",
+    "{FIXED [Category]: AVG([Sales])}"
+   ],
+   "answer": 0,
+   "explanation": "FIXED [Order ID] ignores Category entirely, summing an order's sales across all its categories and repeating that inflated total on every category row it touches. INCLUDE keeps Category in the calculation, correctly limiting the sum to each order's line items within that category.",
+   "grounding": {
+    "source": "Tableau Help: Create Level of Detail Expressions in Tableau",
+    "note": "Explains that INCLUDE adds detail beneath the view's existing dimensions, while FIXED ignores view dimensions entirely, changing results when a finer entity spans multiple view categories."
+   },
+   "difficulty_prior": 0.55,
+   "id": "tableau-013",
+   "status": "beta"
+  },
+  {
+   "concept": "table-calculations",
+   "stem": "An analyst builds a view with Category and Region on Rows, then adds a Rank table calculation on SUM(Sales). The rank restarts at 1 within each Region instead of ranking across the whole table. Which setting controls this scope?",
+   "options": [
+    "The Compute Using (partitioning) setting",
+    "The aggregation type applied to SUM(Sales)",
+    "The filter shelf, which restricts rows per Region",
+    "The mark type selected for the view"
+   ],
+   "answer": 0,
+   "explanation": "Compute Using (addressing and partitioning) determines which fields a table calculation restarts across. Partitioning by Region resets the rank for each region; computing across the full table instead ranks all rows together.",
+   "grounding": {
+    "source": "Tableau Help: Transform Values with Table Calculations",
+    "note": "Documents that the Compute Using setting controls the partitioning and addressing fields that determine when a table calculation like Rank restarts."
+   },
+   "difficulty_prior": 0.5,
+   "id": "tableau-014",
+   "status": "beta"
+  },
+  {
+   "concept": "lod-fixed-include-exclude",
+   "stem": "An analyst creates {FIXED [Customer]: SUM([Sales])} to show each customer's total sales, then adds a standard, non-context filter on Region to display only the West region. What sales value appears for each customer's FIXED calculation?",
+   "options": [
+    "Each customer's total sales across all regions, not just West",
+    "Each customer's total sales limited to West region only",
+    "Zero, because the filter conflicts with the LOD's dimension list",
+    "The FIXED calculation is disabled and reverts to row-level detail"
+   ],
+   "answer": 0,
+   "explanation": "Non-context filters on a field not in the FIXED expression's dimension list are applied after the FIXED aggregation, so it still uses unfiltered data even though only West rows are displayed.",
+   "grounding": {
+    "source": "Tableau Help: Order of Operations",
+    "note": "Documents that FIXED LOD expressions ignore ordinary filters unless the field is in the LOD or the filter is added to context."
+   },
+   "difficulty_prior": 0.3,
+   "id": "tableau-015",
+   "status": "beta"
+  },
+  {
+   "concept": "lod-expressions-intuition",
+   "stem": "A worksheet has Category and Sub-Category on Rows, plus a calculated field {EXCLUDE [Sub-Category]: SUM([Sales])} showing each row's parent Category total. If Sub-Category is later removed from Rows, what happens to this calculated field's values?",
+   "options": [
+    "It equals a plain SUM(Sales), since no Sub-Category detail remains to exclude",
+    "It returns an error because the excluded field is missing from the view",
+    "It keeps showing the same Category totals as before the change",
+    "It automatically switches to excluding Category instead of Sub-Category"
+   ],
+   "answer": 0,
+   "explanation": "EXCLUDE removes a dimension from the view's level of detail. Once Sub-Category isn't in the view at all, there is nothing left to exclude, so the calculation collapses to a normal SUM(Sales).",
+   "grounding": {
+    "source": "Tableau Help: Create Level of Detail (LOD) Expressions",
+    "note": "Explains that EXCLUDE's effect depends on the dimension being present in the view's level of detail."
+   },
+   "difficulty_prior": 0.32,
+   "id": "tableau-016",
+   "status": "beta"
+  },
+  {
+   "concept": "table-calculations",
+   "stem": "A crosstab shows Sales by Region on Rows and Year on Columns. An analyst adds a Percent of Total table calculation and sets Compute Using to Year. What do the resulting percentages represent?",
+   "options": [
+    "Each region's yearly sales as a share of that region's total across years",
+    "Each year's regional sales as a share of that year's total across all regions",
+    "Each cell's share of the grand total sales in the entire table",
+    "Each cell's sales compared to the prior year for the same region"
+   ],
+   "answer": 0,
+   "explanation": "Compute Using: Year makes Year the addressing field, so the calculation partitions by Region and computes percentages along Year within each row, summing to 100% per region.",
+   "grounding": {
+    "source": "Tableau Help: Transform Values with Table Calculations",
+    "note": "Describes how the Compute Using (addressing) field determines the direction a table calculation is computed across."
+   },
+   "difficulty_prior": 0.28,
+   "id": "tableau-017",
+   "status": "beta"
+  },
+  {
+   "concept": "calculated-fields",
+   "stem": "An analyst writes IF [Sales] > 10000 THEN 'High' ELSE 'Low' END as a calculated field, then places it in a view aggregated at the Region level, with Sales shown as SUM. Why might each region's classification seem inconsistent with the region's summed Sales?",
+   "options": [
+    "The IF condition evaluates row-level Sales before aggregation, not the summed total",
+    "Tableau ignores IF statements whenever a measure is aggregated in the view",
+    "The calculated field only evaluates the first row within each region",
+    "The calculated field silently switches to using SUM(Sales) once the view is aggregated"
+   ],
+   "answer": 0,
+   "explanation": "The IF logic runs on each row of the underlying data before any aggregation; Tableau does not auto-wrap the calculated field in SUM just because the view is aggregated, so results can diverge from the region's SUM(Sales).",
+   "grounding": {
+    "source": "Tableau Help: About Calculations in Tableau",
+    "note": "Covers how aggregate versus row-level calculations are evaluated at different stages relative to the view's aggregation."
+   },
+   "difficulty_prior": 0.35,
+   "id": "tableau-018",
+   "status": "beta"
+  },
+  {
+   "concept": "dimensions-vs-measures",
+   "stem": "An analyst drags Sales, a measure, onto the Columns shelf, producing a continuous green axis. They then right-click the pill and choose Discrete. What immediately changes about the view?",
+   "options": [
+    "Sales values become column headers, each with its own mark",
+    "Sales converts into a dimension and disappears from the Measures pane",
+    "The measure's aggregation automatically switches from SUM to COUNT",
+    "The axis remains continuous but only its pill color changes to blue"
+   ],
+   "answer": 0,
+   "explanation": "Discrete versus continuous is independent of dimension/measure status. Making a measure discrete turns it into headers with distinct-value marks rather than a continuous axis, while it stays a measure.",
+   "grounding": {
+    "source": "Tableau Help: Dimensions and Measures, Blue and Green",
+    "note": "Clarifies that discrete/continuous (blue/green) and dimension/measure are separate, orthogonal field properties."
+   },
+   "difficulty_prior": 0.34,
+   "id": "tableau-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}
