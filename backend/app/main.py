@@ -184,6 +184,16 @@ class ResumeIn(BaseModel):
     text: str = Field(min_length=20, max_length=20000)
     subtopics: list[SubtopicRef] = Field(min_length=1, max_length=40)
 
+class TranscriptTurn(BaseModel):
+    role: str  # "interviewer" | "candidate"
+    text: str = Field(max_length=4000)
+
+class InterviewIn(BaseModel):
+    track_title: str = Field(max_length=100)
+    seniority: str = "mid"
+    topics: list[str] = Field(min_length=1, max_length=12)
+    transcript: list[TranscriptTurn] = Field(default_factory=list, max_length=40)
+
 
 # ---- endpoints -------------------------------------------------------------
 @app.get("/api/health")
@@ -330,8 +340,89 @@ evidence (a named tool, a project, a described responsibility) — not just an a
             "evidenced_subtopic_ids": evidenced, "summary": summary}
 
 
-@app.post("/api/gap")
+MAX_INTERVIEW_TURNS = 7  # ~10 minutes at 1-1.5 min/turn, matches the on-screen promise
+
 @app.post("/api/interview")
+def interview_turn(body: InterviewIn, request: Request):
+    """One turn of a stateless mock interview. The frontend holds the transcript
+    and resends it in full each turn — no server-side session to manage or leak.
+    Turn counting (and therefore when the interview ends) is decided by this code,
+    never trusted to the model; only the *content* of each turn is generated."""
+    if not rate_ok(client_ip(request), limit=30, window_s=3600):
+        return {"ok": False, "reason": "rate-limited"}
+    if not gemini_ready():
+        return {"ok": False, "reason": "llm-unavailable"}
+
+    asked = sum(1 for t in body.transcript if t.role == "interviewer")
+    turn_n = asked + 1
+    is_final = turn_n >= MAX_INTERVIEW_TURNS
+    seniority = body.seniority if body.seniority in ("entry", "mid", "senior") else "mid"
+    topics = ", ".join(body.topics[:12])
+    convo = "\n".join(
+        f"{'Interviewer' if t.role == 'interviewer' else 'Candidate'}: {t.text}" for t in body.transcript
+    ) or "(interview has not started yet)"
+
+    if is_final:
+        turn_instructions = ("This is the FINAL turn. Do not ask a new question. Instead: give "
+                              "1-2 sentences of warm, honest closing remarks, then score the whole interview.")
+    else:
+        turn_instructions = ("Ask exactly ONE question: either a natural follow-up that probes their "
+                              "last answer more deeply, or — if their last answer was already thorough — "
+                              "a fresh question on a different topic from the list. 2-3 sentences max.")
+        if turn_n == 1:
+            turn_instructions += " This is the opening question — start warm and natural, like a real interview."
+
+    prompt = f"""You are conducting a realistic job interview for a {seniority}-level {body.track_title} role.
+Persona: professional and constructive. Ask real interview questions. When a candidate's answer is
+weak, frame any eventual feedback as how to strengthen the answer — never harsh, never demoralizing,
+always specific.
+
+Topics this role covers: {topics}
+
+This is interview turn {turn_n} of {MAX_INTERVIEW_TURNS}. {turn_instructions}
+
+Conversation so far:
+{convo}
+
+Return ONLY JSON with this exact shape:
+{{
+  "message": "<your next question, follow-up, or closing remarks>",
+  "is_followup": <true if this responds to the last answer, false if a fresh topic>,
+  "scorecard": {"null (not the final turn)" if not is_final else '{"accuracy": <1-5 int>, "depth": <1-5 int>, "clarity": <1-5 int>, "strengthen": "<one concrete, specific sentence — the single highest-leverage thing to improve>"} — REQUIRED on this final turn'}
+}}"""
+
+    try:
+        raw = gemini_generate(prompt, max_tokens=500, json_mode=True)
+        data = json.loads(raw)
+    except Exception as e:
+        return {"ok": False, "reason": gemini_error_reason(e), "detail": str(e)[:160]}
+
+    message = str(data.get("message", "")).strip()[:1000]
+    if not message:
+        message = ("Thanks for walking me through your thinking today." if is_final
+                    else "Let's continue — tell me more about your approach.")
+
+    scorecard = None
+    if is_final:
+        sc = data.get("scorecard") or {}
+        def clamp15(v):
+            try:
+                n = int(v)
+                return n if 1 <= n <= 5 else 3
+            except (TypeError, ValueError):
+                return 3
+        scorecard = {
+            "accuracy": clamp15(sc.get("accuracy")),
+            "depth": clamp15(sc.get("depth")),
+            "clarity": clamp15(sc.get("clarity")),
+            "strengthen": (str(sc.get("strengthen", "")).strip()[:280]
+                           or "Keep practicing articulating the reasoning behind your answers, not just the conclusions."),
+        }
+
+    return {"ok": True, "message": message, "done": is_final, "scorecard": scorecard}
+
+
+@app.post("/api/gap")
 @app.post("/api/guide")
 def not_yet():
     return {"error": "coming-soon", "detail": "This endpoint lands later in the beta."}
