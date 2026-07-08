@@ -24,7 +24,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="SkillCompass API", version="0.3.2")  # bump on every deploy — health exposes this
+app = FastAPI(title="SkillCompass API", version="0.3.3")  # bump on every deploy — health exposes this
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://lyhjeremy.github.io", "http://localhost:5173", "http://localhost:4173"],
@@ -118,7 +118,9 @@ def gemini_generate(prompt: str, max_tokens: int = 512, json_mode: bool = False,
         raise RuntimeError(f"connection failed: {e.reason}"[:200])
     try:
         candidate = data["candidates"][0]
-        if candidate.get("finishReason") == "MAX_TOKENS":
+        # A truncated plain-text reply is often still usable (e.g. health check's
+        # tiny probe); truncated JSON never parses, so only that case is fatal.
+        if json_mode and candidate.get("finishReason") == "MAX_TOKENS":
             raise RuntimeError(f"response truncated at max_tokens={max_tokens} — raise the cap")
         return candidate["content"]["parts"][0]["text"]
     except (KeyError, IndexError):
@@ -229,7 +231,7 @@ def health():
                 _health_cache["supabase"], _health_cache["supabase_error"] = False, str(e)
         if gemini_ready():
             try:
-                reply = gemini_generate("Reply with exactly: OK", max_tokens=5)
+                reply = gemini_generate("Reply with exactly: OK", max_tokens=10)
                 ok = "OK" in reply
                 _health_cache["llm"] = ok
                 _health_cache["llm_error"] = None if ok else f"unexpected reply: {reply[:80]!r}"
