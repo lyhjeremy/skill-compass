@@ -25,5 +25,10 @@ jobs:
           git config user.name "Jeremy Lee"
           git config user.email "lyhjeremy@gmail.com"
           git add -A
-          git commit -m "Deploy backend"
+          git commit -m "Deploy backend" --allow-empty
           git push --force "https://lyhjeremy:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" main
+          # An unchanged build context can leave the running container's env vars
+          # stale (e.g. after adding/editing Space secrets) even on a successful
+          # push, since HF may skip a rebuild. Force a restart so secrets reload.
+          curl -sf -X POST "https://huggingface.co/api/spaces/${HF_SPACE}/restart" \
+            -H "Authorization: Bearer ${HF_TOKEN}" && echo "Space restart requested."
