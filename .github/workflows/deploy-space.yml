@@ -40,9 +40,9 @@ jobs:
             git push origin HEAD:main
             echo "Pushed incremental commit $(git rev-parse --short HEAD)."
           fi
-          # Plain restart (NOT pause+reboot — pausing left the Space down with
-          # restart-while-paused not resuming it; un-pausing is the priority).
+          # Plain restart, no factory flag this time — the Space got left PAUSED
+          # and restart?factory=true while paused just echoed PAUSED back.
           HTTP_CODE=$(curl -s -o /tmp/reboot_resp.json -w "%{http_code}" -X POST \
-            "https://huggingface.co/api/spaces/${HF_SPACE}/restart?factory=true" \
+            "https://huggingface.co/api/spaces/${HF_SPACE}/restart" \
             -H "Authorization: Bearer ${HF_TOKEN}") || true
-          echo "restart(factory=true) -> HTTP $HTTP_CODE: $(cat /tmp/reboot_resp.json 2>/dev/null)"
+          echo "restart(plain) -> HTTP $HTTP_CODE: $(cat /tmp/reboot_resp.json 2>/dev/null)"
