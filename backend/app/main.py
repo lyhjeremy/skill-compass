@@ -24,7 +24,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="SkillCompass API", version="0.2.1")
+app = FastAPI(title="SkillCompass API", version="0.3.0")  # bump on every deploy — health exposes this
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://lyhjeremy.github.io", "http://localhost:5173", "http://localhost:4173"],
@@ -196,10 +196,15 @@ class InterviewIn(BaseModel):
 
 
 # ---- endpoints -------------------------------------------------------------
+_health_cache: dict = {"ts": 0.0, "supabase": None, "supabase_error": None, "llm": None, "llm_error": None}
+HEALTH_CHECK_TTL_S = 120  # a live connectivity check costs a real DB query / Gemini call —
+                          # don't let frequent polling (deploy verification, uptime monitors) burn quota
+
 @app.get("/api/health")
 def health():
     out = {
         "ok": True,
+        "version": app.version,
         "uptime_s": round(time.time() - STARTED),
         "supabase": False,
         "supabase_error": None,
@@ -211,20 +216,28 @@ def health():
         "llm_model": GEMINI_MODEL,
         "phase": "3-ai-features",
     }
-    if sb_ready():
-        try:
-            sb_count("sessions", {"created_at": f"gte.{cutoff_iso()}"})
-            out["supabase"] = True
-        except Exception as e:
-            out["supabase_error"] = str(e)
-    if gemini_ready():
-        try:
-            reply = gemini_generate("Reply with exactly: OK", max_tokens=5)
-            out["llm"] = "OK" in reply
-            if not out["llm"]:
-                out["llm_error"] = f"unexpected reply: {reply[:80]!r}"
-        except Exception as e:
-            out["llm_error"] = str(e)
+    stale = time.time() - _health_cache["ts"] > HEALTH_CHECK_TTL_S
+    if stale:
+        if sb_ready():
+            try:
+                sb_count("sessions", {"created_at": f"gte.{cutoff_iso()}"})
+                _health_cache["supabase"], _health_cache["supabase_error"] = True, None
+            except Exception as e:
+                _health_cache["supabase"], _health_cache["supabase_error"] = False, str(e)
+        if gemini_ready():
+            try:
+                reply = gemini_generate("Reply with exactly: OK", max_tokens=5)
+                ok = "OK" in reply
+                _health_cache["llm"] = ok
+                _health_cache["llm_error"] = None if ok else f"unexpected reply: {reply[:80]!r}"
+            except Exception as e:
+                _health_cache["llm"], _health_cache["llm_error"] = False, str(e)
+        _health_cache["ts"] = time.time()
+    out["supabase"] = bool(_health_cache["supabase"])
+    out["supabase_error"] = _health_cache["supabase_error"]
+    out["llm"] = bool(_health_cache["llm"])
+    out["llm_error"] = _health_cache["llm_error"]
+    out["checked_s_ago"] = round(time.time() - _health_cache["ts"])
     return out
 
 
