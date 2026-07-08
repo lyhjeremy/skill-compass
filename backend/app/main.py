@@ -24,7 +24,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="SkillCompass API", version="0.3.1")  # bump on every deploy — health exposes this
+app = FastAPI(title="SkillCompass API", version="0.3.2")  # bump on every deploy — health exposes this
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://lyhjeremy.github.io", "http://localhost:5173", "http://localhost:4173"],
@@ -117,7 +117,10 @@ def gemini_generate(prompt: str, max_tokens: int = 512, json_mode: bool = False,
     except urllib.error.URLError as e:
         raise RuntimeError(f"connection failed: {e.reason}"[:200])
     try:
-        return data["candidates"][0]["content"]["parts"][0]["text"]
+        candidate = data["candidates"][0]
+        if candidate.get("finishReason") == "MAX_TOKENS":
+            raise RuntimeError(f"response truncated at max_tokens={max_tokens} — raise the cap")
+        return candidate["content"]["parts"][0]["text"]
     except (KeyError, IndexError):
         raise RuntimeError(f"unexpected response shape: {str(data)[:200]}")
 
@@ -405,7 +408,10 @@ Return ONLY JSON with this exact shape:
 }}"""
 
     try:
-        raw = gemini_generate(prompt, max_tokens=500, json_mode=True)
+        # 500 proved too tight — real turns were getting truncated mid-JSON
+        # (confirmed via finishReason=MAX_TOKENS), especially the final turn's
+        # nested scorecard object. 900 matches resume's proven budget with margin.
+        raw = gemini_generate(prompt, max_tokens=900, json_mode=True)
         data = json.loads(raw)
     except Exception as e:
         return {"ok": False, "reason": gemini_error_reason(e), "detail": str(e)[:160]}
