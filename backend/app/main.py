@@ -88,7 +88,7 @@ def sb_count(table: str, filters: dict[str, str]) -> int:
 
 # ---- Gemini (direct REST, no SDK — same reasoning as Supabase above) -------
 GEMINI_KEY = (os.environ.get("GEMINI_API_KEY") or "").strip()
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
 def gemini_ready() -> bool:
     return bool(GEMINI_KEY)
