@@ -1,11 +1,12 @@
 import { PLACEMENT_START, itemRating, updateSession as eloUpdate } from './elo'
-import type { AnswerRecord, ConceptState, Session, SubtopicContent } from './types'
+import type { AnswerRecord, ConceptState, ResumeProfile, Session, SubtopicContent } from './types'
 
 /** All user state lives on-device: localStorage schema sc_v1 (spec §5.14). */
 interface StoreShape {
   version: 1
   sessions: Session[]
   placements: Record<string, 'easy' | 'standard' | 'hard'>
+  resumes: Record<string, ResumeProfile>  // keyed by trackId
 }
 const KEY = 'sc_v1'
 
@@ -14,10 +15,10 @@ function load(): StoreShape {
     const raw = localStorage.getItem(KEY)
     if (raw) {
       const s = JSON.parse(raw)
-      if (s.version === 1) return s
+      if (s.version === 1) return { resumes: {}, ...s }  // tolerate pre-resume data
     }
   } catch { /* corrupted -> fresh */ }
-  return { version: 1, sessions: [], placements: {} }
+  return { version: 1, sessions: [], placements: {}, resumes: {} }
 }
 function save(s: StoreShape) { localStorage.setItem(KEY, JSON.stringify(s)) }
 
@@ -96,6 +97,14 @@ export const store = {
     if (latest.size === 0) return null
     const vals = [...latest.values()]
     return Math.round((vals.filter(Boolean).length / vals.length) * 100)
+  },
+
+  resume: (trackId: string): ResumeProfile | undefined => load().resumes[trackId],
+  setResume(profile: ResumeProfile) {
+    const s = load(); s.resumes[profile.trackId] = profile; save(s)
+  },
+  clearResume(trackId: string) {
+    const s = load(); delete s.resumes[trackId]; save(s)
   },
 
   exportJson(): string { return JSON.stringify(load(), null, 2) },

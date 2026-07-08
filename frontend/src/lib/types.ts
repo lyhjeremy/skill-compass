@@ -20,3 +20,12 @@ export interface Session {
   posted?: boolean; percentile?: number | null; topPct?: number; nPeers?: number;
 }
 export type ConceptState = 'strong' | 'shaky' | 'missed' | 'untested'
+
+export interface ResumeProfile {
+  trackId: string
+  skills: string[]
+  yearsExperience: number | null
+  evidencedSubtopicIds: string[]
+  summary: string
+  ts: number
+}

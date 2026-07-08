@@ -39,6 +39,35 @@ export async function postSession(session: Session): Promise<PercentileResult | 
   }
 }
 
+export interface ResumeResult {
+  ok: boolean
+  reason?: string
+  skills?: string[]
+  years_experience?: number | null
+  evidenced_subtopic_ids?: string[]
+  summary?: string
+}
+
+/** Analyze resume text against a track's subtopics. The text never touches storage —
+ *  it's used for one Gemini call and discarded. Never throws. */
+export async function analyzeResume(
+  text: string, subtopics: { id: string; title: string }[],
+): Promise<ResumeResult> {
+  try {
+    const ctrl = new AbortController()
+    const t = setTimeout(() => ctrl.abort(), 35000)  // generous: covers a cold Space + a real Gemini call
+    const res = await fetch(`${API_BASE}/api/resume`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctrl.signal,
+      body: JSON.stringify({ text, subtopics }),
+    })
+    clearTimeout(t)
+    if (!res.ok) return { ok: false, reason: `http-${res.status}` }
+    return await res.json()
+  } catch {
+    return { ok: false, reason: 'network' }
+  }
+}
+
 export async function reportItem(itemId: string, body: string): Promise<boolean> {
   try {
     const res = await fetch(`${API_BASE}/api/feedback`, {
