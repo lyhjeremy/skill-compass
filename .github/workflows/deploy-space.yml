@@ -40,5 +40,9 @@ jobs:
             git push origin HEAD:main
             echo "Pushed incremental commit $(git rev-parse --short HEAD)."
           fi
-          curl -sf -X POST "https://huggingface.co/api/spaces/${HF_SPACE}/restart" \
-            -H "Authorization: Bearer ${HF_TOKEN}" && echo "Space restart requested."
+          # A plain "restart" can just restart the *existing* container without
+          # forcing a fresh Docker build from the latest commit — observed the
+          # Space serving a stale build for 15+ minutes after a verified-correct
+          # push. factory-reboot forces an actual rebuild.
+          curl -sf -X POST "https://huggingface.co/api/spaces/${HF_SPACE}/factory-reboot" \
+            -H "Authorization: Bearer ${HF_TOKEN}" && echo "Space factory-reboot requested."
