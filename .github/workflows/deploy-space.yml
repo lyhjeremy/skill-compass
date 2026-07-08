@@ -40,18 +40,8 @@ jobs:
             git push origin HEAD:main
             echo "Pushed incremental commit $(git rev-parse --short HEAD)."
           fi
-          # A plain "restart" can just restart the *existing* container without
-          # forcing a fresh Docker build from the latest commit — observed the
-          # Space serving a stale build for 15+ minutes after a verified-correct
-          # push, and even factory=true alone left it stuck reporting
-          # RUNNING_APP_STARTING against the old build. Pause -> factory-reboot
-          # is a community-reported workaround for a Space stuck in that state.
-          # Non-fatal: don't let a reboot-call hiccup fail the deploy when the push succeeded.
-          curl -s -o /tmp/pause_resp.json -w "pause -> HTTP %{http_code}\n" -X POST \
-            "https://huggingface.co/api/spaces/${HF_SPACE}/pause" \
-            -H "Authorization: Bearer ${HF_TOKEN}" || true
-          cat /tmp/pause_resp.json 2>/dev/null; echo
-          sleep 5
+          # Plain restart (NOT pause+reboot — pausing left the Space down with
+          # restart-while-paused not resuming it; un-pausing is the priority).
           HTTP_CODE=$(curl -s -o /tmp/reboot_resp.json -w "%{http_code}" -X POST \
             "https://huggingface.co/api/spaces/${HF_SPACE}/restart?factory=true" \
             -H "Authorization: Bearer ${HF_TOKEN}") || true
