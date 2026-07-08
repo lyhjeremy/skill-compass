@@ -24,7 +24,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="SkillCompass API", version="0.3.3")  # bump on every deploy — health exposes this
+app = FastAPI(title="SkillCompass API", version="0.3.4")  # bump on every deploy — health exposes this
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://lyhjeremy.github.io", "http://localhost:5173", "http://localhost:4173"],
@@ -99,7 +99,12 @@ def gemini_generate(prompt: str, max_tokens: int = 512, json_mode: bool = False,
     Raises RuntimeError with a short, safe message on final failure."""
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
            f"{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}")
-    gen_config = {"maxOutputTokens": max_tokens}
+    # gemini-2.5-flash spends output-token budget on invisible "thinking" tokens
+    # by default, which was silently eating the entire maxOutputTokens budget
+    # before any visible text got generated (confirmed via finishReason=MAX_TOKENS
+    # with an empty `parts`). None of this app's calls need chain-of-thought —
+    # they're single-shot extraction/generation — so turn thinking off entirely.
+    gen_config = {"maxOutputTokens": max_tokens, "thinkingConfig": {"thinkingBudget": 0}}
     if json_mode:
         gen_config["responseMimeType"] = "application/json"
     body = json.dumps({"contents": [{"parts": [{"text": prompt}]}],
