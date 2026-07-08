@@ -86,6 +86,37 @@ def sb_count(table: str, filters: dict[str, str]) -> int:
     return int(total) if total.isdigit() else 0
 
 
+# ---- Gemini (direct REST, no SDK — same reasoning as Supabase above) -------
+GEMINI_KEY = (os.environ.get("GEMINI_API_KEY") or "").strip()
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+
+def gemini_ready() -> bool:
+    return bool(GEMINI_KEY)
+
+def gemini_generate(prompt: str, max_tokens: int = 512, json_mode: bool = False) -> str:
+    """One Gemini call. Raises RuntimeError with a short, safe message on failure."""
+    url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
+           f"{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}")
+    gen_config = {"maxOutputTokens": max_tokens}
+    if json_mode:
+        gen_config["responseMimeType"] = "application/json"
+    body = json.dumps({"contents": [{"parts": [{"text": prompt}]}],
+                        "generationConfig": gen_config}).encode()
+    req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            data = json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode(errors="replace")[:200]
+        raise RuntimeError(f"HTTP {e.code}: {detail}")
+    except urllib.error.URLError as e:
+        raise RuntimeError(f"connection failed: {e.reason}"[:200])
+    try:
+        return data["candidates"][0]["content"]["parts"][0]["text"]
+    except (KeyError, IndexError):
+        raise RuntimeError(f"unexpected response shape: {str(data)[:200]}")
+
+
 # ---- tiny in-memory rate limiter ------------------------------------------
 _hits: dict[str, deque] = defaultdict(deque)
 def rate_ok(ip: str, limit: int, window_s: int) -> bool:
@@ -139,8 +170,11 @@ def health():
         "supabase_error": None,
         "supabase_url": env_shape("SUPABASE_URL"),
         "supabase_key": env_shape("SUPABASE_KEY"),
-        "llm": bool(os.environ.get("GEMINI_API_KEY") or os.environ.get("GITHUB_MODELS_TOKEN")),
-        "phase": "2-calibration",
+        "llm": False,
+        "llm_error": None,
+        "llm_key": env_shape("GEMINI_API_KEY"),
+        "llm_model": GEMINI_MODEL,
+        "phase": "3-ai-features",
     }
     if sb_ready():
         try:
@@ -148,6 +182,14 @@ def health():
             out["supabase"] = True
         except Exception as e:
             out["supabase_error"] = str(e)
+    if gemini_ready():
+        try:
+            reply = gemini_generate("Reply with exactly: OK", max_tokens=5)
+            out["llm"] = "OK" in reply
+            if not out["llm"]:
+                out["llm_error"] = f"unexpected reply: {reply[:80]!r}"
+        except Exception as e:
+            out["llm_error"] = str(e)
     return out
 
 
