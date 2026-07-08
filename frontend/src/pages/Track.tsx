@@ -48,7 +48,9 @@ export default function Track() {
       setError(
         r.reason === 'rate-limited' ? "This is getting a lot of use right now — try again in a bit." :
         r.reason === 'llm-unavailable' ? 'This feature is warming up — try again shortly.' :
-        "Couldn't reach the analyzer — check your connection and try again.")
+        r.reason === 'llm-overloaded' ? "The analyzer is at capacity right now (a free-tier limit on our end, not your connection) — try again in a minute." :
+        r.reason === 'llm-quota' ? "This feature has hit its free daily limit — try again tomorrow." :
+        "Couldn't complete the analysis — try again in a moment.")
       return
     }
     const p: ResumeProfile = {

@@ -93,8 +93,10 @@ GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 def gemini_ready() -> bool:
     return bool(GEMINI_KEY)
 
-def gemini_generate(prompt: str, max_tokens: int = 512, json_mode: bool = False) -> str:
-    """One Gemini call. Raises RuntimeError with a short, safe message on failure."""
+def gemini_generate(prompt: str, max_tokens: int = 512, json_mode: bool = False, _retried: bool = False) -> str:
+    """One Gemini call, with one short retry on transient overload (HTTP 503 is
+    common on the free tier under load — worth one retry before failing the request).
+    Raises RuntimeError with a short, safe message on final failure."""
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
            f"{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}")
     gen_config = {"maxOutputTokens": max_tokens}
@@ -108,6 +110,9 @@ def gemini_generate(prompt: str, max_tokens: int = 512, json_mode: bool = False)
             data = json.loads(resp.read())
     except urllib.error.HTTPError as e:
         detail = e.read().decode(errors="replace")[:200]
+        if e.code == 503 and not _retried:
+            time.sleep(2)
+            return gemini_generate(prompt, max_tokens, json_mode, _retried=True)
         raise RuntimeError(f"HTTP {e.code}: {detail}")
     except urllib.error.URLError as e:
         raise RuntimeError(f"connection failed: {e.reason}"[:200])
@@ -115,6 +120,18 @@ def gemini_generate(prompt: str, max_tokens: int = 512, json_mode: bool = False)
         return data["candidates"][0]["content"]["parts"][0]["text"]
     except (KeyError, IndexError):
         raise RuntimeError(f"unexpected response shape: {str(data)[:200]}")
+
+def gemini_error_reason(e: Exception) -> str:
+    """Classify a gemini_generate() failure into a short, honest reason code —
+    'the model is overloaded' is a very different user message from 'we're broken'."""
+    msg = str(e)
+    if "HTTP 503" in msg or "high demand" in msg.lower() or "overloaded" in msg.lower():
+        return "llm-overloaded"
+    if "HTTP 429" in msg or "quota" in msg.lower():
+        return "llm-quota"
+    if "HTTP 400" in msg or "HTTP 401" in msg or "HTTP 403" in msg:
+        return "llm-misconfigured"
+    return "llm-error"
 
 
 # ---- tiny in-memory rate limiter ------------------------------------------
@@ -300,7 +317,7 @@ evidence (a named tool, a project, a described responsibility) — not just an a
         raw = gemini_generate(prompt, max_tokens=800, json_mode=True)
         data = json.loads(raw)
     except Exception as e:
-        return {"ok": False, "reason": str(e)[:160]}
+        return {"ok": False, "reason": gemini_error_reason(e), "detail": str(e)[:160]}
 
     # Never trust the model's output shape blindly.
     valid_ids = {s.id for s in body.subtopics}
