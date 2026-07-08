@@ -24,7 +24,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="SkillCompass API", version="0.3.4")  # bump on every deploy — health exposes this
+app = FastAPI(title="SkillCompass API", version="0.4.0")  # bump on every deploy — health exposes this
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://lyhjeremy.github.io", "http://localhost:5173", "http://localhost:4173"],
@@ -203,6 +203,21 @@ class InterviewIn(BaseModel):
     seniority: str = "mid"
     topics: list[str] = Field(min_length=1, max_length=12)
     transcript: list[TranscriptTurn] = Field(default_factory=list, max_length=40)
+
+class ConceptState(BaseModel):
+    label: str = Field(max_length=100)
+    state: str = Field(max_length=20)
+
+class SubtopicGuideRef(BaseModel):
+    title: str = Field(max_length=100)
+    mastery: int | None = None
+    concepts: list[ConceptState] = Field(default_factory=list, max_length=15)
+
+class GuideIn(BaseModel):
+    track_title: str = Field(max_length=100)
+    subtopics: list[SubtopicGuideRef] = Field(min_length=1, max_length=20)
+    resume_summary: str | None = Field(default=None, max_length=500)
+    interview_strengthen: str | None = Field(default=None, max_length=500)
 
 
 # ---- endpoints -------------------------------------------------------------
@@ -448,7 +463,59 @@ Return ONLY JSON with this exact shape:
     return {"ok": True, "message": message, "done": is_final, "scorecard": scorecard}
 
 
-@app.post("/api/gap")
 @app.post("/api/guide")
+def generate_guide(body: GuideIn, request: Request):
+    """A personalized, downloadable Markdown study guide for a whole track —
+    grounded in real per-concept quiz results (never fabricated), optionally
+    folding in resume/interview context when the visitor has those too."""
+    if not rate_ok(client_ip(request), limit=10, window_s=3600):
+        return {"ok": False, "reason": "rate-limited"}
+    if not gemini_ready():
+        return {"ok": False, "reason": "llm-unavailable"}
+
+    lines = []
+    for s in body.subtopics[:20]:
+        m = f"{s.mastery}% mastery" if s.mastery is not None else "not yet assessed"
+        lines.append(f"### {s.title} ({m})")
+        for c in s.concepts:
+            lines.append(f"- {c.label}: {c.state}")
+    subtopic_block = "\n".join(lines)
+
+    extra = ""
+    if body.resume_summary:
+        extra += f"\nTheir resume background: {body.resume_summary}\n"
+    if body.interview_strengthen:
+        extra += f"\nFeedback from a recent mock interview: {body.interview_strengthen}\n"
+
+    prompt = f"""Write a short, genuinely useful personal study guide for someone working toward
+a {body.track_title} role, based on real, specific evidence about where they stand — not
+generic career advice.
+
+Their concept-level results across this track's topics (state is 'strong', 'shaky', 'missed',
+or 'untested', all from real quiz answers):
+{subtopic_block}
+{extra}
+Write it in Markdown with this shape:
+- One short paragraph: an honest, specific summary of where they stand overall.
+- "## Focus here first" — their 3-5 highest-priority gaps (weighted toward missed/shaky
+  concepts and low-mastery topics), each a bullet with ONE concrete, specific study action —
+  not "practice more," say what to actually do or look up.
+- "## Already solid" — 2-4 concepts/topics they've clearly demonstrated, named specifically,
+  so this isn't pure deficit-listing.
+- "## Suggested order" — a short numbered list of what to tackle first/next/later and why.
+Keep it tight — under 350 words total. Do not invent facts about them beyond what's given
+here. Do not mention job-market statistics, salaries, or demand data — none of that is
+available in this context."""
+
+    try:
+        guide_md = gemini_generate(prompt, max_tokens=1400).strip()
+    except Exception as e:
+        return {"ok": False, "reason": gemini_error_reason(e), "detail": str(e)[:160]}
+    if not guide_md:
+        return {"ok": False, "reason": "llm-error", "detail": "empty response"}
+    return {"ok": True, "guide_md": guide_md[:6000]}
+
+
+@app.post("/api/gap")
 def not_yet():
     return {"error": "coming-soon", "detail": "This endpoint lands later in the beta."}
