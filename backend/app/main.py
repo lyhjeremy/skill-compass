@@ -159,6 +159,14 @@ class FeedbackIn(BaseModel):
     item_id: str | None = None
     body: str = Field(max_length=2000)
 
+class SubtopicRef(BaseModel):
+    id: str
+    title: str
+
+class ResumeIn(BaseModel):
+    text: str = Field(min_length=20, max_length=20000)
+    subtopics: list[SubtopicRef] = Field(min_length=1, max_length=40)
+
 
 # ---- endpoints -------------------------------------------------------------
 @app.get("/api/health")
@@ -255,8 +263,58 @@ def feedback(body: FeedbackIn, request: Request):
 
 
 @app.post("/api/resume")
+def analyze_resume(body: ResumeIn, request: Request):
+    """Extract skills from resume text and match them against a track's subtopics.
+
+    Ephemeral by design (spec §5.7): the text arrives in the request, is used for
+    exactly one Gemini call, and nothing is written to Supabase or logged. Compares
+    against the track's own curriculum only — no job-market claim is made here,
+    since there is no postings corpus yet to back one honestly.
+    """
+    if not rate_ok(client_ip(request), limit=10, window_s=3600):
+        return {"ok": False, "reason": "rate-limited"}
+    if not gemini_ready():
+        return {"ok": False, "reason": "llm-unavailable"}
+
+    subtopic_list = "\n".join(f"- {s.id}: {s.title}" for s in body.subtopics)
+    prompt = f"""You are assessing resume evidence against a specific list of skill areas.
+
+Resume text:
+\"\"\"
+{body.text[:8000]}
+\"\"\"
+
+Skill areas (id: title):
+{subtopic_list}
+
+Return ONLY JSON with this exact shape, nothing else:
+{{
+  "skills": ["short skill phrase", ...up to 12, only skills clearly evidenced by the resume],
+  "years_experience": <number, your best estimate of total professional experience, or null>,
+  "evidenced_subtopic_ids": ["<id from the list above>", ...],
+  "summary": "<one plain, specific sentence about their background, no fluff or flattery>"
+}}
+Be conservative on evidenced_subtopic_ids: include an id only if the resume gives concrete
+evidence (a named tool, a project, a described responsibility) — not just an adjacent buzzword."""
+    try:
+        raw = gemini_generate(prompt, max_tokens=800, json_mode=True)
+        data = json.loads(raw)
+    except Exception as e:
+        return {"ok": False, "reason": str(e)[:160]}
+
+    # Never trust the model's output shape blindly.
+    valid_ids = {s.id for s in body.subtopics}
+    evidenced = [i for i in data.get("evidenced_subtopic_ids", []) if isinstance(i, str) and i in valid_ids]
+    skills = [str(s)[:60] for s in data.get("skills", []) if isinstance(s, str)][:12]
+    years = data.get("years_experience")
+    years = years if isinstance(years, (int, float)) and 0 <= years <= 60 else None
+    summary = str(data.get("summary", ""))[:280]
+    return {"ok": True, "skills": skills, "years_experience": years,
+            "evidenced_subtopic_ids": evidenced, "summary": summary}
+
+
 @app.post("/api/gap")
 @app.post("/api/interview")
 @app.post("/api/guide")
 def not_yet():
-    return {"error": "coming-soon", "detail": "This endpoint lands in beta phases 3-5."}
+    return {"error": "coming-soon", "detail": "This endpoint lands later in the beta."}
