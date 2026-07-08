@@ -24,7 +24,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="SkillCompass API", version="0.3.0")  # bump on every deploy — health exposes this
+app = FastAPI(title="SkillCompass API", version="0.3.1")  # bump on every deploy — health exposes this
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://lyhjeremy.github.io", "http://localhost:5173", "http://localhost:4173"],
@@ -109,7 +109,7 @@ def gemini_generate(prompt: str, max_tokens: int = 512, json_mode: bool = False,
         with urllib.request.urlopen(req, timeout=20) as resp:
             data = json.loads(resp.read())
     except urllib.error.HTTPError as e:
-        detail = e.read().decode(errors="replace")[:200]
+        detail = e.read().decode(errors="replace")[:800]
         if e.code == 503 and not _retried:
             time.sleep(2)
             return gemini_generate(prompt, max_tokens, json_mode, _retried=True)
