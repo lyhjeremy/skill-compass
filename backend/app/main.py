@@ -1,12 +1,22 @@
 """SkillCompass API — Phase 2.
 
 Anonymous response log + live percentiles, on a Supabase (Postgres) free tier.
-Degrades gracefully to "early data" when Supabase isn't configured, so it is safe
-to deploy before the secrets exist. No personal data is ever stored — only item
-ids, correctness, timing, and a random per-session hash.
+Talks to Supabase's PostgREST layer directly over HTTP (stdlib only) rather than
+the `supabase-py` SDK, which as of mid-2026 locally mis-parses Supabase's newer
+short-form `sb_secret_...` API keys as invalid JWTs before any request is even
+sent. Plain REST calls work with both the legacy JWT service_role key and the
+new secret-key format, and drop a dependency in the process.
+
+Degrades gracefully to "early data" when Supabase isn't configured, so it is
+safe to deploy before the secrets exist. No personal data is ever stored —
+only item ids, correctness, timing, and a random per-session hash.
 """
+import json
 import os
 import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from collections import defaultdict, deque
 from datetime import datetime, timedelta, timezone
 
@@ -14,7 +24,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="SkillCompass API", version="0.2.0")
+app = FastAPI(title="SkillCompass API", version="0.2.1")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://lyhjeremy.github.io", "http://localhost:5173", "http://localhost:4173"],
@@ -23,12 +33,14 @@ app.add_middleware(
 )
 
 STARTED = time.time()
-COLD_START_MIN = 30           # sessions before a subtopic shows a real percentile
+COLD_START_MIN = 30          # sessions before a subtopic shows a real percentile
 WINDOW_DAYS = 90             # rolling window for the distribution
 
-# ---- Supabase client (lazy, optional, never allowed to crash a request) ---
-_sb = None
-_sb_error: str | None = None
+
+# ---- Supabase (direct PostgREST calls, no SDK) -----------------------------
+SB_URL = (os.environ.get("SUPABASE_URL") or "").strip().rstrip("/")
+SB_KEY = (os.environ.get("SUPABASE_KEY") or "").strip()
+
 def env_shape(name: str) -> dict:
     """Safe, non-secret diagnostics: presence/length/prefix only, never the value."""
     v = os.environ.get(name)
@@ -37,18 +49,42 @@ def env_shape(name: str) -> dict:
     return {"present": True, "len": len(v), "has_whitespace": v != v.strip(),
             "prefix": v[:8] if name.endswith("URL") else v[:3]}
 
-def sb():
-    global _sb, _sb_error
-    if _sb is None and _sb_error is None:
-        url, key = os.environ.get("SUPABASE_URL"), os.environ.get("SUPABASE_KEY")
-        if not (url and key):
-            return None
-        try:
-            from supabase import create_client
-            _sb = create_client(url.strip(), key.strip())
-        except Exception as e:
-            _sb_error = f"{type(e).__name__}: {e}"[:300]
-    return _sb
+def sb_ready() -> bool:
+    return bool(SB_URL and SB_KEY)
+
+def sb_request(method: str, path: str, body=None, extra_headers: dict | None = None):
+    """One PostgREST call. Raises RuntimeError with a short, safe message on failure."""
+    headers = {"apikey": SB_KEY, "Content-Type": "application/json"}
+    # Legacy JWT keys (start with 'eyJ') are also accepted as a Bearer token; the
+    # newer sb_secret_/sb_publishable_ keys are sent via the apikey header only.
+    if SB_KEY.startswith("eyJ"):
+        headers["Authorization"] = f"Bearer {SB_KEY}"
+    if extra_headers:
+        headers.update(extra_headers)
+    data = json.dumps(body).encode() if body is not None else None
+    req = urllib.request.Request(f"{SB_URL}/rest/v1/{path}", data=data, headers=headers, method=method)
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            raw = resp.read()
+            return resp.status, dict(resp.headers), (json.loads(raw) if raw else None)
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode(errors="replace")[:200]
+        raise RuntimeError(f"HTTP {e.code}: {detail}")
+    except urllib.error.URLError as e:
+        raise RuntimeError(f"connection failed: {e.reason}"[:200])
+
+def sb_insert(table: str, rows: list[dict]):
+    sb_request("POST", table, body=rows, extra_headers={"Prefer": "return=minimal"})
+
+def sb_count(table: str, filters: dict[str, str]) -> int:
+    """Exact row count via PostgREST's Content-Range header; fetches 0 rows."""
+    qs = urllib.parse.urlencode(filters)
+    _, headers, _ = sb_request("GET", f"{table}?select=id&{qs}",
+                                extra_headers={"Prefer": "count=exact", "Range": "0-0"})
+    cr = headers.get("Content-Range") or headers.get("content-range") or ""
+    total = cr.split("/")[-1] if "/" in cr else ""
+    return int(total) if total.isdigit() else 0
+
 
 # ---- tiny in-memory rate limiter ------------------------------------------
 _hits: dict[str, deque] = defaultdict(deque)
@@ -96,17 +132,23 @@ class FeedbackIn(BaseModel):
 # ---- endpoints -------------------------------------------------------------
 @app.get("/api/health")
 def health():
-    client = sb()
-    return {
+    out = {
         "ok": True,
         "uptime_s": round(time.time() - STARTED),
-        "supabase": client is not None,
-        "supabase_error": _sb_error,
+        "supabase": False,
+        "supabase_error": None,
         "supabase_url": env_shape("SUPABASE_URL"),
         "supabase_key": env_shape("SUPABASE_KEY"),
         "llm": bool(os.environ.get("GEMINI_API_KEY") or os.environ.get("GITHUB_MODELS_TOKEN")),
         "phase": "2-calibration",
     }
+    if sb_ready():
+        try:
+            sb_count("sessions", {"created_at": f"gte.{cutoff_iso()}"})
+            out["supabase"] = True
+        except Exception as e:
+            out["supabase_error"] = str(e)
+    return out
 
 
 @app.post("/api/session")
@@ -114,67 +156,60 @@ def log_session(body: SessionIn, request: Request):
     """Log a completed quiz, return the live percentile for its subtopic."""
     if not rate_ok(client_ip(request), limit=40, window_s=3600):
         return {"ok": False, "reason": "rate-limited", "percentile": None, "cold_start": True}
-    client = sb()
-    if client is None:
+    if not sb_ready():
         return {"ok": False, "reason": "no-db", "percentile": None, "cold_start": True}
     try:
-        client.table("sessions").insert({
+        sb_insert("sessions", [{
             "session_hash": body.session_hash, "subtopic": body.subtopic,
             "variant": body.variant, "score": body.score, "total": body.total,
             "final_rating": body.final_rating,
-        }).execute()
+        }])
         if body.responses:
-            client.table("responses").insert([{
+            sb_insert("responses", [{
                 "session_hash": body.session_hash, "item_id": r.item_id, "subtopic": body.subtopic,
                 "concept": r.concept, "correct": r.correct, "response_ms": r.response_ms,
                 "first_exposure": r.first_exposure,
-            } for r in body.responses]).execute()
+            } for r in body.responses])
 
         cut = cutoff_iso()
-        n = client.table("sessions").select("id", count="exact").eq("subtopic", body.subtopic)\
-            .gte("created_at", cut).execute().count or 0
+        n = sb_count("sessions", {"subtopic": f"eq.{body.subtopic}", "created_at": f"gte.{cut}"})
         if n < COLD_START_MIN:
             return {"ok": True, "n": n, "percentile": None, "cold_start": True}
-        lower = client.table("sessions").select("id", count="exact").eq("subtopic", body.subtopic)\
-            .gte("created_at", cut).lt("final_rating", body.final_rating).execute().count or 0
+        lower = sb_count("sessions", {"subtopic": f"eq.{body.subtopic}", "created_at": f"gte.{cut}",
+                                       "final_rating": f"lt.{body.final_rating}"})
         better_than = round(lower / max(1, n - 1) * 100)
         return {"ok": True, "n": n, "better_than_pct": better_than,
                 "top_pct": max(1, 100 - better_than), "percentile": better_than, "cold_start": False}
     except Exception as e:
-        return {"ok": False, "reason": str(e)[:120], "percentile": None, "cold_start": True}
+        return {"ok": False, "reason": str(e)[:160], "percentile": None, "cold_start": True}
 
 
 @app.get("/api/aggregates")
 def aggregates(subtopic: str | None = None):
-    client = sb()
-    if client is None:
+    if not sb_ready():
         return {"subtopic": subtopic, "n": 0, "status": "no-db"}
     try:
-        cut = cutoff_iso()
-        q = client.table("sessions").select("id", count="exact").gte("created_at", cut)
+        filters = {"created_at": f"gte.{cutoff_iso()}"}
         if subtopic:
-            q = q.eq("subtopic", subtopic)
-        n = q.execute().count or 0
+            filters["subtopic"] = f"eq.{subtopic}"
+        n = sb_count("sessions", filters)
         return {"subtopic": subtopic, "n": n, "window_days": WINDOW_DAYS,
                 "status": "live" if n >= COLD_START_MIN else "early-data"}
     except Exception as e:
-        return {"subtopic": subtopic, "n": 0, "status": "error", "detail": str(e)[:120]}
+        return {"subtopic": subtopic, "n": 0, "status": "error", "detail": str(e)[:160]}
 
 
 @app.post("/api/feedback")
 def feedback(body: FeedbackIn, request: Request):
     if not rate_ok(client_ip(request), limit=20, window_s=3600):
         return {"stored": False, "reason": "rate-limited"}
-    client = sb()
-    if client is None:
+    if not sb_ready():
         return {"stored": False, "reason": "no-db"}
     try:
-        client.table("feedback").insert({
-            "kind": body.kind, "item_id": body.item_id, "body": body.body,
-        }).execute()
+        sb_insert("feedback", [{"kind": body.kind, "item_id": body.item_id, "body": body.body}])
         return {"stored": True}
     except Exception as e:
-        return {"stored": False, "reason": str(e)[:120]}
+        return {"stored": False, "reason": str(e)[:160]}
 
 
 @app.post("/api/resume")
