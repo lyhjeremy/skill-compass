@@ -1,0 +1,452 @@
+{
+ "id": "experimental-design",
+ "concepts": [
+  {
+   "id": "randomization-units",
+   "label": "Randomization Units",
+   "definition": "The entity, such as a user, session, device, or cluster, that gets randomly assigned to a treatment or control condition.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "metrics-choice",
+   "label": "Metric Selection",
+   "definition": "Choosing the primary outcome metric that most directly captures the effect the experiment is meant to detect.",
+   "prereq": "randomization-units",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "interference-effects",
+   "label": "Interference & Spillover",
+   "definition": "A violation of the no-interaction assumption where one unit's outcome is affected by another unit's treatment assignment.",
+   "prereq": "randomization-units",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "blocking-stratification",
+   "label": "Blocking & Stratification",
+   "definition": "Grouping similar units together before randomizing within each group so known confounding factors don't add noise to the estimate.",
+   "prereq": "randomization-units",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "factorial-designs",
+   "label": "Factorial Designs",
+   "definition": "Testing multiple treatment factors at once within a single experiment to estimate their individual and combined effects.",
+   "prereq": "blocking-stratification",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "minimum-detectable-effect",
+   "label": "Minimum Detectable Effect",
+   "definition": "The smallest true effect size an experiment is powered to reliably distinguish from noise given its sample size and metric variance.",
+   "prereq": "metrics-choice",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "guardrail-metrics",
+   "label": "Guardrail Metrics",
+   "definition": "Secondary metrics monitored during an experiment to catch unintended harm even when the primary metric looks positive.",
+   "prereq": "metrics-choice",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "pre-registration",
+   "label": "Pre-Registration",
+   "definition": "Committing in writing to an experiment's hypothesis, metrics, sample size, and analysis plan before looking at any results.",
+   "prereq": "minimum-detectable-effect",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "randomization-units",
+   "stem": "A rideshare company tests a new driver-matching algorithm. Because drivers and riders interact within the same city market, the company randomizes at the city level instead of the individual rider level. What is the primary reason for this choice of randomization unit?",
+   "options": [
+    "To contain interference from riders sharing overlapping driver pools",
+    "To increase statistical power by enlarging the effective sample size",
+    "To make deployment of the new algorithm operationally simpler",
+    "To allow each city to receive a different treatment version"
+   ],
+   "answer": 0,
+   "explanation": "Randomizing at the marketplace (city) level prevents treatment leakage between riders sharing the same driver supply. Clustering by market typically reduces, not increases, effective statistical power, since outcomes within a city are correlated.",
+   "grounding": {
+    "source": "Cluster randomised controlled trial (Wikipedia)",
+    "note": "Explains why experiments randomize whole clusters rather than individuals when units interact within a shared resource."
+   },
+   "difficulty_prior": 0.72,
+   "id": "experimental-design-000",
+   "status": "beta"
+  },
+  {
+   "concept": "metrics-choice",
+   "stem": "A team designing an experiment on a new onboarding flow must pick a primary metric before the test launches. Which choice best reflects sound metrics-choice practice?",
+   "options": [
+    "One metric, pre-specified and tied to the goal",
+    "The metric showing the largest lift once testing ends",
+    "Every available dashboard metric, reported together as results",
+    "A metric selected after peeking at early test results"
+   ],
+   "answer": 0,
+   "explanation": "Pre-specifying a single primary metric tied to the underlying business goal prevents cherry-picking whichever metric looks favorable after the fact, which inflates the risk of false positives.",
+   "grounding": {
+    "source": "A/B testing (Wikipedia)",
+    "note": "Notes the importance of defining success metrics before running a test rather than after observing results."
+   },
+   "difficulty_prior": 0.78,
+   "id": "experimental-design-001",
+   "status": "beta"
+  },
+  {
+   "concept": "interference-effects",
+   "stem": "An online marketplace tests a new referral bonus by randomly assigning individual users to treatment or control. Some treated users refer control users, who then change their own behavior as a result. Which assumption does this violate?",
+   "options": [
+    "SUTVA",
+    "Central Limit Theorem",
+    "Law of Large Numbers",
+    "Regression to the Mean"
+   ],
+   "answer": 0,
+   "explanation": "SUTVA (Stable Unit Treatment Value Assumption) requires that one unit's outcome depend only on its own treatment, not on others'. Referral spillover means control users are indirectly affected, contaminating the comparison.",
+   "grounding": {
+    "source": "Rubin causal model (Wikipedia)",
+    "note": "Defines SUTVA and describes how interference between units violates it."
+   },
+   "difficulty_prior": 0.72,
+   "id": "experimental-design-002",
+   "status": "beta"
+  },
+  {
+   "concept": "blocking-stratification",
+   "stem": "Before randomizing store locations into a pricing experiment, an analyst first groups stores by region and size, then randomizes treatment within each group. What is this technique called, and why is it used?",
+   "options": [
+    "Stratified randomization, balancing treatment and control on known variables",
+    "Factorial design, which tests multiple pricing levels at once",
+    "Bootstrap resampling, which estimates the sampling distribution of the effect",
+    "Sequential testing, which allows early stopping once significance appears"
+   ],
+   "answer": 0,
+   "explanation": "Grouping units into strata before randomizing balances known variables like region and size across arms, reducing variance in the effect estimate compared to simple randomization.",
+   "grounding": {
+    "source": "Stratified sampling (Wikipedia)",
+    "note": "Describes stratifying units into homogeneous groups before assignment to reduce variance and improve balance."
+   },
+   "difficulty_prior": 0.82,
+   "id": "experimental-design-003",
+   "status": "beta"
+  },
+  {
+   "concept": "minimum-detectable-effect",
+   "stem": "A team planning a two-week test calculates that, given their traffic and desired statistical power, the smallest true conversion-rate lift they can reliably detect is 2 percentage points. This value is best described as the:",
+   "options": [
+    "Minimum detectable effect",
+    "Statistical power of the test",
+    "Chosen significance level",
+    "Guardrail metric threshold"
+   ],
+   "answer": 0,
+   "explanation": "The minimum detectable effect is the smallest true effect size a test is powered to reliably distinguish from no effect, given sample size, variance, and chosen power and significance level.",
+   "grounding": {
+    "source": "Sample size determination (Wikipedia)",
+    "note": "Covers how sample size and power calculations determine the smallest effect a study can reliably detect."
+   },
+   "difficulty_prior": 0.85,
+   "id": "experimental-design-004",
+   "status": "beta"
+  },
+  {
+   "concept": "factorial-designs",
+   "stem": "A team wants to test a new email subject line and a new send time together, so they assign users to one of four combinations of both factors within a single experiment rather than running two sequential tests. This design is best described as a:",
+   "options": [
+    "Factorial design",
+    "Sequential A/B test",
+    "Stratified randomization",
+    "Multivariate regression"
+   ],
+   "answer": 0,
+   "explanation": "Crossing every level of two or more factors within one experiment is a factorial design. It estimates each factor's main effect and their interaction more efficiently than testing one factor at a time in separate tests.",
+   "grounding": {
+    "source": "Factorial experiment (Wikipedia)",
+    "note": "Describes designs that vary multiple factors simultaneously to estimate main effects and interactions in a single study."
+   },
+   "difficulty_prior": 0.62,
+   "id": "experimental-design-005",
+   "status": "beta"
+  },
+  {
+   "concept": "guardrail-metrics",
+   "stem": "A checkout redesign experiment shows a clear lift in conversion rate. Before shipping, the team also checks page load time and support ticket volume, which should not get worse even though no improvement is expected there. These checks are:",
+   "options": [
+    "Guardrail metrics",
+    "Leading indicators",
+    "Vanity metrics",
+    "Proxy metrics"
+   ],
+   "answer": 0,
+   "explanation": "Guardrail metrics are secondary measures monitored to catch unintended harm from a change, such as slower pages or more support tickets, even when the primary metric shows a positive result.",
+   "grounding": {
+    "source": "Trustworthy Online Controlled Experiments (Kohavi, Tang, Xu)",
+    "note": "Defines guardrail metrics as measures tracked to ensure an experiment does not harm the business even when the primary metric improves."
+   },
+   "difficulty_prior": 0.65,
+   "id": "experimental-design-006",
+   "status": "beta"
+  },
+  {
+   "concept": "pre-registration",
+   "stem": "Before launching a new pricing experiment, a data science team writes down their hypothesis, primary metric, sample size, and analysis plan in a shared document, then locks it before collecting any data. This practice primarily protects against which risk?",
+   "options": [
+    "Selecting favorable metrics after seeing results",
+    "Random imbalance between treatment and control",
+    "Interference between treatment and control units",
+    "Unmeasured confounders biasing the effect estimate"
+   ],
+   "answer": 0,
+   "explanation": "Pre-registration locks the metric, sample size, and analysis plan before data collection, preventing researchers from selectively choosing metrics or stopping times that happen to show significance after the fact.",
+   "grounding": {
+    "source": "Preregistration (science) (Wikipedia)",
+    "note": "Explains how committing to hypotheses and analysis plans before data collection reduces p-hacking and selective reporting."
+   },
+   "difficulty_prior": 0.6,
+   "id": "experimental-design-007",
+   "status": "beta"
+  },
+  {
+   "concept": "randomization-units",
+   "stem": "A streaming service tests a new recommendation algorithm. Because a single account is often shared by multiple household members with different viewing habits, the team randomizes at the account level rather than the individual viewing-session level. What does this ensure?",
+   "options": [
+    "All sessions under an account share one treatment",
+    "The sample size needed for power is minimized",
+    "Each household member receives a personalized treatment",
+    "The primary metric's variance is reduced across sessions"
+   ],
+   "answer": 0,
+   "explanation": "Randomizing at the account level keeps every session tied to that account under one consistent treatment condition, avoiding contamination from mixing treatment and control within the same account's sessions.",
+   "grounding": {
+    "source": "Unit of analysis (Wikipedia)",
+    "note": "Explains why the randomization unit should match the level at which outcomes are correlated to avoid contaminating comparisons."
+   },
+   "difficulty_prior": 0.58,
+   "id": "experimental-design-008",
+   "status": "beta"
+  },
+  {
+   "concept": "metrics-choice",
+   "stem": "A team testing a new search ranking algorithm could use clicks-per-search or seven-day active usage as the primary metric. They choose the latter since accidental clicks inflate click counts without reflecting real satisfaction. This illustrates which metric-selection principle?",
+   "options": [
+    "Preferring metrics that reflect durable user value",
+    "Preferring the metric that reaches significance fastest",
+    "Preferring the metric with the largest percent change",
+    "Preferring the metric matching a competitor's benchmark"
+   ],
+   "answer": 0,
+   "explanation": "Sound metric choice favors durable measures of user value, not simply the metric that moves the most or reaches significance quickest; raw click counts can be inflated by accidental, low-intent clicks that don't reflect real satisfaction.",
+   "grounding": {
+    "source": "A/B testing (Wikipedia)",
+    "note": "Discusses selecting outcome metrics that genuinely reflect the experiment's goal rather than easily-moved proxy metrics."
+   },
+   "difficulty_prior": 0.58,
+   "id": "experimental-design-009",
+   "status": "beta"
+  },
+  {
+   "concept": "interference-effects",
+   "stem": "An e-commerce site tests a flash-sale banner, randomizing users into treatment and control. Treatment users buy faster, depleting the shared, finite inventory before control users can purchase, which lowers the control group's purchase rate. What analysis issue does this create?",
+   "options": [
+    "The finite stock only reduces the experiment's statistical power, not its validity",
+    "The purchase-rate gap reflects selection bias in who was randomized to treatment",
+    "The shared inventory creates interference between arms, biasing the effect estimate",
+    "The gap is measurement error introduced by the purchase-tracking pixel"
+   ],
+   "answer": 2,
+   "explanation": "Treatment and control shared a common, finite inventory pool, so treatment's faster purchases directly reduced what control users could buy. This is interference, a SUTVA violation, not a power or measurement problem, and it biases the estimated treatment effect rather than merely adding noise.",
+   "grounding": {
+    "source": "Rubin causal model (Wikipedia)",
+    "note": "Defines SUTVA and explains how shared, limited resources between units create interference that violates it."
+   },
+   "difficulty_prior": 0.45,
+   "id": "experimental-design-010",
+   "status": "beta"
+  },
+  {
+   "concept": "blocking-stratification",
+   "stem": "A pricing experiment has only 40 stores, and store size strongly predicts revenue. A statistician groups stores into size tiers and randomizes treatment within each tier, instead of randomizing all 40 at once and adjusting for size afterward. Why is this preferred with few units?",
+   "options": [
+    "Blocking removes the need to check balance on any other variable",
+    "Blocking guarantees balance on store size, unlike after-the-fact regression adjustment",
+    "Blocking eliminates the need to randomize within each tier",
+    "Blocking removes the need for a pre-specified significance threshold"
+   ],
+   "answer": 1,
+   "explanation": "With only 40 units, chance imbalance on a strong predictor like store size can occur even under random assignment. Blocking guarantees each tier is balanced across arms by design, while regression adjustment only removes bias in expectation and can't fix imbalance already present in a small sample.",
+   "grounding": {
+    "source": "Blocking (statistics) (Wikipedia)",
+    "note": "Explains how blocking on a known predictor guarantees balance across arms, especially valuable when sample sizes are small."
+   },
+   "difficulty_prior": 0.48,
+   "id": "experimental-design-011",
+   "status": "beta"
+  },
+  {
+   "concept": "factorial-designs",
+   "stem": "A team runs a 2x2 factorial test of a new headline and a new image. The headline lifts clicks paired with the old image but lowers clicks paired with the new image. What does this pattern imply about reporting one 'headline effect'?",
+   "options": [
+    "The sign flip is necessarily pure sampling noise, by definition",
+    "The randomization failed, since main effects can't depend on other factors",
+    "The factorial design is invalid whenever any interaction is detected",
+    "An interaction effect exists, so a single headline effect is misleading"
+   ],
+   "answer": 3,
+   "explanation": "When an effect's direction depends on the level of another factor, that's an interaction, and averaging over both image levels to report one headline effect would mask it. Factorial designs are specifically valued for revealing such interactions, not invalidated by finding them.",
+   "grounding": {
+    "source": "Factorial experiment (Wikipedia)",
+    "note": "Describes how factorial designs estimate interaction effects, where one factor's effect depends on the level of another."
+   },
+   "difficulty_prior": 0.52,
+   "id": "experimental-design-012",
+   "status": "beta"
+  },
+  {
+   "concept": "minimum-detectable-effect",
+   "stem": "A team wants their test to detect a smaller true effect within the same sample size and duration, without weakening its significance or power guarantees. Which change accomplishes this?",
+   "options": [
+    "Raise the significance threshold from 0.05 to 0.10",
+    "Lower the target statistical power from 0.90 to 0.70",
+    "Reduce outcome-metric variance via a pre-experiment covariate adjustment",
+    "Shorten the test window to finish data collection sooner"
+   ],
+   "answer": 2,
+   "explanation": "Reducing outcome-metric variance, for example via a pre-experiment covariate adjustment, lowers the standard error and thus the MDE for a fixed sample size without touching alpha or power. Raising alpha or lowering power also shrink the required sample, but only by weakening the guarantees the stem rules out.",
+   "grounding": {
+    "source": "Trustworthy Online Controlled Experiments (Kohavi, Tang, Xu)",
+    "note": "Describes CUPED and similar variance-reduction techniques that shrink the minimum detectable effect without changing sample size, alpha, or power."
+   },
+   "difficulty_prior": 0.42,
+   "id": "experimental-design-013",
+   "status": "beta"
+  },
+  {
+   "concept": "guardrail-metrics",
+   "stem": "An experiment's primary metric, revenue per user, improves significantly. A guardrail metric, page load time, rises by 15ms, staying within the team's pre-specified acceptable band of plus or minus 20ms. What should the team do?",
+   "options": [
+    "Block the launch, since any increase in a guardrail metric signals harm",
+    "Ship the change, since the guardrail move falls within the pre-specified band",
+    "Re-run the test with a smaller sample to confirm the guardrail didn't move",
+    "Drop page load time as a guardrail and pick a metric that didn't move"
+   ],
+   "answer": 1,
+   "explanation": "Guardrail metrics are checked against a pre-specified acceptable band, not a strict zero-movement bar. A 15ms rise inside a plus-or-minus 20ms tolerance is expected noise, not a violation, so blocking the launch would misapply the guardrail's purpose and needlessly kill a winning experiment.",
+   "grounding": {
+    "source": "Trustworthy Online Controlled Experiments (Kohavi, Tang, Xu)",
+    "note": "Describes guardrail metrics as monitored against pre-set acceptable thresholds rather than requiring zero movement."
+   },
+   "difficulty_prior": 0.5,
+   "id": "experimental-design-014",
+   "status": "beta"
+  },
+  {
+   "concept": "randomization-units",
+   "stem": "A retailer randomizes at the store level, not the customer level, to test a loyalty program, since customers in a store share the same experience. Versus customer-level randomization with the same total customers, what happens to required sample size?",
+   "options": [
+    "Within-store correlation inflates effective variance, requiring a larger sample for the same power",
+    "Required sample size stays the same, since the total analyzed customers hasn't changed",
+    "Required sample size shrinks, since store-level assignment removes individual-level noise",
+    "Required sample size changes only if the loyalty program has a network effect"
+   ],
+   "answer": 0,
+   "explanation": "Randomizing at the store level clusters correlated customers together, so the intraclass correlation (design effect) inflates the variance of the estimate. Reaching the same power then requires more customers or stores than individual-level randomization would need, even though total customers analyzed is unchanged.",
+   "grounding": {
+    "source": "Design effect (Wikipedia)",
+    "note": "Explains how intraclass correlation among clustered units inflates variance and required sample size relative to simple random sampling."
+   },
+   "difficulty_prior": 0.3,
+   "id": "experimental-design-015",
+   "status": "beta"
+  },
+  {
+   "concept": "interference-effects",
+   "stem": "A social network tests a feature that lets users share posts with friends. Because treated users may cause their friends in the control group to see more content, individual-level randomization likely violates SUTVA. Which design best addresses this while remaining feasible for a friend-based feature?",
+   "options": [
+    "Randomize by network cluster, like ego-networks, so most friends share one assignment",
+    "Keep individual randomization but increase the sample size until interference washes out",
+    "Randomize by calendar day so every user sees the same version at once",
+    "Add each user's sharing behavior as a regression covariate to remove its influence"
+   ],
+   "answer": 0,
+   "explanation": "Sharing between friends breaks the assumption that one user's outcome depends only on their own assignment (SUTVA). Cluster randomization by ego-network or community keeps most interactions within the same arm, reducing spillover. Regression adjustment or day-level randomization do not remove the underlying interference.",
+   "grounding": {
+    "source": "Trustworthy Online Controlled Experiments (Kohavi, Tang, Xu)",
+    "note": "Discusses network interference and cluster-based randomization as a remedy when treated and control units interact."
+   },
+   "difficulty_prior": 0.32,
+   "id": "experimental-design-016",
+   "status": "beta"
+  },
+  {
+   "concept": "blocking-stratification",
+   "stem": "A team blocks stores into revenue tiers, then randomizes treatment within each tier before a pricing test. To capture the variance reduction the blocking was designed to provide, how should the primary analysis treat tier when estimating the overall effect?",
+   "options": [
+    "Include tier as a blocking factor, combining within-tier effect estimates",
+    "Ignore tier and run a single pooled comparison of treatment versus control",
+    "Analyze only the highest-revenue tier, since it best represents overall performance",
+    "Re-randomize stores within the lowest-revenue tier to double-check the assignment"
+   ],
+   "answer": 0,
+   "explanation": "Blocking only reduces variance if the analysis exploits the blocks, for example through a block fixed effect or weighted combination of within-block estimates. Pooling everything into a single unadjusted comparison, or analyzing just one tier, discards the structure that made blocking worthwhile.",
+   "grounding": {
+    "source": "Randomized block design (Wikipedia)",
+    "note": "Describes how blocking's variance-reduction benefit is realized only when the analysis accounts for the blocking factor."
+   },
+   "difficulty_prior": 0.28,
+   "id": "experimental-design-017",
+   "status": "beta"
+  },
+  {
+   "concept": "factorial-designs",
+   "stem": "A 2x2 factorial test crosses a new checkout button color with new button copy. The interaction term is significant, making the color factor's main effect alone misleading. What does this significant interaction imply?",
+   "options": [
+    "The effect of color depends on which copy it's paired with",
+    "Factorial designs can only estimate interaction effects, never main effects",
+    "Color was not randomized independently of the copy factor",
+    "The experiment lacked sufficient statistical power to detect main effects"
+   ],
+   "answer": 0,
+   "explanation": "A significant interaction means color's effect on conversion depends on which copy it is paired with, so one averaged 'color effect' can obscure differences in size or direction across copy versions. Interactions don't imply confounding between factors or insufficient power to detect main effects.",
+   "grounding": {
+    "source": "Factorial experiment (Wikipedia)",
+    "note": "Explains that a significant interaction means factor effects are not additive, requiring conditional rather than marginal interpretation."
+   },
+   "difficulty_prior": 0.35,
+   "id": "experimental-design-018",
+   "status": "beta"
+  },
+  {
+   "concept": "minimum-detectable-effect",
+   "stem": "A team powers an experiment on click-through rate, defined as clicks divided by impressions per user, using a delta-method variance estimate rather than treating it as a simple binomial proportion. What happens if they skip this adjustment when computing minimum detectable effect?",
+   "options": [
+    "Variance is understated, making the study seem adequately powered",
+    "Variance is overstated, wasting sample size that wasn't actually needed",
+    "The minimum detectable effect becomes independent of the sample size",
+    "The metric must be reclassified from primary to guardrail status"
+   ],
+   "answer": 0,
+   "explanation": "Ratio metrics like clicks-per-impression carry within-user correlation that inflates their true variance beyond the simple binomial formula. Skipping the delta-method correction underestimates that variance, so the MDE calculation looks smaller than reality, making an underpowered test appear adequately powered before it launches.",
+   "grounding": {
+    "source": "Trustworthy Online Controlled Experiments (Kohavi, Tang, Xu)",
+    "note": "Covers the delta method for computing the variance of ratio metrics in online experiments."
+   },
+   "difficulty_prior": 0.3,
+   "id": "experimental-design-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

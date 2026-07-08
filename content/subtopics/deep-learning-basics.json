@@ -1,0 +1,452 @@
+{
+ "id": "deep-learning-basics",
+ "concepts": [
+  {
+   "id": "layers-and-activations",
+   "label": "Layers and Activations",
+   "definition": "A neural network stacks layers of simple units, each applying weights and an activation function to transform its inputs.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "why-nonlinearity",
+   "label": "Why Nonlinearity Matters",
+   "definition": "Nonlinear activation functions let networks learn curved, complex patterns instead of collapsing into a single linear transformation.",
+   "prereq": "layers-and-activations",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "gradient-descent",
+   "label": "Gradient Descent",
+   "definition": "Gradient descent nudges a network's weights step by step in the direction that reduces prediction error.",
+   "prereq": "why-nonlinearity",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "learning-rate",
+   "label": "Learning Rate Intuition",
+   "definition": "The learning rate controls how big each weight-update step is, trading off speed of learning against stability.",
+   "prereq": "gradient-descent",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "overfitting-and-dropout",
+   "label": "Overfitting and Dropout",
+   "definition": "Overfitting happens when a network memorizes training data instead of generalizing, and dropout fights this by randomly disabling units during training.",
+   "prereq": "learning-rate",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "cnns-vs-rnns",
+   "label": "CNNs vs RNNs/Transformers",
+   "definition": "CNNs exploit spatial patterns in images while RNNs and transformers are built to handle ordered, sequential data like text.",
+   "prereq": "overfitting-and-dropout",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "transfer-learning",
+   "label": "Transfer Learning",
+   "definition": "Transfer learning reuses a network already trained on one task as a starting point for a related task, saving data and compute.",
+   "prereq": "cnns-vs-rnns",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "when-deep-learning-overkill",
+   "label": "When Deep Learning Is Overkill",
+   "definition": "For small or simple datasets, simpler models often match deep learning's accuracy with far less data, time, and complexity.",
+   "prereq": "transfer-learning",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "why-nonlinearity",
+   "stem": "A neural network stacks several layers, but every layer uses a purely linear transformation with no activation function. Mathematically, what happens to the network's overall expressive power?",
+   "options": [
+    "The whole network still behaves like one linear layer",
+    "The network becomes more powerful because it has more parameters",
+    "The network gains the ability to model any nonlinear pattern",
+    "The network becomes harder to train but can fit more complex functions"
+   ],
+   "answer": 0,
+   "explanation": "Composing linear functions yields another linear function, so stacked linear layers collapse to one effective linear transformation regardless of depth or parameter count. Nonlinear activations are required for depth to add real modeling capacity.",
+   "grounding": {
+    "source": "Goodfellow, Bengio, Courville — Deep Learning (MIT Press)",
+    "note": "Explains that without nonlinear activations, multi-layer networks reduce to a single linear model."
+   },
+   "difficulty_prior": 0.75,
+   "id": "deep-learning-basics-000",
+   "status": "beta"
+  },
+  {
+   "concept": "gradient-descent",
+   "stem": "During training, an engineer computes how much a small change in each weight would change the loss, then nudges every weight slightly in the direction that reduces the loss. Which technique is being described?",
+   "options": [
+    "Gradient descent",
+    "Backpropagation",
+    "Grid search",
+    "Random search"
+   ],
+   "answer": 0,
+   "explanation": "Gradient descent updates parameters by moving opposite the loss gradient. Backpropagation only computes those gradients via the chain rule; it doesn't perform the weight update itself. Grid and random search are hyperparameter tuning methods, not optimizers.",
+   "grounding": {
+    "source": "Wikipedia — Gradient descent",
+    "note": "Describes iteratively updating parameters opposite the loss gradient to minimize the loss."
+   },
+   "difficulty_prior": 0.68,
+   "id": "deep-learning-basics-001",
+   "status": "beta"
+  },
+  {
+   "concept": "learning-rate",
+   "stem": "A team trains a neural network and notices the loss oscillates wildly and sometimes increases from one step to the next instead of steadily decreasing. Which hyperparameter is the most likely culprit?",
+   "options": [
+    "The learning rate is set too high",
+    "The batch size is set too low",
+    "The weight decay is set too high",
+    "The number of layers is too small"
+   ],
+   "answer": 0,
+   "explanation": "A learning rate that is too large causes weight updates to overshoot the minimum, producing unstable, oscillating loss. Small batch size adds noise but rarely causes divergence; weight decay and layer count affect capacity and regularization, not step-size stability.",
+   "grounding": {
+    "source": "Wikipedia — Learning rate",
+    "note": "Notes that a learning rate set too high can cause the model to converge too quickly to a suboptimal or unstable solution."
+   },
+   "difficulty_prior": 0.74,
+   "id": "deep-learning-basics-002",
+   "status": "beta"
+  },
+  {
+   "concept": "overfitting-and-dropout",
+   "stem": "A deep network reaches near-perfect accuracy on training data but performs much worse on new, unseen data. Which technique addresses this by randomly ignoring a subset of neurons on each training pass, so the network cannot rely on any single one?",
+   "options": [
+    "Dropout",
+    "Batch normalization",
+    "Early stopping",
+    "L2 weight regularization"
+   ],
+   "answer": 0,
+   "explanation": "Dropout randomly zeroes a fraction of neurons on each training pass, preventing co-adaptation and reducing overfitting. Batch normalization stabilizes activations, early stopping halts training early, and L2 regularization penalizes large weights — none randomly drop neurons.",
+   "grounding": {
+    "source": "Srivastava et al., 2014 — 'Dropout: A Simple Way to Prevent Neural Networks from Overfitting' (Journal of Machine Learning Research)",
+    "note": "Introduces dropout as a regularization method that reduces overfitting by randomly dropping units during training."
+   },
+   "difficulty_prior": 0.68,
+   "id": "deep-learning-basics-003",
+   "status": "beta"
+  },
+  {
+   "concept": "cnns-vs-rnns",
+   "stem": "A team is choosing a network architecture to classify objects in photographs, where spatial patterns like edges and shapes recur across different regions of an image. Which architecture is typically best suited for this task?",
+   "options": [
+    "Convolutional neural network",
+    "Recurrent neural network",
+    "Plain fully connected network with no shared weights",
+    "Decision tree ensemble"
+   ],
+   "answer": 0,
+   "explanation": "Convolutional neural networks use shared, spatially local filters that detect recurring visual patterns like edges regardless of position, making them well suited to image data. Recurrent networks are instead built for sequential, order-dependent data.",
+   "grounding": {
+    "source": "Wikipedia — Convolutional neural network",
+    "note": "Describes CNNs as designed to exploit spatial locality and shared weights for grid-like data such as images."
+   },
+   "difficulty_prior": 0.8,
+   "id": "deep-learning-basics-004",
+   "status": "beta"
+  },
+  {
+   "concept": "layers-and-activations",
+   "stem": "A team builds a neural network to classify handwritten digits into one of ten categories. Which activation function should the output layer use so the outputs form a valid probability distribution over the ten classes?",
+   "options": [
+    "Softmax, which normalizes outputs into probabilities that sum to one",
+    "ReLU, which zeroes out negative values but is unbounded above",
+    "Sigmoid applied independently to each neuron, without joint normalization",
+    "Linear (identity), which passes weighted sums through unchanged"
+   ],
+   "answer": 0,
+   "explanation": "Softmax exponentiates and normalizes the output layer so values sum to one, forming a valid probability distribution over mutually exclusive classes. Sigmoid gives independent per-class probabilities that don't sum to one, while ReLU and linear outputs are unbounded and unsuitable as probabilities.",
+   "grounding": {
+    "source": "Wikipedia — Softmax function",
+    "note": "Describes softmax as converting a vector of values into a probability distribution over predicted classes."
+   },
+   "difficulty_prior": 0.62,
+   "id": "deep-learning-basics-005",
+   "status": "beta"
+  },
+  {
+   "concept": "gradient-descent",
+   "stem": "A network's weights are updated repeatedly in small steps, each one following the current gradient, rather than jumping straight to the weights that minimize loss. Why is training done this way instead of solving for the minimum directly?",
+   "options": [
+    "The gradient only shows the local slope, not the minimum's location",
+    "The gradient always points exactly toward the global minimum's location",
+    "Each weight can change by only a fixed amount regardless of slope",
+    "A closed-form formula for the minimum exists but is too costly to compute"
+   ],
+   "answer": 0,
+   "explanation": "Gradient descent only has access to the loss surface's local slope at the current weights. For nonlinear, high-dimensional networks no closed-form minimum exists at all, not merely one that's expensive to compute, so training proceeds through many small corrective steps.",
+   "grounding": {
+    "source": "Wikipedia — Gradient descent",
+    "note": "Explains gradient descent as an iterative first-order method that follows the local negative gradient rather than solving for the minimum directly."
+   },
+   "difficulty_prior": 0.58,
+   "id": "deep-learning-basics-006",
+   "status": "beta"
+  },
+  {
+   "concept": "cnns-vs-rnns",
+   "stem": "A team is building a model to predict the next word in a sentence, where the meaning of each word depends on the words that came before it. Which architecture is designed to handle this kind of ordered, sequential dependency?",
+   "options": [
+    "A recurrent network or transformer, modeling dependencies across a token sequence",
+    "A convolutional network, detecting spatially local patterns in image grids",
+    "A decision tree, splitting data using independent feature thresholds",
+    "A k-means model, grouping words into unlabeled clusters"
+   ],
+   "answer": 0,
+   "explanation": "Recurrent networks and transformers process tokens with attention to or memory of prior context, making them suited to order-dependent language data. Convolutional networks instead exploit spatial locality in grid-like data such as images, not sequential word order.",
+   "grounding": {
+    "source": "Wikipedia — Recurrent neural network",
+    "note": "Describes RNNs as designed to process sequential data by maintaining context from previous inputs, unlike CNNs built for grid data."
+   },
+   "difficulty_prior": 0.68,
+   "id": "deep-learning-basics-007",
+   "status": "beta"
+  },
+  {
+   "concept": "transfer-learning",
+   "stem": "A startup with only a few thousand labeled photos wants to build an accurate image classifier without training a huge model from scratch. Which strategy is most likely to give good results with their limited data?",
+   "options": [
+    "Transfer learning: fine-tune a network pretrained on a large image dataset",
+    "Train a new, randomly initialized deep network from scratch",
+    "Skip neural networks and use k-means clustering to sort photos",
+    "Add many more hidden layers so the network memorizes the photos"
+   ],
+   "answer": 0,
+   "explanation": "Transfer learning reuses features already learned from a large dataset, needing far less labeled data and compute than training from scratch. A new deep network trained on only a few thousand images would likely overfit badly.",
+   "grounding": {
+    "source": "Wikipedia — Transfer learning",
+    "note": "Describes transfer learning as reusing a pretrained model to improve learning on a related task with less data."
+   },
+   "difficulty_prior": 0.65,
+   "id": "deep-learning-basics-008",
+   "status": "beta"
+  },
+  {
+   "concept": "when-deep-learning-overkill",
+   "stem": "An analyst has a dataset of 200 rows and 5 numeric features and needs to predict a continuous outcome. Which modeling approach is most appropriate given the size and structure of this dataset?",
+   "options": [
+    "Linear regression, which needs little data and stays interpretable",
+    "A deep network with many hidden layers, to maximize representational capacity",
+    "A transformer pretrained on billions of text tokens",
+    "A convolutional network, applying image-style filters to the tabular rows"
+   ],
+   "answer": 0,
+   "explanation": "With only 200 rows, a deep network's many parameters would overfit and offer no accuracy gain over a simple model like linear regression, which needs little data and stays interpretable. CNNs and transformers target image and sequence data, not small tabular sets.",
+   "grounding": {
+    "source": "Wikipedia — Bias–variance tradeoff",
+    "note": "Explains why simpler, lower-variance models often generalize better than complex ones on small datasets."
+   },
+   "difficulty_prior": 0.6,
+   "id": "deep-learning-basics-009",
+   "status": "beta"
+  },
+  {
+   "concept": "layers-and-activations",
+   "stem": "A team builds a multi-class image classifier with several ReLU hidden layers, but leaves the final output layer as ReLU as well, feeding its raw values directly into a cross-entropy loss that expects class probabilities summing to one. What problem does this final-layer choice cause?",
+   "options": [
+    "Its outputs are unbounded and non-negative, so they cannot form a valid probability distribution.",
+    "ReLU's dying-unit problem gets worse in the output layer, causing most class scores to collapse to zero.",
+    "Cross-entropy loss requires every activation function in the network to be sigmoid, not just the output layer.",
+    "The gradients simply vanish, preventing the network from learning any class distinctions during training."
+   ],
+   "answer": 0,
+   "explanation": "ReLU outputs are unbounded and non-negative, so raw values can't form a probability distribution summing to one; only the output layer needs a softmax (or sigmoid) — hidden layers can keep using ReLU regardless of the loss function.",
+   "grounding": {
+    "source": "Goodfellow, Bengio, Courville — Deep Learning (MIT Press)",
+    "note": "Describes softmax output units for representing categorical probability distributions in classification networks."
+   },
+   "difficulty_prior": 0.5,
+   "id": "deep-learning-basics-010",
+   "status": "beta"
+  },
+  {
+   "concept": "learning-rate",
+   "stem": "A model trains for many epochs but the loss decreases extremely slowly and appears to plateau far above any reasonable minimum, even after adding more epochs. Increasing the learning rate substantially fixes the issue. What was most likely happening before the fix?",
+   "options": [
+    "Weight updates were too small each step, so the model crept toward the minimum very slowly.",
+    "The model had already reached the global minimum, so no learning rate could improve it further.",
+    "The loss function was computed incorrectly, producing gradients unrelated to the chosen step size.",
+    "Dropout was removing too many units for the model to retain any real capacity to fit data."
+   ],
+   "answer": 0,
+   "explanation": "A learning rate that is too small makes each weight update tiny, so the model creeps toward the minimum extremely slowly and can appear stuck. Raising the rate lets updates cover more ground per step, speeding convergence.",
+   "grounding": {
+    "source": "Ruder, S. — An Overview of Gradient Descent Optimization Algorithms (arXiv)",
+    "note": "Explains how the learning rate scales step size and that too-small rates lead to painfully slow convergence."
+   },
+   "difficulty_prior": 0.5,
+   "id": "deep-learning-basics-011",
+   "status": "beta"
+  },
+  {
+   "concept": "overfitting-and-dropout",
+   "stem": "During training, dropout randomly deactivates a fraction of hidden units on each forward pass, but at test time the full network is used with no units dropped. Why is this switch between training and test behavior necessary for dropout to work correctly?",
+   "options": [
+    "It approximates averaging predictions over the many thinned sub-networks trained during dropout, giving a more robust result.",
+    "Test data has no labels, so dropout cannot compute the gradients needed to decide which units to drop.",
+    "Dropout permanently deletes the weakest units after training, so the full network is needed once they're gone.",
+    "Applying dropout at test time as well would keep behavior consistent with training and improve results."
+   ],
+   "answer": 0,
+   "explanation": "Dropout trains many random thinned sub-networks; using the full network at test time approximates averaging their predictions, which is more robust than any single one. Dropping units at test time too would only add noise, not help.",
+   "grounding": {
+    "source": "Srivastava et al., 2014 — Dropout: A Simple Way to Prevent Neural Networks from Overfitting (JMLR)",
+    "note": "Introduces dropout and explains that the full network at test time approximates an ensemble average of thinned networks."
+   },
+   "difficulty_prior": 0.45,
+   "id": "deep-learning-basics-012",
+   "status": "beta"
+  },
+  {
+   "concept": "transfer-learning",
+   "stem": "A team adapts a large pretrained image model to a small, specialized dataset by freezing the early convolutional layers and retraining only the final classification layers. What is the main reason for freezing those early layers instead of retraining the whole network?",
+   "options": [
+    "Early layers learn general, transferable features, so retraining risks losing them with too little data.",
+    "Freezing speeds up training by skipping backpropagation through those layers, which is the only real benefit.",
+    "Early layers hold the most task-specific patterns, so freezing them keeps exactly what the new task needs.",
+    "Freezing preserves the model's ability to perform its original pretraining task, which the new task still requires."
+   ],
+   "answer": 0,
+   "explanation": "Early convolutional layers learn general features like edges and textures that transfer across tasks, not task-specific patterns; freezing preserves that structure and avoids overfitting when only a small new dataset is available. Faster training is a side benefit, not the reason.",
+   "grounding": {
+    "source": "Yosinski et al., 2014 — How Transferable Are Features in Deep Neural Networks? (NeurIPS)",
+    "note": "Shows early CNN layers learn general features that transfer well, motivating freezing them during fine-tuning."
+   },
+   "difficulty_prior": 0.45,
+   "id": "deep-learning-basics-013",
+   "status": "beta"
+  },
+  {
+   "concept": "when-deep-learning-overkill",
+   "stem": "A bank must approve or deny loan applications and provide each applicant a clear, legally defensible reason for the decision, using a dataset of applicant financial attributes. Why might a simple logistic regression model be preferred over a deep neural network here?",
+   "options": [
+    "Its coefficients show each factor's contribution to the decision, making the reasoning transparent and defensible.",
+    "Deep neural networks cannot process the kind of numeric financial attributes used in loan decisions.",
+    "Logistic regression always achieves higher predictive accuracy than deep learning on structured tabular data.",
+    "Nonlinear models like deep networks are legally prohibited from being used in any lending decision."
+   ],
+   "answer": 0,
+   "explanation": "Logistic regression coefficients directly show each feature's contribution, making individual decisions transparent and defensible. Deep networks readily handle numeric data and can match accuracy on tabular data, but their many interacting weights make single decisions far harder to explain.",
+   "grounding": {
+    "source": "Molnar, C. — Interpretable Machine Learning",
+    "note": "Discusses the trade-off between transparent models like linear/logistic regression and complex, harder-to-explain models like deep networks."
+   },
+   "difficulty_prior": 0.5,
+   "id": "deep-learning-basics-014",
+   "status": "beta"
+  },
+  {
+   "concept": "layers-and-activations",
+   "stem": "A researcher builds a 50-layer network using sigmoid activations in every hidden layer. During training, early-layer weights barely change while later-layer weights update normally, and the loss stops improving. What is the most likely cause?",
+   "options": [
+    "Multiplying many small sigmoid derivatives during backpropagation causes gradients to vanish",
+    "Unnormalized input features are causing gradients to explode in early layers",
+    "The learning rate is too high specifically for the network's deeper layers",
+    "The network does not have enough parameters to represent the data"
+   ],
+   "answer": 0,
+   "explanation": "Sigmoid derivatives max out near 0.25; multiplying many such small values across 50 layers during backpropagation shrinks early-layer gradients toward zero — the classic vanishing gradient problem, not exploding gradients or an under-parameterized model.",
+   "grounding": {
+    "source": "Goodfellow, Bengio, Courville — Deep Learning (textbook)",
+    "note": "Discusses how saturating activations like sigmoid cause vanishing gradients in deep networks."
+   },
+   "difficulty_prior": 0.3,
+   "id": "deep-learning-basics-015",
+   "status": "beta"
+  },
+  {
+   "concept": "gradient-descent",
+   "stem": "A team trains a large neural network and observes the loss plateau for many epochs at a value with near-zero gradients, yet the model's predictions remain noticeably inaccurate on training data. What most plausibly explains this plateau?",
+   "options": [
+    "Gradient descent has settled into a saddle point or flat region",
+    "The learning rate is too high, causing the loss to diverge",
+    "The model has fully memorized the training data, indicating overfitting",
+    "Every activation function in the network is linear, blocking further learning"
+   ],
+   "answer": 0,
+   "explanation": "Near-zero gradients paired with poor fit indicate optimization is stuck in a saddle point or flat region of a high-dimensional, non-convex loss surface, not divergence or overfitting, which would show different symptoms.",
+   "grounding": {
+    "source": "Wikipedia: Saddle point",
+    "note": "Explains that in high-dimensional non-convex optimization, saddle points are far more common than local minima and can stall training."
+   },
+   "difficulty_prior": 0.28,
+   "id": "deep-learning-basics-016",
+   "status": "beta"
+  },
+  {
+   "concept": "learning-rate",
+   "stem": "A team fine-tunes a large pretrained transformer on a new task using the same high learning rate that worked when training a small model from scratch. Within a few epochs, performance degrades sharply. What adjustment most directly addresses this?",
+   "options": [
+    "Use a much smaller learning rate than used from scratch",
+    "Increase the learning rate further to escape the pretrained weights faster",
+    "Remove all dropout layers before starting the fine-tuning process",
+    "Replace the pretrained weights with a purely linear initialization"
+   ],
+   "answer": 0,
+   "explanation": "Pretrained weights already encode useful representations; a high learning rate causes large updates that overwrite them (catastrophic forgetting). Fine-tuning typically uses a much smaller learning rate to adapt weights gently.",
+   "grounding": {
+    "source": "Wikipedia: Transfer learning",
+    "note": "Notes that fine-tuning pretrained models typically uses lower learning rates to avoid catastrophic forgetting of learned representations."
+   },
+   "difficulty_prior": 0.32,
+   "id": "deep-learning-basics-017",
+   "status": "beta"
+  },
+  {
+   "concept": "cnns-vs-rnns",
+   "stem": "A team builds a model to classify fixed-length sensor readings by detecting a distinctive spike pattern that can occur at any position within the reading window. Compared to a fully-connected layer, why does a convolutional layer typically perform better here?",
+   "options": [
+    "Convolutional filters share weights, detecting patterns anywhere in the window",
+    "Convolutional layers contain more trainable parameters, allowing tighter fitting",
+    "Convolutional layers remove the need for nonlinear activation functions",
+    "Convolutional layers guarantee the pattern is found even under heavy noise"
+   ],
+   "answer": 0,
+   "explanation": "Weight sharing lets one filter act as a pattern detector applied at every position, using far fewer parameters than a fully-connected layer and generalizing regardless of where the spike occurs.",
+   "grounding": {
+    "source": "Wikipedia: Convolutional neural network",
+    "note": "Describes weight sharing and translation invariance as core properties distinguishing CNNs from fully-connected networks."
+   },
+   "difficulty_prior": 0.35,
+   "id": "deep-learning-basics-018",
+   "status": "beta"
+  },
+  {
+   "concept": "overfitting-and-dropout",
+   "stem": "A small network trained with a very high dropout rate of 0.9 on every hidden layer shows both low training accuracy and worse validation accuracy than before dropout was added. What is the most likely explanation?",
+   "options": [
+    "The high dropout rate strips away too much network capacity",
+    "Dropout only affects validation accuracy, never training accuracy",
+    "Dropout should be applied only during inference, not training",
+    "The network now requires a much higher learning rate to compensate"
+   ],
+   "answer": 0,
+   "explanation": "Dropping 90% of units each step leaves too few active connections to learn the task, reducing effective capacity below what's needed — underfitting, not a validation-only effect or an inference-time restriction.",
+   "grounding": {
+    "source": "Srivastava et al., 'Dropout: A Simple Way to Prevent Neural Networks from Overfitting', JMLR 2014",
+    "note": "Introduces dropout and notes excessively high rates reduce effective model capacity and can cause underfitting."
+   },
+   "difficulty_prior": 0.3,
+   "id": "deep-learning-basics-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

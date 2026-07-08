@@ -330,7 +330,7 @@
     "python-fundamentals"
    ],
    "status": "partial",
-   "ready": 2,
+   "ready": 3,
    "total": 6
   },
   {
@@ -826,7 +826,7 @@
     "python-for-data"
    ],
    "status": "partial",
-   "ready": 3,
+   "ready": 4,
    "total": 6
   },
   {
@@ -841,8 +841,8 @@
     "ai-agents",
     "mlops-deployment"
    ],
-   "status": "soon",
-   "ready": 0,
+   "status": "partial",
+   "ready": 2,
    "total": 6
   },
   {
@@ -858,7 +858,7 @@
     "ab-testing"
    ],
    "status": "partial",
-   "ready": 2,
+   "ready": 3,
    "total": 6
   },
   {
@@ -873,8 +873,8 @@
     "nlp-basics",
     "critical-thinking"
    ],
-   "status": "soon",
-   "ready": 0,
+   "status": "partial",
+   "ready": 2,
    "total": 6
   },
   {
@@ -1370,7 +1370,7 @@
     "technical-writing"
    ],
    "status": "partial",
-   "ready": 1,
+   "ready": 3,
    "total": 6
   },
   {
@@ -2226,7 +2226,7 @@
    "title": "R for data analysis",
    "theme": "sql-data",
    "track": null,
-   "status": "soon"
+   "status": "live"
   },
   {
    "id": "descriptive-stats",
@@ -2261,28 +2261,28 @@
    "title": "Bayesian thinking",
    "theme": "stats",
    "track": null,
-   "status": "soon"
+   "status": "live"
   },
   {
    "id": "causal-inference",
    "title": "Causal inference",
    "theme": "stats",
    "track": "research-scientist",
-   "status": "soon"
+   "status": "live"
   },
   {
    "id": "experimental-design",
    "title": "Experimental design",
    "theme": "stats",
    "track": "research-scientist",
-   "status": "soon"
+   "status": "live"
   },
   {
    "id": "survey-design",
    "title": "Survey design & measurement",
    "theme": "stats",
    "track": null,
-   "status": "soon"
+   "status": "live"
   },
   {
    "id": "ml-fundamentals",
@@ -2317,21 +2317,21 @@
    "title": "Deep learning basics",
    "theme": "ml-ai",
    "track": "ml-engineer",
-   "status": "soon"
+   "status": "live"
   },
   {
    "id": "nlp-basics",
    "title": "NLP essentials",
    "theme": "ml-ai",
    "track": "nlp-engineer",
-   "status": "soon"
+   "status": "live"
   },
   {
    "id": "llm-prompting",
    "title": "Working with LLMs",
    "theme": "ml-ai",
    "track": "nlp-engineer",
-   "status": "soon"
+   "status": "live"
   },
   {
    "id": "clustering-unsupervised",

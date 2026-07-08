@@ -1,0 +1,547 @@
+{
+ "id": "llm-prompting",
+ "concepts": [
+  {
+   "id": "prompt-structure",
+   "label": "Prompt Structure",
+   "definition": "An LLM prompt is composed of parts like instructions, context, and format constraints that shape the model's response.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "few-shot-examples",
+   "label": "Few-Shot Examples",
+   "definition": "Including a handful of example input-output pairs in a prompt helps steer the model toward the desired pattern without retraining it.",
+   "prereq": "prompt-structure",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "context-window",
+   "label": "Context Window",
+   "definition": "An LLM can only attend to a limited number of tokens at once, so anything beyond that window is invisible to the model.",
+   "prereq": "prompt-structure",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "temperature-sampling",
+   "label": "Temperature & Sampling",
+   "definition": "Temperature is a setting that controls how random or deterministic the model's word choices are during generation.",
+   "prereq": "prompt-structure",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "hallucination-causes-mitigations",
+   "label": "Hallucination Causes",
+   "definition": "LLMs can confidently generate false or unsupported statements because they predict plausible text rather than verified facts, especially near the edges of their training knowledge or context window.",
+   "prereq": "context-window",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "retrieval-augmented-generation",
+   "label": "RAG Concept",
+   "definition": "Retrieval-augmented generation reduces hallucination by fetching relevant external documents and inserting them into the prompt so the model can ground its answer in real sources.",
+   "prereq": "hallucination-causes-mitigations",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "finetuning-vs-prompting-vs-rag",
+   "label": "Adaptation Method Tradeoffs",
+   "definition": "Fine-tuning, prompting, and RAG are three different ways to adapt an LLM's behavior to a task, each trading off cost, flexibility, and how current the knowledge is.",
+   "prereq": "retrieval-augmented-generation",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "evaluating-and-responsible-use",
+   "label": "Evaluating & Responsible Use",
+   "definition": "Systematically checking LLM outputs for accuracy, bias, and safety is necessary before deploying a chosen adaptation method responsibly.",
+   "prereq": "finetuning-vs-prompting-vs-rag",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "prompt-structure",
+   "stem": "A team asks an LLM to 'write something about our product' and receives a vague, unfocused draft. Which prompt revision is most likely to produce a usable result?",
+   "options": [
+    "Specify the audience, output format, and length.",
+    "Repeat the same request three times for emphasis.",
+    "Raise the temperature so the response sounds more creative.",
+    "Remove all instructions and let the model respond freely."
+   ],
+   "answer": 0,
+   "explanation": "Clear task framing (audience, format, length) narrows the output space to what's actually needed. Raising temperature adds randomness, not specificity, and repetition or removing instructions supplies no missing information.",
+   "grounding": {
+    "source": "OpenAI Prompt Engineering Guide",
+    "note": "Recommends specifying context, format, and constraints for more reliable outputs."
+   },
+   "difficulty_prior": 0.78,
+   "id": "llm-prompting-000",
+   "status": "beta"
+  },
+  {
+   "concept": "context-window",
+   "stem": "A user pastes a very long document into a chat and asks for a summary, but the model's answer only reflects the last few pages. What most likely explains this?",
+   "options": [
+    "The input exceeded the context window, so earlier pages were dropped.",
+    "The model intentionally skips older text to reduce compute cost.",
+    "The temperature setting was too low to process long text.",
+    "The document had hallucinated content that got filtered out."
+   ],
+   "answer": 0,
+   "explanation": "Every model has a fixed context window measured in tokens; text beyond that limit is truncated or never seen. Temperature affects word choice, not how much text fits, so it isn't the cause.",
+   "grounding": {
+    "source": "Wikipedia: Large language model",
+    "note": "Describes context window as the fixed span of tokens a model can process at once."
+   },
+   "difficulty_prior": 0.75,
+   "id": "llm-prompting-001",
+   "status": "beta"
+  },
+  {
+   "concept": "temperature-sampling",
+   "stem": "A developer generates product descriptions from the same prompt and wants nearly identical wording on every run. Which setting change best achieves this?",
+   "options": [
+    "Lower the temperature toward zero for more deterministic output.",
+    "Raise the temperature to increase randomness and variety in wording.",
+    "Increase the size of the model's context window.",
+    "Add more few-shot examples phrased differently each run."
+   ],
+   "answer": 0,
+   "explanation": "Temperature controls how sharply the model favors the highest-probability next token; near zero it behaves almost deterministically. Raising temperature does the opposite, increasing variation between runs.",
+   "grounding": {
+    "source": "OpenAI API documentation",
+    "note": "Describes the temperature parameter as controlling randomness of token sampling."
+   },
+   "difficulty_prior": 0.82,
+   "id": "llm-prompting-002",
+   "status": "beta"
+  },
+  {
+   "concept": "hallucination-causes-mitigations",
+   "stem": "An LLM confidently cites a court case that does not exist when asked for legal precedent. Which approach is most effective at reducing this kind of error?",
+   "options": [
+    "Ground the response in retrieved, verifiable source documents.",
+    "Increase the temperature so the model generates more varied answers.",
+    "Instruct the model to state its answers more confidently.",
+    "Rely only on the model's internal knowledge, without external verification."
+   ],
+   "answer": 0,
+   "explanation": "Hallucinations often arise because the model generates plausible text without verified facts; grounding answers in retrieved sources lets claims be checked. Higher confidence or temperature do not improve factual accuracy.",
+   "grounding": {
+    "source": "Wikipedia: Hallucination (artificial intelligence)",
+    "note": "Discusses retrieval and grounding in sources as key mitigations for factual hallucination."
+   },
+   "difficulty_prior": 0.72,
+   "id": "llm-prompting-003",
+   "status": "beta"
+  },
+  {
+   "concept": "retrieval-augmented-generation",
+   "stem": "A company wants its support chatbot to answer questions using its constantly updated internal knowledge base without retraining the model every week. Which approach fits best?",
+   "options": [
+    "Use retrieval-augmented generation to fetch relevant documents at query time.",
+    "Fine-tune the model from scratch every time a document changes.",
+    "Increase the temperature so the model guesses more broadly.",
+    "Rely only on the model's pretraining knowledge, with no external documents."
+   ],
+   "answer": 0,
+   "explanation": "RAG retrieves current, relevant documents and inserts them into the prompt, so answers stay up to date without retraining. Fine-tuning weekly is costly and slower to reflect fresh information.",
+   "grounding": {
+    "source": "Lewis et al., 'Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks' (2020)",
+    "note": "Introduces RAG as combining retrieval with generation to ground outputs in external documents."
+   },
+   "difficulty_prior": 0.78,
+   "id": "llm-prompting-004",
+   "status": "beta"
+  },
+  {
+   "concept": "few-shot-examples",
+   "stem": "A developer wants an LLM to classify customer emails into \"billing\", \"technical\", or \"other\" using a consistent format, but zero-shot instructions produce inconsistent labels. What technique most reliably fixes this?",
+   "options": [
+    "Add a few example emails with correct labels to the prompt.",
+    "Increase the temperature so the model responds more decisively.",
+    "Remove instructions from the prompt to reduce ambiguity.",
+    "Ask the model to double-check its own answer before it replies."
+   ],
+   "answer": 0,
+   "explanation": "Few-shot examples show the model the exact desired input-output pattern, improving labeling consistency more reliably than adjusting temperature or removing instructions, which don't convey the labeling scheme itself.",
+   "grounding": {
+    "source": "Brown et al., 'Language Models are Few-Shot Learners' (2020)",
+    "note": "Introduces few-shot prompting, where example input-output pairs steer model behavior without retraining."
+   },
+   "difficulty_prior": 0.8,
+   "id": "llm-prompting-005",
+   "status": "beta"
+  },
+  {
+   "concept": "finetuning-vs-prompting-vs-rag",
+   "stem": "A team needs a model to always respond in a strict internal formatting style used across thousands of future requests, and is willing to invest upfront in training data and compute. Which approach best fits this need?",
+   "options": [
+    "Fine-tune the model on examples of the desired formatting style.",
+    "Add a single example to the prompt for each request.",
+    "Retrieve relevant documents at query time to insert into the prompt.",
+    "Raise the temperature so outputs vary more across requests."
+   ],
+   "answer": 0,
+   "explanation": "Fine-tuning encodes a stable behavior directly into the model's weights, well suited for a fixed style requirement applied at scale. RAG addresses knowledge freshness, not formatting, and higher temperature increases variability rather than consistency.",
+   "grounding": {
+    "source": "OpenAI Fine-tuning documentation",
+    "note": "Describes fine-tuning as suited for consistently reproducing a specific style or format across many requests."
+   },
+   "difficulty_prior": 0.75,
+   "id": "llm-prompting-006",
+   "status": "beta"
+  },
+  {
+   "concept": "evaluating-and-responsible-use",
+   "stem": "Before deploying an LLM-based hiring resume screener, a company wants to check that it does not systematically disadvantage certain applicant groups. What should be part of its evaluation process?",
+   "options": [
+    "Test outputs across diverse applicant profiles for biased outcomes.",
+    "Measure only the overall accuracy across all applicants combined.",
+    "Skip evaluation since the model was pretrained on broad data.",
+    "Rely on the model's own self-reported confidence score."
+   ],
+   "answer": 0,
+   "explanation": "Aggregate accuracy can mask disparities between subgroups, and pretraining scale does not guarantee fairness. Testing across diverse applicant profiles directly reveals differential outcomes; a model's self-reported confidence does not measure bias.",
+   "grounding": {
+    "source": "NIST AI Risk Management Framework",
+    "note": "Recommends evaluating AI systems for bias and disparate impact before deployment."
+   },
+   "difficulty_prior": 0.78,
+   "id": "llm-prompting-007",
+   "status": "beta"
+  },
+  {
+   "concept": "prompt-structure",
+   "stem": "A user asks an LLM to \"fix this code\" and pastes a function with no other context, receiving a fix that changes unrelated behavior. What prompt change would most reduce this problem?",
+   "options": [
+    "State the bug, desired behavior, and what should remain unchanged.",
+    "Ask the model to make the code as clean and elegant as possible.",
+    "Lower the temperature to zero without adding further detail.",
+    "Ask the model to explain what the code does before fixing it."
+   ],
+   "answer": 0,
+   "explanation": "Naming the specific bug, desired behavior, and constraints narrows the model's scope. Asking for general cleanliness or self-explanation doesn't supply missing constraints, and lowering temperature alone doesn't add context, so unrelated changes can still occur.",
+   "grounding": {
+    "source": "OpenAI Prompt Engineering Guide",
+    "note": "Recommends providing clear context and constraints to narrow the model's response scope."
+   },
+   "difficulty_prior": 0.78,
+   "id": "llm-prompting-008",
+   "status": "beta"
+  },
+  {
+   "concept": "hallucination-causes-mitigations",
+   "stem": "An LLM is asked a question about an event that happened after its training data was collected, and it produces a detailed but fabricated answer instead of acknowledging uncertainty. What is the most direct cause of this behavior?",
+   "options": [
+    "The model lacks knowledge of the event yet answers confidently.",
+    "The temperature setting was too high, producing random outputs.",
+    "The context window was too small to include relevant details.",
+    "The prompt lacked an explicit instruction to acknowledge uncertainty."
+   ],
+   "answer": 0,
+   "explanation": "LLMs generate the most statistically plausible continuation even without real knowledge of events past their training cutoff. This is the direct cause; temperature, context window size, and missing prompt instructions are separate factors that don't explain the underlying knowledge gap.",
+   "grounding": {
+    "source": "Wikipedia: Hallucination (artificial intelligence)",
+    "note": "Explains that models can generate plausible but false content, notably beyond their training cutoff."
+   },
+   "difficulty_prior": 0.75,
+   "id": "llm-prompting-009",
+   "status": "beta"
+  },
+  {
+   "concept": "temperature-sampling",
+   "stem": "A marketing team wants an LLM to generate many varied, creative slogan ideas for brainstorming, rather than one safe, predictable answer. Which setting adjustment best supports this goal?",
+   "options": [
+    "Raise the temperature to increase output randomness.",
+    "Lower the temperature to increase output randomness.",
+    "Shrink the context window to speed up generation.",
+    "Add more formatting constraints to the prompt."
+   ],
+   "answer": 0,
+   "explanation": "Higher temperature broadens the probability distribution over next tokens, producing more varied, creative outputs. Lowering temperature would make outputs more uniform and predictable, the opposite of what brainstorming needs.",
+   "grounding": {
+    "source": "OpenAI API documentation - temperature parameter",
+    "note": "Describes temperature as controlling randomness; higher values increase diversity of generated outputs."
+   },
+   "difficulty_prior": 0.62,
+   "id": "llm-prompting-010",
+   "status": "beta"
+  },
+  {
+   "concept": "finetuning-vs-prompting-vs-rag",
+   "stem": "A legal team wants an LLM to consistently follow a specific writing style across thousands of documents daily, and can invest upfront in curating training examples. Which approach best fits this stable, high-volume use case?",
+   "options": [
+    "Fine-tune the model on curated style examples",
+    "Retrieve style guide documents at query time",
+    "Increase the temperature to vary responses",
+    "Give one instruction without any examples"
+   ],
+   "answer": 0,
+   "explanation": "Fine-tuning bakes a stable, repeated behavior into the model's weights, and the upfront training cost amortizes well over high, consistent volume. RAG suits changing knowledge, not stylistic consistency.",
+   "grounding": {
+    "source": "OpenAI Fine-tuning Guide",
+    "note": "Recommends fine-tuning when a consistent style or format must be applied at scale, over relying on prompting alone."
+   },
+   "difficulty_prior": 0.58,
+   "id": "llm-prompting-011",
+   "status": "beta"
+  },
+  {
+   "concept": "hallucination-causes-mitigations",
+   "stem": "An LLM is asked for a specific statistic it was never trained on and responds with a precise, plausible-sounding but fabricated number instead of admitting uncertainty. Which mitigation most directly reduces this behavior?",
+   "options": [
+    "Instruct the model to admit uncertainty",
+    "Increase the temperature for more careful reasoning",
+    "Shorten the prompt to reduce distraction",
+    "Instruct the model to always sound confident"
+   ],
+   "answer": 0,
+   "explanation": "Explicit instructions to acknowledge uncertainty reduce fabrication when the model lacks grounding. Raising temperature adds randomness rather than caution, and encouraging confidence would worsen the hallucination.",
+   "grounding": {
+    "source": "OpenAI Prompt Engineering Guide",
+    "note": "Recommends instructing models to admit when they lack sufficient information, reducing confident fabrication."
+   },
+   "difficulty_prior": 0.65,
+   "id": "llm-prompting-012",
+   "status": "beta"
+  },
+  {
+   "concept": "retrieval-augmented-generation",
+   "stem": "A team building an internal assistant wants answers grounded in the company's own policy documents rather than the model's general knowledge, without retraining the model. Which architecture best accomplishes this?",
+   "options": [
+    "Insert retrieved relevant documents into the prompt",
+    "Fine-tune the model on the full policy archive",
+    "Raise the temperature to widen considered facts",
+    "Add more few-shot examples of company terminology"
+   ],
+   "answer": 0,
+   "explanation": "Retrieval-augmented generation fetches relevant source documents at query time and inserts them into the prompt, grounding answers without changing model weights. Fine-tuning requires retraining; temperature and few-shot examples supply no document content.",
+   "grounding": {
+    "source": "Lewis et al., \"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks\" (2020)",
+    "note": "Introduces RAG as combining a retriever with a generator to ground outputs in external documents."
+   },
+   "difficulty_prior": 0.6,
+   "id": "llm-prompting-013",
+   "status": "beta"
+  },
+  {
+   "concept": "evaluating-and-responsible-use",
+   "stem": "Before an LLM is allowed to send customer emails automatically, a company wants a safeguard that catches factual errors or inappropriate content prior to delivery. Which practice best supports this goal?",
+   "options": [
+    "Require human review and approval before sending",
+    "Increase the temperature for more varied phrasing",
+    "Remove system instructions to speed up drafting",
+    "Rely on the model's stated confidence level"
+   ],
+   "answer": 0,
+   "explanation": "Human-in-the-loop review is a core responsible-use safeguard for catching errors before high-stakes or external-facing content is delivered. LLMs' self-reported confidence is not a reliable substitute for review.",
+   "grounding": {
+    "source": "NIST AI Risk Management Framework",
+    "note": "Recommends human oversight and review as a control on AI system outputs before deployment or delivery."
+   },
+   "difficulty_prior": 0.63,
+   "id": "llm-prompting-014",
+   "status": "beta"
+  },
+  {
+   "concept": "context-window",
+   "stem": "In a long customer support chat session, an LLM stops following a formatting instruction given at the very start of the conversation after many turns, even though no new instruction contradicted it. What is the most likely cause?",
+   "options": [
+    "Temperature-driven randomness accumulates each turn until earlier instructions are ignored",
+    "The model automatically deprioritizes system instructions after a fixed number of turns",
+    "The earliest turns fell outside the context window and are no longer visible",
+    "The model's internal weights update in real time as the conversation continues"
+   ],
+   "answer": 2,
+   "explanation": "LLMs don't update weights during a conversation; they only see tokens within a fixed context window. Once early turns are pushed out, the instruction is no longer part of the input, so the model can't follow it.",
+   "grounding": {
+    "source": "Wikipedia — Large language model",
+    "note": "Describes the context window as the fixed-size token input a model can attend to at once."
+   },
+   "difficulty_prior": 0.45,
+   "id": "llm-prompting-015",
+   "status": "beta"
+  },
+  {
+   "concept": "few-shot-examples",
+   "stem": "A developer includes five few-shot examples in a prompt for sentiment classification, four of which are labeled 'positive'. The model then classifies ambiguous inputs as 'positive' far more often than expected. What is the most likely explanation?",
+   "options": [
+    "Few-shot examples influence only output formatting and cannot bias predicted labels",
+    "The model is anchoring on the skewed label distribution among the examples",
+    "Placing examples earlier in the prompt makes their labels irrelevant to later predictions",
+    "The model always needs an equal number of examples per class to function at all"
+   ],
+   "answer": 1,
+   "explanation": "Few-shot examples convey both format and content; when their labels are skewed, models exhibit majority-label bias, anchoring predictions toward the most frequent label regardless of the true input. This is a documented calibration issue in few-shot prompting.",
+   "grounding": {
+    "source": "Zhao et al. (2021), \"Calibrate Before Use: Improving Few-Shot Performance of Language Models\"",
+    "note": "Documents majority-label and recency bias caused by the label distribution of few-shot examples."
+   },
+   "difficulty_prior": 0.48,
+   "id": "llm-prompting-016",
+   "status": "beta"
+  },
+  {
+   "concept": "prompt-structure",
+   "stem": "A support tool inserts raw customer-submitted text directly into an LLM prompt alongside system instructions, with no delimiters or labels separating the two. What risk does this prompt structure primarily create?",
+   "options": [
+    "The LLM will automatically truncate the customer text to protect the system instructions",
+    "The model's temperature setting will increase to compensate for the ambiguous input",
+    "The customer text may be read as new instructions, enabling prompt injection",
+    "The prompt will exceed the context window regardless of the customer text's length"
+   ],
+   "answer": 2,
+   "explanation": "Without delimiters separating instructions from untrusted input, text submitted by users can be interpreted as commands, letting it override the system prompt — a prompt injection vulnerability. Clear structural separation mitigates this risk.",
+   "grounding": {
+    "source": "OWASP Top 10 for LLM Applications",
+    "note": "LLM01: Prompt Injection — risk of untrusted input being interpreted as instructions."
+   },
+   "difficulty_prior": 0.42,
+   "id": "llm-prompting-017",
+   "status": "beta"
+  },
+  {
+   "concept": "retrieval-augmented-generation",
+   "stem": "A company implements retrieval-augmented generation so its LLM cites retrieved documents when answering questions. Despite this, the model sometimes states facts that appear in no retrieved document. What does this indicate about RAG?",
+   "options": [
+    "The model is not using retrieval at all in this case",
+    "RAG has failed completely and should be replaced by fine-tuning",
+    "RAG reduces hallucination but doesn't eliminate it, since parametric knowledge remains",
+    "The retrieved documents must be corrupted, since retrieval always prevents hallucination entirely"
+   ],
+   "answer": 2,
+   "explanation": "Retrieval narrows but doesn't force the model to rely solely on retrieved text; it can still generate content from parametric knowledge, so hallucination is reduced, not eliminated. Grounding prompts or citation checks add further mitigation.",
+   "grounding": {
+    "source": "Lewis et al. (2020), \"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks\"",
+    "note": "Introduces RAG and notes generation is grounded by retrieval but not strictly constrained to it."
+   },
+   "difficulty_prior": 0.5,
+   "id": "llm-prompting-018",
+   "status": "beta"
+  },
+  {
+   "concept": "finetuning-vs-prompting-vs-rag",
+   "stem": "A company has 50,000 labeled examples for a nuanced internal classification task that is hard to describe in instructions, and the categories rarely change. Few-shot prompting accuracy has plateaued. Which approach is most appropriate?",
+   "options": [
+    "Increase the temperature to let the model explore more possible classifications",
+    "Fine-tune the model on the labeled data to internalize the pattern",
+    "Add all 50,000 examples as few-shot examples within a single prompt",
+    "Switch to RAG so the model retrieves relevant labeled examples at inference time"
+   ],
+   "answer": 1,
+   "explanation": "With a large, stable, hard-to-articulate labeled dataset, fine-tuning bakes the pattern into model weights, surpassing what few-shot prompting can hold in context. RAG suits retrieving discrete facts, not internalizing a nuanced classification skill.",
+   "grounding": {
+    "source": "OpenAI Platform Documentation — Fine-tuning guide",
+    "note": "Recommends fine-tuning over few-shot prompting when a large labeled dataset captures a stable, hard-to-specify pattern."
+   },
+   "difficulty_prior": 0.47,
+   "id": "llm-prompting-019",
+   "status": "beta"
+  },
+  {
+   "concept": "prompt-structure",
+   "stem": "A prompt includes a lengthy reference document followed by a specific question about it. According to standard long-context prompting guidance, where should the question be placed relative to the document for the most reliable results?",
+   "options": [
+    "After the document, near the end of the prompt",
+    "Before the document, at the very start of the prompt",
+    "Repeated both before and after an identical number of times",
+    "Position makes no measurable difference to model performance"
+   ],
+   "answer": 0,
+   "explanation": "Placing the instruction after long reference material improves adherence because models weight content near the end of the prompt more heavily during generation; long-context prompting guides recommend documents first, instructions last.",
+   "grounding": {
+    "source": "Anthropic prompt engineering documentation (long context tips)",
+    "note": "Recommends placing long documents above instructions or questions for more reliable results."
+   },
+   "difficulty_prior": 0.3,
+   "id": "llm-prompting-020",
+   "status": "beta"
+  },
+  {
+   "concept": "context-window",
+   "stem": "A model is given a lengthy document that fits well within its context window. It reliably uses facts stated near the beginning and end of the document but frequently misses one stated only in the middle. What best explains this?",
+   "options": [
+    "It reflects a known bias: mid-context facts are recalled less reliably",
+    "The document silently exceeded the context window and got truncated",
+    "The temperature setting was too high, causing random factual omissions",
+    "Few-shot examples are required for the model to parse long documents"
+   ],
+   "answer": 0,
+   "explanation": "This 'lost in the middle' effect means models attend most reliably to the start and end of long contexts, even when a document fully fits within the window; fitting is necessary but not sufficient for reliable recall.",
+   "grounding": {
+    "source": "Liu et al., \"Lost in the Middle: How Language Models Use Long Contexts\" (2023)",
+    "note": "Shows empirically that models recall information from the middle of long contexts less reliably than from the start or end."
+   },
+   "difficulty_prior": 0.3,
+   "id": "llm-prompting-021",
+   "status": "beta"
+  },
+  {
+   "concept": "temperature-sampling",
+   "stem": "An engineer sets an LLM's temperature to 0, expecting fully identical outputs for the same prompt on every call, but occasionally observes small differences in wording. What best explains this?",
+   "options": [
+    "Floating-point and backend nondeterminism can cause slight variation even at temperature 0",
+    "Temperature 0 only constrains the first token; later tokens still sample randomly",
+    "The API automatically applies a new random seed on every call",
+    "Minor wording changes in the prompt were introduced automatically by the API"
+   ],
+   "answer": 0,
+   "explanation": "Temperature 0 makes token selection greedy but does not guarantee bit-for-bit determinism; floating-point arithmetic, batching, and parallel hardware execution can introduce tiny numerical differences that occasionally flip the top token choice.",
+   "grounding": {
+    "source": "OpenAI API documentation, reproducibility and determinism notes",
+    "note": "Notes that temperature 0 is not guaranteed to be fully deterministic due to system-level nondeterminism."
+   },
+   "difficulty_prior": 0.35,
+   "id": "llm-prompting-022",
+   "status": "beta"
+  },
+  {
+   "concept": "hallucination-causes-mitigations",
+   "stem": "A developer instructs an LLM to 'always include a citation for every factual claim,' hoping this prevents hallucination. Testing reveals the model sometimes fabricates plausible-looking but nonexistent citations. What does this best illustrate?",
+   "options": [
+    "Asking for citations does not ground the model in real evidence",
+    "Citations prove the model retrieved and verified each source",
+    "This kind of fabrication only occurs in smaller, less capable models",
+    "Fabricated citations indicate the temperature setting was misconfigured"
+   ],
+   "answer": 0,
+   "explanation": "Prompting for citations does not connect the model to real documents; without retrieval, it can generate citations that look authentic but do not exist, since fluent text is not the same as verified fact.",
+   "grounding": {
+    "source": "Ji et al., \"Survey of Hallucination in Natural Language Generation\" (2023)",
+    "note": "Explains hallucination arises from generation disconnected from verified sources, not merely from missing surface instructions."
+   },
+   "difficulty_prior": 0.35,
+   "id": "llm-prompting-023",
+   "status": "beta"
+  },
+  {
+   "concept": "evaluating-and-responsible-use",
+   "stem": "A team uses a strong LLM to automatically grade another LLM's summaries instead of relying only on human review. Which limitation is this 'LLM-as-judge' evaluation approach most known to have?",
+   "options": [
+    "It tends to favor longer, more verbose responses regardless of quality",
+    "It shows no favoritism toward answers from its own model family",
+    "It judges reasoning and math tasks as reliably as writing style",
+    "It rates responses independently of the order in which they appear"
+   ],
+   "answer": 0,
+   "explanation": "LLM judges exhibit documented biases: they favor longer, more verbose outputs regardless of quality, and are also known for self-enhancement and position biases, unlike the false alternatives listed here.",
+   "grounding": {
+    "source": "Zheng et al., \"Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena\" (2023)",
+    "note": "Identifies verbosity bias, self-enhancement bias, and position bias in LLM-as-judge evaluation setups."
+   },
+   "difficulty_prior": 0.4,
+   "id": "llm-prompting-024",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

@@ -446,6 +446,196 @@
    "difficulty_prior": 0.4,
    "id": "ml-fundamentals-019",
    "status": "beta"
+  },
+  {
+   "concept": "classification-vs-regression",
+   "stem": "A logistics company builds a model to predict which of four shipping delay categories (none, minor, moderate, severe) a package will fall into, based on route and weather data. Which best describes this task?",
+   "options": [
+    "Regression, because delay severity follows a natural numeric order",
+    "Classification, because the target is one of four discrete labels",
+    "Unsupervised learning, because the categories were chosen by an analyst",
+    "Regression, because the delay itself is a continuous time value"
+   ],
+   "answer": 1,
+   "explanation": "The target variable is a fixed set of discrete labels, so predicting it is classification even though the categories are ordered or derived from an underlying continuous delay time.",
+   "grounding": {
+    "source": "Statistical classification (Wikipedia)",
+    "note": "Defines classification as predicting discrete class labels, distinct from regression's continuous outputs."
+   },
+   "difficulty_prior": 0.5,
+   "id": "ml-fundamentals-020",
+   "status": "beta"
+  },
+  {
+   "concept": "bias-variance-tradeoff",
+   "stem": "A data science team notices that averaging the predictions of many decision trees, each trained on a different bootstrap sample of the same data, produces a model with similar bias but noticeably lower prediction variance than any single tree. Why?",
+   "options": [
+    "Averaging cancels out uncorrelated errors made by individual overfit trees",
+    "Averaging increases each tree's flexibility, reducing bias further",
+    "Averaging works because each tree makes highly correlated errors that reinforce each other",
+    "Averaging eliminates the model's bias entirely, leaving only variance"
+   ],
+   "answer": 0,
+   "explanation": "Each tree overfits differently on its own bootstrap sample; because their errors are largely uncorrelated (not correlated), averaging cancels noise and lowers variance while leaving bias roughly unchanged.",
+   "grounding": {
+    "source": "Bootstrap aggregating (Wikipedia)",
+    "note": "Explains why bagging reduces variance without materially changing bias."
+   },
+   "difficulty_prior": 0.3,
+   "id": "ml-fundamentals-021",
+   "status": "beta"
+  },
+  {
+   "concept": "cross-validation",
+   "stem": "A researcher evaluates a model using 10-fold cross-validation and finds accuracy ranges from 65% to 92% across folds. What does this large spread most likely indicate?",
+   "options": [
+    "The model's performance estimate is unstable across different data subsets",
+    "The model is definitely underfitting the data",
+    "The cross-validation procedure was implemented incorrectly",
+    "The model's average accuracy can be trusted regardless of the spread"
+   ],
+   "answer": 0,
+   "explanation": "A wide range across folds signals high variance in the performance estimate itself, often from a small or noisy dataset or an unstable model; the average alone hides this instability.",
+   "grounding": {
+    "source": "Cross-validation (statistics) (Wikipedia)",
+    "note": "Notes that fold-to-fold variance reveals estimate stability, not just central tendency."
+   },
+   "difficulty_prior": 0.4,
+   "id": "ml-fundamentals-022",
+   "status": "beta"
+  },
+  {
+   "concept": "overfitting-underfitting",
+   "stem": "A decision tree grown to full depth achieves 99% training accuracy but 71% test accuracy. After limiting the maximum depth, training accuracy drops to 90% but test accuracy rises to 85%. What does this trade-off illustrate?",
+   "options": [
+    "Limiting depth reduced overfitting, improving generalization to new data",
+    "Limiting depth caused underfitting, so the constrained tree is worse overall",
+    "The full-depth tree is preferable since it has higher training accuracy",
+    "Limiting depth improved training accuracy, which explains the higher test accuracy"
+   ],
+   "answer": 0,
+   "explanation": "Constraining depth simplifies the model, trading some fit to training noise for better generalization; higher training accuracy alone, as in the full-depth tree, does not indicate better real-world performance.",
+   "grounding": {
+    "source": "Overfitting (Wikipedia)",
+    "note": "Describes how limiting model complexity trades training fit for generalization."
+   },
+   "difficulty_prior": 0.4,
+   "id": "ml-fundamentals-023",
+   "status": "beta"
+  },
+  {
+   "concept": "train-test-split",
+   "stem": "Before splitting data into training and test sets, a data scientist scales all features using the mean and standard deviation computed from the entire dataset. Why is this problematic?",
+   "options": [
+    "It leaks test-set information into training, inflating test performance estimates",
+    "It makes the model unable to generalize to any new data",
+    "It has no effect, since scaling is preprocessing, not model training",
+    "It causes underfitting by removing meaningful variance in the features"
+   ],
+   "answer": 0,
+   "explanation": "Scaling using statistics from the full dataset lets test-set information influence preprocessing; even though scaling isn't model training itself, the test set no longer represents truly unseen data, so evaluation becomes overly optimistic.",
+   "grounding": {
+    "source": "Data leakage (machine learning) (Wikipedia)",
+    "note": "Covers preprocessing leakage from fitting transformations on data that includes the test set."
+   },
+   "difficulty_prior": 0.35,
+   "id": "ml-fundamentals-024",
+   "status": "beta"
+  },
+  {
+   "concept": "bias-variance-tradeoff",
+   "stem": "A team adds many additional input features and increases a model's complexity to drive training error close to zero, but error on new, unseen data rises sharply. What best explains this pattern?",
+   "options": [
+    "The model's bias increased, so it misses real patterns",
+    "The model's variance increased, so it fits training-set noise",
+    "Training and test data were drawn from different populations",
+    "The learning rate was too low, slowing convergence"
+   ],
+   "answer": 1,
+   "explanation": "Adding complexity typically lowers bias but raises variance, so the model fits noise in the training set rather than generalizable patterns; test error rises even as training error keeps improving. Increased bias would instead cause underfitting, not this pattern.",
+   "grounding": {
+    "source": "Bias–variance tradeoff (Wikipedia)",
+    "note": "Explains how increasing model flexibility trades reduced bias for increased variance, worsening generalization."
+   },
+   "difficulty_prior": 0.45,
+   "id": "ml-fundamentals-025",
+   "status": "beta"
+  },
+  {
+   "concept": "cross-validation",
+   "stem": "A data scientist evaluates two models using a single 80/20 train/test split and selects the one with higher test accuracy. A colleague argues this comparison may be unreliable. What is the colleague's strongest justification?",
+   "options": [
+    "Results depend heavily on which examples land in the test set",
+    "A random split guarantees the same class balance in train and test sets",
+    "The 80/20 ratio is the only valid way to split data for comparison",
+    "A single split always favors the more complex model"
+   ],
+   "answer": 0,
+   "explanation": "A single split's accuracy is sensitive to which examples happen to fall in the test set, so an apparent difference may be due to chance. Random splits do not guarantee matching class balance, and no split ratio or model type is inherently favored.",
+   "grounding": {
+    "source": "Cross-validation (statistics) (Wikipedia)",
+    "note": "Documents why repeated resampling gives a more stable performance estimate than one fixed split."
+   },
+   "difficulty_prior": 0.35,
+   "id": "ml-fundamentals-026",
+   "status": "beta"
+  },
+  {
+   "concept": "validation-set",
+   "stem": "A team trains a neural network and tracks error on a held-out validation set after each epoch, stopping as soon as validation error starts rising even though training error keeps falling. What is this technique guarding against?",
+   "options": [
+    "Underfitting caused by too few training epochs",
+    "Overfitting caused by fitting training-set noise",
+    "Data leakage between the training and test sets",
+    "Class imbalance in the training data"
+   ],
+   "answer": 1,
+   "explanation": "Rising validation error while training error keeps improving signals the model is fitting noise specific to the training set rather than general patterns; training error alone cannot reveal this, since it keeps improving regardless.",
+   "grounding": {
+    "source": "Early stopping (Wikipedia)",
+    "note": "Describes monitoring a validation set to halt training before the model overfits."
+   },
+   "difficulty_prior": 0.45,
+   "id": "ml-fundamentals-027",
+   "status": "beta"
+  },
+  {
+   "concept": "classification-vs-regression",
+   "stem": "A hospital wants to predict a patient's length of stay in days, an integer with many possible values. A junior analyst proposes treating this as classification with one class per day count. What is the main drawback versus regression?",
+   "options": [
+    "Classification cannot handle a target with this many possible values",
+    "It ignores the natural ordering and closeness between day counts",
+    "Classification requires far more computing power than regression",
+    "It cannot be evaluated using standard accuracy metrics"
+   ],
+   "answer": 1,
+   "explanation": "Treating each day count as an unrelated class discards the fact that 5 and 6 days are far more similar than 5 and 50; regression preserves this ordering. Classification can technically handle many classes, just inefficiently.",
+   "grounding": {
+    "source": "Ordinal regression (Wikipedia)",
+    "note": "Explains why numeric/ordered outcomes lose meaningful structure when forced into unordered classification categories."
+   },
+   "difficulty_prior": 0.3,
+   "id": "ml-fundamentals-028",
+   "status": "beta"
+  },
+  {
+   "concept": "supervised-learning",
+   "stem": "A company has staff manually tag 2,000 customer reviews as positive or negative, then trains a model on these tagged examples to predict sentiment for millions of untagged reviews. Which learning paradigm does this describe?",
+   "options": [
+    "Unsupervised learning, since most reviews remain unlabeled",
+    "Supervised learning, learning from labeled examples to predict outcomes",
+    "Reinforcement learning, since the model improves through trial and error",
+    "Clustering, since reviews are grouped by similarity"
+   ],
+   "answer": 1,
+   "explanation": "The model is trained on inputs paired with known labels and then predicts labels for new inputs — the defining structure of supervised learning, even though most of the overall dataset is never labeled.",
+   "grounding": {
+    "source": "Supervised learning (Wikipedia)",
+    "note": "Defines supervised learning as training on labeled input-output pairs to predict outputs for new inputs."
+   },
+   "difficulty_prior": 0.55,
+   "id": "ml-fundamentals-029",
+   "status": "beta"
   }
  ],
  "generated": "claude sonnet draft+verify, pending human review"

@@ -1,0 +1,452 @@
+{
+ "id": "bayesian-thinking",
+ "concepts": [
+  {
+   "id": "prior-probability",
+   "label": "Prior probability",
+   "definition": "A prior is your belief about how likely something is before seeing new evidence.",
+   "prereq": null,
+   "x": 50,
+   "y": 38
+  },
+  {
+   "id": "likelihood-evidence",
+   "label": "Likelihood of evidence",
+   "definition": "Likelihood measures how probable the observed evidence is under a given hypothesis.",
+   "prereq": "prior-probability",
+   "x": 130,
+   "y": 38
+  },
+  {
+   "id": "bayes-theorem-update",
+   "label": "Bayes' theorem updating",
+   "definition": "Bayes' theorem combines a prior with new evidence to produce an updated belief, the posterior.",
+   "prereq": "likelihood-evidence",
+   "x": 210,
+   "y": 38
+  },
+  {
+   "id": "posterior-distribution",
+   "label": "Posterior distribution",
+   "definition": "The posterior is the full updated probability distribution over possible values after incorporating evidence.",
+   "prereq": "bayes-theorem-update",
+   "x": 290,
+   "y": 38
+  },
+  {
+   "id": "base-rate-neglect",
+   "label": "Base-rate neglect",
+   "definition": "Base-rate neglect is the common error of ignoring how rare or common something is beforehand when judging new evidence.",
+   "prereq": "bayes-theorem-update",
+   "x": 50,
+   "y": 112
+  },
+  {
+   "id": "credible-vs-confidence",
+   "label": "Credible vs confidence intervals",
+   "definition": "A credible interval states the probability the true value lies within a range, unlike a confidence interval which describes long-run procedure behavior.",
+   "prereq": "posterior-distribution",
+   "x": 130,
+   "y": 112
+  },
+  {
+   "id": "bayes-factors",
+   "label": "Bayes factors",
+   "definition": "A Bayes factor compares how much better one hypothesis explains the evidence relative to another, quantifying the strength of that evidence.",
+   "prereq": "posterior-distribution",
+   "x": 210,
+   "y": 112
+  },
+  {
+   "id": "bayesian-vs-frequentist",
+   "label": "Bayesian vs frequentist framing",
+   "definition": "Choosing between Bayesian and frequentist approaches depends on whether you need to directly express uncertainty about parameters or control long-run error rates.",
+   "prereq": "bayes-factors",
+   "x": 290,
+   "y": 112
+  }
+ ],
+ "items": [
+  {
+   "concept": "base-rate-neglect",
+   "stem": "A rare disease affects 1 in 1,000 people. A screening test is 99% accurate. An employee tests positive and assumes they almost certainly have the disease. What error underlies this reasoning?",
+   "options": [
+    "Ignoring the low base rate of the disease in the population",
+    "Overestimating the test's sensitivity relative to its specificity",
+    "Confusing a one-tailed test with a two-tailed test",
+    "Assuming the sample size was too small to trust results"
+   ],
+   "answer": 0,
+   "explanation": "Because the disease is rare, most positives come from the many healthy people the test occasionally misclassifies, not from true cases; ignoring this base rate inflates the perceived probability of illness.",
+   "grounding": {
+    "source": "Wikipedia: Base rate fallacy",
+    "note": "Explains how neglecting population base rates distorts probability judgments in diagnostic-style problems."
+   },
+   "difficulty_prior": 0.75,
+   "id": "bayesian-thinking-000",
+   "status": "beta"
+  },
+  {
+   "concept": "bayes-theorem-update",
+   "stem": "A quality manager believes a machine's defect rate is 5%. After inspecting a new batch and finding an unusually high number of defects, how should the manager update this belief using Bayesian reasoning?",
+   "options": [
+    "Revise the estimated defect rate upward, weighting the prior against the new evidence",
+    "Discard the prior belief entirely and rely only on the new batch's data",
+    "Keep the original 5% estimate since one batch cannot be trusted",
+    "Average the prior with the new evidence using equal fixed weights always"
+   ],
+   "answer": 0,
+   "explanation": "Bayesian updating combines the prior with the likelihood of the new evidence, shifting the belief toward what the data suggests without discarding prior knowledge or ignoring the new information.",
+   "grounding": {
+    "source": "Wikipedia: Bayes' theorem",
+    "note": "Describes how a prior is combined with observed evidence to produce an updated posterior belief."
+   },
+   "difficulty_prior": 0.8,
+   "id": "bayesian-thinking-001",
+   "status": "beta"
+  },
+  {
+   "concept": "credible-vs-confidence",
+   "stem": "A Bayesian analysis reports a 95% credible interval for a conversion rate of [2%, 6%]. What is the correct interpretation of this interval?",
+   "options": [
+    "There's a 95% probability the true rate lies in [2%, 6%], given the data",
+    "If the study were repeated many times, 95% of such intervals would contain the true rate",
+    "There is a 95% chance the observed conversion rate itself falls in this range",
+    "The true rate is guaranteed to lie between 2% and 6% with no uncertainty"
+   ],
+   "answer": 0,
+   "explanation": "A credible interval directly states the probability the parameter lies in that range given the data and prior; the long-run repeated-sampling coverage claim instead describes a frequentist confidence interval.",
+   "grounding": {
+    "source": "Wikipedia: Credible interval",
+    "note": "Contrasts the direct probability statement of a credible interval with the frequentist confidence interval."
+   },
+   "difficulty_prior": 0.65,
+   "id": "bayesian-thinking-002",
+   "status": "beta"
+  },
+  {
+   "concept": "bayes-factors",
+   "stem": "A researcher computes a Bayes factor of 12 favoring Hypothesis A over Hypothesis B after collecting new data. What does this value indicate?",
+   "options": [
+    "The data are 12 times more likely under Hypothesis A than Hypothesis B",
+    "Hypothesis A has a 12% higher probability of being true than Hypothesis B",
+    "Hypothesis A will replicate successfully 12 times more often than Hypothesis B",
+    "The p-value for Hypothesis A is 12 times smaller than for Hypothesis B"
+   ],
+   "answer": 0,
+   "explanation": "A Bayes factor is a likelihood ratio comparing how well two hypotheses predict the observed data, not a direct statement about probabilities, replication rates, or p-values.",
+   "grounding": {
+    "source": "Wikipedia: Bayes factor",
+    "note": "Defines the Bayes factor as a ratio of the likelihood of the data under competing hypotheses."
+   },
+   "difficulty_prior": 0.6,
+   "id": "bayesian-thinking-003",
+   "status": "beta"
+  },
+  {
+   "concept": "bayesian-vs-frequentist",
+   "stem": "A forecaster has only three months of sales data for a new product but strong industry knowledge about typical launch patterns. Why might a Bayesian approach suit this situation better than a purely frequentist one?",
+   "options": [
+    "It combines prior industry knowledge with the limited new data already collected",
+    "It requires no assumptions about the underlying probability distribution at all",
+    "It guarantees more accurate forecasts regardless of how the prior is chosen",
+    "It removes the need to collect any additional sales data going forward"
+   ],
+   "answer": 0,
+   "explanation": "Bayesian methods formally incorporate prior knowledge alongside sparse data, which helps early on; frequentist methods rely mainly on the observed sample without a mechanism for adding prior information.",
+   "grounding": {
+    "source": "Wikipedia: Bayesian probability",
+    "note": "Explains how Bayesian inference incorporates prior knowledge as a formal component of the analysis."
+   },
+   "difficulty_prior": 0.82,
+   "id": "bayesian-thinking-004",
+   "status": "beta"
+  },
+  {
+   "concept": "prior-probability",
+   "stem": "Before launching a new product line, a strategist sets an initial estimate of its success probability based on outcomes of similar past launches, without yet observing any sales data. In Bayesian terms, this initial estimate is the:",
+   "options": [
+    "prior — the belief held before observing new data",
+    "posterior — the belief updated after observing new data",
+    "likelihood — the chance of observing the data given a hypothesis",
+    "p-value — the probability of data as extreme under the null hypothesis"
+   ],
+   "answer": 0,
+   "explanation": "The prior represents belief before new evidence; it gets combined with the likelihood of new data to produce the posterior once sales figures arrive.",
+   "grounding": {
+    "source": "Wikipedia: Prior probability",
+    "note": "Defines a prior as the probability distribution reflecting belief before evidence is observed."
+   },
+   "difficulty_prior": 0.65,
+   "id": "bayesian-thinking-005",
+   "status": "beta"
+  },
+  {
+   "concept": "likelihood-evidence",
+   "stem": "A clinical researcher asks: 'Assuming the new drug has no effect, what is the probability of observing this exact pattern of patient improvements?' This question is evaluating which Bayesian quantity?",
+   "options": [
+    "The likelihood — probability of the observed data given a hypothesis",
+    "The prior — probability of the hypothesis before data",
+    "The posterior — probability of the hypothesis after data",
+    "The base rate — prevalence of the condition in the population"
+   ],
+   "answer": 0,
+   "explanation": "Likelihood measures how probable the observed data is under a specific hypothesis; it is one input Bayes' theorem combines with the prior to form the posterior.",
+   "grounding": {
+    "source": "Wikipedia: Likelihood function",
+    "note": "Describes likelihood as the probability of observed data given parameter values or hypotheses."
+   },
+   "difficulty_prior": 0.55,
+   "id": "bayesian-thinking-006",
+   "status": "beta"
+  },
+  {
+   "concept": "posterior-distribution",
+   "stem": "An analyst starts with a prior belief about a website's true click-through rate, then observes a week of visitor data. Combining the prior with this new evidence produces an updated distribution called the:",
+   "options": [
+    "posterior distribution — the updated belief after combining prior and data",
+    "likelihood function — the probability of data under a hypothesis",
+    "sampling distribution — the spread of a statistic across repeated samples",
+    "null distribution — the spread of outcomes expected if there is no effect"
+   ],
+   "answer": 0,
+   "explanation": "The posterior distribution is the full updated probability distribution over possible values after incorporating new evidence, distinct from a single point estimate or the likelihood alone.",
+   "grounding": {
+    "source": "Wikipedia: Posterior probability",
+    "note": "Defines the posterior distribution as the updated probability distribution after conditioning on observed data."
+   },
+   "difficulty_prior": 0.6,
+   "id": "bayesian-thinking-007",
+   "status": "beta"
+  },
+  {
+   "concept": "bayes-theorem-update",
+   "stem": "A hiring manager initially thinks a candidate has a 40% chance of succeeding in the role. After a strong interview performance, Bayesian reasoning says the manager should update this estimate by:",
+   "options": [
+    "combining the 40% prior with the interview evidence into a posterior",
+    "discarding the 40% prior and relying solely on the interview result",
+    "keeping the 40% estimate fixed since one interview is anecdotal",
+    "averaging the 40% prior with the interview outcome using fixed equal weights"
+   ],
+   "answer": 0,
+   "explanation": "Bayesian updating multiplies the prior by the likelihood of the new evidence to yield a posterior; it neither discards the prior nor treats new data with an arbitrary fixed weight.",
+   "grounding": {
+    "source": "Wikipedia: Bayes' theorem",
+    "note": "Describes how a prior is combined with the likelihood of new evidence to compute a posterior probability."
+   },
+   "difficulty_prior": 0.62,
+   "id": "bayesian-thinking-008",
+   "status": "beta"
+  },
+  {
+   "concept": "bayesian-vs-frequentist",
+   "stem": "A pharmaceutical team wants to state the probability that a drug's true effect size falls within a specific range, using existing trial data as a prior. Which analytical framework directly supports this kind of probability statement?",
+   "options": [
+    "Bayesian framework, since it assigns probabilities directly to parameter values",
+    "Frequentist framework, since it treats parameters as fixed unknown constants",
+    "Bootstrap resampling, since it requires no distributional assumptions",
+    "Maximum likelihood estimation, since it ignores prior information entirely"
+   ],
+   "answer": 0,
+   "explanation": "Only the Bayesian framework treats parameters as random variables with probability distributions, allowing direct statements such as an 80% probability the effect lies in a range, unlike frequentist long-run methods.",
+   "grounding": {
+    "source": "Wikipedia: Bayesian inference",
+    "note": "Contrasts Bayesian probability statements about parameters with frequentist long-run frequency interpretations."
+   },
+   "difficulty_prior": 0.57,
+   "id": "bayesian-thinking-009",
+   "status": "beta"
+  },
+  {
+   "concept": "likelihood-evidence",
+   "stem": "A data scientist notices a spike in server errors that is far more probable if a recent deployment introduced a bug than if the system were working normally. This probability of the evidence under each explanation is known in Bayesian terms as the:",
+   "options": [
+    "Base rate",
+    "Posterior probability",
+    "Likelihood",
+    "Prior probability"
+   ],
+   "answer": 2,
+   "explanation": "Likelihood is the probability of the observed evidence under each competing hypothesis. It differs from the prior (belief before evidence) and the posterior (updated belief after combining prior and likelihood).",
+   "grounding": {
+    "source": "Bayes' theorem (Wikipedia)",
+    "note": "The likelihood function P(evidence|hypothesis) is a distinct core term in Bayes' theorem, separate from prior and posterior probabilities."
+   },
+   "difficulty_prior": 0.45,
+   "id": "bayesian-thinking-010",
+   "status": "beta"
+  },
+  {
+   "concept": "posterior-distribution",
+   "stem": "A meteorologist holds a well-calibrated prior on regional annual rainfall built from fifty years of records. One unusual month's reading comes in far outside that historical norm. Relative to the prior, the updated posterior estimate will most likely:",
+   "options": [
+    "Move sharply toward the new reading, largely abandoning fifty years of prior evidence",
+    "Shift only slightly toward the new reading, since the long prior history dominates",
+    "Become far more uncertain than either the prior or the new reading alone",
+    "Stay exactly the same, since Bayesian estimates cannot be revised by new data"
+   ],
+   "answer": 1,
+   "explanation": "The posterior is a precision-weighted blend of prior and likelihood. When the prior reflects far more information (fifty years) than a single unusual month, it dominates and the posterior shifts only modestly.",
+   "grounding": {
+    "source": "Bayesian inference (Wikipedia)",
+    "note": "Posterior distribution is proportional to prior times likelihood, weighted by their relative informativeness."
+   },
+   "difficulty_prior": 0.5,
+   "id": "bayesian-thinking-011",
+   "status": "beta"
+  },
+  {
+   "concept": "base-rate-neglect",
+   "stem": "A recruiter finds that 90% of a company's top performers completed a certain certification course. She concludes the course is highly likely to turn any random employee into a top performer. This conclusion overlooks:",
+   "options": [
+    "The total number of employees surveyed when this pattern was noticed",
+    "The average tenure of employees currently working at the company",
+    "The overall base rate of top performers, not just course completers",
+    "The detailed content taught within the certification course itself"
+   ],
+   "answer": 2,
+   "explanation": "This is the base-rate fallacy: confusing P(certification | top performer) with P(top performer | certification). Without knowing how common top performers and course completers are overall, the reverse conditional cannot be inferred.",
+   "grounding": {
+    "source": "Base rate fallacy (Wikipedia)",
+    "note": "Describes the error of neglecting base rates when interpreting conditional probabilities in reverse."
+   },
+   "difficulty_prior": 0.42,
+   "id": "bayesian-thinking-012",
+   "status": "beta"
+  },
+  {
+   "concept": "bayes-factors",
+   "stem": "Two economists build competing models to explain a market anomaly. A Bayesian comparison yields a Bayes factor of 1.2 favoring Model A over Model B. This result means the evidence:",
+   "options": [
+    "Proves Model A is correct, so Model B should be discarded entirely",
+    "Barely favors Model A and is too weak to shift belief",
+    "Shows Model B is twelve times more probable than Model A",
+    "Cannot be interpreted unless each model's p-value is also known"
+   ],
+   "answer": 1,
+   "explanation": "Bayes factors near 1 indicate the data barely discriminate between hypotheses. Common interpretation scales, such as Kass and Raftery's, treat values below about 3 as weak or inconclusive evidence, not proof.",
+   "grounding": {
+    "source": "Bayes factor (Wikipedia)",
+    "note": "Kass-Raftery scale classifies Bayes factors between 1 and 3 as weak, not worth more than a bare mention."
+   },
+   "difficulty_prior": 0.48,
+   "id": "bayesian-thinking-013",
+   "status": "beta"
+  },
+  {
+   "concept": "bayesian-vs-frequentist",
+   "stem": "A startup wants to estimate a brand-new ad's click-through rate after only 40 impressions, but has rich historical data from dozens of similar past campaigns. Which approach best combines the sparse new data with this existing knowledge?",
+   "options": [
+    "Bayesian, because it formally combines prior knowledge with the limited new data",
+    "Frequentist, because it relies only on the new sample's observed frequency",
+    "Bayesian, because it ignores all prior information and treats outcomes as equally likely",
+    "Frequentist, because it always produces narrower intervals than Bayesian methods with small samples"
+   ],
+   "answer": 0,
+   "explanation": "Bayesian methods explicitly combine informative priors with new evidence, which suits small-sample estimation when relevant prior data exists; frequentist methods rely only on the current sample's frequencies.",
+   "grounding": {
+    "source": "Bayesian statistics (Wikipedia)",
+    "note": "Explains how prior distributions are combined with sample data, useful when sample sizes are small but priors are informative."
+   },
+   "difficulty_prior": 0.5,
+   "id": "bayesian-thinking-014",
+   "status": "beta"
+  },
+  {
+   "concept": "bayes-theorem-update",
+   "stem": "A fraud analyst has a 1% prior that a transaction is fraudulent. One model flags it (25% true-positive, 5% false-positive rate); an independent second model also flags it (40% true-positive, 8% false-positive rate). To combine both alerts into one posterior, the analyst should:",
+   "options": [
+    "Rely solely on whichever system shows the higher true-positive rate, ignoring the other",
+    "Average the true-positive rates of both independent systems into one shared posterior",
+    "Treat the first alert's posterior as the prior for the second update",
+    "Add both systems' posterior probabilities together and cap the total at 100%"
+   ],
+   "answer": 2,
+   "explanation": "Sequential Bayesian updating uses the first alert's posterior as the prior for the second, multiplying likelihood ratios under conditional independence. Averaging or summing the two systems' outputs instead double-counts or discards information, and ignoring one system wastes independent evidence.",
+   "grounding": {
+    "source": "Wikipedia: Bayes' theorem",
+    "note": "Describes sequential Bayesian updating, where the posterior from one round of evidence becomes the prior for the next."
+   },
+   "difficulty_prior": 0.32,
+   "id": "bayesian-thinking-015",
+   "status": "beta"
+  },
+  {
+   "concept": "credible-vs-confidence",
+   "stem": "Two analysts use identical clinical trial data to estimate a drug's true response rate, but start from different priors. Analyst A reports a 95% credible interval of [30%, 42%]; Analyst B reports [34%, 48%]. Why do their intervals differ despite using the same data?",
+   "options": [
+    "One analyst made a computational error, since identical data should force identical intervals",
+    "Different priors combined with the same data yield different posteriors and intervals",
+    "Confidence intervals would also differ this much under different priors, unlike credible intervals",
+    "The intervals imply the analysts actually used different underlying sample sizes"
+   ],
+   "answer": 1,
+   "explanation": "A credible interval comes from the posterior, which combines the shared likelihood with each analyst's own prior; different priors validly yield different posteriors and intervals from identical data. A frequentist confidence interval, by contrast, does not depend on any prior.",
+   "grounding": {
+    "source": "Wikipedia: Credible interval",
+    "note": "Notes that credible intervals depend on the choice of prior, unlike frequentist confidence intervals."
+   },
+   "difficulty_prior": 0.35,
+   "id": "bayesian-thinking-016",
+   "status": "beta"
+  },
+  {
+   "concept": "bayes-factors",
+   "stem": "A researcher finds a Bayes factor strongly favoring the null hypothesis, yet a classical p-value from the same data falls below 0.01, appearing to reject that same null. What best explains this apparent conflict?",
+   "options": [
+    "The p-value must be miscalculated, since it contradicts the Bayes factor's conclusion",
+    "Bayes factors and p-values always agree once the sample size passes about 100",
+    "A Bayes factor favoring the null is invalid whenever the p-value is significant",
+    "A diffuse prior spreads probability over unobserved values, penalizing the alternative hypothesis"
+   ],
+   "answer": 3,
+   "explanation": "This is Lindley's paradox: a diffuse prior spreads probability across many parameter values distant from what was observed, penalizing the alternative even when a p-value flags the same data as significant, so the two measures can validly disagree.",
+   "grounding": {
+    "source": "Wikipedia: Lindley's paradox",
+    "note": "Explains how a diffuse prior can cause a Bayes factor to favor the null even when a p-value indicates significance."
+   },
+   "difficulty_prior": 0.27,
+   "id": "bayesian-thinking-017",
+   "status": "beta"
+  },
+  {
+   "concept": "base-rate-neglect",
+   "stem": "A cybersecurity analyst learns that 95% of known malware samples exhibit a specific network signature. Upon seeing that signature in a new file, she declares the file is 95% likely to be malware. Which piece of missing information causes this error?",
+   "options": [
+    "The number of malware samples originally used to build the signature database",
+    "The share of all files, benign included, that carry the same signature",
+    "The exact date the signature database was most recently updated",
+    "The average file size among samples containing the signature"
+   ],
+   "answer": 1,
+   "explanation": "Inferring P(malware|signature) from P(signature|malware) alone reverses the conditional and ignores the base rate — how common the signature is among benign files. Without that share, the true posterior probability of malware given the signature cannot be computed.",
+   "grounding": {
+    "source": "Wikipedia: Base rate fallacy",
+    "note": "Describes the error of inferring P(hypothesis|evidence) from P(evidence|hypothesis) without accounting for the base rate."
+   },
+   "difficulty_prior": 0.33,
+   "id": "bayesian-thinking-018",
+   "status": "beta"
+  },
+  {
+   "concept": "bayesian-vs-frequentist",
+   "stem": "A researcher checks A/B test results daily and stops as soon as the frequentist p-value first drops below 0.05, well before the planned sample size. A colleague argues this invalidates the frequentist result but not a Bayesian analysis of the same data. Why?",
+   "options": [
+    "Bayesian methods cannot be applied at all to sequentially collected data",
+    "Frequentist p-values are unaffected by when the researcher decides to stop",
+    "Bayesian inference conditions on the data observed, not on why sampling stopped",
+    "Bayesian posteriors become invalid once sampling extends past the planned sample size"
+   ],
+   "answer": 2,
+   "explanation": "Frequentist error rates depend on the stopping rule, so repeated peeking inflates the true Type I error rate. Bayesian inference obeys the likelihood principle, conditioning only on data actually observed, so it remains valid regardless of why sampling stopped.",
+   "grounding": {
+    "source": "Wikipedia: Likelihood principle",
+    "note": "States that inference under the likelihood principle (including Bayesian inference) does not depend on the stopping rule, unlike frequentist error rates."
+   },
+   "difficulty_prior": 0.28,
+   "id": "bayesian-thinking-019",
+   "status": "beta"
+  }
+ ],
+ "generated": "claude sonnet draft+verify, pending human review"
+}

@@ -446,6 +446,196 @@
    "difficulty_prior": 0.35,
    "id": "descriptive-stats-019",
    "status": "beta"
+  },
+  {
+   "concept": "distribution-shape",
+   "stem": "A UX researcher records task completion times for 200 users and finds the distribution is bimodal, with clusters near 2 seconds and near 10 seconds, and an overall mean of 6 seconds. What does this mean best indicate?",
+   "options": [
+    "It shows that most users complete the task in around six seconds",
+    "It confirms that the underlying data follow a normal distribution",
+    "It falls between the clusters, representing neither group well",
+    "It predicts that the two clusters will converge as more users are sampled"
+   ],
+   "answer": 2,
+   "explanation": "In bimodal data, the mean often falls in a low-density gap between clusters, so it represents neither subgroup well; it neither implies normality nor predicts the clusters merging with more data.",
+   "grounding": {
+    "source": "Multimodal distribution (Wikipedia)",
+    "note": "Explains why a mean can be a poor summary for bimodal or multimodal data."
+   },
+   "difficulty_prior": 0.3,
+   "id": "descriptive-stats-020",
+   "status": "beta"
+  },
+  {
+   "concept": "standard-deviation",
+   "stem": "An analyst compares Stock A (mean price $8, SD $2) with Stock B (mean price $400, SD $40) to decide which is riskier per dollar invested. Why is comparing the raw standard deviations directly misleading?",
+   "options": [
+    "It can only be validly compared when both distributions are exactly normal",
+    "It requires that both stocks have identical historical sample sizes",
+    "It scales with price level, so a relative measure is needed",
+    "It becomes mathematically undefined whenever prices exceed a few hundred dollars"
+   ],
+   "answer": 2,
+   "explanation": "Standard deviation is expressed in the data's own units, so it grows with price level regardless of true relative risk; dividing by the mean (coefficient of variation) allows a fair comparison across scales.",
+   "grounding": {
+    "source": "Coefficient of variation (Wikipedia)",
+    "note": "CV normalizes standard deviation by the mean to compare variability across different scales."
+   },
+   "difficulty_prior": 0.35,
+   "id": "descriptive-stats-021",
+   "status": "beta"
+  },
+  {
+   "concept": "percentiles",
+   "stem": "A candidate scores at the 90th percentile on a verbal test and the 50th percentile on a math test. An assessor averages these two percentiles to report an overall 70th percentile score. Why is this invalid?",
+   "options": [
+    "The candidate actually performed below average overall, contradicting the 70th percentile",
+    "Percentile ranks are ordinal and test-specific, so averaging them is not valid",
+    "Percentiles under the 50th mark should count more heavily than higher ones",
+    "A 90th percentile always reflects a higher raw score than a 50th percentile"
+   ],
+   "answer": 1,
+   "explanation": "Percentiles rank a score within its own test's distribution and are ordinal, not equal-interval, so averaging two percentiles from different tests doesn't produce a mathematically valid combined percentile.",
+   "grounding": {
+    "source": "Percentile (Wikipedia)",
+    "note": "Percentiles are distribution-specific ordinal ranks, not values that can be linearly averaged."
+   },
+   "difficulty_prior": 0.35,
+   "id": "descriptive-stats-022",
+   "status": "beta"
+  },
+  {
+   "concept": "sampling-basics",
+   "stem": "A pollster quadruples the sample size from 400 to 1,600 respondents, expecting the margin of error to shrink to one-quarter of its original value. What actually happens to the margin of error?",
+   "options": [
+    "It shrinks to exactly one-quarter, matching the fourfold sample increase",
+    "It shrinks by roughly half, since error is proportional to 1/√n",
+    "It stays the same, since margin of error depends only on population size",
+    "It shrinks further only if sampling also switches to without-replacement"
+   ],
+   "answer": 1,
+   "explanation": "Margin of error is proportional to 1/√n. Quadrupling n multiplies the error by 1/√4 = 1/2, halving it rather than quartering it as linear intuition suggests.",
+   "grounding": {
+    "source": "Margin of error (Wikipedia)",
+    "note": "Margin of error scales with 1/√n, not linearly with sample size."
+   },
+   "difficulty_prior": 0.3,
+   "id": "descriptive-stats-023",
+   "status": "beta"
+  },
+  {
+   "concept": "correlation-vs-causation",
+   "stem": "A retailer notices that larger, more established stores tend to have both more loyalty-program signups and higher profit margins. It invests heavily in signup drives at smaller stores, but their margins do not improve. What does this best suggest?",
+   "options": [
+    "Signups do cause higher margins, but the effect takes longer than the trial period",
+    "The original correlation resulted from a data-entry error and should be recalculated",
+    "Higher margins directly cause more loyalty signups, so smaller stores were an inappropriate test group",
+    "A confounding factor, like store size or maturity, likely drove both signups and margins"
+   ],
+   "answer": 3,
+   "explanation": "Since larger, established stores already had both traits, size or maturity is a plausible confounder; boosting signups alone at smaller stores failing to raise margins weakens the case for direct causation.",
+   "grounding": {
+    "source": "Confounding (Wikipedia)",
+    "note": "A confounding variable can produce a correlation between two variables absent a direct causal link."
+   },
+   "difficulty_prior": 0.32,
+   "id": "descriptive-stats-024",
+   "status": "beta"
+  },
+  {
+   "concept": "standard-deviation",
+   "stem": "A logistics manager adds a flat $50 bonus to every employee's weekly paycheck to reflect a company-wide raise. Compared to the pay data before the bonus, the standard deviation of weekly pay afterward is...",
+   "options": [
+    "Unchanged, since adding a constant doesn't affect spread",
+    "Increased by exactly $50, matching the bonus amount",
+    "Decreased by $50, since bonuses reduce pay variability",
+    "Cannot be known without recalculating every employee's pay"
+   ],
+   "answer": 0,
+   "explanation": "Adding a constant to every value shifts the mean but leaves each value's deviation from the mean unchanged, so standard deviation stays the same. Only multiplying values rescales the SD.",
+   "grounding": {
+    "source": "Variance (Wikipedia)",
+    "note": "Variance and standard deviation are invariant under adding a constant to every data point (translation invariance)."
+   },
+   "difficulty_prior": 0.32,
+   "id": "descriptive-stats-025",
+   "status": "beta"
+  },
+  {
+   "concept": "distribution-shape",
+   "stem": "A restaurant analyst studies tip percentages and finds the distribution has two distinct peaks, one near 10% and another near 20%, with very few tips falling near 15%. Reporting only the mean tip percentage would most likely...",
+   "options": [
+    "Obscure that few customers actually tip near that value",
+    "Correctly represent the typical customer since means balance peaks",
+    "Confirm the data follows a normal distribution",
+    "Show that tipping behavior is heavily right-skewed"
+   ],
+   "answer": 0,
+   "explanation": "In a bimodal distribution, the mean can fall in a low-density region between the two peaks, so it fails to describe any actual typical customer, unlike in a single-peaked distribution.",
+   "grounding": {
+    "source": "Multimodal distribution (Wikipedia)",
+    "note": "For bimodal distributions, the mean may lie in a low-probability region and not represent a typical value."
+   },
+   "difficulty_prior": 0.3,
+   "id": "descriptive-stats-026",
+   "status": "beta"
+  },
+  {
+   "concept": "percentiles",
+   "stem": "A runner finishes a marathon at the 70th percentile within her age group but only the 40th percentile among all runners regardless of age. This pattern most likely indicates that...",
+   "options": [
+    "Her age group was slower than the full field",
+    "Her recorded finish time contains a measurement error",
+    "Percentiles cannot be compared across different reference groups",
+    "She actually finished faster than her age group results suggest"
+   ],
+   "answer": 0,
+   "explanation": "Percentile rank depends entirely on the reference group used. If her age group ran slower overall, she ranks higher among peers but lower against the full field, with no error involved.",
+   "grounding": {
+    "source": "Percentile (Wikipedia)",
+    "note": "Percentile rank is always relative to a specific reference distribution or population, not an absolute measure."
+   },
+   "difficulty_prior": 0.35,
+   "id": "descriptive-stats-027",
+   "status": "beta"
+  },
+  {
+   "concept": "sampling-basics",
+   "stem": "To estimate the average commute time for a city's workforce, an analyst surveys everyone waiting at one downtown train platform between 8 and 9 a.m. This approach is problematic mainly because...",
+   "options": [
+    "It overrepresents commuters using that mode at that hour",
+    "The sample size is too small to calculate a mean",
+    "Standard deviation cannot be computed from convenience samples",
+    "The median should have been used instead of the mean"
+   ],
+   "answer": 0,
+   "explanation": "This is a convenience sample tied to one time, place, and transport mode, so it systematically excludes commuters with different schedules or modes — a selection bias, not a size or statistic-choice issue.",
+   "grounding": {
+    "source": "Selection bias (Wikipedia)",
+    "note": "Convenience sampling from a narrow subgroup produces estimates that don't generalize to the full population."
+   },
+   "difficulty_prior": 0.3,
+   "id": "descriptive-stats-028",
+   "status": "beta"
+  },
+  {
+   "concept": "correlation-vs-causation",
+   "stem": "A survey finds that employees who take more vacation days report higher job satisfaction. A news article concludes that taking more vacation directly increases job satisfaction. Which explanation most challenges this conclusion?",
+   "options": [
+    "Higher satisfaction may lead employees to take more vacation",
+    "The survey's sample size was too small to be meaningful",
+    "The correlation coefficient reported was not statistically significant",
+    "Standard deviation of vacation days taken was unusually high"
+   ],
+   "answer": 0,
+   "explanation": "This describes reverse causation: job satisfaction, or a supportive employer behind it, may drive vacation access rather than vacation days causing the satisfaction — a classic correlation-causation confound.",
+   "grounding": {
+    "source": "Correlation does not imply causation (Wikipedia)",
+    "note": "Observed correlations may reflect reverse causation, where the presumed effect actually influences the presumed cause."
+   },
+   "difficulty_prior": 0.33,
+   "id": "descriptive-stats-029",
+   "status": "beta"
   }
  ],
  "generated": "claude sonnet draft+verify, pending human review"

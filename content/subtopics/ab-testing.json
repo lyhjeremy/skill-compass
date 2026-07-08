@@ -446,6 +446,196 @@
    "difficulty_prior": 0.4,
    "id": "ab-testing-019",
    "status": "beta"
+  },
+  {
+   "concept": "hypothesis-setup",
+   "stem": "A team is unsure whether a new pricing algorithm will increase or decrease conversion, and wants to detect an effect in either direction. Which null/alternative hypothesis setup is appropriate for their A/B test?",
+   "options": [
+    "Two-sided test: H0 = no difference; H1 = a difference exists in either direction",
+    "One-sided test: H0 = treatment no better than control; H1 = treatment is better",
+    "One-sided test: H0 = treatment no worse than control; H1 = treatment is worse",
+    "Run one-sided tests in both directions at alpha = 0.05 and call it significant if either succeeds"
+   ],
+   "answer": 0,
+   "explanation": "When the direction of an effect is unknown, a two-sided test is correct. Option D inflates the true false-positive rate above the stated alpha, since it effectively runs two tests without correction.",
+   "grounding": {
+    "source": "Wikipedia: One- and two-tailed tests",
+    "note": "Two-sided tests are used when the direction of a possible effect is unknown; running separate one-sided tests in each direction does not control the overall false-positive rate."
+   },
+   "difficulty_prior": 0.32,
+   "id": "ab-testing-020",
+   "status": "beta"
+  },
+  {
+   "concept": "randomization-control",
+   "stem": "A social network randomizes individual users into a treatment feature that encourages inviting friends. Many friend pairs span both groups, so treatment users' invites influence control users' behavior. What problem does this create, and what is its typical effect on the measured lift?",
+   "options": [
+    "It violates the no-interference assumption (SUTVA), which typically biases the estimated treatment effect toward zero",
+    "It violates random assignment, which typically inflates the estimated treatment effect",
+    "It invalidates the power calculation, which typically requires a larger sample size than planned",
+    "It creates selection bias in the control group, which typically makes the control group perform better than baseline"
+   ],
+   "answer": 0,
+   "explanation": "Spillover between treatment and control users through shared friendships breaks the assumption that one user's outcome is unaffected by another's assignment, contaminating the control group and diluting the measured effect.",
+   "grounding": {
+    "source": "Wikipedia: Rubin causal model (SUTVA)",
+    "note": "SUTVA requires no interference between units; violations such as network spillover bias estimated treatment effects, typically toward zero."
+   },
+   "difficulty_prior": 0.28,
+   "id": "ab-testing-021",
+   "status": "beta"
+  },
+  {
+   "concept": "power-sample-size",
+   "stem": "An A/B test finds no significant difference on the primary metric. To judge whether the test was adequately powered, the analyst computes 'observed power' using the effect size and variance measured in that same sample. Why is this approach uninformative?",
+   "options": [
+    "Observed power is a deterministic function of the p-value, so it adds no information beyond it",
+    "Observed power always overestimates the true power because sample variance underestimates the population variance",
+    "Observed power cannot be computed unless the test used a one-sided hypothesis",
+    "Observed power requires knowing the true population effect size, which this same experiment did not directly measure"
+   ],
+   "answer": 0,
+   "explanation": "Post-hoc power is a deterministic, monotonic function of the observed p-value: a non-significant result always yields low computed power, so it reveals nothing beyond what the p-value already showed.",
+   "grounding": {
+    "source": "Hoenig & Heisey (2001), The American Statistician, 'The Abuse of Power'",
+    "note": "Observed/post-hoc power is a deterministic, monotonic function of the p-value and provides no additional information for interpreting a non-significant result."
+   },
+   "difficulty_prior": 0.27,
+   "id": "ab-testing-022",
+   "status": "beta"
+  },
+  {
+   "concept": "multiple-comparisons-pitfall",
+   "stem": "An A/B test on the primary metric is not significant. The analyst then checks results separately for mobile, desktop, new, and returning users, and five countries, finding one subgroup (desktop, France) with p = 0.04. What should the analyst conclude?",
+   "options": [
+    "The subgroup result is likely a false positive from testing many subgroups and should be treated as hypothesis-generating, not confirmed",
+    "The overall test lacked power, and this subgroup result proves the treatment specifically benefits desktop users in France",
+    "Since p < 0.05 for the subgroup, it overrides the non-significant overall result and the feature should ship",
+    "The subgroup finding is invalid because subgroup sample sizes are always far too small to ever yield a statistically valid p-value"
+   ],
+   "answer": 0,
+   "explanation": "Testing many subgroups without correction raises the chance that at least one shows p < 0.05 by chance alone. A single significant subgroup among many tested should prompt a pre-registered follow-up, not immediate action.",
+   "grounding": {
+    "source": "Wikipedia: Multiple comparisons problem",
+    "note": "Testing many subgroups inflates the family-wise chance of a false positive; unplanned significant subgroups are exploratory signals, not confirmed effects."
+   },
+   "difficulty_prior": 0.33,
+   "id": "ab-testing-023",
+   "status": "beta"
+  },
+  {
+   "concept": "honest-interpretation",
+   "stem": "An A/B test on subscription upgrades yields a 95% confidence interval for the relative lift of [-2%, +9%], with p = 0.11. Which statement is the most honest interpretation of this result?",
+   "options": [
+    "The interval spans a small harm to a meaningful gain, so the test cannot rule out no effect",
+    "The test proves the treatment has no effect on upgrades, since the interval contains zero",
+    "The test proves the treatment increases upgrades, since most of the interval lies above zero",
+    "The p-value of 0.11 means there is an 11% probability that the null hypothesis is true given the observed data"
+   ],
+   "answer": 0,
+   "explanation": "A wide interval spanning small harm to meaningful gain reflects genuine uncertainty, not proof of zero or positive effect. Option D repeats a common misreading; a p-value is not the probability the null is true.",
+   "grounding": {
+    "source": "Wikipedia: Misuse of p-values",
+    "note": "A p-value is not the probability that the null hypothesis is true; confidence intervals communicate the range of effects consistent with the observed data."
+   },
+   "difficulty_prior": 0.3,
+   "id": "ab-testing-024",
+   "status": "beta"
+  },
+  {
+   "concept": "hypothesis-setup",
+   "stem": "A company wants to switch to a cheaper checkout vendor and needs to confirm the new flow is not meaningfully worse than the current one before migrating, rather than looking for an improvement. Which hypothesis-testing approach best fits this goal?",
+   "options": [
+    "A standard two-sided test where non-significance is treated as proof the two checkout flows perform equally well",
+    "A non-inferiority test with a preset margin for how much worse the new flow may be",
+    "A one-sided test that only checks whether the new checkout flow increases conversion compared to the old one",
+    "A two-sided test at a tighter significance level, such as 0.01, to strengthen confidence that both flows are equivalent"
+   ],
+   "answer": 1,
+   "explanation": "Non-inferiority testing sets the null as 'worse by more than the margin,' so rejecting it demonstrates acceptable closeness. A standard superiority test cannot confirm equivalence, since a non-significant result only means insufficient evidence of difference, not proof of sameness.",
+   "grounding": {
+    "source": "Non-inferiority trial (Wikipedia)",
+    "note": "Describes the non-inferiority margin and hypothesis framing as distinct from standard superiority testing."
+   },
+   "difficulty_prior": 0.3,
+   "id": "ab-testing-025",
+   "status": "beta"
+  },
+  {
+   "concept": "randomization-control",
+   "stem": "An online marketplace tests a new item-ranking algorithm by randomly assigning individual sellers to treatment or control groups. Buyers browse a shared marketplace and can purchase from any seller. What is the main risk this randomization design introduces?",
+   "options": [
+    "The treatment effect estimate may be biased, since sellers in both arms compete for the same limited buyer demand",
+    "The test will need a much larger sample size, since sellers convert to a sale far less often than individual buyers do",
+    "The results will be distorted by a novelty effect, since sellers quickly notice and react to the new ranking algorithm",
+    "The reported p-value becomes invalid, since randomizing at the seller level violates the assumption that data follow a normal distribution"
+   ],
+   "answer": 0,
+   "explanation": "Because buyer demand is shared and roughly fixed, gains for treatment sellers can come at the expense of control sellers, violating the assumption that units don't interfere with each other and biasing the estimated effect toward zero or away from it.",
+   "grounding": {
+    "source": "Stable unit treatment value assumption (Wikipedia)",
+    "note": "Explains how interference between units through a shared resource violates the independence needed for unbiased causal estimates."
+   },
+   "difficulty_prior": 0.3,
+   "id": "ab-testing-026",
+   "status": "beta"
+  },
+  {
+   "concept": "power-sample-size",
+   "stem": "To limit risk, a team decides to send only 10% of traffic to a new treatment and 90% to control, keeping total weekly traffic fixed. Compared to a 50/50 split with the same total traffic, what happens to the test's statistical power?",
+   "options": [
+    "Power decreases, since unequal splits reduce the effective sample size for a fixed total",
+    "Power increases, since the larger control group lowers the variance of its estimated conversion rate substantially",
+    "Power stays the same, since the combined traffic across the two groups has not changed at all",
+    "Power decreases, but only when the baseline conversion rate happens to fall below five percent"
+   ],
+   "answer": 0,
+   "explanation": "For a fixed total sample, power is maximized at equal allocation. Skewing the split toward one arm shrinks the effective sample size relative to a balanced design, lowering power to detect the same effect even though total traffic is unchanged.",
+   "grounding": {
+    "source": "Sample size determination (Wikipedia)",
+    "note": "Notes that statistical power for a fixed total sample is maximized when group sizes are equal."
+   },
+   "difficulty_prior": 0.45,
+   "id": "ab-testing-027",
+   "status": "beta"
+  },
+  {
+   "concept": "multiple-comparisons-pitfall",
+   "stem": "An analyst tests a new feature's effect on 20 secondary metrics and applies a Bonferroni correction, dividing alpha by 20 per test. None of the 20 metrics reach significance, though several have p-values near 0.01. What is the main drawback?",
+   "options": [
+    "Bonferroni correction strictly controls the family-wise error rate, which can sharply reduce power across many tests",
+    "Bonferroni correction is invalid for secondary metrics, since it can only be applied to a study's single primary metric",
+    "Bonferroni correction raises the false discovery rate as the number of tests being compared increases",
+    "Bonferroni correction requires collecting a larger sample than the original test already used to compute its p-values"
+   ],
+   "answer": 0,
+   "explanation": "Bonferroni's strict family-wise error control comes at a steep cost in power as the number of tests grows, so real effects can be missed. It does not raise the false discovery rate or retroactively demand more data.",
+   "grounding": {
+    "source": "Bonferroni correction (Wikipedia)",
+    "note": "Describes the method's conservativeness and the resulting loss of power as the number of comparisons grows."
+   },
+   "difficulty_prior": 0.4,
+   "id": "ab-testing-028",
+   "status": "beta"
+  },
+  {
+   "concept": "honest-interpretation",
+   "stem": "An A/B test shows the treatment has a higher overall conversion rate than control. However, when segmented by traffic source, the treatment converts worse within every individual traffic source. What is the most honest interpretation of this result?",
+   "options": [
+    "The overall lift is likely driven by a mismatch in traffic-source mix, so the segment-level results deserve more trust",
+    "The overall result should be trusted, since it is based on the full sample and segments have less individual statistical power",
+    "This pattern confirms the treatment truly works, since the aggregate number reflects what the business ultimately experiences",
+    "The discrepancy shows randomization failed completely, so the entire test should be discarded and rerun"
+   ],
+   "answer": 0,
+   "explanation": "This is Simpson's paradox: a shift in the mix of traffic sources between arms can reverse the direction seen within every subgroup. The consistent within-segment effect is the more trustworthy signal, and the mix imbalance should be investigated.",
+   "grounding": {
+    "source": "Simpson's paradox (Wikipedia)",
+    "note": "Aggregated data can reverse the direction of an effect seen in every subgroup due to confounding by group composition."
+   },
+   "difficulty_prior": 0.45,
+   "id": "ab-testing-029",
+   "status": "beta"
   }
  ],
  "generated": "claude sonnet draft+verify, pending human review"
