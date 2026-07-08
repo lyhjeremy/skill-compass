@@ -26,16 +26,28 @@ STARTED = time.time()
 COLD_START_MIN = 30           # sessions before a subtopic shows a real percentile
 WINDOW_DAYS = 90             # rolling window for the distribution
 
-# ---- Supabase client (lazy, optional) -------------------------------------
+# ---- Supabase client (lazy, optional, never allowed to crash a request) ---
 _sb = None
+_sb_error: str | None = None
+def env_shape(name: str) -> dict:
+    """Safe, non-secret diagnostics: presence/length/prefix only, never the value."""
+    v = os.environ.get(name)
+    if not v:
+        return {"present": False}
+    return {"present": True, "len": len(v), "has_whitespace": v != v.strip(),
+            "prefix": v[:8] if name.endswith("URL") else v[:3]}
+
 def sb():
-    global _sb
-    if _sb is None:
+    global _sb, _sb_error
+    if _sb is None and _sb_error is None:
         url, key = os.environ.get("SUPABASE_URL"), os.environ.get("SUPABASE_KEY")
         if not (url and key):
             return None
-        from supabase import create_client
-        _sb = create_client(url, key)
+        try:
+            from supabase import create_client
+            _sb = create_client(url.strip(), key.strip())
+        except Exception as e:
+            _sb_error = f"{type(e).__name__}: {e}"[:300]
     return _sb
 
 # ---- tiny in-memory rate limiter ------------------------------------------
@@ -84,10 +96,14 @@ class FeedbackIn(BaseModel):
 # ---- endpoints -------------------------------------------------------------
 @app.get("/api/health")
 def health():
+    client = sb()
     return {
         "ok": True,
         "uptime_s": round(time.time() - STARTED),
-        "supabase": sb() is not None,
+        "supabase": client is not None,
+        "supabase_error": _sb_error,
+        "supabase_url": env_shape("SUPABASE_URL"),
+        "supabase_key": env_shape("SUPABASE_KEY"),
         "llm": bool(os.environ.get("GEMINI_API_KEY") or os.environ.get("GITHUB_MODELS_TOKEN")),
         "phase": "2-calibration",
     }
