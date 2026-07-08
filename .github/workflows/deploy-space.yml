@@ -43,9 +43,10 @@ jobs:
           # A plain "restart" can just restart the *existing* container without
           # forcing a fresh Docker build from the latest commit — observed the
           # Space serving a stale build for 15+ minutes after a verified-correct
-          # push. factory-reboot forces an actual rebuild. Non-fatal: don't let
-          # a reboot-call hiccup fail the whole deploy when the push succeeded.
+          # push. factory=true (per huggingface_hub's restart_space source —
+          # there is no separate /factory-reboot path) forces a real rebuild.
+          # Non-fatal: don't let a reboot-call hiccup fail the deploy when the push succeeded.
           HTTP_CODE=$(curl -s -o /tmp/reboot_resp.json -w "%{http_code}" -X POST \
-            "https://huggingface.co/api/spaces/${HF_SPACE}/factory-reboot" \
+            "https://huggingface.co/api/spaces/${HF_SPACE}/restart?factory=true" \
             -H "Authorization: Bearer ${HF_TOKEN}") || true
-          echo "factory-reboot -> HTTP $HTTP_CODE: $(cat /tmp/reboot_resp.json 2>/dev/null)"
+          echo "restart(factory=true) -> HTTP $HTTP_CODE: $(cat /tmp/reboot_resp.json 2>/dev/null)"
