@@ -15,6 +15,7 @@ import Quiz from './pages/Quiz'
 import Results from './pages/Results'
 import Progress from './pages/Progress'
 import Track from './pages/Track'
+import Interview from './pages/Interview'
 import { About, Dashboard, Methodology, NotFound } from './pages/Static'
 
 initTheme()
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       { path: 'results/:sessionId', element: <Results /> },
       { path: 'progress', element: <Progress /> },
       { path: 'tracks/:trackId', element: <Track /> },
+      { path: 'interview/:trackId', element: <Interview /> },
       { path: 'live', element: <Dashboard /> },
       { path: 'methodology', element: <Methodology /> },
       { path: 'about', element: <About /> },

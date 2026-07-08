@@ -29,3 +29,11 @@ export interface ResumeProfile {
   summary: string
   ts: number
 }
+
+export type InterviewSeniority = 'entry' | 'mid' | 'senior'
+export interface InterviewTurn { role: 'interviewer' | 'candidate'; text: string }
+export interface InterviewScorecard { accuracy: number; depth: number; clarity: number; strengthen: string }
+export interface InterviewRecord {
+  trackId: string; seniority: InterviewSeniority
+  transcript: InterviewTurn[]; scorecard: InterviewScorecard; completedAt: number
+}

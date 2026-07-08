@@ -68,6 +68,35 @@ export async function analyzeResume(
   }
 }
 
+export interface InterviewTurnResult {
+  ok: boolean
+  reason?: string
+  message?: string
+  done?: boolean
+  scorecard?: { accuracy: number; depth: number; clarity: number; strengthen: string } | null
+}
+
+/** One turn of the mock interview. Send the full transcript so far (stateless
+ *  backend — no session to manage). Never throws. */
+export async function interviewTurn(
+  trackTitle: string, seniority: string, topics: string[],
+  transcript: { role: string; text: string }[],
+): Promise<InterviewTurnResult> {
+  try {
+    const ctrl = new AbortController()
+    const t = setTimeout(() => ctrl.abort(), 35000)
+    const res = await fetch(`${API_BASE}/api/interview`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctrl.signal,
+      body: JSON.stringify({ track_title: trackTitle, seniority, topics, transcript }),
+    })
+    clearTimeout(t)
+    if (!res.ok) return { ok: false, reason: `http-${res.status}` }
+    return await res.json()
+  } catch {
+    return { ok: false, reason: 'network' }
+  }
+}
+
 export async function reportItem(itemId: string, body: string): Promise<boolean> {
   try {
     const res = await fetch(`${API_BASE}/api/feedback`, {
@@ -81,4 +110,15 @@ export async function reportItem(itemId: string, body: string): Promise<boolean>
 /** Warm the Space so the first real call isn't a cold start. Fire-and-forget. */
 export function warmBackend() {
   fetch(`${API_BASE}/api/health`).catch(() => {})
+}
+
+/** Shared, honest error copy for any Gemini-backed feature's failure reason. */
+export function llmErrorMessage(reason?: string): string {
+  switch (reason) {
+    case 'rate-limited': return "This is getting a lot of use right now — try again in a bit."
+    case 'llm-unavailable': return 'This feature is warming up — try again shortly.'
+    case 'llm-overloaded': return "The AI service is at capacity right now (a free-tier limit on our end, not your connection) — try again in a minute."
+    case 'llm-quota': return "This feature has hit its free daily limit — try again tomorrow."
+    default: return "Couldn't complete that — try again in a moment."
+  }
 }

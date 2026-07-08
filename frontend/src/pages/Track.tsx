@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { analyzeResume, warmBackend } from '../lib/api'
+import { analyzeResume, llmErrorMessage, warmBackend } from '../lib/api'
 import { getManifest } from '../lib/content'
 import { store } from '../lib/store'
 import type { Manifest, ResumeProfile } from '../lib/types'
@@ -44,15 +44,7 @@ export default function Track() {
     setBusy(true)
     const r = await analyzeResume(text.trim(), subs.map(s => ({ id: s.id, title: s.title })))
     setBusy(false)
-    if (!r.ok) {
-      setError(
-        r.reason === 'rate-limited' ? "This is getting a lot of use right now — try again in a bit." :
-        r.reason === 'llm-unavailable' ? 'This feature is warming up — try again shortly.' :
-        r.reason === 'llm-overloaded' ? "The analyzer is at capacity right now (a free-tier limit on our end, not your connection) — try again in a minute." :
-        r.reason === 'llm-quota' ? "This feature has hit its free daily limit — try again tomorrow." :
-        "Couldn't complete the analysis — try again in a moment.")
-      return
-    }
+    if (!r.ok) { setError(llmErrorMessage(r.reason)); return }
     const p: ResumeProfile = {
       trackId, skills: r.skills ?? [], yearsExperience: r.years_experience ?? null,
       evidencedSubtopicIds: r.evidenced_subtopic_ids ?? [], summary: r.summary ?? '', ts: Date.now(),
@@ -163,10 +155,14 @@ export default function Track() {
         <div style={{ flex: 1 }}>
           <b>🎤 Mock interview capstone</b>
           <p className="small" style={{ marginTop: 3, color: 'var(--accent-dk)' }}>
-            Unlocks when all {subs.length} topics are assessed — a 6–8 turn interview at your demonstrated level. Coming later in the beta.
+            {track.status === 'live' && assessed === subs.length
+              ? 'Unlocked — a 6–8 turn interview at your demonstrated level, with honest feedback.'
+              : `Unlocks when all ${subs.length} topics are assessed — a 6–8 turn interview at your demonstrated level.`}
           </p>
         </div>
-        <span className="pill num" style={{ background: 'var(--card)' }}>{assessed}/{subs.length}</span>
+        {track.status === 'live' && assessed === subs.length
+          ? <Link className="btn" style={{ padding: '8px 18px', fontSize: '.9rem' }} to={`/interview/${trackId}`}>Start</Link>
+          : <span className="pill num" style={{ background: 'var(--card)' }}>{assessed}/{subs.length}</span>}
       </div>
       <p className="small muted" style={{ marginTop: 14 }}>
         This gap report compares you against this track's own curriculum. A live job-market panel (top skills in this month's postings, salary context) arrives in a later beta phase.

@@ -1,12 +1,13 @@
 import { PLACEMENT_START, itemRating, updateSession as eloUpdate } from './elo'
-import type { AnswerRecord, ConceptState, ResumeProfile, Session, SubtopicContent } from './types'
+import type { AnswerRecord, ConceptState, InterviewRecord, ResumeProfile, Session, SubtopicContent } from './types'
 
 /** All user state lives on-device: localStorage schema sc_v1 (spec §5.14). */
 interface StoreShape {
   version: 1
   sessions: Session[]
   placements: Record<string, 'easy' | 'standard' | 'hard'>
-  resumes: Record<string, ResumeProfile>  // keyed by trackId
+  resumes: Record<string, ResumeProfile>     // keyed by trackId
+  interviews: Record<string, InterviewRecord>  // keyed by trackId, most recent only
 }
 const KEY = 'sc_v1'
 
@@ -15,10 +16,10 @@ function load(): StoreShape {
     const raw = localStorage.getItem(KEY)
     if (raw) {
       const s = JSON.parse(raw)
-      if (s.version === 1) return { resumes: {}, ...s }  // tolerate pre-resume data
+      if (s.version === 1) return { resumes: {}, interviews: {}, ...s }  // tolerate older data
     }
   } catch { /* corrupted -> fresh */ }
-  return { version: 1, sessions: [], placements: {}, resumes: {} }
+  return { version: 1, sessions: [], placements: {}, resumes: {}, interviews: {} }
 }
 function save(s: StoreShape) { localStorage.setItem(KEY, JSON.stringify(s)) }
 
@@ -105,6 +106,16 @@ export const store = {
   },
   clearResume(trackId: string) {
     const s = load(); delete s.resumes[trackId]; save(s)
+  },
+
+  interview: (trackId: string): InterviewRecord | undefined => load().interviews[trackId],
+  setInterview(record: InterviewRecord) {
+    const s = load(); s.interviews[record.trackId] = record; save(s)
+  },
+  /** Spec §5.8: one interview per track per day. */
+  canStartInterview(trackId: string): boolean {
+    const rec = this.interview(trackId)
+    return !rec || Date.now() - rec.completedAt > 24 * 3600 * 1000
   },
 
   exportJson(): string { return JSON.stringify(load(), null, 2) },
