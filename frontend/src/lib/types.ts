@@ -37,3 +37,5 @@ export interface InterviewRecord {
   trackId: string; seniority: InterviewSeniority
   transcript: InterviewTurn[]; scorecard: InterviewScorecard; completedAt: number
 }
+
+export interface StudyGuide { trackId: string; markdown: string; ts: number }

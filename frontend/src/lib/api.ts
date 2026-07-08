@@ -97,6 +97,33 @@ export async function interviewTurn(
   }
 }
 
+export interface GuideResult { ok: boolean; reason?: string; guide_md?: string }
+
+export interface GuideSubtopic { title: string; mastery: number | null; concepts: { label: string; state: string }[] }
+
+/** Generate a personalized Markdown study guide for a track. Never throws. */
+export async function generateGuide(
+  trackTitle: string, subtopics: GuideSubtopic[], resumeSummary?: string, interviewStrengthen?: string,
+): Promise<GuideResult> {
+  try {
+    const ctrl = new AbortController()
+    const t = setTimeout(() => ctrl.abort(), 35000)
+    const res = await fetch(`${API_BASE}/api/guide`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctrl.signal,
+      body: JSON.stringify({
+        track_title: trackTitle, subtopics,
+        resume_summary: resumeSummary || undefined,
+        interview_strengthen: interviewStrengthen || undefined,
+      }),
+    })
+    clearTimeout(t)
+    if (!res.ok) return { ok: false, reason: `http-${res.status}` }
+    return await res.json()
+  } catch {
+    return { ok: false, reason: 'network' }
+  }
+}
+
 export async function reportItem(itemId: string, body: string): Promise<boolean> {
   try {
     const res = await fetch(`${API_BASE}/api/feedback`, {

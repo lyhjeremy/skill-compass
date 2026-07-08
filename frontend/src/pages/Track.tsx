@@ -1,9 +1,36 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { analyzeResume, llmErrorMessage, warmBackend } from '../lib/api'
-import { getManifest } from '../lib/content'
+import { analyzeResume, generateGuide, llmErrorMessage, warmBackend, type GuideSubtopic } from '../lib/api'
+import { getManifest, getSubtopic } from '../lib/content'
 import { store } from '../lib/store'
-import type { Manifest, ResumeProfile } from '../lib/types'
+import type { Manifest, ResumeProfile, StudyGuide } from '../lib/types'
+
+function renderGuideMarkdown(md: string) {
+  const blocks: React.ReactNode[] = []
+  let list: string[] = []
+  let ordered = false
+  const inline = (text: string, key: string) =>
+    text.split(/(\*\*[^*]+\*\*)/g).map((p, i) =>
+      p.startsWith('**') && p.endsWith('**') ? <b key={`${key}-${i}`}>{p.slice(2, -2)}</b> : <span key={`${key}-${i}`}>{p}</span>)
+  const flush = (key: string) => {
+    if (list.length) {
+      const Tag = ordered ? 'ol' : 'ul'
+      blocks.push(<Tag key={key} style={{ margin: '6px 0 10px 20px' }}>{list.map((li, i) => <li key={i} style={{ marginBottom: 5 }}>{inline(li, `${key}-${i}`)}</li>)}</Tag>)
+      list = []
+    }
+  }
+  md.split('\n').forEach((raw, i) => {
+    const t = raw.trim()
+    if (t.startsWith('## ')) { flush(`b${i}`); blocks.push(<h3 key={i} style={{ marginTop: 18, fontSize: '1.02rem' }}>{t.slice(3)}</h3>) }
+    else if (t.startsWith('# ')) { flush(`b${i}`); blocks.push(<h2 key={i} style={{ marginTop: 4, fontSize: '1.2rem' }}>{t.slice(2)}</h2>) }
+    else if (/^\d+\.\s/.test(t)) { if (!list.length) ordered = true; list.push(t.replace(/^\d+\.\s/, '')) }
+    else if (t.startsWith('- ') || t.startsWith('* ')) { if (!list.length) ordered = false; list.push(t.slice(2)) }
+    else if (t === '') { flush(`b${i}`) }
+    else { flush(`b${i}`); blocks.push(<p key={i} style={{ marginTop: 8, lineHeight: 1.55 }}>{inline(t, `p${i}`)}</p>) }
+  })
+  flush('bend')
+  return blocks
+}
 
 export default function Track() {
   const { trackId = '' } = useParams()
@@ -13,9 +40,15 @@ export default function Track() {
   const [editing, setEditing] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [guide, setGuide] = useState<StudyGuide | undefined>(undefined)
+  const [guideBusy, setGuideBusy] = useState(false)
+  const [guideError, setGuideError] = useState<string | null>(null)
 
   useEffect(() => { getManifest().then(setManifest).catch(console.error); warmBackend() }, [])
-  useEffect(() => { setProfile(store.resume(trackId)); setEditing(false); setError(null) }, [trackId])
+  useEffect(() => {
+    setProfile(store.resume(trackId)); setEditing(false); setError(null)
+    setGuide(store.guide(trackId)); setGuideError(null)
+  }, [trackId])
 
   if (!manifest) return <div className="container" style={{ padding: 48 }}><p className="muted">Loading…</p></div>
 
@@ -59,6 +92,40 @@ export default function Track() {
     store.clearResume(trackId)
     setProfile(undefined)
     setEditing(false)
+  }
+
+  async function buildGuide() {
+    setGuideError(null)
+    setGuideBusy(true)
+    const payload: GuideSubtopic[] = await Promise.all(masteries.map(async ({ s, m }) => {
+      if (m === null) return { title: s.title, mastery: null, concepts: [] }
+      try {
+        const content = await getSubtopic(s.id)
+        const states = store.conceptStates(s.id, content)
+        return {
+          title: s.title, mastery: m,
+          concepts: content.concepts.map(c => ({ label: c.label, state: states[c.id] })),
+        }
+      } catch {
+        return { title: s.title, mastery: m, concepts: [] }
+      }
+    }))
+    const r = await generateGuide(track!.title, payload, profile?.summary, store.interview(trackId)?.scorecard.strengthen)
+    setGuideBusy(false)
+    if (!r.ok || !r.guide_md) { setGuideError(llmErrorMessage(r.reason)); return }
+    const g: StudyGuide = { trackId, markdown: r.guide_md, ts: Date.now() }
+    store.setGuide(g)
+    setGuide(g)
+  }
+
+  function downloadGuide() {
+    if (!guide) return
+    const blob = new Blob([guide.markdown], { type: 'text/markdown' })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = `skillcompass-study-guide-${trackId}.md`
+    a.click()
+    URL.revokeObjectURL(a.href)
   }
 
   return (
@@ -164,6 +231,38 @@ export default function Track() {
           ? <Link className="btn" style={{ padding: '8px 18px', fontSize: '.9rem' }} to={`/interview/${trackId}`}>Start</Link>
           : <span className="pill num" style={{ background: 'var(--card)' }}>{assessed}/{subs.length}</span>}
       </div>
+
+      {assessed > 0 && (
+        <div className="card" style={{ marginTop: 14 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>
+            <b>📋 Your personalized study guide</b>
+            {guide && (
+              <span>
+                <button className="textlink small" onClick={buildGuide} disabled={guideBusy}>Regenerate</button>
+                {' · '}
+                <button className="textlink small" onClick={downloadGuide}>Download .md</button>
+              </span>
+            )}
+          </div>
+          {!guide ? (
+            <>
+              <p className="small muted" style={{ marginTop: 4 }}>
+                A short, specific plan built from your real quiz results{profile ? ', your resume,' : ''}{store.interview(trackId) ? ' and your interview feedback' : ''} — where to focus first, what's already solid, and a suggested order.
+              </p>
+              {guideError && <p className="small" style={{ color: 'var(--bad)', marginTop: 8 }}>{guideError}</p>}
+              <button className="btn" style={{ marginTop: 10 }} onClick={buildGuide} disabled={guideBusy}>
+                {guideBusy ? 'Writing your guide…' : 'Generate my study guide →'}
+              </button>
+            </>
+          ) : (
+            <div style={{ marginTop: 6 }}>
+              {guideError && <p className="small" style={{ color: 'var(--bad)', marginBottom: 8 }}>{guideError}</p>}
+              {renderGuideMarkdown(guide.markdown)}
+            </div>
+          )}
+        </div>
+      )}
+
       <p className="small muted" style={{ marginTop: 14 }}>
         This gap report compares you against this track's own curriculum. A live job-market panel (top skills in this month's postings, salary context) arrives in a later beta phase.
       </p>
