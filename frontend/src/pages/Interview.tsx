@@ -2,6 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { interviewTurn, llmErrorMessage, warmBackend } from '../lib/api'
 import { getManifest } from '../lib/content'
+import {
+  isSpeechRecognitionSupported, isSpeechSynthesisSupported,
+  speak, startListening, stopSpeaking,
+  type SpeechRecognitionHandle,
+} from '../lib/speech'
 import { store } from '../lib/store'
 import type { InterviewScorecard, InterviewSeniority, InterviewTurn, Manifest } from '../lib/types'
 
@@ -19,9 +24,16 @@ export default function Interview() {
   const [error, setError] = useState<string | null>(null)
   const [scorecard, setScorecard] = useState<InterviewScorecard | null>(null)
   const [seniority, setSeniority] = useState<InterviewSeniority>('mid')
+  const [listening, setListening] = useState(false)
+  const [voiceMuted, setVoiceMuted] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const recognitionRef = useRef<SpeechRecognitionHandle | null>(null)
+  const voiceInputSupported = isSpeechRecognitionSupported()
+  const voiceOutputSupported = isSpeechSynthesisSupported()
 
   useEffect(() => { warmBackend(); getManifest().then(setManifest).catch(console.error) }, [])
+
+  useEffect(() => () => stopSpeaking(), []) // stop any speech if the user navigates away
 
   useEffect(() => {
     if (!manifest) return
@@ -64,6 +76,7 @@ export default function Interview() {
     if (!r.ok || !r.message) { setError(llmErrorMessage(r.reason)); return }
     const updated: InterviewTurn[] = [...next, { role: 'interviewer', text: r.message }]
     setTranscript(updated)
+    if (!voiceMuted) speak(r.message)
     if (r.done && r.scorecard) {
       setScorecard(r.scorecard)
       store.setInterview({ trackId, seniority, transcript: updated, scorecard: r.scorecard, completedAt: Date.now() })
@@ -78,6 +91,22 @@ export default function Interview() {
     if (!text || busy) return
     setInput('')
     sendTurn([...transcript, { role: 'candidate', text }])
+  }
+
+  function toggleMic() {
+    if (listening) {
+      recognitionRef.current?.stop()
+      recognitionRef.current = null
+      setListening(false)
+      return
+    }
+    setError(null)
+    const handle = startListening({
+      onInterim: setInput,
+      onFinal: setInput, // final transcript lands in the textarea for review/edit before Send -- a speech-recognition slip shouldn't silently tank an answer
+      onError: (message) => { setError(message); setListening(false) },
+    })
+    if (handle) { recognitionRef.current = handle; setListening(true) }
   }
 
   if (phase === 'intro') return (
@@ -146,17 +175,31 @@ export default function Interview() {
       <div className="chat-input-row">
         <textarea
           value={input} onChange={e => setInput(e.target.value)} disabled={busy}
-          placeholder="Type your answer…" rows={1}
+          placeholder={listening ? 'Listening…' : 'Type your answer…'} rows={1}
           onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send() } }}
         />
-        <button className="mic-btn" disabled title="Voice — coming soon" aria-label="Voice input, coming soon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-            <rect x="9" y="2" width="6" height="12" rx="3" /><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4" />
-          </svg>
-        </button>
+        {voiceInputSupported && (
+          <button
+            className={`mic-btn${listening ? ' active' : ''}`} onClick={toggleMic} disabled={busy}
+            title={listening ? 'Stop listening' : 'Speak your answer'}
+            aria-label={listening ? 'Stop listening' : 'Speak your answer'}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+              <rect x="9" y="2" width="6" height="12" rx="3" /><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4" />
+            </svg>
+          </button>
+        )}
         <button className="btn" style={{ padding: '11px 20px' }} onClick={send} disabled={busy || !input.trim()}>Send</button>
       </div>
-      <p className="small muted" style={{ marginTop: 8 }}>Press Enter to send, Shift+Enter for a new line.</p>
+      <p className="small muted" style={{ marginTop: 8 }}>
+        Press Enter to send, Shift+Enter for a new line.
+        {voiceInputSupported && ' Or tap the mic and speak — review the text before sending.'}
+        {voiceOutputSupported && (
+          <> · <button className="textlink small" style={{ padding: 0 }} onClick={() => { setVoiceMuted(m => !m); if (!voiceMuted) stopSpeaking() }}>
+            {voiceMuted ? 'Unmute interviewer voice' : 'Mute interviewer voice'}
+          </button></>
+        )}
+      </p>
     </div>
   )
 }

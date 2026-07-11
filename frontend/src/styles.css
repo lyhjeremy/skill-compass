@@ -178,8 +178,13 @@ footer.site a { color: var(--muted); }
 .chat-input-row textarea:focus { outline: none; border-color: var(--accent); }
 .mic-btn {
   width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; border: 1.5px solid var(--border);
-  background: var(--card); color: var(--faint); display: flex; align-items: center; justify-content: center; cursor: not-allowed;
+  background: var(--card); color: var(--muted); display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
 }
+.mic-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.mic-btn:disabled { color: var(--faint); cursor: not-allowed; }
+.mic-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; animation: mic-pulse 1.4s ease-in-out infinite; }
+@keyframes mic-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 40%, transparent); } 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 0%, transparent); } }
 .scorecard-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; }
 .scorecard-row .metric { flex: 1; min-width: 90px; }
 .scorecard-row .metric .lbl { display: flex; justify-content: space-between; font-size: .78rem; color: var(--muted); margin-bottom: 4px; }
