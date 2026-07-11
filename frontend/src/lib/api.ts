@@ -68,6 +68,42 @@ export async function analyzeResume(
   }
 }
 
+/** Analyze a resume PHOTO/screenshot against a track's subtopics -- OCR'd via
+ *  Gemini vision server-side, then matched the same way as analyzeResume().
+ *  Ephemeral: the image is used for one OCR call and discarded, never stored
+ *  or logged (see /api/resume-image's docstring). Never throws. */
+export async function analyzeResumeImage(
+  file: File, subtopics: { id: string; title: string }[],
+): Promise<ResumeResult> {
+  const ALLOWED = ['image/jpeg', 'image/png', 'image/webp']
+  if (!ALLOWED.includes(file.type)) return { ok: false, reason: 'unsupported-file-type' }
+
+  const imageBase64 = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => {
+      const result = reader.result as string
+      resolve(result.slice(result.indexOf(',') + 1)) // strip the "data:image/...;base64," prefix
+    }
+    reader.onerror = () => reject(new Error('file read failed'))
+    reader.readAsDataURL(file)
+  }).catch(() => null)
+  if (!imageBase64) return { ok: false, reason: 'file-read-failed' }
+
+  try {
+    const ctrl = new AbortController()
+    const t = setTimeout(() => ctrl.abort(), 40000) // OCR + match = two Gemini calls, generous timeout
+    const res = await fetch(`${API_BASE}/api/resume-image`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctrl.signal,
+      body: JSON.stringify({ image_base64: imageBase64, mime_type: file.type, subtopics }),
+    })
+    clearTimeout(t)
+    if (!res.ok) return { ok: false, reason: `http-${res.status}` }
+    return await res.json()
+  } catch {
+    return { ok: false, reason: 'network' }
+  }
+}
+
 export interface InterviewTurnResult {
   ok: boolean
   reason?: string

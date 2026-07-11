@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { analyzeResume, generateGuide, llmErrorMessage, warmBackend, type GuideSubtopic } from '../lib/api'
+import { analyzeResume, analyzeResumeImage, generateGuide, llmErrorMessage, warmBackend, type GuideSubtopic } from '../lib/api'
 import { getManifest, getSubtopic } from '../lib/content'
 import { store } from '../lib/store'
 import type { Manifest, ResumeProfile, StudyGuide } from '../lib/types'
@@ -88,6 +88,22 @@ export default function Track() {
     setText('')
   }
 
+  async function analyzeImage(file: File) {
+    setError(null)
+    setBusy(true)
+    const r = await analyzeResumeImage(file, subs.map(s => ({ id: s.id, title: s.title })))
+    setBusy(false)
+    if (!r.ok) { setError(llmErrorMessage(r.reason)); return }
+    const p: ResumeProfile = {
+      trackId, skills: r.skills ?? [], yearsExperience: r.years_experience ?? null,
+      evidencedSubtopicIds: r.evidenced_subtopic_ids ?? [], summary: r.summary ?? '', ts: Date.now(),
+    }
+    store.setResume(p)
+    setProfile(p)
+    setEditing(false)
+    setText('')
+  }
+
   function removeResume() {
     store.clearResume(trackId)
     setProfile(undefined)
@@ -162,7 +178,7 @@ export default function Track() {
         <div className="card" style={{ marginTop: 20, border: '1.5px dashed var(--accent)', background: 'var(--tint)' }}>
           <b>Add your resume <span className="muted" style={{ fontWeight: 400 }}>(optional)</span></b>
           <p className="small muted" style={{ marginTop: 4 }}>
-            See which of these topics your experience already covers — paste the text, no file upload needed.
+            See which of these topics your experience already covers — paste the text, or upload a photo/screenshot.
           </p>
           <textarea
             value={text} onChange={e => setText(e.target.value)} rows={6} disabled={busy}
@@ -170,12 +186,22 @@ export default function Track() {
             style={{ width: '100%', marginTop: 10, padding: 12, borderRadius: 10, border: '1px solid var(--border)',
                      background: 'var(--card)', color: 'var(--ink)', font: 'inherit', resize: 'vertical' }}
           />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 8 }}>
+            <span className="small muted">— or —</span>
+            <label className="btn ghost small" style={{ cursor: busy ? 'default' : 'pointer', opacity: busy ? .6 : 1 }}>
+              📷 Upload a photo/screenshot
+              <input
+                type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} style={{ display: 'none' }}
+                onChange={e => { const f = e.target.files?.[0]; if (f) analyzeImage(f); e.target.value = '' }}
+              />
+            </label>
+          </div>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', background: 'var(--card)', border: '1px solid var(--border)',
                         borderRadius: 8, padding: '8px 10px', marginTop: 8 }}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="1.8" style={{ flexShrink: 0 }}>
               <rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" />
             </svg>
-            <p className="small muted">This text is analyzed once and never stored — nothing is saved on our servers; results stay only on this device.</p>
+            <p className="small muted">Analyzed once and never stored, whether pasted or uploaded — nothing is saved on our servers; results stay only on this device.</p>
           </div>
           {error && <p className="small" style={{ color: 'var(--bad)', marginTop: 8 }}>{error}</p>}
           <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>

@@ -131,6 +131,43 @@ def gemini_generate(prompt: str, max_tokens: int = 512, json_mode: bool = False,
     except (KeyError, IndexError):
         raise RuntimeError(f"unexpected response shape: {str(data)[:200]}")
 
+def gemini_generate_vision(image_base64: str, mime_type: str, prompt: str,
+                            max_tokens: int = 512, _retried: bool = False) -> str:
+    """Same shape as gemini_generate() but with an inline image part ahead of
+    the text prompt, per Gemini's REST multimodal contract. UNTESTED against
+    a live key as of this commit (Session 1 has no GEMINI_API_KEY available)
+    -- the request shape matches Gemini's documented generateContent format,
+    but verify with one real call before trusting this in production. If it
+    needs a fix, gemini_generate()'s history (thinking-token budget, 503
+    retry) suggests real quirks are likely on the first live call."""
+    url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
+           f"{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}")
+    gen_config = {"maxOutputTokens": max_tokens, "thinkingConfig": {"thinkingBudget": 0}}
+    body = json.dumps({
+        "contents": [{"parts": [
+            {"inline_data": {"mime_type": mime_type, "data": image_base64}},
+            {"text": prompt},
+        ]}],
+        "generationConfig": gen_config,
+    }).encode()
+    req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            data = json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode(errors="replace")[:800]
+        if e.code == 503 and not _retried:
+            time.sleep(2)
+            return gemini_generate_vision(image_base64, mime_type, prompt, max_tokens, _retried=True)
+        raise RuntimeError(f"HTTP {e.code}: {detail}")
+    except urllib.error.URLError as e:
+        raise RuntimeError(f"connection failed: {e.reason}"[:200])
+    try:
+        return data["candidates"][0]["content"]["parts"][0]["text"]
+    except (KeyError, IndexError):
+        raise RuntimeError(f"unexpected response shape: {str(data)[:200]}")
+
+
 def gemini_error_reason(e: Exception) -> str:
     """Classify a gemini_generate() failure into a short, honest reason code —
     'the model is overloaded' is a very different user message from 'we're broken'."""
@@ -192,6 +229,14 @@ class SubtopicRef(BaseModel):
 
 class ResumeIn(BaseModel):
     text: str = Field(min_length=20, max_length=20000)
+    subtopics: list[SubtopicRef] = Field(min_length=1, max_length=40)
+
+class ResumeImageIn(BaseModel):
+    # base64-encoded image bytes (no data: URL prefix), matching this API's
+    # existing plain-JSON style rather than adding multipart/form-data
+    # handling for a single new endpoint.
+    image_base64: str = Field(min_length=100, max_length=8_000_000)  # ~6MB decoded ceiling
+    mime_type: str = Field(pattern=r"^image/(jpeg|png|webp)$")
     subtopics: list[SubtopicRef] = Field(min_length=1, max_length=40)
 
 class TranscriptTurn(BaseModel):
@@ -327,26 +372,13 @@ def feedback(body: FeedbackIn, request: Request):
         return {"stored": False, "reason": str(e)[:160]}
 
 
-@app.post("/api/resume")
-def analyze_resume(body: ResumeIn, request: Request):
-    """Extract skills from resume text and match them against a track's subtopics.
-
-    Ephemeral by design (spec §5.7): the text arrives in the request, is used for
-    exactly one Gemini call, and nothing is written to Supabase or logged. Compares
-    against the track's own curriculum only — no job-market claim is made here,
-    since there is no postings corpus yet to back one honestly.
-    """
-    if not rate_ok(client_ip(request), limit=10, window_s=3600):
-        return {"ok": False, "reason": "rate-limited"}
-    if not gemini_ready():
-        return {"ok": False, "reason": "llm-unavailable"}
-
-    subtopic_list = "\n".join(f"- {s.id}: {s.title}" for s in body.subtopics)
-    prompt = f"""You are assessing resume evidence against a specific list of skill areas.
+def _resume_match_prompt(text: str, subtopics: list) -> str:
+    subtopic_list = "\n".join(f"- {s.id}: {s.title}" for s in subtopics)
+    return f"""You are assessing resume evidence against a specific list of skill areas.
 
 Resume text:
 \"\"\"
-{body.text[:8000]}
+{text[:8000]}
 \"\"\"
 
 Skill areas (id: title):
@@ -361,14 +393,11 @@ Return ONLY JSON with this exact shape, nothing else:
 }}
 Be conservative on evidenced_subtopic_ids: include an id only if the resume gives concrete
 evidence (a named tool, a project, a described responsibility) — not just an adjacent buzzword."""
-    try:
-        raw = gemini_generate(prompt, max_tokens=800, json_mode=True)
-        data = json.loads(raw)
-    except Exception as e:
-        return {"ok": False, "reason": gemini_error_reason(e), "detail": str(e)[:160]}
 
-    # Never trust the model's output shape blindly.
-    valid_ids = {s.id for s in body.subtopics}
+
+def _parse_resume_match(data: dict, subtopics: list) -> dict:
+    """Never trust the model's output shape blindly."""
+    valid_ids = {s.id for s in subtopics}
     evidenced = [i for i in data.get("evidenced_subtopic_ids", []) if isinstance(i, str) and i in valid_ids]
     skills = [str(s)[:60] for s in data.get("skills", []) if isinstance(s, str)][:12]
     years = data.get("years_experience")
@@ -376,6 +405,69 @@ evidence (a named tool, a project, a described responsibility) — not just an a
     summary = str(data.get("summary", ""))[:280]
     return {"ok": True, "skills": skills, "years_experience": years,
             "evidenced_subtopic_ids": evidenced, "summary": summary}
+
+
+@app.post("/api/resume")
+def analyze_resume(body: ResumeIn, request: Request):
+    """Extract skills from resume text and match them against a track's subtopics.
+
+    Ephemeral by design (spec §5.7): the text arrives in the request, is used for
+    exactly one Gemini call, and nothing is written to Supabase or logged. Compares
+    against the track's own curriculum only — no job-market claim is made here,
+    since there is no postings corpus yet to back one honestly.
+    """
+    if not rate_ok(client_ip(request), limit=10, window_s=3600):
+        return {"ok": False, "reason": "rate-limited"}
+    if not gemini_ready():
+        return {"ok": False, "reason": "llm-unavailable"}
+
+    try:
+        raw = gemini_generate(_resume_match_prompt(body.text, body.subtopics), max_tokens=800, json_mode=True)
+        data = json.loads(raw)
+    except Exception as e:
+        return {"ok": False, "reason": gemini_error_reason(e), "detail": str(e)[:160]}
+
+    return _parse_resume_match(data, body.subtopics)
+
+
+@app.post("/api/resume-image")
+def analyze_resume_image(body: ResumeImageIn, request: Request):
+    """Same as /api/resume, but the resume arrives as a photo/screenshot
+    instead of pasted text -- OCR via Gemini vision, then the identical
+    evidence-matching prompt as the text path (shared via _resume_match_prompt
+    so the two entry points can never silently drift apart).
+
+    Ephemerality is identical to /api/resume: the image is used for exactly
+    one OCR call, the OCR'd text for exactly one matching call, and neither
+    the image nor the extracted text is written to Supabase or logged.
+
+    UNTESTED against a live GEMINI_API_KEY as of this commit -- see
+    gemini_generate_vision()'s docstring. Verify with a real resume photo
+    before treating this endpoint as production-ready.
+    """
+    if not rate_ok(client_ip(request), limit=10, window_s=3600):
+        return {"ok": False, "reason": "rate-limited"}
+    if not gemini_ready():
+        return {"ok": False, "reason": "llm-unavailable"}
+
+    ocr_prompt = ("Transcribe all readable text from this resume/CV image, in reading "
+                  "order. Plain text only, no commentary, no markdown formatting.")
+    try:
+        resume_text = gemini_generate_vision(body.image_base64, body.mime_type, ocr_prompt, max_tokens=2000)
+    except Exception as e:
+        return {"ok": False, "reason": gemini_error_reason(e), "detail": str(e)[:160]}
+
+    if len(resume_text.strip()) < 20:
+        return {"ok": False, "reason": "image-unreadable",
+                "detail": "Couldn't read enough text from that image -- try a clearer photo or paste the text instead."}
+
+    try:
+        raw = gemini_generate(_resume_match_prompt(resume_text, body.subtopics), max_tokens=800, json_mode=True)
+        data = json.loads(raw)
+    except Exception as e:
+        return {"ok": False, "reason": gemini_error_reason(e), "detail": str(e)[:160]}
+
+    return _parse_resume_match(data, body.subtopics)
 
 
 MAX_INTERVIEW_TURNS = 7  # ~10 minutes at 1-1.5 min/turn, matches the on-screen promise
