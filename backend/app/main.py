@@ -168,6 +168,24 @@ def gemini_generate_vision(image_base64: str, mime_type: str, prompt: str,
         raise RuntimeError(f"unexpected response shape: {str(data)[:200]}")
 
 
+def local_ocr_text(image_base64: str) -> str:
+    """Local-OCR fallback for /api/resume-image when GEMINI_API_KEY isn't
+    configured or isn't working (see AI_GAP_PROJECTS_ROADMAP.md's session log
+    -- two keys tested during Session 1 both authenticated but had zero
+    free-tier quota provisioned). tesseract-ocr is installed via the
+    Dockerfile so this works on the deployed Space too, not just locally.
+    Keeps /api/resume-image functional at $0 with no external key at all."""
+    import base64
+    import io
+
+    import pytesseract
+    from PIL import Image
+
+    image_bytes = base64.b64decode(image_base64)
+    image = Image.open(io.BytesIO(image_bytes)).convert("L")
+    return pytesseract.image_to_string(image)
+
+
 def gemini_error_reason(e: Exception) -> str:
     """Classify a gemini_generate() failure into a short, honest reason code —
     'the model is overloaded' is a very different user message from 'we're broken'."""
@@ -433,33 +451,46 @@ def analyze_resume(body: ResumeIn, request: Request):
 @app.post("/api/resume-image")
 def analyze_resume_image(body: ResumeImageIn, request: Request):
     """Same as /api/resume, but the resume arrives as a photo/screenshot
-    instead of pasted text -- OCR via Gemini vision, then the identical
-    evidence-matching prompt as the text path (shared via _resume_match_prompt
-    so the two entry points can never silently drift apart).
+    instead of pasted text, then the identical evidence-matching prompt as
+    the text path (shared via _resume_match_prompt so the two entry points
+    can never silently drift apart).
+
+    OCR step: tries Gemini vision first (better on messy photos), falls back
+    to local tesseract-ocr (installed via the Dockerfile) if Gemini isn't
+    configured/working -- see local_ocr_text()'s docstring for why this
+    fallback exists. The MATCHING step still requires a working Gemini key
+    regardless (it's the only LLM this backend can reach; there's no local
+    inference option once this runs on a remote Space, unlike the local
+    project sandboxes where the `claude` CLI is available) -- this endpoint
+    returns "llm-unavailable" for that step exactly like the pre-existing
+    text-based /api/resume always has, not a new limitation.
 
     Ephemerality is identical to /api/resume: the image is used for exactly
-    one OCR call, the OCR'd text for exactly one matching call, and neither
+    one OCR pass, the OCR'd text for exactly one matching call, and neither
     the image nor the extracted text is written to Supabase or logged.
-
-    UNTESTED against a live GEMINI_API_KEY as of this commit -- see
-    gemini_generate_vision()'s docstring. Verify with a real resume photo
-    before treating this endpoint as production-ready.
     """
     if not rate_ok(client_ip(request), limit=10, window_s=3600):
         return {"ok": False, "reason": "rate-limited"}
-    if not gemini_ready():
-        return {"ok": False, "reason": "llm-unavailable"}
 
-    ocr_prompt = ("Transcribe all readable text from this resume/CV image, in reading "
-                  "order. Plain text only, no commentary, no markdown formatting.")
-    try:
-        resume_text = gemini_generate_vision(body.image_base64, body.mime_type, ocr_prompt, max_tokens=2000)
-    except Exception as e:
-        return {"ok": False, "reason": gemini_error_reason(e), "detail": str(e)[:160]}
+    if gemini_ready():
+        ocr_prompt = ("Transcribe all readable text from this resume/CV image, in reading "
+                      "order. Plain text only, no commentary, no markdown formatting.")
+        try:
+            resume_text = gemini_generate_vision(body.image_base64, body.mime_type, ocr_prompt, max_tokens=2000)
+        except Exception as e:
+            return {"ok": False, "reason": gemini_error_reason(e), "detail": str(e)[:160]}
+    else:
+        try:
+            resume_text = local_ocr_text(body.image_base64)
+        except Exception as e:
+            return {"ok": False, "reason": "ocr-error", "detail": str(e)[:160]}
 
     if len(resume_text.strip()) < 20:
         return {"ok": False, "reason": "image-unreadable",
                 "detail": "Couldn't read enough text from that image -- try a clearer photo or paste the text instead."}
+
+    if not gemini_ready():
+        return {"ok": False, "reason": "llm-unavailable"}
 
     try:
         raw = gemini_generate(_resume_match_prompt(resume_text, body.subtopics), max_tokens=800, json_mode=True)
