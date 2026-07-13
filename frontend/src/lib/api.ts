@@ -3,6 +3,32 @@ import type { Session } from './types'
 // The FastAPI service on Hugging Face Spaces. Overridable at build time.
 const API_BASE = import.meta.env.VITE_API_BASE ?? 'https://lyhjeremy-skillcompass-api.hf.space'
 
+export interface QuotaState {
+  ok: boolean
+  used?: number
+  cap?: number
+  remaining?: number
+  since?: string
+  note?: string
+}
+
+/** The live "today's capacity" meter (upgrade 4) -- Gemini free-tier usage
+ *  this backend instance has made, self-tracked since last restart (see
+ *  backend's quota_state() docstring for why it's not a true daily reset).
+ *  Never throws; returns ok:false on any failure so the UI can hide the meter. */
+export async function getQuota(): Promise<QuotaState> {
+  try {
+    const ctrl = new AbortController()
+    const t = setTimeout(() => ctrl.abort(), 8000)
+    const res = await fetch(`${API_BASE}/api/quota`, { signal: ctrl.signal })
+    clearTimeout(t)
+    if (!res.ok) return { ok: false }
+    return await res.json()
+  } catch {
+    return { ok: false }
+  }
+}
+
 export interface PercentileResult {
   ok: boolean
   n?: number

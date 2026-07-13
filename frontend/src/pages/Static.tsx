@@ -1,5 +1,32 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getQuota, type QuotaState } from '../lib/api'
 import { store } from '../lib/store'
+
+function QuotaMeter() {
+  const [quota, setQuota] = useState<QuotaState | null>(null)
+  useEffect(() => { getQuota().then(setQuota) }, [])
+  if (!quota || !quota.ok || quota.cap == null) return null
+
+  const pct = Math.min(100, Math.round(((quota.used ?? 0) / quota.cap) * 100))
+  const low = pct >= 85
+  return (
+    <div className="card" style={{ marginTop: 14, padding: '14px 18px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '.85rem' }}>
+        <b>Today's live-AI capacity</b>
+        <span className="muted">{quota.used} / {quota.cap} calls</span>
+      </div>
+      <div className="track thin" style={{ marginTop: 8 }}>
+        <div className={`fill ${low ? 'warn' : 'good'}`} style={{ width: `${pct}%` }} />
+      </div>
+      <p className="small muted" style={{ marginTop: 8 }}>
+        The free Gemini tier this runs on caps out around here — self-tracked since the
+        backend last restarted, not a literal daily reset. When it's low, cached answers
+        still work; new ones may briefly say "at capacity, try again shortly."
+      </p>
+    </div>
+  )
+}
 
 export function Dashboard() {
   const local = store.sessions().length
@@ -54,6 +81,7 @@ export function Methodology() {
         from real data as the beta grows. Full architecture in the{' '}
         <a href="https://github.com/lyhjeremy/skill-compass">repo</a>.
       </p>
+      <QuotaMeter />
     </div>
   )
 }

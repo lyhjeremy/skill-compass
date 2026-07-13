@@ -93,10 +93,42 @@ GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 def gemini_ready() -> bool:
     return bool(GEMINI_KEY)
 
+
+# ---- quota tracker (upgrade 4: context/token budgeting) --------------------
+# Gemini Flash's free tier is ~1,500 requests/day -- the real constraint this
+# whole app runs under. Self-tracked (Google doesn't expose live remaining-
+# quota via a simple API), in-memory, and honestly labeled "since last
+# restart" rather than pretending to a true daily reset: HF Spaces' free-tier
+# disk is ephemeral, so a persisted day-boundary counter would just silently
+# reset on every redeploy anyway. GEMINI_DAILY_CAP is a soft self-imposed
+# budget to stay safely under the real ceiling, not the literal Google limit.
+GEMINI_DAILY_CAP = int(os.environ.get("GEMINI_DAILY_CAP", "1200"))
+_gemini_call_count = 0
+_gemini_tracker_started = time.time()
+
+def track_gemini_call() -> None:
+    global _gemini_call_count
+    _gemini_call_count += 1
+
+def quota_state() -> dict:
+    return {
+        "used": _gemini_call_count,
+        "cap": GEMINI_DAILY_CAP,
+        "remaining": max(0, GEMINI_DAILY_CAP - _gemini_call_count),
+        "since": datetime.fromtimestamp(_gemini_tracker_started, tz=timezone.utc).isoformat(),
+        "note": "in-memory, resets on redeploy — not a literal daily reset",
+    }
+
+def quota_available() -> bool:
+    return _gemini_call_count < GEMINI_DAILY_CAP
+
+
 def gemini_generate(prompt: str, max_tokens: int = 512, json_mode: bool = False, _retried: bool = False) -> str:
     """One Gemini call, with one short retry on transient overload (HTTP 503 is
     common on the free tier under load — worth one retry before failing the request).
     Raises RuntimeError with a short, safe message on final failure."""
+    if not _retried:
+        track_gemini_call()
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
            f"{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}")
     # gemini-2.5-flash spends output-token budget on invisible "thinking" tokens
@@ -140,6 +172,8 @@ def gemini_generate_vision(image_base64: str, mime_type: str, prompt: str,
     but verify with one real call before trusting this in production. If it
     needs a fix, gemini_generate()'s history (thinking-token budget, 503
     retry) suggests real quirks are likely on the first live call."""
+    if not _retried:
+        track_gemini_call()
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
            f"{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}")
     gen_config = {"maxOutputTokens": max_tokens, "thinkingConfig": {"thinkingBudget": 0}}
@@ -329,6 +363,16 @@ def health():
     return out
 
 
+@app.get("/api/quota")
+def quota():
+    """Public capacity meter (upgrade 4 -- see quota_state()'s docstring for
+    why this is self-tracked and 'since last restart' rather than a true
+    daily reset). Powers the "today's capacity" meter on the How-this-works
+    page -- the observability story made real with actual numbers, not just
+    claimed in copy."""
+    return {"ok": True, **quota_state()}
+
+
 @app.post("/api/session")
 def log_session(body: SessionIn, request: Request):
     """Log a completed quiz, return the live percentile for its subtopic."""
@@ -438,6 +482,8 @@ def analyze_resume(body: ResumeIn, request: Request):
         return {"ok": False, "reason": "rate-limited"}
     if not gemini_ready():
         return {"ok": False, "reason": "llm-unavailable"}
+    if not quota_available():
+        return {"ok": False, "reason": "quota-exhausted", **quota_state()}
 
     try:
         raw = gemini_generate(_resume_match_prompt(body.text, body.subtopics), max_tokens=800, json_mode=True)
@@ -491,6 +537,8 @@ def analyze_resume_image(body: ResumeImageIn, request: Request):
 
     if not gemini_ready():
         return {"ok": False, "reason": "llm-unavailable"}
+    if not quota_available():
+        return {"ok": False, "reason": "quota-exhausted", **quota_state()}
 
     try:
         raw = gemini_generate(_resume_match_prompt(resume_text, body.subtopics), max_tokens=800, json_mode=True)
@@ -513,6 +561,8 @@ def interview_turn(body: InterviewIn, request: Request):
         return {"ok": False, "reason": "rate-limited"}
     if not gemini_ready():
         return {"ok": False, "reason": "llm-unavailable"}
+    if not quota_available():
+        return {"ok": False, "reason": "quota-exhausted", **quota_state()}
 
     asked = sum(1 for t in body.transcript if t.role == "interviewer")
     turn_n = asked + 1
@@ -595,6 +645,8 @@ def generate_guide(body: GuideIn, request: Request):
         return {"ok": False, "reason": "rate-limited"}
     if not gemini_ready():
         return {"ok": False, "reason": "llm-unavailable"}
+    if not quota_available():
+        return {"ok": False, "reason": "quota-exhausted", **quota_state()}
 
     lines = []
     for s in body.subtopics[:20]:
