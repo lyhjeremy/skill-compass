@@ -1,14 +1,23 @@
-name: Scheduled data refresh (stubs)
+name: Scheduled data refresh
+
 on:
   workflow_dispatch:
-  # Phase 2+: uncomment as each pipeline lands.
-  # schedule:
-  #   - cron: '0 22 * * *'   # daily: job-postings corpus refresh (Phase 3)
-  #   - cron: '0 */12 * * *' # keep the HF Space awake (Phase 2)
-  #   - cron: '0 3 * * 1'    # weekly: Supabase keep-alive + YouTube resources (Phase 4)
+  schedule:
+    - cron: '0 3 * * 1'    # weekly: Supabase + HF Space keep-alive
+  # Phase 3+: uncomment as each pipeline lands.
+  # - cron: '0 22 * * *'   # daily: job-postings corpus refresh (Phase 3)
 
 jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /api/aggregates (real Supabase read, no Gemini quota used)
+        run: |
+          curl --fail --retry 5 --retry-delay 10 --retry-all-errors --max-time 60 \
+            "https://lyhjeremy-skillcompass-api.hf.space/api/aggregates"
+        # --retry-all-errors covers the HF Space cold-start window if it was asleep.
+
   placeholder:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Cron stubs - activated in later beta phases (see spec §8)."
+      - run: echo "Additional cron stubs - activated in later beta phases (see spec §8)."
