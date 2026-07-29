@@ -11,11 +11,47 @@ jobs:
   keepalive:
     runs-on: ubuntu-latest
     steps:
+      # This used to be `curl --fail` on /api/aggregates and nothing else.
+      # /api/aggregates answers 200 with {"status":"error", "detail": ...} when
+      # the Supabase read fails, so --fail saw a healthy status line and the job
+      # went green for as long as the database was unreachable. Found on
+      # 2026-07-29 with Supabase down and the preceding weekly runs all passing.
+      #
+      # /api/health has the same shape of problem: its top-level "ok" is true
+      # even when its "supabase" field is false. So both are checked by body,
+      # not by status code.
       - name: Ping /api/aggregates (real Supabase read, no Gemini quota used)
         run: |
-          curl --fail --retry 5 --retry-delay 10 --retry-all-errors --max-time 60 \
-            "https://lyhjeremy-skillcompass-api.hf.space/api/aggregates"
-        # --retry-all-errors covers the HF Space cold-start window if it was asleep.
+          set -uo pipefail
+          BASE=https://lyhjeremy-skillcompass-api.hf.space
+
+          # --retry-all-errors covers the HF Space cold-start window if asleep.
+          agg=$(curl -sS --retry 5 --retry-delay 10 --retry-all-errors --max-time 60 "$BASE/api/aggregates")
+          echo "aggregates: $agg"
+
+          health=$(curl -sS --retry 3 --retry-delay 10 --retry-all-errors --max-time 60 "$BASE/api/health")
+          echo "health: $health"
+
+          fail=0
+
+          if printf '%s' "$agg" | grep -q '"status"[[:space:]]*:[[:space:]]*"error"'; then
+            echo "::error::/api/aggregates returned status=error - the Supabase read is failing."
+            fail=1
+          fi
+
+          if printf '%s' "$health" | grep -q '"supabase"[[:space:]]*:[[:space:]]*false'; then
+            detail=$(printf '%s' "$health" | sed -n 's/.*"supabase_error"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')
+            echo "::error::/api/health reports supabase=false: ${detail:-no detail}"
+            echo "Sessions are not being logged, so no topic can reach the 30-session percentile threshold." >&2
+            fail=1
+          fi
+
+          if [ "$fail" -ne 0 ]; then
+            echo "### Calibration store unreachable — sessions are not being logged" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          echo "### Space awake, Supabase reachable" >> "$GITHUB_STEP_SUMMARY"
 
   placeholder:
     runs-on: ubuntu-latest
