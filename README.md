@@ -7,7 +7,8 @@ business, finance, marketing, product, and more — free, no sign-up. The conten
 catalog (`content/catalog.json`) defines 385 subtopics across 46 fields and 117
 career tracks; each goes live automatically as its reviewed question bank lands.
 
-**▶️ Live (beta): https://lyhjeremy.github.io/skill-compass/**
+**▶️ Live (beta): https://lyhjeremy.github.io/skill-compass/** ·
+**Product overview: https://lyhjeremy.github.io/skill-compass/overview/**
 
 Take a 2-minute skill check → get a score with a live percentile and a knowledge
 map of what's strong and shaky. On a career track, once you've been assessed:

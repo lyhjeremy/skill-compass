@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>SkillCompass — the skill check that admits what it doesn't know yet</title>
+<meta name="description" content="A calibrated 2-minute skill check across 46 fields. Elo-recalibrated questions, a knowledge map of what's strong and shaky, and a percentile that stays hidden until there is real data behind it. Free, no sign-up." />
+<meta name="theme-color" content="#FBFAF7" />
+<meta property="og:title" content="SkillCompass — know where you stand" />
+<meta property="og:description" content="Six questions, about two minutes, and a map of what you actually know. Every question cites a public source. Percentiles appear only once a topic has 30 real sessions behind them." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://lyhjeremy.github.io/skill-compass/overview/" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700;800&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  /* Palette lifted from the app's own styles.css so the page and the product
+     read as one thing. Keep the two in step if the app's theme moves. */
+  :root {
+    --paper: #FBFAF7;
+    --card: #FFFFFF;
+    --alt: #F4F2ED;
+    --ink: #1F1D19;
+    --ink2: #4A463F;
+    --muted: #6E6960;
+    --faint: #A09A90;
+    --border: #E7E4DE;
+    --accent: #0891B2;
+    --accent-dk: #0E7490;
+    --tint: #E9F3F5;
+    --good: #059669;
+    --warn: #D97706;
+    --bad: #DC2626;
+    --violet: #7C3AED;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
+    --display: 'Alegreya Sans', 'Optima', 'Seravek', sans-serif;
+    --body: 'Source Sans 3', 'Seravek', system-ui, sans-serif;
+    --shadow: 0 1px 2px rgba(31,29,25,.05), 0 8px 30px rgba(31,29,25,.08);
+    --spine: 92px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #16181A; --card: #1E2023; --alt: #232528;
+      --ink: #E8E6E1; --ink2: #C3BFB7; --muted: #98938A; --faint: #6E6A63;
+      --border: #2B2D30; --accent: #22D3EE; --accent-dk: #67E8F9; --tint: #0E3A44;
+      --good: #34D399; --warn: #FBBF24; --bad: #F87171; --violet: #A78BFA;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 30px rgba(0,0,0,.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--body); font-size: 18.5px; line-height: 1.62;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  /* height:auto is load-bearing: the width/height attributes below reserve
+     layout space, and without it they also pin the rendered height. */
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  strong { font-weight: 700; color: var(--ink); }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  .eyebrow {
+    font-family: var(--mono); font-weight: 600; font-size: 12px;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--muted);
+    margin: 0 0 14px;
+  }
+
+  .masthead {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    padding: 30px 0 0;
+  }
+  .logo {
+    font-family: var(--display); font-weight: 800; font-size: 26px;
+    letter-spacing: -.02em; display: flex; align-items: center; gap: 9px;
+  }
+  .logo .b { color: var(--accent); }
+  .needle {
+    width: 18px; height: 18px; border-radius: 50%; flex: none;
+    border: 2px solid var(--accent); position: relative;
+  }
+  .needle::after {
+    content: ""; position: absolute; left: 50%; top: 50%;
+    width: 2px; height: 7px; background: var(--accent);
+    transform: translate(-50%, -78%) rotate(38deg); transform-origin: bottom center;
+  }
+  .tagline { font-size: 15px; color: var(--ink2); }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 46px 0 58px; }
+  .kicker {
+    font-family: var(--display);
+    font-size: clamp(19px, 2.2vw, 24px); font-weight: 500; color: var(--muted);
+    margin: 0 0 6px; letter-spacing: -.01em;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(38px, 6vw, 74px); font-weight: 800; letter-spacing: -.035em;
+    line-height: 1.04; margin: 0; max-width: 17ch; color: var(--ink);
+  }
+  .hero-sub { margin: 26px 0 0; font-size: 19.5px; color: var(--ink2); max-width: 62ch; }
+  .hero-proof { margin: 38px 0 0; }
+  .hero-proof .shot { border-radius: 12px; }
+
+  .claims { display: grid; grid-template-columns: 1fr; gap: 0 56px; margin: 52px 0 0; }
+  @media (min-width: 760px) { .claims { grid-template-columns: 1fr 1fr; } }
+  .claim { padding: 18px 0 22px; border-top: 1px solid var(--border); }
+  .claim:first-child, .claim:nth-child(2) { border-top: 2px solid var(--ink); }
+  @media (max-width: 759px) { .claim:nth-child(2) { border-top: 1px solid var(--border); } }
+  .claim h3 {
+    font-family: var(--display);
+    font-size: 19px; font-weight: 700; margin: 0 0 7px; color: var(--ink);
+    letter-spacing: -.014em; line-height: 1.25;
+  }
+  .claim p { margin: 0; font-size: 16px; color: var(--ink2); line-height: 1.55; }
+
+  /* ---------- the calibration dial: 29 of 385 ---------- */
+  .dial { margin: 26px 0 0; max-width: 640px; }
+  .dial-track {
+    position: relative; height: 24px; border-radius: 4px;
+    background: var(--border); overflow: hidden;
+  }
+  .dial-fill {
+    position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 4px;
+    background: var(--accent); animation: fill 1.7s cubic-bezier(.22,.8,.28,1) .3s forwards;
+  }
+  @keyframes fill { to { width: 7.5%; } }
+  .dial-scale {
+    display: flex; justify-content: space-between; margin-top: 10px;
+    font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .06em;
+  }
+  .bignum {
+    font-family: var(--display); font-weight: 800;
+    font-size: clamp(84px, 10.5vw, 132px); line-height: .82;
+    letter-spacing: -.05em; margin: 4px 0 0; color: var(--accent-dk);
+    font-variant-numeric: tabular-nums;
+  }
+  .verdict-lead {
+    font-family: var(--display);
+    font-size: clamp(22px, 2.6vw, 30px); font-weight: 700; color: var(--ink);
+    letter-spacing: -.02em; margin: 0; line-height: 1.12;
+  }
+
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+  .btn {
+    display: inline-block; padding: 14px 27px; border-radius: 8px;
+    font-weight: 700; font-size: 16px; text-decoration: none;
+    border: 1px solid var(--ink); transition: transform .15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .textlink {
+    font-size: 16px; font-weight: 600; color: var(--ink2);
+    text-decoration: underline; text-underline-offset: 4px;
+    text-decoration-thickness: 1px; align-self: center;
+  }
+  .textlink:hover { color: var(--ink); }
+
+  /* ---------- the spine: the page runs like a bearing ---------- */
+  .route { position: relative; padding-bottom: 40px; }
+  .route::before {
+    content: ""; position: absolute; left: calc(var(--spine) / 2); top: 8px; bottom: 90px;
+    width: 2px; background: var(--border);
+  }
+  .stop { position: relative; padding: 0 0 84px var(--spine); }
+  .stop::before {
+    content: ""; position: absolute; left: calc(var(--spine) / 2 - 7px); top: 7px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--paper); border: 2px solid var(--ink); box-sizing: border-box;
+  }
+  .stop--ai::before { background: var(--violet); border-color: var(--violet); }
+  .stop--honest::before { background: var(--good); border-color: var(--good); }
+  .stop--end::before { background: var(--ink); }
+  .stop > .eyebrow { margin-top: 2px; }
+  h2 {
+    font-family: var(--display);
+    font-size: clamp(28px, 3.8vw, 39px); font-weight: 800; letter-spacing: -.028em;
+    line-height: 1.12; margin: 14px 0 17px; max-width: 19ch;
+  }
+  .stop p { margin: 0 0 17px; max-width: 60ch; color: var(--ink2); }
+
+  figure { margin: 26px 0 0; }
+  .shot {
+    border-radius: 10px; border: 1px solid var(--border); box-shadow: var(--shadow);
+    overflow: hidden; background: var(--card);
+  }
+  figcaption {
+    margin-top: 11px; font-family: var(--mono); font-size: 12.5px;
+    color: var(--muted); letter-spacing: .02em; line-height: 1.5;
+  }
+
+  .voice {
+    margin: 30px 0 0; padding: 21px 25px; border-left: 3px solid var(--accent);
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+    border-radius: 0 8px 8px 0;
+  }
+  .voice p { margin: 0 0 10px; color: var(--ink); font-size: 17px; max-width: none; }
+  .voice p:last-of-type { margin: 0; }
+  .voice .who {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--muted); display: block; margin-top: 8px;
+  }
+
+  .formula {
+    margin: 24px 0 0; padding: 18px 22px; border: 1px solid var(--border);
+    border-radius: 10px; background: var(--alt);
+    font-family: var(--mono); font-size: 15px; color: var(--ink);
+    overflow-x: auto; white-space: nowrap;
+  }
+
+  .legend { display: flex; gap: 20px; flex-wrap: wrap; margin: 22px 0 0; }
+  .key { display: flex; align-items: center; gap: 8px; font-size: 15.5px; color: var(--ink2); }
+  .key i { width: 13px; height: 13px; border-radius: 50%; display: block; flex: none; }
+  .key--strong i { background: var(--good); }
+  .key--shaky i { background: var(--warn); }
+  .key--missed i { background: var(--bad); }
+  .key--untested i { border: 2px dashed var(--faint); background: none; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2px; margin-top: 30px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+  }
+  .cell { background: var(--paper); padding: 23px 21px; }
+  .cell h3 {
+    font-family: var(--display);
+    font-size: 17px; font-weight: 700; margin: 0 0 8px; letter-spacing: -.01em;
+  }
+  .cell p { font-size: 15.5px; margin: 0; color: var(--ink2); max-width: none; line-height: 1.55; }
+
+  .specs { margin-top: 28px; border-top: 1px solid var(--border); }
+  .spec {
+    display: grid; grid-template-columns: 1fr; gap: 2px;
+    padding: 15px 0; border-bottom: 1px solid var(--border);
+  }
+  @media (min-width: 700px) { .spec { grid-template-columns: 190px 1fr; gap: 24px; } }
+  .spec dt {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); padding-top: 3px;
+  }
+  .spec dd { margin: 0; font-size: 16.5px; color: var(--ink2); }
+
+  .close { padding: 10px 0 90px var(--spine); position: relative; }
+  .close h2 { max-width: 21ch; }
+  footer {
+    border-top: 1px solid var(--border); padding: 30px 0 60px;
+    font-size: 15px; color: var(--muted);
+  }
+  footer a { color: var(--ink2); }
+  footer p { margin: 0 0 8px; }
+
+  @media (max-width: 640px) {
+    :root { --spine: 40px; }
+    body { font-size: 17px; }
+    .hero { padding: 40px 0 54px; }
+    .stop { padding-bottom: 64px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .dial-fill { animation: none; width: 7.5%; }
+    .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="logo"><span class="needle" aria-hidden="true"></span><span>Skill<span class="b">Compass</span></span></div>
+    <div class="tagline">know where you stand</div>
+  </header>
+
+  <section class="hero">
+    <p class="kicker">Every skill quiz hands you a percentile.</p>
+    <h1>This one hides it until the number is real.</h1>
+
+    <p class="hero-sub">
+      SkillCompass is a two-minute skill check across data, software, cloud,
+      security, finance, marketing, product and more. Six questions, chosen to
+      match your level, each one written against a named public source. At the
+      end you get a map of what you actually know. What you don't get is a
+      confident-sounding statistic invented out of a sample of one.
+    </p>
+
+    <div class="cta-row">
+      <a class="btn btn-primary" href="../">Take a 2-minute check</a>
+      <a class="textlink" href="https://github.com/lyhjeremy/skill-compass">or read the code</a>
+    </div>
+
+    <figure class="hero-proof">
+      <img class="shot" src="results.jpg" width="1485" height="812" fetchpriority="high"
+        alt="A finished check on Model evaluation scoring 6 out of 6, labelled Early data with a note that live percentiles switch on once the topic has 30 or more sessions, above a knowledge map of eight concepts coloured strong or not yet tested." />
+      <figcaption>
+        A clean 6/6, and no percentile. The topic hasn't collected 30 sessions
+        yet, so the page says "early data" and leaves it at that.
+      </figcaption>
+    </figure>
+
+    <div class="claims">
+      <div class="claim">
+        <h3>The questions recalibrate from real answers</h3>
+        <p>Each item ships with an estimated difficulty and then moves toward what
+        people actually score on it, using the same Elo update chess ratings use.
+        Your six questions are picked to match the level one placement question
+        suggests.</p>
+      </div>
+      <div class="claim">
+        <h3>Every question names its source</h3>
+        <p>The explanation under each answer cites the public reference it was
+        written against, so a disputed key is checkable rather than a matter of
+        trusting the quiz.</p>
+      </div>
+      <div class="claim">
+        <h3>The scoring can't go down</h3>
+        <p>Questions ship as static JSON and the whole quiz loop runs in your
+        browser. No server call sits between you and your result. The AI extras
+        are the only part that needs a backend.</p>
+      </div>
+      <div class="claim">
+        <h3>No account, and the data is yours</h3>
+        <p>No sign-up, no cookies past localStorage. Your history lives on your
+        device and there are export and erase buttons for it. The only central
+        record is an anonymous answer log.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+<div class="route">
+
+  <!-- 1 -->
+  <section class="stop">
+    <p class="eyebrow">Bearing · the problem</p>
+    <h2>You can't grade your own SQL</h2>
+    <p>
+      Ask someone to rate their own SQL out of ten and you learn how they feel,
+      not what they know. Job descriptions have the same problem in reverse: a
+      posting asks for "strong SQL" without saying whether that means a join or a
+      window function. Between those two vague numbers sits the actual question,
+      which is <strong>what would you get wrong</strong>.
+    </p>
+    <p>
+      A short test can answer that, but only if the test is honest about its own
+      accuracy. Most aren't. They ask six easy questions, congratulate you, and
+      quote a percentile computed from nothing.
+    </p>
+  </section>
+
+  <!-- 2 -->
+  <section class="stop">
+    <p class="eyebrow">↓ the check</p>
+    <h2>Six questions, about two minutes, untimed</h2>
+    <p>
+      One placement question comes first and sets the difficulty band for the
+      rest. Answer it well and the following six come from the hard set; miss it
+      and they come from an easier one, so the check spends its questions where
+      they tell it something. You can also skip the placement and pick the band
+      yourself.
+    </p>
+    <p>
+      Nothing is timed. Your pace is recorded and shown back to you afterward as
+      seconds per question, because reading speed is information, but it never
+      costs you points.
+    </p>
+    <figure>
+      <img class="shot" src="placement.jpg" width="1485" height="812" loading="lazy"
+        alt="A placement question about two fraud-detection models with identical ROC-AUC on an imbalanced dataset, offering four answer options labelled A to D." />
+      <figcaption>The placement question. One item, and the set adjusts to it.</figcaption>
+    </figure>
+    <div class="voice">
+      <p><q>One quick question first sets the right difficulty. Right or wrong, you'll learn something on every answer.</q></p>
+      <span class="who">The start screen, verbatim</span>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="stop">
+    <p class="eyebrow">↓ every answer</p>
+    <h2>The reveal is the point, not the score</h2>
+    <p>
+      Answer and the explanation opens immediately, whether you were right or
+      wrong. It says which option was correct, why the tempting wrong one is
+      wrong, and then <strong>names the source it was written from</strong>. The
+      example below cites Davis and Goadrich's 2006 paper on precision-recall
+      versus ROC curves.
+    </p>
+    <p>
+      That citation is doing real work. A multiple-choice question with a
+      debatable key is worse than no question, so every item is written against a
+      public reference, checked by an independent review pass hunting for
+      ambiguous keys and giveaway option lengths, then read by a human before it
+      counts.
+    </p>
+    <figure>
+      <img class="shot" src="reveal.jpg" width="1485" height="812" loading="lazy"
+        alt="A revealed answer marked Right, with an explanation of why ROC-AUC stays stable across prevalence while PR-AUC drops, followed by a cited source line naming Davis and Goadrich 2006." />
+      <figcaption>Right or wrong, you get the reasoning and the reference.</figcaption>
+    </figure>
+    <p>
+      There are <strong>645 reviewed questions</strong> behind the topics that
+      are live today, mapped onto <strong>230 concepts</strong>.
+    </p>
+  </section>
+
+  <!-- 4 -->
+  <section class="stop">
+    <p class="eyebrow">↓ the result</p>
+    <h2>A map, not a grade</h2>
+    <p>
+      The score is one line. Underneath it sits the knowledge map: every concept
+      the topic covers, coloured by how you did on the questions that touched it,
+      with the prerequisite links drawn in. Concepts your six questions never
+      reached stay dashed and empty rather than being guessed at.
+    </p>
+    <div class="legend">
+      <span class="key key--strong"><i></i>Strong</span>
+      <span class="key key--shaky"><i></i>Shaky</span>
+      <span class="key key--missed"><i></i>Missed</span>
+      <span class="key key--untested"><i></i>Not yet tested</span>
+    </div>
+    <p style="margin-top:20px">
+      Tap any node for what the concept is and how to close it, plus a direct
+      route back into a fresh set of questions on it. Above the map, a rule-based
+      diagnosis says in a sentence what the run actually showed, including when
+      the honest read is that six questions weren't enough to be sure.
+    </p>
+    <figure>
+      <img class="shot" src="concept.jpg" width="1485" height="812" loading="lazy"
+        alt="The knowledge map with a concept dialog open for ROC-AUC vs PR Curve, marked strong, explaining the difference between the two curves and offering a Take it again button." />
+      <figcaption>Tap a concept for what it is, how you did, and a way back in.</figcaption>
+    </figure>
+    <div class="voice">
+      <p><q>A clean 6/6. You handled ROC-AUC vs PR Curve — the hardest idea in this set — without slipping. Take it again to cover confusion matrix; a perfect run on fresh questions is the real test.</q></p>
+      <span class="who">The diagnosis on the run above</span>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="stop stop--honest">
+    <p class="eyebrow">↓ calibration</p>
+    <h2>Boring math, on purpose</h2>
+    <p>
+      Item difficulty starts as an estimated prior and then recalibrates from
+      real responses. Session ability updates the same way, with a K that decays
+      as an item collects answers, so an established question stops swinging on
+      any one person's result.
+    </p>
+    <div class="formula">R = 1500 − 400·log₁₀(p / (1−p))&nbsp;&nbsp;·&nbsp;&nbsp;K_item = 32 / (1 + n/40)&nbsp;&nbsp;·&nbsp;&nbsp;K_session = 48</div>
+    <p style="margin-top:20px">
+      Ability starts at 1350, 1500 or 1650 depending on which way the placement
+      question routed you. Only first exposures feed calibration, so retaking a
+      topic can't inflate the item statistics. Every rule here is a few lines of
+      explainable code, and the whole thing is on the methodology page rather
+      than in a footnote.
+    </p>
+    <figure>
+      <img class="shot" src="methodology.jpg" width="1485" height="812" loading="lazy"
+        alt="The How this works page explaining questions, difficulty, percentiles and privacy in plain language, followed by a technical reader section with the Elo formulas and a live-AI capacity meter." />
+      <figcaption>The whole method, including the formulas, on one public page.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 6 -->
+  <section class="stop stop--honest">
+    <p class="eyebrow">↓ the number it won't fake</p>
+    <h2>A percentile needs 30 sessions before it says anything</h2>
+    <p>
+      "Top 27% of 412 this month" means exactly that: your result placed against
+      every real session on that topic in a rolling 90-day window. Until a topic
+      clears <strong>30 sessions</strong>, there is no such comparison to make,
+      so the result says <strong>early data</strong> and stops. Your first
+      attempt is the one that locks the percentile; retakes draw unseen questions
+      but don't let you shop for a better rank.
+    </p>
+    <p>
+      The same rule governs the community dashboard. It is built and wired, and
+      it currently reports the one thing it can honestly report, which is how
+      many checks you have contributed from this device.
+    </p>
+    <figure>
+      <img class="shot" src="dashboard.jpg" width="1485" height="812" loading="lazy"
+        alt="The Live dashboard page, badged beta early data, saying the community counters switch on once the beta has real traffic to report and that there are no fake numbers in the meantime." />
+      <figcaption>An empty dashboard that says it is empty.</figcaption>
+    </figure>
+    <div class="voice">
+      <p><q>This page will show checks taken this week, the most-attempted topics, live question recalibration events, and the monthly job-market pulse — once the beta has real traffic to report. No fake numbers in the meantime.</q></p>
+      <span class="who">The dashboard, explaining its own blankness</span>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="stop">
+    <p class="eyebrow">↓ the catalog</p>
+    <h2>385 topics mapped, 29 of them live</h2>
+    <p>
+      The catalog is the single source of truth: <strong>385 subtopics</strong>
+      across <strong>46 fields</strong>, feeding <strong>117 career tracks</strong>.
+      Software, web, cloud, security, marketing, product, project management, HR,
+      healthcare, law, economics, accounting, maths and psychology sit alongside
+      the original data and finance core.
+    </p>
+    <div class="dial" role="img" aria-label="29 of 385 subtopics are live, about 7.5 percent">
+      <div class="dial-track"><div class="dial-fill"></div></div>
+      <div class="dial-scale"><span>29 LIVE</span><span>385 MAPPED</span></div>
+    </div>
+    <p style="margin-top:26px">
+      A subtopic goes live the moment its reviewed question bank lands. Nothing
+      is edited by hand to make that happen: the manifest derives live, partial
+      or soon from whatever content exists, so topics, fields and tracks flip
+      over on their own. That is why the count above is a real number and not a
+      roadmap. Five fields are live now, four career tracks are complete, and 42
+      more have partial coverage.
+    </p>
+    <figure>
+      <img class="shot" src="explore.jpg" width="1485" height="812" loading="lazy"
+        alt="The Explore page listing live topics grouped by field: Machine Learning and AI, SQL and Data Tools, Finance and Markets, Statistics and Experimentation, with plus-eighteen-more-coming labels on the incomplete fields." />
+      <figcaption>Ready topics first, and the unfinished ones say how many are coming.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 8 -->
+  <section class="stop stop--ai">
+    <p class="eyebrow">↓ your résumé</p>
+    <h2>Which of these you already have on paper</h2>
+    <p>
+      A career track is a named role with its six topics named too. Open one cold
+      and it tells you the truth immediately: nothing assessed, and here are the
+      six things this job wants evidence of.
+    </p>
+    <figure>
+      <img class="shot" src="track.jpg" width="1485" height="812" loading="lazy"
+        alt="The Data Analyst career track page reading 0 of 6 topics assessed, with a resume paste box, an upload button, a privacy note, and a Your biggest gaps panel listing the six untested subtopics." />
+      <figcaption>A track opened cold. "No quiz or résumé evidence yet for" and then the list.</figcaption>
+    </figure>
+    <p>
+      Paste your résumé, or photograph it. SkillCompass matches it against
+      <strong>that track's own curriculum</strong> and marks which subtopics your
+      experience already evidences, pulling out the concrete skills it found
+      rather than a vague seniority label.
+    </p>
+    <p>
+      Each evidenced topic then gets a <strong>Verify</strong> button, which is
+      the honest part. A résumé claim is a claim. Verifying it means taking the
+      two-minute check and finding out whether the thing you wrote down survives
+      six questions.
+    </p>
+    <figure>
+      <img class="shot" src="resume.jpg" width="1485" height="812" loading="lazy"
+        alt="A track page showing a parsed resume with extracted skill chips including SQL, Tableau, Excel, Redshift and window functions, above six track subtopics each badged From resume with a Verify button." />
+      <figcaption>Skills pulled from the résumé, each one offered up for testing.</figcaption>
+    </figure>
+    <p>
+      The text is used for a single call and never stored, whether pasted or
+      uploaded. Nothing about it reaches a database, and the result stays on your
+      device. Where a job-postings corpus would let this compare you against live
+      market demand, there isn't one yet, so the report compares against the
+      curriculum and <strong>says so on the page</strong> instead of inventing
+      salary bands.
+    </p>
+    <div class="voice">
+      <p><q>This gap report compares you against this track's own curriculum. A live job-market panel (top skills in this month's postings, salary context) arrives in a later beta phase.</q></p>
+      <span class="who">The footnote under every gap report</span>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="stop stop--ai">
+    <p class="eyebrow">↓ the capstone</p>
+    <h2>An interview that asks a second question</h2>
+    <p>
+      Assess all six topics in a track and the mock interview unlocks. It runs
+      <strong>six to eight turns</strong> of real text conversation, pitched at
+      the seniority your results actually demonstrated rather than the one you
+      claimed, and it follows up when an answer is thin instead of accepting it.
+      It ends with a per-dimension scorecard.
+    </p>
+    <p>
+      It is stateless by design. The transcript is resent with each turn, so
+      there is no server-side session holding your conversation, and nothing to
+      leak. Testing it against a deliberately vague answer got that answer
+      flagged and scored low across several follow-ups, which was the point of
+      the test.
+    </p>
+    <figure>
+      <img class="shot" src="capstone.jpg" width="1485" height="812" loading="lazy"
+        alt="The bottom of a track page showing six subtopics badged From resume with Verify buttons, and a locked Mock interview capstone panel reading unlocks when all 6 topics are assessed, marked 0 of 6." />
+      <figcaption>Locked at 0/6. The capstone is earned, not offered up front.</figcaption>
+    </figure>
+    <p>
+      The third feature is the <strong>study guide</strong>: a downloadable
+      Markdown plan for a whole track, built from your real per-concept results
+      and, where they exist, your résumé and interview too. All three run on one
+      shared model call helper, with the turn-taking and validation written in
+      plain Python.
+    </p>
+  </section>
+
+  <!-- 10 -->
+  <section class="stop">
+    <p class="eyebrow">↓ your data</p>
+    <h2>Two buttons: export, and erase</h2>
+    <p>
+      Everything you do lives in one localStorage key on your own browser. The
+      Progress page lists it back to you, every check with its date and score,
+      and gives you a button to take it away as a file and a button to delete it
+      outright. Neither asks you to log in first, because there is no login.
+    </p>
+    <p>
+      The only thing recorded centrally is an anonymous answer log: question id,
+      right or wrong, response time. That is what powers calibration. It never
+      records who you are, and there is no account for it to attach to.
+    </p>
+    <figure>
+      <img class="shot" src="progress.jpg" width="1485" height="812" loading="lazy"
+        alt="The Your progress page showing checks completed, topics attempted and average score, a history list of two checks with dates and scores, and Export my data and Clear everything buttons." />
+      <figcaption>"Everything below lives only in this browser."</figcaption>
+    </figure>
+  </section>
+
+  <!-- 11 -->
+  <section class="stop">
+    <p class="eyebrow">↓ the rest of it</p>
+    <h2>Twelve smaller things</h2>
+    <div class="grid">
+      <div class="cell">
+        <h3>Keyboard the whole way</h3>
+        <p>Press <strong>A–D</strong> to answer and Return to advance. A check takes about two minutes without your hand leaving the keyboard.</p>
+      </div>
+      <div class="cell">
+        <h3>Skip the placement</h3>
+        <p>Already know your level? <strong>Start easier</strong> or <strong>start harder</strong> and go straight to the set you want.</p>
+      </div>
+      <div class="cell">
+        <h3>Unseen-first retakes</h3>
+        <p>Take a topic again and it draws questions you haven't met. Your first attempt still owns the percentile.</p>
+      </div>
+      <div class="cell">
+        <h3>Dark mode</h3>
+        <p>A full night theme on its own toggle, with the palette validated for contrast in both directions.</p>
+      </div>
+      <div class="cell">
+        <h3>Photograph your résumé</h3>
+        <p>No file to hand? Upload a photo or screenshot and it gets read the same way, in memory, once.</p>
+      </div>
+      <div class="cell">
+        <h3>Feedback endpoint</h3>
+        <p>The API takes structured feedback already. Putting a report link on every question is the next step, and the methodology page says so rather than implying it's done.</p>
+      </div>
+      <div class="cell">
+        <h3>Pace, not a clock</h3>
+        <p>Nothing counts down. Your seconds-per-question is shown afterward as information, never as a penalty.</p>
+      </div>
+      <div class="cell">
+        <h3>Partial tracks are labelled</h3>
+        <p>A track with four of six banks ready says so and shows a readiness badge, rather than looking complete and failing halfway.</p>
+      </div>
+      <div class="cell">
+        <h3>Certificate prep</h3>
+        <p>CFA Level 1, Google Data Analytics and AWS Cloud Practitioner are mapped in the catalog, marked <strong>coming soon</strong> until their banks land.</p>
+      </div>
+      <div class="cell">
+        <h3>Resume where you left off</h3>
+        <p>The home page picks your track back up at the topic count you'd reached, from the same local store.</p>
+      </div>
+      <div class="cell">
+        <h3>Daily AI capacity, in public</h3>
+        <p>The free model tier has a ceiling. The methodology page shows today's call count against it and says plainly what happens at the top.</p>
+      </div>
+      <div class="cell">
+        <h3>Deep links work</h3>
+        <p>A result has its own URL you can come back to, served through a 404 redirect shim so a static host handles app routes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- end -->
+  <section class="stop stop--end">
+    <p class="eyebrow">Arrive · what it's built on</p>
+    <h2>Free, and free to run</h2>
+    <p>
+      SkillCompass costs <strong>$0 a month</strong> to operate. That is a design
+      constraint rather than a boast: nothing here depends on a budget that could
+      be cut, and no part of it needs to be monetised later.
+    </p>
+    <dl class="specs">
+      <div class="spec"><dt>Frontend</dt><dd>React, Vite and TypeScript, served as a static build from GitHub Pages. The entire quiz loop runs here</dd></div>
+      <div class="spec"><dt>API</dt><dd>Python FastAPI on a Hugging Face Space, free CPU tier. Percentiles and the three AI features only</dd></div>
+      <div class="spec"><dt>Calibration store</dt><dd>Supabase Postgres, free tier, reached through a stdlib-urllib PostgREST client rather than an SDK</dd></div>
+      <div class="spec"><dt>AI features</dt><dd>Gemini 2.5 Flash on the free tier, called over plain REST, with thinking tokens switched off so the visible output isn't truncated</dd></div>
+      <div class="spec"><dt>Content pipeline</dt><dd>A generator drafts questions in difficulty bands, an independent reviewer pass repairs or rejects them, and a human signs off before anything counts</dd></div>
+      <div class="spec"><dt>Question sources</dt><dd>Named public references, cited on the question itself. Curricula referenced against Coursera, edX and Kaplan</dd></div>
+      <div class="spec"><dt>Your data</dt><dd>One localStorage key. An anonymous answer log is the only central record</dd></div>
+    </dl>
+  </section>
+
+</div>
+</div>
+
+<div class="wrap">
+  <section class="close">
+    <h2>Find out what you'd get wrong</h2>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="../">Take a 2-minute check</a>
+      <a class="textlink" href="https://github.com/lyhjeremy/skill-compass">or read the code</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      SkillCompass — know where you stand ·
+      <a href="../">App</a> ·
+      <a href="../methodology">How this works</a> ·
+      <a href="https://github.com/lyhjeremy/skill-compass">Source</a>
+    </p>
+    <p>
+      Beta. 29 of 385 catalogued subtopics are live; the rest are generating.
+      Screenshots are of the running app, not mockups.
+    </p>
+  </footer>
+</div>
+
+</body>
+</html>
