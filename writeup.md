@@ -104,6 +104,51 @@ in-browser and sends only text, processed in memory.
      incremental commit on the Space's real history — more reliable and closer
      to how the platform is actually meant to be used.
 
+- **2026-07-29 — a silent outage, and the monitoring that hid it.** The
+  calibration store had been unreachable for an unknown stretch and nothing
+  reported it. Three faults stacked up, all now fixed.
+
+  The Supabase project had been **paused for inactivity**. A paused free project
+  loses its DNS record, so the host answered NXDOMAIN and the Space logged
+  `connection failed: [Errno -2] Name or service not known`. No session was
+  being written, which means no subtopic could ever reach the 30-session
+  percentile threshold — the product's headline feature was frozen while the UI
+  degraded politely to its "early data" label and looked completely normal.
+
+  What caused the pause was the keep-alive cron guarding against it: it ran
+  **weekly**, against a **7-day** inactivity threshold. Guard interval equal to
+  the threshold means a single delayed run trips the thing it was preventing,
+  and GitHub drops scheduled runs on shared runners routinely. Now `17 3 * * 1,4`
+  (Mon and Thu): a 4-day nominal gap, 3 days of slack, two chances a week for
+  the scheduler to fire at all. The general rule is that a guard interval has to
+  be shorter than the threshold it guards.
+
+  What hid it was `curl --fail` on `/api/aggregates`. That endpoint answers
+  **200** with `{"status":"error", "detail": ...}` when the Supabase read fails,
+  and `--fail` only reads the status line, so three weekly runs passed green
+  through a total outage. `/api/health` has the same shape of problem: its
+  top-level `"ok"` stays `true` while its own `"supabase"` field is `false`. The
+  cron now asserts on both bodies and writes to `$GITHUB_STEP_SUMMARY`. Verified
+  by running it against production in both states: red at 18:25 with Supabase
+  down, green at 22:30 with it up.
+
+  Resuming from the dashboard restored everything; the pre-pause data was
+  intact and `/api/aggregates` came back `{"n":51,"window_days":90,"status":"live"}`.
+  Recovery ran NXDOMAIN → DNS inside 30s → Cloudflare **521** while the origin
+  came up → PostgREST **PGRST205** "could not find the table 'public.sessions'
+  in the schema cache" for two or three minutes while the cache reloaded →
+  healthy. That PGRST205 stage looks exactly like a missing migration and isn't;
+  don't go chasing one.
+
+- **2026-07-29 — product overview page.** A standalone page at
+  `/overview/` (source `frontend/public/overview/index.html`), leading on the
+  gap between what a résumé claims and what a check can prove, with eleven
+  screenshots of the running app. It borrows the app's own verdict vocabulary
+  (strong, shaky, missed, and the dashed ring of an untested claim) as its
+  structural device, and its palette and type come from `frontend/src/styles.css`
+  — so if the app's theme moves, move the overview with it. Counts were taken
+  from `content/catalog.json` and the banks rather than the README.
+
 ## Where it stands
 
 Live at **lyhjeremy.github.io/skill-compass** — 4 fully-live career tracks (Data
@@ -111,7 +156,9 @@ Analyst, Data Scientist/ML, BI Analyst, Business/Product Analytics), 29 of 385
 catalog subtopics live (~645 reviewed questions), all three Phase 3 AI features
 working end-to-end against a $0/month stack (GitHub Pages, a Hugging Face Space,
 Supabase free tier, Gemini free tier). Content generation for the remaining
-catalog continues in the background.
+catalog continues in the background. A product overview page sits at
+`/overview/`. The calibration store is logging again after the July 29 pause,
+with 51 sessions in the rolling 90-day window.
 
 ## Next
 
