@@ -3,7 +3,15 @@ name: Scheduled data refresh
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3 * * 1'    # weekly: Supabase + HF Space keep-alive
+    # Supabase pauses a free project after 7 days with no activity, and this
+    # keep-alive used to run weekly, which left no margin at all: one delayed
+    # or dropped run and the project pauses. That is exactly what happened by
+    # 2026-07-29, when the project was found paused and its hostname returning
+    # NXDOMAIN. GitHub drops scheduled runs on shared runners routinely, so a
+    # 7-day guard on a 7-day threshold was never going to hold.
+    # Mondays and Thursdays: a 4-day nominal gap, 3 days of slack, and two
+    # chances a week for the scheduler to actually fire.
+    - cron: '17 3 * * 1,4'
   # Phase 3+: uncomment as each pipeline lands.
   # - cron: '0 22 * * *'   # daily: job-postings corpus refresh (Phase 3)
 
