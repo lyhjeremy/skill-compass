@@ -74,7 +74,7 @@ export interface ResumeResult {
   summary?: string
 }
 
-/** Analyze resume text against a track's subtopics. The text never touches storage —
+/** Analyze resume text against a track's subtopics. The text never touches storage;
  *  it's used for one Gemini call and discarded. Never throws. */
 export async function analyzeResume(
   text: string, subtopics: { id: string; title: string }[],
@@ -139,7 +139,7 @@ export interface InterviewTurnResult {
 }
 
 /** One turn of the mock interview. Send the full transcript so far (stateless
- *  backend — no session to manage). Never throws. */
+ *  backend, with no session to manage). Never throws. */
 export async function interviewTurn(
   trackTitle: string, seniority: string, topics: string[],
   transcript: { role: string; text: string }[],
@@ -204,10 +204,10 @@ export function warmBackend() {
 /** Shared, honest error copy for any Gemini-backed feature's failure reason. */
 export function llmErrorMessage(reason?: string): string {
   switch (reason) {
-    case 'rate-limited': return "This is getting a lot of use right now — try again in a bit."
-    case 'llm-unavailable': return 'This feature is warming up — try again shortly.'
-    case 'llm-overloaded': return "The AI service is at capacity right now (a free-tier limit on our end, not your connection) — try again in a minute."
-    case 'llm-quota': return "This feature has hit its free daily limit — try again tomorrow."
-    default: return "Couldn't complete that — try again in a moment."
+    case 'rate-limited': return "This is getting a lot of use right now. Try again in a bit."
+    case 'llm-unavailable': return 'This feature is warming up. Try again shortly.'
+    case 'llm-overloaded': return "The AI service is at capacity right now (a free-tier limit on our end, not your connection). Try again in a minute."
+    case 'llm-quota': return "This feature has hit its free daily limit. Try again tomorrow."
+    default: return "Couldn't complete that. Try again in a moment."
   }
 }

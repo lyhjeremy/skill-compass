@@ -28,7 +28,9 @@ export default function App() {
       <footer className="site container">
         <span>Built by <a href="https://github.com/lyhjeremy">Jeremy Lee</a> · <Link to="/about">About</Link></span>
         <span>
-          <Link to="/methodology">How this works</Link> · <Link to="/about">Privacy</Link> ·{' '}
+          <Link to="/methodology">How this works</Link> ·{' '}
+          <a href="/skill-compass/privacy/">Privacy</a> ·{' '}
+          <a href="/skill-compass/terms/">Terms</a> ·{' '}
           <a href="https://github.com/lyhjeremy/skill-compass">GitHub</a>
         </span>
       </footer>

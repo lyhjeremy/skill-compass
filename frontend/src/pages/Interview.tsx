@@ -61,7 +61,7 @@ export default function Interview() {
   if (phase === 'locked') return (
     <div className="container fade-in" style={{ padding: 48, textAlign: 'center' }}>
       <h2>Not unlocked yet</h2>
-      <p className="muted small" style={{ marginTop: 8 }}>Complete every topic in this track first — the interview matches its questions to what you've actually shown you know.</p>
+      <p className="muted small" style={{ marginTop: 8 }}>Complete every topic in this track first. The interview matches its questions to what you've actually shown you know.</p>
       <Link className="btn" style={{ marginTop: 16 }} to={`/tracks/${trackId}`}>Back to the track</Link>
     </div>
   )
@@ -117,7 +117,7 @@ export default function Interview() {
         <p className="muted" style={{ marginTop: 8 }}>~10 minutes · 6–8 questions · honest feedback</p>
         <p className="small muted" style={{ marginTop: 6 }}>
           Pitched at {SENIORITY_LABEL[seniority]}, based on what you've shown across this track. Real
-          questions, follow-ups when an answer is thin, and a scorecard at the end — professional, not harsh.
+          questions, follow-ups when an answer is thin, and a scorecard at the end, all kept professional.
         </p>
         <button className="btn" style={{ marginTop: 18 }} onClick={start}>Start the interview</button>
         <p style={{ marginTop: 10 }}><Link className="textlink small" to={`/tracks/${trackId}`}>Not now</Link></p>
@@ -151,7 +151,7 @@ export default function Interview() {
         </div>
       </details>
       <div style={{ marginTop: 20 }}><Link className="btn ghost" to={`/tracks/${trackId}`}>Back to the track</Link></div>
-      <p className="small muted" style={{ marginTop: 14 }}>One interview per track per day — come back tomorrow for another.</p>
+      <p className="small muted" style={{ marginTop: 14 }}>One interview per track per day. Come back tomorrow for another.</p>
     </div>
   )
 
@@ -193,7 +193,7 @@ export default function Interview() {
       </div>
       <p className="small muted" style={{ marginTop: 8 }}>
         Press Enter to send, Shift+Enter for a new line.
-        {voiceInputSupported && ' Or tap the mic and speak — review the text before sending.'}
+        {voiceInputSupported && ' Or tap the mic and speak, then review the text before sending.'}
         {voiceOutputSupported && (
           <> · <button className="textlink small" style={{ padding: 0 }} onClick={() => { setVoiceMuted(m => !m); if (!voiceMuted) stopSpeaking() }}>
             {voiceMuted ? 'Unmute interviewer voice' : 'Mute interviewer voice'}

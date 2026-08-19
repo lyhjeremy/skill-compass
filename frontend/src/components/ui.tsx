@@ -30,7 +30,7 @@ export function ThemeToggle() {
   }
   return (
     <button className="textlink" style={{ textDecoration: 'none', color: 'var(--muted)' }}
-      onClick={() => setTheme(next)} title={`Theme: ${theme} — click for ${next}`}
+      onClick={() => setTheme(next)} title={`Theme: ${theme}, click for ${next}`}
       aria-label={`Switch theme (current: ${theme})`}>{icons[theme]}</button>
   )
 }

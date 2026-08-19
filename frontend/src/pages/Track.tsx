@@ -178,7 +178,7 @@ export default function Track() {
         <div className="card" style={{ marginTop: 20, border: '1.5px dashed var(--accent)', background: 'var(--tint)' }}>
           <b>Add your resume <span className="muted" style={{ fontWeight: 400 }}>(optional)</span></b>
           <p className="small muted" style={{ marginTop: 4 }}>
-            See which of these topics your experience already covers — paste the text, or upload a photo/screenshot.
+            See which of these topics your experience already covers. Paste the text, or upload a photo/screenshot.
           </p>
           <textarea
             value={text} onChange={e => setText(e.target.value)} rows={6} disabled={busy}
@@ -187,9 +187,9 @@ export default function Track() {
                      background: 'var(--card)', color: 'var(--ink)', font: 'inherit', resize: 'vertical' }}
           />
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 8 }}>
-            <span className="small muted">— or —</span>
+            <span className="small muted">or</span>
             <label className="btn ghost small" style={{ cursor: busy ? 'default' : 'pointer', opacity: busy ? .6 : 1 }}>
-              📷 Upload a photo/screenshot
+              Upload a photo/screenshot
               <input
                 type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} style={{ display: 'none' }}
                 onChange={e => { const f = e.target.files?.[0]; if (f) analyzeImage(f); e.target.value = '' }}
@@ -201,7 +201,7 @@ export default function Track() {
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="1.8" style={{ flexShrink: 0 }}>
               <rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" />
             </svg>
-            <p className="small muted">Analyzed once and never stored, whether pasted or uploaded — nothing is saved on our servers; results stay only on this device.</p>
+            <p className="small muted">Analyzed once and never stored, whether pasted or uploaded. Nothing is saved on our servers; results stay only on this device.</p>
           </div>
           {error && <p className="small" style={{ color: 'var(--bad)', marginTop: 8 }}>{error}</p>}
           <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
@@ -235,7 +235,7 @@ export default function Track() {
                   <div style={{ marginTop: 6 }}><span className="pill green">From resume</span></div>
                 ) : null}
               </div>
-              <span className="small muted num" style={{ width: 44, textAlign: 'right' }}>{m !== null ? `${m}%` : '—'}</span>
+              <span className="small muted num" style={{ width: 44, textAlign: 'right' }}>{m !== null ? `${m}%` : 'n/a'}</span>
               {s.status === 'live'
                 ? <Link className="btn ghost" style={{ padding: '8px 18px', fontSize: '.9rem' }} to={`/quiz/${s.id}`}>{m !== null ? 'Retake' : fromResume ? 'Verify' : 'Start'}</Link>
                 : <span className="pill gray">soon</span>}
@@ -246,11 +246,11 @@ export default function Track() {
 
       <div className="card" style={{ marginTop: 18, background: 'var(--tint)', border: '1px solid var(--accent)', display: 'flex', alignItems: 'center', gap: 12 }}>
         <div style={{ flex: 1 }}>
-          <b>🎤 Mock interview capstone</b>
+          <b>Mock interview capstone</b>
           <p className="small" style={{ marginTop: 3, color: 'var(--accent-dk)' }}>
             {track.status === 'live' && assessed === subs.length
-              ? 'Unlocked — a 6–8 turn interview at your demonstrated level, with honest feedback.'
-              : `Unlocks when all ${subs.length} topics are assessed — a 6–8 turn interview at your demonstrated level.`}
+              ? 'Unlocked: a 6-8 turn interview at your demonstrated level, with honest feedback.'
+              : `Unlocks when all ${subs.length} topics are assessed: a 6-8 turn interview at your demonstrated level.`}
           </p>
         </div>
         {track.status === 'live' && assessed === subs.length
@@ -261,7 +261,7 @@ export default function Track() {
       {assessed > 0 && (
         <div className="card" style={{ marginTop: 14 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>
-            <b>📋 Your personalized study guide</b>
+            <b>Your personalized study guide</b>
             {guide && (
               <span>
                 <button className="textlink small" onClick={buildGuide} disabled={guideBusy}>Regenerate</button>
@@ -273,7 +273,7 @@ export default function Track() {
           {!guide ? (
             <>
               <p className="small muted" style={{ marginTop: 4 }}>
-                A short, specific plan built from your real quiz results{profile ? ', your resume,' : ''}{store.interview(trackId) ? ' and your interview feedback' : ''} — where to focus first, what's already solid, and a suggested order.
+                A short, specific plan built from your real quiz results{profile ? ', your resume,' : ''}{store.interview(trackId) ? ' and your interview feedback' : ''}: where to focus first, what's already solid, and a suggested order.
               </p>
               {guideError && <p className="small" style={{ color: 'var(--bad)', marginTop: 8 }}>{guideError}</p>}
               <button className="btn" style={{ marginTop: 10 }} onClick={buildGuide} disabled={guideBusy}>

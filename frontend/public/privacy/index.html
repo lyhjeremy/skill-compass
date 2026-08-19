@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Privacy: SkillCompass</title>
+<meta name="description" content="What SkillCompass collects, what it does not, and which third parties see anything." />
+<meta name="theme-color" content="#EDEDE7" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<style>
+@font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4-400.woff2")format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4-600.woff2")format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"IBM Plex Sans";src:url("../fonts/IBMPlexSans-400.woff2")format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Sans";src:url("../fonts/IBMPlexSans-600.woff2")format("woff2");font-weight:600;font-display:swap}
+:root{--paper:#EDEDE7;--panel:#F5F5F0;--ink:#1C1E1B;--ink-2:#52564E;--rule:#C6C7BF;--edge:#767A70;--signal:#8C3A1E;
+--font-head:"Source Serif 4","Iowan Old Style","Palatino Linotype",Palatino,serif;
+--font-body:"IBM Plex Sans","Helvetica Neue",Helvetica,Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#191B18;--panel:#212420;--ink:#E6E6DE;--ink-2:#A2A69B;--rule:#3B3F38;--edge:#6A6F66;--signal:#D8825C}}
+*,*::before,*::after{box-sizing:border-box;border-radius:0}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6}
+.wrap{max-width:68ch;margin:0 auto;padding:64px 24px 96px}
+h1,h2{font-family:var(--font-head);font-weight:600;line-height:1.15;margin:0 0 16px}
+h1{font-size:2.44rem}
+h2{font-size:1.56rem;margin-top:40px;padding-bottom:8px;border-bottom:2px solid var(--ink)}
+p,ul{margin:0 0 16px}
+a{color:var(--signal);text-underline-offset:1px}
+a:hover{color:var(--ink)}
+a:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.meta{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);margin-bottom:8px}
+.table-scroll{overflow-x:auto;margin:24px 0}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:8px 8px 8px 0;border-bottom:2px solid var(--ink);color:var(--ink-2)}
+td{padding:8px 8px 8px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+footer{margin-top:96px;padding-top:16px;border-top:1px solid var(--rule);font-size:.8rem;color:var(--ink-2)}
+footer a{margin-right:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="meta">Last updated 2026-08-18</p>
+<h1>Privacy</h1>
+<p>SkillCompass has no accounts, no sign-up, no advertising, and no tracking cookies. This page describes what actually happens to data, not what is legally permissible.</p>
+
+<h2>What stays on your device</h2>
+<p>Your quiz answers, scores, knowledge map, streak and every result page live in your browser's <code>localStorage</code> under the key <code>sc_v1</code>. They are never uploaded. Clearing your browser storage, or using the erase control on the Progress page, deletes them permanently. There is no server-side copy to request or recover.</p>
+
+<h2>What is sent to a server</h2>
+<p>Two things leave your device, and only these two.</p>
+<p><strong>Anonymous session outcomes.</strong> When you finish a check, the result (which subtopic, which items, right or wrong, and response time) is written to a database so that percentile figures can be computed across everyone who has taken the same check. No name, email, account, IP-based identifier or device fingerprint is attached. The record cannot be traced back to you, which also means it cannot be individually deleted on request.</p>
+<p><strong>Text you submit to an AI feature.</strong> The resume gap report, the mock interview and the study guide generator each send what you type or upload to a language model, receive a response, and discard the input. Nothing you submit to these features is written to any database, including resume text and uploaded images. If you would rather not send resume text anywhere, do not use the resume feature; every other part of the product works without it.</p>
+
+<h2>Third parties</h2>
+<div class="table-scroll">
+<table>
+<thead><tr><th>Service</th><th>Role</th><th>What it receives</th></tr></thead>
+<tbody>
+<tr><td>GitHub Pages</td><td>Serves the site</td><td>Standard web request logs, including your IP address</td></tr>
+<tr><td>Hugging Face Spaces</td><td>Hosts the API</td><td>Requests to the API, including your IP address</td></tr>
+<tr><td>Supabase</td><td>Stores anonymous session outcomes</td><td>Quiz results with no identifier attached</td></tr>
+<tr><td>Google Gemini</td><td>Powers the three AI features</td><td>Only the text or image you submit to those features</td></tr>
+</tbody>
+</table>
+</div>
+<p>Fonts are served from this site, so no font provider is contacted and no request is made to a content delivery network. There is no analytics provider of any kind.</p>
+
+<h2>Children</h2>
+<p>SkillCompass is aimed at working professionals and students in higher education. It is not directed at children under 13, and it collects nothing that would identify one.</p>
+
+<h2>Changes and contact</h2>
+<p>Material changes will be reflected here with a new date at the top. Questions go to <a href="mailto:lyhjeremy@gmail.com">lyhjeremy@gmail.com</a>.</p>
+
+<footer>
+<a href="../">SkillCompass</a><a href="../terms/">Terms</a><a href="https://github.com/lyhjeremy/skill-compass">Source</a>
+</footer>
+</div>
+</body>
+</html>

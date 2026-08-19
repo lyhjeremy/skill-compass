@@ -29,7 +29,7 @@ export default function Progress() {
     <div className="container fade-in" style={{ maxWidth: 720, padding: '32px 20px' }}>
       <h1 style={{ fontSize: '1.8rem' }}>Your progress</h1>
       <p className="muted small" style={{ marginTop: 4 }}>
-        Everything below lives only in this browser — no account, no server copy. Export it or erase it any time.
+        Everything below lives only in this browser. No account, no server copy. Export it or erase it any time.
       </p>
 
       {sessions.length === 0 ? (

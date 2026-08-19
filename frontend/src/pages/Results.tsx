@@ -49,7 +49,7 @@ export default function Results() {
   if (!session) return (
     <div className="container" style={{ padding: 48, textAlign: 'center' }}>
       <h2>No result found on this device</h2>
-      <p className="muted small" style={{ marginTop: 8 }}>Results live only in your browser — this link may be from another device.</p>
+      <p className="muted small" style={{ marginTop: 8 }}>Results live only in your browser. This link may be from another device.</p>
       <Link className="btn" style={{ marginTop: 16 }} to="/">Take a check</Link>
     </div>
   )
@@ -68,15 +68,15 @@ export default function Results() {
   function download() {
     const label = (id: string) => content!.concepts.find(c => c.id === id)?.label ?? id
     const lines = [
-      `# Your SkillCompass check — ${title}`, '',
+      `# Your SkillCompass check: ${title}`, '',
       `Generated ${new Date(session!.ts).toLocaleDateString()} · https://lyhjeremy.github.io/skill-compass/`, '',
       `## Result`, `- Score: **${session!.correct}/${session!.total}** (attempt ${attempts})`,
       `- Average pace: ~${avgSec}s per question`, '',
       `## What this says`, text, '',
       `## Concept map`,
-      ...content!.concepts.map(c => `- ${c.label}: **${states[c.id]}** — ${c.definition}`), '',
-      `## Keep growing — paste into any AI chat`, '```',
-      `You are my tutor. My weak areas in ${title}: ${content!.concepts.filter(c => states[c.id] === 'missed' || states[c.id] === 'shaky').map(c => c.label).join(', ') || '(none — challenge me)'}.`,
+      ...content!.concepts.map(c => `- ${c.label}: **${states[c.id]}**. ${c.definition}`), '',
+      `## Keep growing: paste into any AI chat`, '```',
+      `You are my tutor. My weak areas in ${title}: ${content!.concepts.filter(c => states[c.id] === 'missed' || states[c.id] === 'shaky').map(c => c.label).join(', ') || '(none, challenge me)'}.`,
       `Quiz me with 5 new practice questions, one at a time, correcting me as we go.`, '```', '',
       nextConcept ? `Next move: ${label(nextConcept.id)}.` : 'Next move: a fresh attempt on new questions.',
     ]
@@ -107,7 +107,7 @@ export default function Results() {
           <p className="small muted" style={{ marginTop: 6 }}>Placing your result…</p>
         ) : (
           <p className="small muted" style={{ marginTop: 6 }}>
-            <b style={{ color: 'var(--ink)' }}>Early data</b> — you're one of the first here.
+            <b style={{ color: 'var(--ink)' }}>Early data.</b> You're one of the first here.
             Live percentiles switch on once this topic has 30+ sessions; your result is saved on this device.
           </p>
         )}
@@ -131,7 +131,7 @@ export default function Results() {
         <Link className="btn subtle" to={`/tracks/${trackId}`}>Back to your track</Link>
       </div>
       <p className="small muted" style={{ marginTop: 14 }}>
-        Shareable result cards and the market gap report arrive later in the beta — <Link to="/methodology">see what's coming</Link>.
+        Shareable result cards and the market gap report arrive later in the beta. <Link to="/methodology">see what's coming</Link>.
       </p>
     </div>
   )

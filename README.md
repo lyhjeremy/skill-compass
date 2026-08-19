@@ -1,13 +1,15 @@
 # SkillCompass
 
+Design and copy follow [these standards](https://github.com/lyhjeremy/lyhjeremy/blob/main/DESIGN_STANDARDS.md).
+
 **Know where you stand. See exactly where to go.**
 
 A calibrated skill-assessment platform spanning data, software, cloud, security,
-business, finance, marketing, product, and more — free, no sign-up. The content
+business, finance, marketing, product, and more. Free, no sign-up. The content
 catalog (`content/catalog.json`) defines 385 subtopics across 46 fields and 117
 career tracks; each goes live automatically as its reviewed question bank lands.
 
-**▶️ Live (beta): https://lyhjeremy.github.io/skill-compass/** ·
+**Live (beta): https://lyhjeremy.github.io/skill-compass/** ·
 **Product overview: https://lyhjeremy.github.io/skill-compass/overview/**
 
 Take a 2-minute skill check → get a score with a live percentile and a knowledge
@@ -31,13 +33,13 @@ localStorage, resumes analyzed in memory and never stored.
 
 The AI features (`/api/resume`, `/api/interview`, `/api/guide`) are single-call
 Gemini requests with the turn-taking and validation logic written in plain
-Python — not LangGraph, which the original spec envisioned. Simpler, and one
+Python, not LangGraph, which the original spec envisioned. Simpler, and one
 fewer dependency to debug; see `writeup.md` for why.
 
 ## Repo layout
 
 ```
-frontend/   React app (quiz engine, knowledge map, results — all client-side)
+frontend/   React app (quiz engine, knowledge map, results, all client-side)
 backend/    FastAPI service (percentiles, resume analysis, interview, study guide)
 content/    Question banks, concept graphs (JSON, human-reviewed)
 scripts/    Content-generation pipeline
@@ -49,9 +51,9 @@ docs/       Screenshots and design references
 | File | Purpose |
 |---|---|
 | `frontend/src/lib/elo.ts` | Elo calibration formulas (item difficulty + session ability) |
-| `frontend/src/lib/store.ts` | localStorage schema `sc_v1` — all user state lives on-device |
+| `frontend/src/lib/store.ts` | localStorage schema `sc_v1`; all user state lives on-device |
 | `frontend/src/lib/api.ts` | Backend client for session logging + the three AI features |
-| `content/manifest.json` | Themes, tracks, subtopics — the app renders from this |
+| `content/manifest.json` | Themes, tracks, subtopics. The app renders from this |
 | `scripts/gen_questions.py` | Two-pass question generation (draft → adversarial verify) |
 | `backend/app/main.py` | API surface (`/api/health`, `/api/session`, `/api/resume`, `/api/interview`, `/api/guide`, …) |
 
@@ -66,10 +68,10 @@ cd backend && pip install -r requirements.txt && uvicorn app.main:app --reload
 
 **Beta, feature-complete for Phase 3.** Live: the full quiz engine, 4 fully-live
 career tracks (29 of 385 catalog subtopics, ~645 reviewed questions), live
-percentiles, and all three AI features — resume gap report, mock interview
+percentiles, and all three AI features: resume gap report, mock interview
 capstone, and the study guide generator. Content generation for the remaining
 catalog continues in the background. A real job-postings corpus for market-demand
 comparison (the resume feature's honest placeholder today) is the main deferred
-item — full history in `writeup.md`.
+item. Full history is in `writeup.md`.
 
 MIT © 2026 Jeremy Lee

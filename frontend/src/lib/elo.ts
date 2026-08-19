@@ -1,6 +1,6 @@
 import type { Item } from './types'
 
-/** Elo calibration formulas — spec §7. Server-side recalibration lands in
+/** Elo calibration formulas, spec §7. Server-side recalibration lands in
  *  Phase 2; the same math ships here for set selection and future display. */
 
 /** difficulty prior p (P(correct) for median visitor) -> item Elo rating */

@@ -105,8 +105,8 @@ export default function Quiz() {
         <p className="small muted" style={{ marginTop: 6 }}>One quick question first sets the right difficulty. Right or wrong, you'll learn something on every answer.</p>
         <button className="btn" style={{ marginTop: 18 }} onClick={() => begin()}>Start</button>
         <div style={{ marginTop: 10 }}>
-          <button className="textlink small" onClick={() => begin('easy')}>skip — start easier</button>
-          <button className="textlink small" onClick={() => begin('hard')}>skip — start harder</button>
+          <button className="textlink small" onClick={() => begin('easy')}>skip, start easier</button>
+          <button className="textlink small" onClick={() => begin('hard')}>skip, start harder</button>
         </div>
       </div>
     </div>
@@ -116,7 +116,7 @@ export default function Quiz() {
     <div className="reveal fade-in">
       <div className="display" style={{ fontSize: '1.3rem', fontWeight: 700 }}>Placing your result…</div>
       <div className="track" style={{ width: 180 }}><div className="fill" style={{ width: '80%' }} /></div>
-      <p className="small muted">computed from your answers — never invented</p>
+      <p className="small muted">computed from your answers, never invented</p>
     </div>
   )
 
@@ -145,7 +145,7 @@ export default function Quiz() {
               return (
                 <button key={i} className={cls} disabled={picked !== null} onClick={() => answer(i)}>
                   <span className="key">{KEYS[i]}</span>{o}
-                  {picked !== null && i === current.answer && <span style={{ marginLeft: 'auto', color: 'var(--good)', fontWeight: 700 }}>✓</span>}
+                  {picked !== null && i === current.answer && <span style={{ marginLeft: 'auto', color: 'var(--good)', fontWeight: 600, fontSize: '.75rem', textTransform: 'uppercase', letterSpacing: '.06em' }}>correct</span>}
                 </button>
               )
             })}
@@ -153,7 +153,7 @@ export default function Quiz() {
           {picked !== null && !isPlacement && (
             <div className="explain fade-in">
               <b>{picked === current.answer ? 'Right.' : 'Not quite.'}</b> {current.explanation}
-              <div className="src">Source: {current.grounding.source} — {current.grounding.note}</div>
+              <div className="src">Source: {current.grounding.source}: {current.grounding.note}</div>
             </div>
           )}
           {picked !== null && isPlacement && (

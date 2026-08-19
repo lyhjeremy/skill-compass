@@ -28,10 +28,10 @@ export default function Home() {
 
   return (
     <div className="fade-in">
-      <section style={{ textAlign: 'center', padding: '56px 20px 30px', background: 'linear-gradient(180deg, var(--tint) 0%, transparent 85%)' }}>
+      <section style={{ textAlign: 'center', padding: '56px 20px 30px', background: 'var(--tint)' }}>
         <h1 style={{ maxWidth: 640, margin: '0 auto' }}>Where do you actually stand?</h1>
         <p className="muted" style={{ marginTop: 10, maxWidth: 540, marginInline: 'auto' }}>
-          Calibrated 2-minute skill checks across data, tech, business, finance, and more — wired to the live job market. No sign-up.
+          Calibrated 2-minute skill checks across data, tech, business, finance, and more, wired to the live job market. No sign-up.
         </p>
         <button className="btn" style={{ marginTop: 22 }} onClick={() => setPicker(true)}>▶&nbsp; Take a 2-minute check</button>
       </section>
@@ -41,7 +41,7 @@ export default function Home() {
           <div className="card raised" style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
             <div style={{ flex: 1, minWidth: 220 }}>
               <span className="pill">Welcome back</span>
-              <h3 style={{ marginTop: 6 }}>{lastTrack.title} track — {assessed} of {lastTrack.subtopics.length} topics assessed</h3>
+              <h3 style={{ marginTop: 6 }}>{lastTrack.title} track: {assessed} of {lastTrack.subtopics.length} topics assessed</h3>
               <p className="small muted" style={{ marginTop: 4 }}>Pick up where you left off, or try something new below.</p>
             </div>
             <Link className="btn" to={`/tracks/${lastTrack.id}`}>Continue</Link>
@@ -56,7 +56,7 @@ export default function Home() {
               <circle cx="68" cy="48" r="8" fill="var(--card)" stroke="var(--faint)" strokeWidth="2" strokeDasharray="3 2" />
             </svg>
             <div style={{ flex: 1, minWidth: 220 }}>
-              <b>Your results in 2 minutes — example</b>
+              <b>Example: your results in 2 minutes</b>
               <p className="small muted" style={{ marginTop: 3 }}>A score with a real percentile, a map of what's strong and shaky, and a study guide to take with you.</p>
             </div>
             <div style={{ textAlign: 'center', paddingRight: 8 }}>
@@ -66,7 +66,7 @@ export default function Home() {
           </div>
         )}
 
-        <p className="muted small" style={{ textAlign: 'center', margin: '26px 0 12px' }}>— or choose your path —</p>
+        <p className="muted small" style={{ textAlign: 'center', margin: '26px 0 12px' }}>or choose your path</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
           <Link to="/explore" className="card lanecard" style={{ textDecoration: 'none', borderTopColor: 'var(--t-teal)' }}>
             <h3>Quick Topics</h3>
@@ -78,13 +78,13 @@ export default function Home() {
           </Link>
           <Link to="/explore" className="card lanecard" style={{ textDecoration: 'none', borderTopColor: 'var(--t-amber)' }}>
             <h3>Certificate Prep</h3>
-            <p className="small muted" style={{ marginTop: 4 }}>CFA L1 · Google DA · AWS CP — coming soon</p>
+            <p className="small muted" style={{ marginTop: 4 }}>CFA L1 · Google DA · AWS CP, coming soon</p>
           </Link>
         </div>
       </div>
 
       <div className="pulsebar" style={{ marginTop: 34 }}>
-        <span style={{ color: 'var(--good)', fontWeight: 700 }}>● beta</span>&nbsp; Live market pulse and community stats arrive as the beta grows — every number here will be real, never invented.
+        <span style={{ color: 'var(--good)', fontWeight: 700 }}>● beta</span>&nbsp; Live market pulse and community stats arrive as the beta grows; every number here will be real, never invented.
       </div>
 
       {picker && manifest && (
@@ -93,7 +93,7 @@ export default function Home() {
           <div className="modal fade-in" role="dialog" aria-label="Pick your theme">
             <h2 style={{ textAlign: 'center' }}>What's your world?</h2>
             <p className="small muted" style={{ textAlign: 'center', margin: '6px 0 14px' }}>
-              We'll start you with the right check — 6 questions, about 2 minutes, untimed.
+              We'll start you with the right check: 6 questions, about 2 minutes, untimed.
             </p>
             {manifest.themes
               .filter(t => t.status === 'live')

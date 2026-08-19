@@ -20,7 +20,7 @@ function QuotaMeter() {
         <div className={`fill ${low ? 'warn' : 'good'}`} style={{ width: `${pct}%` }} />
       </div>
       <p className="small muted" style={{ marginTop: 8 }}>
-        The free Gemini tier this runs on caps out around here — self-tracked since the
+        The free Gemini tier this runs on caps out around here, self-tracked since the
         backend last restarted, not a literal daily reset. When it's low, cached answers
         still work; new ones may briefly say "at capacity, try again shortly."
       </p>
@@ -33,13 +33,13 @@ export function Dashboard() {
   return (
     <div className="container fade-in" style={{ maxWidth: 720, padding: '32px 20px' }}>
       <h1 style={{ fontSize: '1.8rem' }}>Live dashboard</h1>
-      <p className="muted small" style={{ marginTop: 4 }}>Community stats, question calibration, and the job-market pulse — all computed, never invented.</p>
+      <p className="muted small" style={{ marginTop: 4 }}>Community stats, question calibration, and the job-market pulse, all computed and never invented.</p>
       <div className="card" style={{ marginTop: 20, padding: 28, textAlign: 'center' }}>
-        <span className="pill warn">beta — early data</span>
+        <span className="pill warn">beta, early data</span>
         <h3 style={{ marginTop: 12 }}>The community counters switch on soon</h3>
         <p className="small muted" style={{ marginTop: 8, maxWidth: 460, marginInline: 'auto' }}>
           This page will show checks taken this week, the most-attempted topics, live question
-          recalibration events, and the monthly job-market pulse — once the beta has real traffic
+          recalibration events, and the monthly job-market pulse, once the beta has real traffic
           to report. No fake numbers in the meantime.
         </p>
         {local > 0 && <p className="small" style={{ marginTop: 12 }}>Your own contribution so far: <b className="num">{local}</b> checks on this device.</p>}
@@ -60,7 +60,7 @@ export function Methodology() {
       </p>
       <p style={{ marginTop: 10 }}>
         <b>Difficulty.</b> Each question starts with an estimated difficulty and recalibrates from real
-        answers using an Elo update — the same math chess ratings use. Your six questions are chosen to
+        answers using an Elo update, the same math chess ratings use. Your six questions are chosen to
         match the level a quick first question suggests.
       </p>
       <p style={{ marginTop: 10 }}>
@@ -71,7 +71,7 @@ export function Methodology() {
       <p style={{ marginTop: 10 }}>
         <b>Privacy.</b> No accounts. Your results live in your browser, exportable and erasable on the
         Progress page. The only thing recorded centrally is an anonymous answer log (question id,
-        right/wrong, response time) that powers calibration — never who you are.
+        right/wrong, response time) that powers calibration, never who you are.
       </p>
       <h3 style={{ marginTop: 24 }}>For the technical reader</h3>
       <p className="small muted" style={{ marginTop: 6 }}>
@@ -91,7 +91,7 @@ export function About() {
     <div className="container fade-in" style={{ maxWidth: 680, padding: '32px 20px' }}>
       <h1 style={{ fontSize: '1.8rem' }}>About</h1>
       <p style={{ marginTop: 10 }}>
-        SkillCompass is built by <b>Jeremy Lee</b> — a data scientist (UCLA Anderson MSBA) who wanted an
+        SkillCompass is built by <b>Jeremy Lee</b>, a data scientist (UCLA Anderson MSBA) who wanted an
         honest answer to "where do I actually stand?" that didn't require a sign-up, a subscription, or
         pretending a streak is a skill.
       </p>
@@ -105,8 +105,8 @@ export function About() {
       </p>
       <h3 style={{ marginTop: 24 }}>Privacy</h3>
       <p className="small muted" style={{ marginTop: 6 }}>
-        No accounts, no tracking cookies. Everything about you stays in your browser's local storage —
-        export or erase it on the Progress page. Future resume analysis runs in memory and stores
+        No accounts, no tracking cookies. Everything about you stays in your browser's local storage.
+        Export or erase it on the Progress page. Future resume analysis runs in memory and stores
         nothing. Practice content referencing certificates (CFA, Google, AWS) is original and not
         affiliated with or endorsed by those organizations.
       </p>
