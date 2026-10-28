@@ -1,6 +1,6 @@
 # SkillCompass
 
-A free skill-assessment web app: take a 2-minute check, get an Elo-rated score, a percentile against other test-takers and a map of which concepts are strong or shaky, then use LLM features to compare your resume against a career track, sit a mock interview and get a study guide. No sign-up, and the whole stack runs at $0 a month.
+SkillCompass is a free skill-assessment web app. A 2-minute check gives you an Elo-rated score, a percentile against other test-takers and a map of which concepts are strong or shaky; three LLM features then compare your resume with a career track, run a mock interview and write a study guide. There is no sign-up, and the whole stack costs $0 a month.
 
 [Live app (beta)](https://lyhjeremy.github.io/skill-compass/) · [Product overview](https://lyhjeremy.github.io/skill-compass/overview/) · [Build log](writeup.md)
 
@@ -31,15 +31,17 @@ R_session ← R_session + 48 · (correct − E)
 
 A session starts with one placement question near median difficulty. A wrong answer routes to the easy set (starting rating 1350), a right answer in under 20 seconds to the hard set (1650), and a slower right answer to the standard set (1500). The six-question set is drawn unseen-first, so retakes see new questions. The final session rating is the score that percentiles are computed on. The code is in `frontend/src/lib/elo.ts` and `frontend/src/lib/store.ts`.
 
-The backend logs every completed session and every response (item, concept, correctness, response time, first exposure) to Postgres. The percentile is the share of sessions on that subtopic in the last 90 days with a lower final rating; below 30 sessions the app shows an "early data" label instead of a number. Per-item response logs are stored so item ratings can be recalibrated from real answers with the decaying-K update shown on the app's How it works page (K = 32/(1+n/40)). That recalibration step is not yet implemented; item ratings currently come from the priors.
+The backend logs every completed session and every response (item, concept, correctness, response time, first exposure) to Postgres. The percentile is the share of sessions on that subtopic in the last 90 days with a lower final rating; below 30 sessions the app shows an "early data" label instead of a number. The per-item response logs are kept so that item ratings can later be recalibrated from user answers, using the decaying-K update shown on the app's How it works page (K = 32/(1+n/40)). That step is not built yet, so item ratings still come from the priors.
 
 ## LLM features
 
-All three run through one `gemini_generate()` helper in `backend/app/main.py` that calls the Gemini REST API with the standard library (no SDK), default model `gemini-2.5-flash` with thinking turned off, and a daily call cap (1,200 by default) shown in the app as a capacity meter.
+All three go through one `gemini_generate()` helper in `backend/app/main.py`. It calls the Gemini REST API with the standard library (there is no SDK), defaults to `gemini-2.5-flash` with thinking turned off, and stops at a daily call cap (1,200 by default) that the app shows as a capacity meter.
 
-- **Resume gap report** (`/api/resume`, `/api/resume-image`): matches resume text against a track's own curriculum and marks which subtopics the resume claims, so the user can verify them with a check. Images fall back to local tesseract OCR when Gemini is unavailable. Resumes are used for one call and never stored.
-- **Mock interview** (`/api/interview`): a 6 to 8 turn text interview pitched to the level the user has demonstrated, with follow-ups on thin answers and a per-dimension scorecard at the end. It is stateless: the frontend resends the transcript each turn. Candidate answers are wrapped in `<candidate_answer>` tags under an explicit security rule against prompt injection; `backend/tests/test_injection_defense.py` checks that the defense is wired into the prompt.
-- **Study guide** (`/api/guide`): a downloadable Markdown plan for a whole track, built from per-concept quiz results and, when present, the resume and interview context.
+The resume gap report (`/api/resume`, `/api/resume-image`) matches resume text against a track's own curriculum and marks which subtopics the resume claims, so the user can go and verify each one with a check. Images fall back to local tesseract OCR when Gemini is unavailable. A resume is used for one call and never stored.
+
+The mock interview (`/api/interview`) runs 6 to 8 text turns pitched at the level the user has demonstrated, follows up on thin answers and ends with a per-dimension scorecard. It is stateless; the frontend resends the transcript each turn. Candidate answers are wrapped in `<candidate_answer>` tags under an explicit security rule against prompt injection, and `backend/tests/test_injection_defense.py` checks that the defense is wired into the prompt.
+
+The study guide (`/api/guide`) is a downloadable Markdown plan for a whole track, built from per-concept quiz results plus the resume and interview context when they exist.
 
 ## Architecture
 
@@ -51,7 +53,7 @@ All three run through one `gemini_generate()` helper in `backend/app/main.py` th
 | LLM features | Gemini 2.5 Flash | Google AI free tier |
 | Content pipeline | `claude -p` draft, independent adversarial review, human review | Local |
 
-The quiz loop makes no server calls: questions ship as static JSON, and scoring, the knowledge map and the diagnosis run in the browser. If the API is down, checks still work and only percentiles and the LLM features stop. User state lives in localStorage (`sc_v1`) and can be exported or erased from the Progress page. A GitHub Actions cron pings the API twice a week to keep the Supabase project active and checks the response bodies, not only the status codes.
+The quiz loop makes no server calls: questions ship as static JSON, and scoring, the knowledge map and the diagnosis run in the browser. If the API is down the checks still work; only percentiles and the LLM features stop. User state lives in localStorage (`sc_v1`) and can be exported or erased from the Progress page. A GitHub Actions cron pings the API twice a week to keep the Supabase project active, and it checks the response bodies as well as the status codes.
 
 ## Running locally
 
@@ -82,11 +84,7 @@ The backend reads `SUPABASE_URL` and `SUPABASE_KEY` (percentiles) and `GEMINI_AP
 
 ## Limitations
 
-- Item ratings are LLM-estimated priors until response-based recalibration is built.
-- Percentiles need 30 sessions per subtopic in a 90-day window, so most subtopics show "early data".
-- The resume report compares against each track's curriculum. There is no job-postings corpus yet, so it makes no claims about market demand.
-- 29 of the 385 catalog subtopics are live; the rest show as coming soon.
-- Free tiers have limits: the Supabase project pauses after 7 days without activity, and Gemini calls are capped per day.
+Item ratings are LLM-estimated priors until response-based recalibration is built. Percentiles need 30 sessions per subtopic in a 90-day window, so most subtopics still show "early data". The resume report compares against each track's curriculum; with no job-postings corpus yet, it makes no claims about market demand. Only 29 of the 385 catalog subtopics are live, and the rest show as coming soon. The free tiers have their own limits, too: the Supabase project pauses after 7 days without activity, and Gemini calls are capped per day.
 
 ## License
 
