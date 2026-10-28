@@ -4,733 +4,930 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>SkillCompass: turn the skills on your résumé into evidence</title>
-<meta name="description" content="Your résumé lists skills. SkillCompass turns each one into a two-minute check and shows you which ideas inside it are solid, which are shaky, and which you'd miss. Free, no sign-up." />
-<meta name="theme-color" content="#EDEDE7" />
+<meta name="description" content="SkillCompass turns each skill on a résumé into a two-minute, six-question check, scores it with Elo arithmetic and shows which concepts held up. Free, no sign-up, $0 a month to run." />
+<meta name="theme-color" content="#E9EAE6" />
 <meta property="og:title" content="SkillCompass: can you show it?" />
-<meta property="og:description" content="Paste your résumé and every skill you claim becomes a two-minute check. What survives is evidence. What doesn't is your gap." />
+<meta property="og:description" content="Every skill a résumé claims becomes a two-minute check. What survives is evidence; what doesn't is the gap." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://lyhjeremy.github.io/skill-compass/overview/" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <style>
-  /* Self-hosted. No third-party request is made by this page. */
-  @font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4-400.woff2")format("woff2");font-weight:400;font-display:swap}
-  @font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4-600.woff2")format("woff2");font-weight:600;font-display:swap}
+  /* Ledger, workshop family. Self-hosted fonts; this page makes no third-party request. */
+  @font-face{font-family:"IBM Plex Sans Condensed";src:url("../fonts/IBMPlexSansCondensed-600.woff2")format("woff2");font-weight:600;font-display:swap}
   @font-face{font-family:"IBM Plex Sans";src:url("../fonts/IBMPlexSans-400.woff2")format("woff2");font-weight:400;font-display:swap}
   @font-face{font-family:"IBM Plex Sans";src:url("../fonts/IBMPlexSans-600.woff2")format("woff2");font-weight:600;font-display:swap}
   @font-face{font-family:"IBM Plex Mono";src:url("../fonts/IBMPlexMono-400.woff2")format("woff2");font-weight:400;font-display:swap}
-  /* ------------------------------------------------------------------
-     Palette comes from the app's frontend/src/styles.css. If the app's
-     theme moves, move this with it.
+  @font-face{font-family:"IBM Plex Mono";src:url("../fonts/IBMPlexMono-600.woff2")format("woff2");font-weight:600;font-display:swap}
 
-     The four verdict colours are the product's actual vocabulary: every
-     concept you're tested on ends up strong, shaky, missed, or untested.
-     This page borrows that vocabulary as its structural device rather
-     than inventing decoration, so a colour on this page means the same
-     thing it means inside the app.
-     ------------------------------------------------------------------ */
   :root {
-    --paper:  #EDEDE7;
-    --card:   #F5F5F0;
-    --alt:    #E5E5DE;
-    --ink:    #1C1E1B;
-    --ink2:   #3C403A;
-    --muted:  #52564E;
-    --faint:  #767A70;
-    --rule:   #C6C7BF;
-    --edge:   #767A70;
-
-    --violet: #2C5852;
-    --teal:   #8C3A1E;
-    --amber:  #7A5A1E;
-    --green:  #4A6B52;
-    --rose:   #6E4A44;
-
-    /* verdicts, matching the app's own vocabulary in frontend/src/styles.css */
-    --strong: #2C5852;
-    --shaky:  #7A5A1E;
-    --missed: #8C3A1E;
-
-    --display: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, serif;
-    --body:    "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --data:    "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
-
-    /* One column. Prose, screenshots and quotes share these edges, and
-       the type scales with the column so the measure stays readable
-       instead of the text being pinned narrow beside wide figures. */
-    --col: min(100% - 2.5rem, 61rem);
-    --accent: var(--teal);
+    --paper: #E9EAE6; --panel: #F2F3EF; --ink: #191B1A; --ink-2: #4B504D;
+    --rule: #C3C6C1; --edge: #727773;
+    --signal: #2F6243;   /* green: links, actions, "strong", a right answer */
+    --signal-2: #7C5A26; /* amber: "shaky", a wrong answer, planned-not-built */
+    --display: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+    --body: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #191B18; --card: #212420; --alt: #2A2E28;
-      --ink: #E6E6DE; --ink2: #C4C7BC; --muted: #A2A69B; --faint: #6A6F66;
-      --rule: #3B3F38; --edge: #6A6F66;
-      --violet: #74AFA5; --teal: #D8825C; --amber: #C4A05C;
-      --green: #8FB394; --rose: #C08F84;
-      --strong: #74AFA5; --shaky: #C4A05C; --missed: #D8825C;
+      --paper: #161817; --panel: #1F2220; --ink: #E3E5E1; --ink-2: #A0A6A1;
+      --rule: #373B38; --edge: #686E6A; --signal: #7DC096; --signal-2: #CBA668;
     }
   }
 
   *, *::before, *::after { box-sizing: border-box; border-radius: 0; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--body);
-    font-size: clamp(17px, 0.6rem + 0.62vw, 20px);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    margin: 0; background: var(--paper); color: var(--ink);
+    font: 400 17.5px/1.62 var(--body); -webkit-font-smoothing: antialiased;
   }
   img { max-width: 100%; height: auto; display: block; }
-  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 0; }
-  strong { font-weight: 700; color: var(--ink); }
+  a { color: var(--signal); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+  strong { font-weight: 600; color: var(--ink); }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+  .num, .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
-  .col { width: var(--col); margin-inline: auto; }
-
-  /* ---------- masthead ---------- */
+  /* spec-sheet masthead */
   .masthead {
-    width: var(--col); margin: 0 auto; padding: 28px 0 0;
-    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    margin-top: 24px; border: 1px solid var(--edge); padding: 10px 14px;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 6px 16px; flex-wrap: wrap;
   }
-  .mark {
-    font-family: var(--display); font-weight: 900; font-size: 1.35rem;
-    letter-spacing: -.025em; color: var(--ink);
-  }
-  .mark em { font-style: normal; color: var(--teal); }
-  .masthead .sep { color: var(--faint); }
-  .masthead .where { font-size: .82rem; color: var(--muted); }
+  .logo { font: 600 19px/1.2 var(--display); }
+  .tagline { font: 400 12px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--ink-2); }
 
-  /* ---------- hero ---------- */
-  .hero { width: var(--col); margin: 0 auto; padding: clamp(48px, 8vw, 92px) 0 clamp(40px, 6vw, 70px); }
-  .hero h1 {
-    font-family: var(--display);
-    font-size: clamp(2.2rem, 7.4vw, 5.1rem);
-    font-weight: 900; letter-spacing: -.042em; line-height: .96;
-    margin: 0; color: var(--ink); text-wrap: balance;
+  /* hero */
+  .hero { padding: 52px 0 18px; display: grid; gap: 36px; }
+  @media (min-width: 900px) { .hero { grid-template-columns: 1.35fr 1fr; align-items: start; } }
+  .kicker { font: 600 13px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .12em; color: var(--signal); margin: 0 0 14px; }
+  h1 { font: 600 clamp(40px, 6.4vw, 74px)/1 var(--display); letter-spacing: -.02em; margin: 0; max-width: 15ch; }
+  h1 span { display: block; color: var(--ink-2); }
+  .lede { font-size: 19.5px; color: var(--ink-2); margin: 24px 0 0; max-width: 54ch; }
+  .lede strong { color: var(--ink); }
+  .cta { display: flex; gap: 10px 22px; flex-wrap: wrap; align-items: center; margin-top: 28px; }
+  .btn {
+    display: inline-block; padding: 12px 22px; font: 600 16px/1.2 var(--body); text-decoration: none;
+    background: var(--signal); color: var(--paper); border: 1px solid var(--signal); cursor: pointer;
   }
-  .hero h1 .ask { display: block; color: var(--rose); }
-  .hero .lede {
-    margin: clamp(22px, 3vw, 32px) 0 0;
-    font-size: 1.16em; color: var(--ink2); line-height: 1.5; text-wrap: pretty;
-  }
+  .btn:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--edge); }
+  .btn.ghost:hover { border-color: var(--ink); background: var(--panel); color: var(--ink); }
 
-  /* ---------- signature: the claim graph ----------
-     Eight skills off a résumé. They arrive as claims (dashed, unproven)
-     and resolve into the four verdicts the app actually uses. This is
-     the page's one animated moment; everything else stays still. */
-  .graph { margin: clamp(34px, 5vw, 54px) 0 0; }
-  .graph-frame {
-    border: 1px solid var(--rule); border-radius: 0;
-    background: var(--card); padding: clamp(18px, 3vw, 30px);
-    position: relative;
-  }
-  .graph-frame::before {
-    content: "one résumé, eight claims";
-    position: absolute; top: -.62em; left: clamp(18px, 3vw, 30px);
-    background: var(--card); padding: 0 .5em;
-    font-family: var(--data); font-size: .68rem; letter-spacing: .06em;
-    color: var(--muted);
-  }
-  .graph svg { width: 100%; height: auto; display: block; overflow: visible; }
-  .n-ring { fill: none; stroke: var(--faint); stroke-width: 1.5; stroke-dasharray: 3 4; }
-  .n-fill { r: 0; transform-box: fill-box; transform-origin: center; }
-  .n-label {
-    font-family: var(--body); font-size: 11.5px; font-weight: 600;
-    fill: var(--ink2); text-anchor: middle;
-  }
-  .edge { stroke: var(--rule); stroke-width: 1.5; fill: none; }
-  .v-strong { fill: var(--strong); }
-  .v-shaky  { fill: var(--shaky); }
-  .v-missed { fill: var(--missed); }
-  @keyframes pop { from { r: 0; } to { r: 14; } }
-  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-  .n-fill { animation: pop .5s cubic-bezier(.34,1.4,.5,1) forwards; }
-  .n-1 { animation-delay: .35s } .n-2 { animation-delay: .55s }
-  .n-3 { animation-delay: .75s } .n-4 { animation-delay: .95s }
-  .n-5 { animation-delay: 1.15s } .n-6 { animation-delay: 1.35s }
-  .n-7 { animation-delay: 1.55s } .n-8 { animation-delay: 1.75s }
-  .graph-read { animation: fade .6s ease 2.1s both; }
+  .sheet { border: 1px solid var(--edge); background: var(--panel); }
+  .sheet-head { padding: 8px 14px; border-bottom: 1px solid var(--edge); font: 600 11.5px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+  .sheet dl { margin: 0; }
+  .sheet dl div { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 9px 14px; border-bottom: 1px solid var(--rule); }
+  .sheet dl div:last-child { border-bottom: 0; }
+  .sheet dt { font-size: 14.5px; color: var(--ink-2); }
+  .sheet dd { margin: 0; font: 600 20px/1.2 var(--mono); letter-spacing: -.02em; text-align: right; white-space: nowrap; }
+  .sheet dd small { font-size: 13px; font-weight: 400; color: var(--ink-2); letter-spacing: 0; }
 
-  .legend {
-    display: flex; flex-wrap: wrap; gap: .55rem 1.4rem;
-    margin: 22px 0 0; font-size: .82rem; font-family: var(--data);
-    letter-spacing: .01em;
-  }
-  .legend span { display: inline-flex; align-items: center; gap: .5rem; color: var(--ink2); }
-  .legend i { width: 11px; height: 11px; border-radius: 0; flex: none; }
-  .lg-strong i { background: var(--strong); }
-  .lg-shaky  i { background: var(--shaky); }
-  .lg-missed i { background: var(--missed); }
-  .lg-untested i { background: none; border: 2px dashed var(--faint); }
+  .status { margin: 18px 0 0; border: 1px solid var(--edge); }
+  .status h2 { max-width: none; font: 600 11.5px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--signal-2); margin: 0; padding: 8px 14px; border-bottom: 1px solid var(--rule); }
+  .status ul { margin: 0; padding: 4px 14px 6px; list-style: none; }
+  .status li { padding: 8px 0; border-bottom: 1px dashed var(--rule); font-size: 15.5px; color: var(--ink-2); }
+  .status li:last-child { border-bottom: 0; }
+  .status b { color: var(--ink); font-weight: 600; }
 
-  .graph-read {
-    margin: 20px 0 0; font-size: .95em; color: var(--muted); line-height: 1.5;
-  }
+  /* numbered sections */
+  main { counter-reset: sec; }
+  .sec { counter-increment: sec; padding: 64px 0 8px; border-top: 1px solid var(--rule); margin-top: 56px; display: grid; gap: 0 28px; }
+  @media (min-width: 900px) { .sec { grid-template-columns: 72px minmax(0, 1fr); } }
+  .sec::before { content: counter(sec, decimal-leading-zero); font: 600 14px/1 var(--mono); color: var(--signal); padding-top: 9px; margin-bottom: 10px; }
+  .sec > * { grid-column: 1 / -1; }
+  @media (min-width: 900px) { .sec > * { grid-column: 2; } }
+  .label { font: 600 12px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .12em; color: var(--ink-2); margin: 0 0 8px; }
+  h2 { font: 600 clamp(28px, 3.6vw, 40px)/1.08 var(--display); letter-spacing: -.015em; margin: 0 0 18px; max-width: 24ch; }
+  h3 { font: 600 20px/1.2 var(--display); margin: 0 0 6px; }
+  p { margin: 0 0 16px; max-width: 66ch; }
+  .sec p { color: var(--ink-2); }
+  .sec p strong { color: var(--ink); }
 
-  .actions { display: flex; gap: 1.1rem; align-items: center; flex-wrap: wrap; margin: clamp(30px, 4vw, 44px) 0 0; }
-  .go {
-    font-family: var(--display); font-weight: 800; font-size: 1.02rem;
-    letter-spacing: -.01em; text-decoration: none;
-    background: var(--ink); color: var(--paper);
-    padding: .82em 1.7em; border-radius: 0;
-    border: 1px solid var(--ink);
-  }
-  .go:hover { background: transparent; color: var(--ink); }
-  .alt-link { font-size: .95rem; color: var(--muted); text-decoration: underline; }
-  .alt-link:hover { color: var(--ink); }
-
-  /* ---------- sections ----------
-     Deliberately not one repeating block. Each section sets its own
-     --accent, and they differ in density: some carry a wide figure,
-     some are pure type, one is a formula, one is a field of dots. */
-  section { width: var(--col); margin-inline: auto; padding: clamp(46px, 7vw, 78px) 0; }
-  section + section { border-top: 1px solid var(--rule); }
-
-  .tag {
-    display: inline-flex; align-items: center; gap: .6rem;
-    font-family: var(--data); font-size: .7rem; letter-spacing: .1em;
-    text-transform: lowercase; color: var(--muted); margin: 0 0 1rem;
-  }
-  .tag::before {
-    content: ""; width: 9px; height: 9px; border-radius: 0;
-    background: var(--accent); flex: none;
-  }
-
-  h2 {
-    font-family: var(--display); font-weight: 800;
-    font-size: clamp(1.85rem, 4.1vw, 2.9rem);
-    letter-spacing: -.032em; line-height: 1.07;
-    margin: 0 0 .7em; color: var(--ink); text-wrap: balance;
-  }
-  h3 {
-    font-family: var(--display); font-weight: 800;
-    font-size: 1.16rem; letter-spacing: -.015em;
-    margin: 0 0 .35em; color: var(--ink);
-  }
-  p { margin: 0 0 1.05em; color: var(--ink2); text-wrap: pretty; }
-  p:last-child { margin-bottom: 0; }
-  .lead { font-size: 1.1em; color: var(--ink); }
-
-  figure { margin: clamp(26px, 4vw, 40px) 0 0; }
-  figure img {
-    border: 1px solid var(--rule);
-    border-top: 3px solid var(--accent);
-    border-radius: 0;
-    background: var(--card);
-  }
-  figcaption {
-    margin-top: .8rem; font-size: .85rem; color: var(--muted);
-    line-height: 1.45;
-  }
-
-  /* pulled from the product's own interface copy */
-  .said {
-    margin: clamp(26px, 4vw, 38px) 0 0;
-    border-left: 3px solid var(--accent);
-    padding: .2rem 0 .2rem 1.4rem;
-  }
-  .said p {
-    font-family: var(--display); font-size: 1.22em; font-weight: 500;
-    color: var(--ink); line-height: 1.35; margin: 0 0 .5em;
-  }
-  .said cite {
-    font-family: var(--data); font-style: normal; font-size: .72rem;
-    letter-spacing: .06em; color: var(--muted);
-  }
-
-  /* the Elo section's centrepiece */
-  .maths {
-    margin: clamp(24px, 3vw, 34px) 0;
-    font-family: var(--data); font-size: clamp(.82rem, 1.7vw, 1.05rem);
-    color: var(--ink); line-height: 2.1;
-    overflow-x: auto; padding-bottom: .4rem;
-  }
-  .maths b { color: var(--amber); font-weight: 500; }
-  .maths .what {
-    display: block; font-family: var(--body); font-size: .8rem;
-    color: var(--muted); letter-spacing: 0; line-height: 1.4; margin-top: .1rem;
-  }
-
-  /* 29 of 385, drawn rather than asserted */
-  .field { margin: clamp(24px, 3vw, 34px) 0 0; }
-  .dots { display: flex; flex-wrap: wrap; gap: 4px; }
-  .dots b {
-    width: 8px; height: 8px; border-radius: 0;
-    background: var(--rule); display: block;
-  }
-  .dots b.on { background: var(--green); }
-  .field-key {
-    margin-top: .9rem; font-family: var(--data); font-size: .74rem;
-    color: var(--muted); letter-spacing: .04em;
-  }
-  .field-key em { font-style: normal; color: var(--green); }
-
-  /* two-up, used twice and nowhere else */
-  .pair { display: grid; gap: clamp(22px, 3vw, 34px); margin: clamp(26px, 4vw, 38px) 0 0; }
-  @media (min-width: 720px) { .pair { grid-template-columns: 1fr 1fr; } }
+  figure { margin: 26px 0 0; }
+  figure img { border: 1px solid var(--rule); background: var(--panel); }
+  figcaption { margin-top: 9px; font: 400 13px/1.5 var(--mono); color: var(--ink-2); max-width: 80ch; }
+  .pair { display: grid; gap: 22px; margin-top: 26px; }
+  @media (min-width: 760px) { .pair { grid-template-columns: 1fr 1fr; } }
   .pair figure { margin: 0; }
 
-  /* the short items, set as a list rather than a wall of equal boxes */
-  .also { margin: clamp(24px, 3vw, 34px) 0 0; }
-  .also div {
-    padding: 1.05rem 0; border-top: 1px solid var(--rule);
-    display: grid; gap: .15rem .1rem;
+  .quote { margin: 26px 0 0; border: 1px solid var(--edge); padding: 16px 18px; max-width: 70ch; }
+  .quote p { margin: 0 0 8px; color: var(--ink); font-size: 17.5px; }
+  .quote cite { font: 400 12px/1.4 var(--mono); font-style: normal; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+
+  /* ---------- 01 the demo ---------- */
+  .demo { border: 1px solid var(--edge); background: var(--panel); margin-top: 22px; }
+  .demo-head { display: flex; justify-content: space-between; gap: 6px 14px; flex-wrap: wrap; padding: 8px 14px; border-bottom: 1px solid var(--edge); font: 600 11.5px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+  .demo-body { display: grid; }
+  @media (min-width: 900px) { .demo-body { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); } .demo-side { border-left: 1px solid var(--rule); } }
+  .demo-q { padding: 18px 18px 20px; min-height: 380px; }
+  .demo-side { padding: 16px 16px 18px; border-top: 1px solid var(--rule); }
+  @media (min-width: 900px) { .demo-side { border-top: 0; } }
+  .q-meta { font: 400 12.5px/1.4 var(--mono); color: var(--ink-2); margin: 0 0 10px; }
+  .q-stem { font-size: 18px; color: var(--ink); margin: 0 0 16px; max-width: none; }
+  .opts { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .opt {
+    width: 100%; text-align: left; display: grid; grid-template-columns: 30px 1fr; gap: 8px; align-items: start;
+    padding: 10px 12px; font: 400 16px/1.45 var(--body); color: var(--ink);
+    background: var(--paper); border: 1px solid var(--edge); cursor: pointer;
   }
-  @media (min-width: 700px) {
-    .also div { grid-template-columns: 15rem 1fr; gap: 0 2rem; }
-  }
-  .also h3 { margin: 0; font-size: 1.02rem; }
-  .also p { margin: 0; font-size: .95em; }
+  .opt:hover:not(:disabled) { border-color: var(--ink); }
+  .opt:disabled { cursor: default; color: var(--ink-2); }
+  .opt .k { font: 600 14px/1.6 var(--mono); color: var(--ink-2); }
+  .opt.right { border: 2px solid var(--signal); color: var(--ink); }
+  .opt.right .k { color: var(--signal); }
+  .opt.wrong { border: 2px dashed var(--signal-2); color: var(--ink); }
+  .opt.wrong .k { color: var(--signal-2); }
+  .reveal { margin-top: 16px; border-top: 1px solid var(--rule); padding-top: 14px; }
+  .reveal .verdict { font: 600 14px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .08em; margin: 0 0 6px; }
+  .reveal .verdict.r { color: var(--signal); } .reveal .verdict.w { color: var(--signal-2); }
+  .reveal p { font-size: 16px; max-width: none; color: var(--ink-2); margin-bottom: 8px; }
+  .reveal .src { font: 400 13px/1.45 var(--mono); color: var(--ink-2); }
+  .reveal .btn { margin-top: 8px; }
+  .route-note { font: 400 14px/1.5 var(--mono); color: var(--ink); border: 1px dashed var(--edge); padding: 10px 12px; margin: 14px 0 0; }
+  .side-h { font: 600 12px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--ink-2); margin: 0 0 4px; }
+  .big { font: 600 40px/1 var(--mono); letter-spacing: -.03em; margin: 2px 0 2px; }
+  .big-sub { font: 400 13px/1.45 var(--mono); color: var(--ink-2); margin: 0 0 10px; max-width: none; }
+  .trace svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .axis text, .tick-l { font: 400 10.5px var(--mono); fill: var(--ink-2); }
+  .gridline { stroke: var(--rule); stroke-width: 1; }
+  .tline { fill: none; stroke: var(--ink); stroke-width: 1.6; }
+  .pt-r { fill: var(--signal); } .pt-w { fill: var(--paper); stroke: var(--signal-2); stroke-width: 2; }
+  .pt-s { fill: var(--ink); }
+  .concepts { list-style: none; margin: 14px 0 0; padding: 0; font-size: 14.5px; }
+  .concepts li { display: grid; grid-template-columns: 14px 1fr auto; gap: 9px; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--rule); color: var(--ink-2); }
+  .concepts li:last-child { border-bottom: 0; }
+  .concepts i { width: 12px; height: 12px; display: block; border: 1.5px dashed var(--edge); }
+  .concepts .strong i { background: var(--signal); border: 0; }
+  .concepts .shaky i { background: var(--signal-2); border: 0; }
+  .concepts .missed i { background: var(--ink); border: 0; }
+  .concepts b { font: 400 12px/1 var(--mono); color: var(--ink-2); }
+  .concepts .strong span, .concepts .shaky span, .concepts .missed span { color: var(--ink); }
+  .demo-foot { padding: 9px 14px; border-top: 1px solid var(--rule); font-size: 14px; color: var(--ink-2); }
+  .demo-foot p { margin: 0; max-width: none; color: var(--ink-2); }
 
-  .specs { margin: clamp(24px, 3vw, 34px) 0 0; }
-  .specs div { padding: 1rem 0; border-top: 1px solid var(--rule); display: grid; gap: .1rem; }
-  @media (min-width: 700px) { .specs div { grid-template-columns: 11rem 1fr; gap: 0 2rem; } }
-  .specs dt { font-family: var(--data); font-size: .74rem; letter-spacing: .06em; color: var(--muted); padding-top: .35em; }
-  .specs dd { margin: 0; color: var(--ink2); font-size: .97em; }
+  /* ---------- 05 the arithmetic ---------- */
+  .formulae { margin: 22px 0 6px; border: 1px solid var(--edge); }
+  .formulae div { display: grid; gap: 2px 18px; padding: 11px 14px; border-bottom: 1px solid var(--rule); }
+  .formulae div:last-child { border-bottom: 0; }
+  @media (min-width: 760px) { .formulae div { grid-template-columns: minmax(0, 23rem) 1fr; } }
+  .formulae code { font: 400 15px/1.5 var(--mono); color: var(--ink); overflow-wrap: anywhere; }
+  .formulae span { font-size: 14.5px; color: var(--ink-2); }
+  .formulae .planned code, .formulae .planned span b { color: var(--signal-2); }
+  .formulae .planned span b { font-weight: 600; }
 
-  .end { padding-bottom: clamp(56px, 8vw, 96px); }
-  .end h2 { font-size: clamp(2rem, 5vw, 3.3rem); }
+  .chart { border: 1px solid var(--edge); background: var(--panel); margin-top: 22px; }
+  .chart-head { padding: 12px 14px 4px; }
+  .chart-title { font: 600 19px/1.25 var(--display); margin: 0 0 4px; max-width: none; color: var(--ink); }
+  .chart-sub { font-size: 14.5px; margin: 0; color: var(--ink-2); max-width: 70ch; }
+  .chart-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 10px 14px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-top: 10px; font: 400 13.5px/1.4 var(--mono); color: var(--ink-2); }
+  .chart-ctl input[type=range] { width: min(260px, 100%); accent-color: var(--signal); }
+  .seg { display: inline-flex; border: 1px solid var(--edge); }
+  .seg button { font: 400 13px/1 var(--mono); padding: 8px 10px; border: 0; background: transparent; color: var(--ink); cursor: pointer; }
+  .seg button + button { border-left: 1px solid var(--edge); }
+  .seg button[aria-pressed=true] { background: var(--ink); color: var(--paper); }
+  .chart svg { width: 100%; height: auto; display: block; touch-action: pan-y; }
+  .chart-body { padding: 8px 10px 4px; }
+  .readout { padding: 8px 14px 12px; font: 400 14px/1.5 var(--mono); color: var(--ink); min-height: 3.2em; }
+  .readout b { font-weight: 600; }
+  .c-up { stroke: var(--signal); } .c-dn { stroke: var(--signal-2); }
+  .c-line { fill: none; stroke-width: 2.2; }
+  .c-lab { font: 600 12px var(--mono); }
+  .c-lab.up { fill: var(--signal); } .c-lab.dn { fill: var(--signal-2); }
+  .hist { fill: var(--edge); }
+  .cursor { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 3 3; }
+  .zero { stroke: var(--ink-2); stroke-width: 1; }
 
-  footer {
-    width: var(--col); margin: 0 auto; border-top: 1px solid var(--rule);
-    padding: 26px 0 64px; font-size: .85rem; color: var(--muted);
-  }
-  footer a { color: var(--ink2); }
-  footer p { margin: 0 0 .5em; color: var(--muted); }
+  /* ---------- 07 coverage ---------- */
+  .cov { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .cov th, .cov td { padding: 6px 14px; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: middle; }
+  .cov thead th { font: 600 11.5px/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+  .cov td.n { font-family: var(--mono); text-align: right; white-space: nowrap; width: 1%; color: var(--ink); }
+  .cov td.bar { width: 50%; }
+  .cov .name { color: var(--ink); }
+  .cov tr.none .name, .cov tr.none td.n { color: var(--ink-2); }
+  .track { position: relative; height: 12px; border: 1px solid var(--edge); }
+  .track i { position: absolute; inset: 0 auto 0 0; background: var(--signal); }
+  .cov tbody tr:hover td { background: var(--paper); }
+  .cov-more { padding: 10px 14px 12px; display: flex; gap: 10px 16px; flex-wrap: wrap; align-items: center; font-size: 14.5px; color: var(--ink-2); }
+  @media (max-width: 560px) { .cov td.bar { width: 34%; } .cov th, .cov td { padding: 6px 8px; } .cov { font-size: 14px; } }
 
-  /* The graph's labels are sized in SVG units, so scaling the whole thing
-     down to a phone would render them at about 5px. Below this width it
-     keeps its real size and scrolls inside its own frame instead, which
-     leaves the page itself free of horizontal scroll. */
-  @media (max-width: 700px) {
-    .graph-frame { overflow-x: auto; overscroll-behavior-x: contain; }
-    .graph svg { min-width: 600px; }
-    .graph-frame::before { content: "one résumé, eight claims · scroll →"; }
-  }
+  .specs { margin: 22px 0 0; border-top: 1px solid var(--edge); }
+  .specs div { display: grid; gap: 2px 24px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+  @media (min-width: 760px) { .specs div { grid-template-columns: 11rem 1fr; } }
+  .specs dt { font: 600 12px/1.6 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+  .specs dd { margin: 0; font-size: 16px; color: var(--ink-2); }
 
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .n-fill { animation: none; r: 14; }
-    .graph-read { animation: none; }
+  .close { padding: 72px 0 30px; border-top: 1px solid var(--rule); margin-top: 64px; }
+  .close h2 { max-width: 20ch; }
+  footer { border-top: 1px solid var(--rule); padding: 22px 0 60px; font-size: 14.5px; color: var(--ink-2); }
+  footer p { margin: 0 0 6px; max-width: none; }
+  footer a { color: var(--ink-2); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 560px) {
+    body { font-size: 16.5px; }
+    .lede { font-size: 18px; }
+    .demo-q { min-height: 0; padding: 16px 14px; }
+    .q-stem { font-size: 17px; }
   }
 </style>
 </head>
 <body>
+<div class="wrap">
 
 <header class="masthead">
-  <span class="mark">Skill<em>Compass</em></span>
-  <span class="sep">·</span>
-  <span class="where">a product overview</span>
+  <span class="logo">SkillCompass</span>
+  <span class="tagline">Skill checks · beta · product overview</span>
 </header>
 
 <div class="hero">
-  <h1>Your résumé says SQL.<span class="ask">Can you show it?</span></h1>
-
-  <p class="lede">
-    Paste it in and every skill you claim becomes a two-minute check.
-    What survives is evidence. What doesn't is the thing to go and learn
-    on Sunday, named precisely enough that you can.
-  </p>
-
-  <div class="graph">
-    <div class="graph-frame">
-      <svg viewBox="0 0 900 250" role="img"
-           aria-label="Eight skills read off a résumé, shown first as unproven claims and then resolved into five strong, two shaky and one missed.">
-        <g class="edge-set">
-          <path class="edge" d="M100 92 H250" /><path class="edge" d="M250 92 H400" />
-          <path class="edge" d="M400 92 H550" /><path class="edge" d="M550 92 H700" />
-          <path class="edge" d="M100 92 L250 190" /><path class="edge" d="M400 92 L250 190" />
-          <path class="edge" d="M400 92 L550 190" /><path class="edge" d="M700 92 L550 190" />
-          <path class="edge" d="M250 190 H550" /><path class="edge" d="M700 92 H820" />
-        </g>
-
-        <circle class="n-ring" cx="100" cy="92" r="21" />
-        <circle class="n-fill n-1 v-strong" cx="100" cy="92" />
-        <text class="n-label" x="100" y="126">SQL</text>
-
-        <circle class="n-ring" cx="250" cy="92" r="21" />
-        <circle class="n-fill n-2 v-strong" cx="250" cy="92" />
-        <text class="n-label" x="250" y="126">Joins</text>
-
-        <circle class="n-ring" cx="400" cy="92" r="21" />
-        <circle class="n-fill n-3 v-shaky" cx="400" cy="92" />
-        <text class="n-label" x="400" y="126">Window functions</text>
-
-        <circle class="n-ring" cx="550" cy="92" r="21" />
-        <circle class="n-fill n-4 v-strong" cx="550" cy="92" />
-        <text class="n-label" x="550" y="126">Dashboards</text>
-
-        <circle class="n-ring" cx="700" cy="92" r="21" />
-        <circle class="n-fill n-5 v-strong" cx="700" cy="92" />
-        <text class="n-label" x="700" y="126">Excel</text>
-
-        <circle class="n-ring" cx="820" cy="92" r="21" />
-        <circle class="n-fill n-6 v-strong" cx="820" cy="92" />
-        <text class="n-label" x="820" y="126">Storytelling</text>
-
-        <circle class="n-ring" cx="250" cy="190" r="21" />
-        <circle class="n-fill n-7 v-missed" cx="250" cy="190" />
-        <text class="n-label" x="250" y="224">A/B testing</text>
-
-        <circle class="n-ring" cx="550" cy="190" r="21" />
-        <circle class="n-fill n-8 v-shaky" cx="550" cy="190" />
-        <text class="n-label" x="550" y="224">Descriptive stats</text>
-      </svg>
-    </div>
-
-    <div class="legend" aria-hidden="true">
-      <span class="lg-strong"><i></i>strong</span>
-      <span class="lg-shaky"><i></i>shaky</span>
-      <span class="lg-missed"><i></i>missed</span>
-      <span class="lg-untested"><i></i>the claim it started as</span>
-    </div>
-
-    <p class="graph-read">
-      Five held up clean. Window functions and descriptive stats came out
-      thinner than the CV implies, and the A/B testing line didn't survive at
-      all. Each dot still carries the dashed ring it started as, back when it was
-      only a claim. That's the whole product: a list of what to fix.
+  <div>
+    <p class="kicker">Two minutes per skill, no sign-up</p>
+    <h1>Your résumé says SQL. <span>Can you show it?</span></h1>
+    <p class="lede">
+      SkillCompass turns each skill a résumé claims into a check of one placement
+      question and six more. It scores the answers with <strong>Elo arithmetic</strong>,
+      cites the source behind every question, and hands back a map of which concepts
+      held up and which didn't. It runs for <strong>$0 a month</strong>.
     </p>
+    <div class="cta">
+      <a class="btn" href="../">Take a 2-minute check</a>
+      <a href="#try">Or try one here first</a>
+      <a href="https://github.com/lyhjeremy/skill-compass">Read the code</a>
+    </div>
   </div>
 
-  <div class="actions">
-    <a class="go" href="../">Take a 2-minute check</a>
-    <a class="alt-link" href="https://github.com/lyhjeremy/skill-compass">Read the code</a>
+  <div>
+    <div class="sheet">
+      <div class="sheet-head">What exists today</div>
+      <dl>
+        <div><dt>Questions</dt><dd>645</dd></div>
+        <div><dt>Concepts they test</dt><dd>230</dd></div>
+        <div><dt>Subtopics with a live bank</dt><dd>29 <small>of 385</small></dd></div>
+        <div><dt>Fields with any live subtopic</dt><dd>5 <small>of 46</small></dd></div>
+        <div><dt>Career tracks complete</dt><dd>4 <small>of 117</small></dd></div>
+        <div><dt>Running cost</dt><dd>$0<small>/month</small></dd></div>
+      </dl>
+    </div>
+    <section class="status" aria-labelledby="status-h">
+      <h2 id="status-h">State on 28 October 2026</h2>
+      <ul>
+        <li><b>Percentiles are off.</b> The Supabase free-tier project that stores sessions is paused, and <span class="mono">/api/health</span> reports it unreachable. Checks still run and score in the browser; nothing new is logged.</li>
+        <li><b>Item recalibration is planned, not built.</b> Every question's rating is still the prior it was written with.</li>
+        <li><b>Human sign-off is pending.</b> Every bank passed the draft-and-review pipeline, and every one is still marked "pending human review" in the repo.</li>
+      </ul>
+    </section>
   </div>
 </div>
 
-<!-- ============ claim → evidence ============ -->
-<section style="--accent: var(--rose)">
-  <p class="tag">from claim to evidence</p>
-  <h2>Every line on your CV, offered up for testing</h2>
-  <p class="lead">
-    A career track is a job with its six topics named. Open one cold and it tells
-    you where you stand immediately: nothing assessed yet, and here are the six
-    things this role wants evidence of.
-  </p>
-  <figure>
-    <img src="track.jpg" width="1485" height="812" fetchpriority="high"
-      alt="The Data Analyst career track page reading 0 of 6 topics assessed, with a résumé paste box, an upload button, a privacy note, and a Your biggest gaps panel listing the six untested subtopics." />
-    <figcaption>“No quiz or résumé evidence yet for…” and then the list. That list is the product.</figcaption>
-  </figure>
-  <p style="margin-top:1.4em">
-    Paste your résumé in, or photograph it. SkillCompass reads it against that
-    track's own curriculum and marks which of the six your experience already
-    evidences. Then it does the part that matters: each evidenced topic gets a
-    <strong>Verify</strong> button next to it, because a résumé claim is only a
-    claim. Verifying means sitting the two-minute check and finding out whether
-    the thing you wrote down survives six questions from someone with no reason
-    to flatter you.
-  </p>
-  <figure>
-    <img src="resume.jpg" width="1485" height="812" loading="lazy"
-      alt="A track page showing a parsed résumé with extracted skill chips including SQL, Tableau, Excel, Redshift and window functions, above six track subtopics each badged From resume with a Verify button." />
-    <figcaption>Ten skills read off the résumé, and six topics now waiting to be proved.</figcaption>
-  </figure>
-  <p style="margin-top:1.4em">
-    The text is used for one call and never stored, pasted or uploaded. It
-    doesn't reach a database and the result stays on your device. A job-postings
-    corpus would let this compare you against live market demand as well. There
-    isn't one yet, so the report compares against the curriculum, says so on the
-    page, and leaves salary bands out.
-  </p>
-  <blockquote class="said">
-    <p>This gap report compares you against this track's own curriculum. A live
-      job-market panel (top skills in this month's postings, salary context)
-      arrives in a later beta phase.</p>
-    <cite>the footnote under every gap report</cite>
-  </blockquote>
+<main>
+
+<!-- 01 -->
+<section class="sec" id="try" aria-labelledby="h-try">
+  <div>
+    <p class="label">Try it</p>
+    <h2 id="h-try">The check, running on this page</h2>
+    <p>
+      These are the real Model evaluation questions, with the app's own routing and
+      scoring copied in. The first question is the placement item, the one closest to
+      median difficulty. Get it wrong and the set comes from the easy end of the bank;
+      get it right in under 20 seconds and it comes from the hard end; right but slower
+      and you get the middle. Your rating then moves after each of the six answers.
+      Nothing is stored or sent.
+    </p>
+
+    <div class="demo" id="demo">
+      <div class="demo-head"><span>Model evaluation · 20 questions in the bank</span><span id="demo-step">Placement</span></div>
+      <div class="demo-body">
+        <div class="demo-q" id="demo-q" aria-live="polite">
+          <noscript><p>The demo needs JavaScript. The <a href="../">app itself</a> is the same check.</p></noscript>
+        </div>
+        <div class="demo-side">
+          <p class="side-h">Session rating</p>
+          <p class="big" id="demo-rating">1500</p>
+          <p class="big-sub" id="demo-rating-sub">Set by the placement answer: 1350, 1500 or 1650.</p>
+          <div class="trace" id="demo-trace"></div>
+          <ul class="concepts" id="demo-concepts" aria-label="Concepts in this topic and how your answers left them"></ul>
+        </div>
+      </div>
+      <div class="demo-foot"><p>Green: strong, every answer on that concept right. Amber: shaky, some right. Ink: missed. Dashed: not tested yet. These are the rules the app's knowledge map uses.</p></div>
+    </div>
+  </div>
 </section>
 
-<!-- ============ the check ============ -->
-<section style="--accent: var(--teal)">
-  <p class="tag">two minutes</p>
-  <h2>Six questions, pitched at you</h2>
-  <p>
-    One placement question comes first and sets the band. Answer it well and the
-    six that follow come from the hard set; miss it and they come from an easier
-    one, so the check spends its questions where they tell it something. You can
-    skip the placement and pick the band yourself.
-  </p>
-  <p>
-    Nothing is timed. Your pace is recorded and handed back afterwards as seconds
-    per question, because how long you took is information. It never costs you
-    points.
-  </p>
-  <figure>
-    <img src="placement.jpg" width="1485" height="812" loading="lazy"
-      alt="A placement question about two fraud-detection models with identical ROC-AUC on an imbalanced dataset, offering four answer options labelled A to D." />
-    <figcaption>The placement question. One item, and the rest of the set moves to meet it.</figcaption>
-  </figure>
+<!-- 02 -->
+<section class="sec" aria-labelledby="h-resume">
+  <div>
+    <p class="label">From claim to evidence</p>
+    <h2 id="h-resume">Paste a résumé and get a list of things to verify</h2>
+    <p>
+      A career track is a job broken into six topics. Open one and it starts at zero:
+      nothing assessed, and here are the six things this role wants evidence of. Paste a
+      résumé, or photograph one, and SkillCompass reads it against that track's
+      curriculum and badges the topics your experience claims. Each badge comes with a
+      <strong>Verify</strong> button, because a line on a CV is still only a claim.
+    </p>
+    <div class="pair">
+      <figure>
+        <img src="track.jpg" width="1485" height="812" loading="lazy"
+          alt="The Data Analyst career track page reading 0 of 6 topics assessed, with a résumé paste box, an upload button, a privacy note, and a Your biggest gaps panel listing the six untested subtopics." />
+        <figcaption>A track opened cold: 0 of 6 assessed.</figcaption>
+      </figure>
+      <figure>
+        <img src="resume.jpg" width="1485" height="812" loading="lazy"
+          alt="A track page showing a parsed résumé with extracted skill chips including SQL, Tableau, Excel, Redshift and window functions, above six track subtopics each badged From resume with a Verify button." />
+        <figcaption>Ten skills read off a résumé; six topics waiting to be checked.</figcaption>
+      </figure>
+    </div>
+    <p style="margin-top:22px">
+      The text goes to one Gemini call and is not stored. The report compares you with
+      the track's curriculum only. There is no job-postings corpus yet, so it makes no
+      claim about market demand or salary, and the page says so under every report.
+    </p>
+  </div>
 </section>
 
-<!-- ============ the reveal, source-led ============ -->
-<section style="--accent: var(--violet)">
-  <p class="tag">where the questions come from</p>
-  <h2>Every answer names the book it came out of</h2>
-  <p>
-    Answer and the explanation opens straight away, right or wrong. It says which
-    option was correct, why the tempting one isn't, and then cites the public
-    reference it was written against. Below, that's Davis and Goadrich's 2006
-    paper on precision-recall against ROC curves.
-  </p>
-  <p>
-    The citation is there for a reason. A multiple-choice question with a debatable
-    key is worse than no question at all, so each item is written against a named
-    source, then run past an independent review pass that hunts for exactly the
-    failure modes questions fail on: ambiguous keys, giveaway option lengths,
-    trick phrasing. A person reads it before it counts. That is
-    <strong>645 questions</strong> so far, across <strong>230 concepts</strong>.
-  </p>
-  <figure>
-    <img src="reveal.jpg" width="1485" height="812" loading="lazy"
-      alt="A revealed answer marked Right, with an explanation of why ROC-AUC stays stable across prevalence while PR-AUC drops, followed by a cited source line naming Davis and Goadrich 2006." />
-    <figcaption>Right or wrong, you get the reasoning and the reference underneath it.</figcaption>
-  </figure>
-</section>
-
-<!-- ============ the map: the payoff ============ -->
-<section style="--accent: var(--green)">
-  <p class="tag">what you walk away with</p>
-  <h2>A map of the topic, under the mark out of six</h2>
-  <p class="lead">
-    The score is one line. Underneath sits the knowledge map: every concept the
-    topic covers, colored by how you did on the questions that touched it, with
-    the prerequisite links drawn between them.
-  </p>
-  <p>
-    Concepts your six questions never reached stay dashed and empty; the map
-    shows you the hole and leaves the guessing out. Tap any node for what the concept
-    is, how to close it, and a way straight back into fresh questions on it.
-  </p>
-  <div class="pair">
+<!-- 03 -->
+<section class="sec" aria-labelledby="h-src">
+  <div>
+    <p class="label">Where the questions come from</p>
+    <h2 id="h-src">Every answer names the source it was written against</h2>
+    <p>
+      Answer a question and the explanation opens, right or wrong: which option was
+      correct, why the tempting one isn't, and the public reference behind it. The
+      placement question in the demo above cites Davis and Goadrich's 2006 paper on
+      precision-recall and ROC curves.
+    </p>
+    <p>
+      A multiple-choice question with a debatable key is worse than none, so the
+      pipeline assumes its own drafts are wrong. One model pass drafts questions in
+      difficulty bands. A second, independent pass checks each one for the usual
+      faults (an ambiguous key, a giveaway option length, trick phrasing) and repairs
+      or rejects it. The plan adds a person's sign-off before a question counts; as
+      noted above, the banks in the repo are still marked as waiting for it.
+    </p>
     <figure>
-      <img src="results.jpg" width="1485" height="812" loading="lazy"
-        alt="A finished check on Model evaluation scoring 6 out of 6, above a knowledge map of eight concepts colored strong or left dashed as not yet tested." />
-      <figcaption>Six for six, and three concepts still marked untested.</figcaption>
-    </figure>
-    <figure>
-      <img src="concept.jpg" width="1485" height="812" loading="lazy"
-        alt="The knowledge map with a concept dialog open for ROC-AUC vs PR Curve, marked strong, explaining the difference between the two curves and offering a Take it again button." />
-      <figcaption>Any node opens into what it is and how to fix it.</figcaption>
+      <img src="reveal.jpg" width="1485" height="812" loading="lazy"
+        alt="A revealed answer marked Right, with an explanation of why ROC-AUC stays stable across prevalence while PR-AUC drops, followed by a cited source line naming Davis and Goadrich 2006." />
+      <figcaption>The reveal step, with the source line at the bottom.</figcaption>
     </figure>
   </div>
-  <blockquote class="said">
-    <p>A clean 6/6. You handled ROC-AUC vs PR Curve, the hardest idea in this set,
-      without slipping. Take it again to cover confusion matrix; a perfect run on
-      fresh questions is the real test.</p>
-    <cite>the diagnosis written for that run</cite>
-  </blockquote>
 </section>
 
-<!-- ============ calibration: type is the picture ============ -->
-<section style="--accent: var(--amber)">
-  <p class="tag">how difficulty is set</p>
-  <h2>Boring arithmetic, deliberately</h2>
-  <p>
-    A question's difficulty starts as an estimate. The plan is for it to move
-    toward what people score on it, in steps that shrink as an item collects
-    answers, so a well-established question stops swinging on any one person's
-    bad morning. That update is not built yet; for now every rating is the
-    starting estimate, and the answer log it will need is being collected.
-  </p>
-  <div class="maths">
-    R = 1500 − 400 · log<sub>10</sub>( p / (1−p) )
-    <span class="what">an item's rating, derived from the share of people who get it right</span>
-    <b>K</b><sub>item</sub> = 32 / (1 + n/40)
-    <span class="what">how far one new answer is allowed to move it, decaying as n grows</span>
-    <b>K</b><sub>session</sub> = 48
-    <span class="what">how fast your own ability estimate moves inside a single check</span>
-  </div>
-  <p>
-    Ability starts at 1350, 1500 or 1650 depending on which way the placement
-    question sent you. Only first exposures feed calibration, so retaking a topic
-    can't inflate the statistics. All of it is written out on a public page.
-  </p>
-  <figure>
-    <img src="methodology.jpg" width="1485" height="812" loading="lazy"
-      alt="The How this works page explaining questions, difficulty, percentiles and privacy in plain language, followed by a technical section with the Elo formulas and a live-AI capacity meter." />
-    <figcaption>The whole method, formulas included, on one page anyone can read.</figcaption>
-  </figure>
-</section>
-
-<!-- ============ the number it won't fake ============ -->
-<section style="--accent: var(--teal)">
-  <p class="tag">the number it won't invent</p>
-  <h2>No percentile until 30 people have sat it</h2>
-  <p>
-    "Top 27% of 412 this month" means precisely that: your result placed against
-    every logged session on that topic in a rolling 90-day window. Until a topic
-    clears <strong>30 sessions</strong> there is no such comparison to make, so
-    the result says <em>early data</em> and stops talking. Your first attempt is
-    the one that fixes the percentile, so retakes draw unseen questions but can't
-    be used to shop for a better rank.
-  </p>
-  <p>
-    The community dashboard runs on the same rule. It's built and wired, and for
-    now it reports that there isn't enough data yet.
-  </p>
-  <figure>
-    <img src="dashboard.jpg" width="1485" height="812" loading="lazy"
-      alt="The Live dashboard page, badged beta early data, saying the community counters switch on once the beta has real traffic to report and that there are no fake numbers in the meantime." />
-    <figcaption>An empty dashboard that says out loud that it is empty.</figcaption>
-  </figure>
-</section>
-
-<!-- ============ scale, drawn ============ -->
-<section style="--accent: var(--green)">
-  <p class="tag">how much is live</p>
-  <h2>385 topics mapped. 29 of them ready.</h2>
-  <p>
-    The catalog is the single source of truth: <strong>385 subtopics</strong>
-    across <strong>46 fields</strong>, feeding <strong>117 career tracks</strong>.
-    Software, cloud, security, marketing, product, project management, HR,
-    healthcare, law, economics, accounting, math and psychology sit alongside the
-    original data and finance core.
-  </p>
-  <div class="field">
-    <div class="dots" id="dots" role="img" aria-label="29 of 385 subtopics are live."></div>
-    <p class="field-key"><em>■ 29 live</em> · 356 still generating</p>
-  </div>
-  <p style="margin-top:1.4em">
-    A subtopic goes live the moment its reviewed bank lands, and nothing is edited
-    by hand to make that happen. The manifest works out live, partial or soon from
-    whatever content exists, so topics, fields and tracks flip over by themselves.
-    That's why the count above is a count of what exists today. Five fields
-    are open now, four tracks are complete, and 42 more are partly covered.
-  </p>
-  <figure>
-    <img src="explore.jpg" width="1485" height="812" loading="lazy"
-      alt="The Explore page listing live topics grouped by field: Machine Learning and AI, SQL and Data Tools, Finance and Markets, Statistics and Experimentation, with plus-more-coming labels on the incomplete fields." />
-    <figcaption>Ready topics first, and the unfinished fields say how many are still coming.</figcaption>
-  </figure>
-</section>
-
-<!-- ============ capstone ============ -->
-<section style="--accent: var(--violet)">
-  <p class="tag">the capstone</p>
-  <h2>An interview that asks a second question</h2>
-  <p>
-    Get all six topics in a track assessed and the mock interview unlocks. Six to
-    eight turns of conversation, pitched at the seniority your results
-    demonstrated (the one you claimed doesn't count), and it follows up when an
-    answer is thin. It ends with a scorecard broken out by
-    dimension. Tested against a deliberately vague answer, it flagged it and kept
-    pushing, which was the point of the test.
-  </p>
-  <p>
-    It holds no server-side session. The transcript is resent each turn, so there
-    is nothing sitting on a server to leak. The third feature is the
-    <strong>study guide</strong>: a downloadable plan for a whole track, built
-    from your per-concept results and, where they exist, your résumé and
-    interview too.
-  </p>
-  <figure>
-    <img src="capstone.jpg" width="1485" height="812" loading="lazy"
-      alt="The bottom of a track page showing six subtopics badged From resume with Verify buttons, and a locked Mock interview capstone panel reading unlocks when all 6 topics are assessed, marked 0 of 6." />
-    <figcaption>Locked at 0/6. You earn the capstone by finishing the track.</figcaption>
-  </figure>
-</section>
-
-<!-- ============ data ============ -->
-<section style="--accent: var(--rose)">
-  <p class="tag">your data</p>
-  <h2>Two buttons: export, and erase</h2>
-  <p>
-    Everything you do lives in one localStorage key in your own browser. The
-    Progress page reads it back to you, every check with its date and score, and
-    gives you a button to take it away as a file and a button to delete the lot.
-    Neither asks you to sign in first, because there is nothing to sign in to.
-  </p>
-  <p>
-    The one thing recorded centrally is an anonymous answer log: question id,
-    right or wrong, how long you took. That's what calibration runs on. It never
-    records who you are, and there's no account for it to hang off.
-  </p>
-  <figure>
-    <img src="progress.jpg" width="1485" height="812" loading="lazy"
-      alt="The Your progress page showing checks completed, topics attempted and average score, a history list with dates and scores, and Export my data and Clear everything buttons." />
-    <figcaption>“Everything below lives only in this browser.”</figcaption>
-  </figure>
-</section>
-
-<!-- ============ the smaller things ============ -->
-<section style="--accent: var(--amber)">
-  <p class="tag">smaller things worth knowing</p>
-  <h2>Details that only matter once you're using it</h2>
-  <div class="also">
-    <div><h3>Keyboard the whole way</h3><p>A to D answers, Return advances. A check takes two minutes without your hand leaving the keys.</p></div>
-    <div><h3>Skip the placement</h3><p>Know your level already? Start easier or start harder and go straight to the set you want.</p></div>
-    <div><h3>Retakes draw unseen questions</h3><p>Sit a topic again and you get items you haven't met. The first attempt still owns the percentile.</p></div>
-    <div><h3>Photograph your résumé</h3><p>No file to hand? A photo or screenshot gets read the same way, in memory, once.</p></div>
-    <div><h3>Partial tracks say so</h3><p>A track with four of six banks ready carries a readiness badge instead of looking finished and failing halfway.</p></div>
-    <div><h3>Certificate prep</h3><p>CFA Level 1, Google Data Analytics and AWS Cloud Practitioner are mapped, marked coming soon until their banks land.</p></div>
-    <div><h3>Daily AI capacity, in public</h3><p>The free model tier has a ceiling. The methodology page shows today's count against it and says what happens at the top.</p></div>
-    <div><h3>Results have their own URL</h3><p>Come back to a result later. A 404 redirect shim makes a static host serve app routes properly.</p></div>
-    <div><h3>Feedback endpoint is live</h3><p>The API already accepts structured feedback. Putting a report link on every question is next, and the methodology page says it isn't done yet.</p></div>
-    <div><h3>Dark mode</h3><p>A full night theme on its own toggle, contrast-checked in both directions.</p></div>
+<!-- 04 -->
+<section class="sec" aria-labelledby="h-map">
+  <div>
+    <p class="label">What you get back</p>
+    <h2 id="h-map">A map of the topic, under the mark out of six</h2>
+    <p>
+      The score is one line. Below it is the knowledge map: every concept in the topic,
+      colored by how you did on the questions that touched it, with the prerequisite
+      links drawn in. Concepts your six questions never reached stay dashed. Tap a node
+      for what the concept is and a way back into fresh questions on it. Under the map
+      sits a short diagnosis written by rules, not by a model.
+    </p>
+    <div class="pair">
+      <figure>
+        <img src="results.jpg" width="1485" height="812" loading="lazy"
+          alt="A finished check on Model evaluation scoring 6 out of 6, above a knowledge map of eight concepts colored strong or left dashed as not yet tested." />
+        <figcaption>Six for six, with three concepts still untested.</figcaption>
+      </figure>
+      <figure>
+        <img src="concept.jpg" width="1485" height="812" loading="lazy"
+          alt="The knowledge map with a concept dialog open for ROC-AUC vs PR Curve, marked strong, explaining the difference between the two curves and offering a Take it again button." />
+        <figcaption>Any node opens into a definition and a retake.</figcaption>
+      </figure>
+    </div>
+    <blockquote class="quote">
+      <p>A clean 6/6. You handled ROC-AUC vs PR Curve, the hardest idea in this set,
+        without slipping. Take it again to cover confusion matrix; a perfect run on
+        fresh questions is the real test.</p>
+      <cite>The diagnosis the app wrote for that run</cite>
+    </blockquote>
   </div>
 </section>
 
-<!-- ============ built on ============ -->
-<section style="--accent: var(--teal)">
-  <p class="tag">what it runs on</p>
-  <h2>Free, and free to run</h2>
-  <p>
-    SkillCompass costs <strong>nothing a month</strong> to operate. That was a
-    constraint from the start: nothing here depends on a budget that could get
-    cut, and no part of it has to be monetized later to survive.
-  </p>
-  <dl class="specs">
-    <div><dt>Frontend</dt><dd>React, Vite and TypeScript, served as a static build from GitHub Pages. The whole quiz loop runs here, so the core of the product can't go down with a backend</dd></div>
-    <div><dt>API</dt><dd>Python FastAPI on a Hugging Face Space, free CPU tier. Percentiles and the three AI features only</dd></div>
-    <div><dt>Calibration store</dt><dd>Supabase Postgres, free tier, reached through a small stdlib PostgREST client in place of the SDK</dd></div>
-    <div><dt>AI features</dt><dd>Gemini 2.5 Flash on the free tier over plain REST, with thinking tokens switched off so answers don't get truncated before they finish</dd></div>
-    <div><dt>Question pipeline</dt><dd>A generator drafts in difficulty bands, an independent reviewer pass repairs or rejects, and a person signs off before anything counts</dd></div>
-    <div><dt>Curricula</dt><dd>Referenced against Coursera, edX and Kaplan. Questions cite named public sources on the question itself</dd></div>
-    <div><dt>Your data</dt><dd>One localStorage key. An anonymous answer log is the only central record</dd></div>
-  </dl>
+<!-- 05 -->
+<section class="sec" aria-labelledby="h-elo">
+  <div>
+    <p class="label">How difficulty is set</p>
+    <h2 id="h-elo">Plain Elo arithmetic, and one part still to build</h2>
+    <p>
+      Each question carries a prior <span class="mono">p</span>: the estimated share of
+      median professionals who get it right, set when it is drafted and re-estimated
+      by the review pass. That becomes an item rating. Your session rating starts at
+      1350, 1500 or 1650 depending on the placement answer and moves after every
+      answer by at most 48 points.
+    </p>
+    <div class="formulae">
+      <div><code>R_item = 1500 − 400 · log10(p / (1 − p))</code><span>A question's rating from its prior. p = 0.5 gives 1500.</span></div>
+      <div><code>E = 1 / (1 + 10^((R_item − R_you) / 400))</code><span>The chance the model gives you of answering it right.</span></div>
+      <div><code>R_you ← R_you + 48 · (correct − E)</code><span>Your update after each answer. Built; it is what the demo uses.</span></div>
+      <div class="planned"><code>K_item = 32 / (1 + n/40)</code><span><b>Planned, not built.</b> Item ratings would move toward real answer rates, in steps that shrink as an item collects n answers. The answer log it needs was being collected until the database paused.</span></div>
+    </div>
+
+    <figure class="chart" id="elo-chart">
+      <div class="chart-head">
+        <p class="chart-title">A hard question pays more for a right answer and costs less for a wrong one</p>
+        <p class="chart-sub">Points your rating moves for one answer (up the side) against the question's rating (along the bottom, harder to the right). The grey bars are the 645 questions in the repo, placed by their priors.</p>
+      </div>
+      <div class="chart-ctl">
+        <label for="elo-r">Your rating going in: <b id="elo-r-v">1500</b></label>
+        <input type="range" id="elo-r" min="1200" max="1800" step="10" value="1500" />
+      </div>
+      <div class="chart-body"><svg id="elo-svg" viewBox="0 0 640 300" role="img" aria-labelledby="elo-desc"><desc id="elo-desc">Two curves: the gain for a right answer rises from about 10 to 40 points as question rating rises from 1200 to 1700, and the loss for a wrong answer falls in size over the same range. Most of the 645 questions sit between ratings 1300 and 1650.</desc></svg></div>
+      <div class="readout" id="elo-read" aria-live="polite">Move across the chart, or focus it and use the arrow keys.</div>
+    </figure>
+    <p style="margin-top:20px">
+      Only first exposures would feed recalibration, so retaking a topic can't skew an
+      item's statistics. The app's <a href="../methodology">How this works page</a> sets
+      all of this out, formulas included.
+    </p>
+  </div>
 </section>
 
-<section class="end" style="--accent: var(--rose)">
-  <h2>Find out which half you know</h2>
-  <div class="actions">
-    <a class="go" href="../">Take a 2-minute check</a>
-    <a class="alt-link" href="../methodology">Read how it works first</a>
+<!-- 06 -->
+<section class="sec" aria-labelledby="h-pct">
+  <div>
+    <p class="label">The number it won't invent</p>
+    <h2 id="h-pct">No percentile until 30 people have taken the check</h2>
+    <p>
+      A percentile here means your final rating placed against every logged session on
+      that subtopic in a rolling 90-day window. Below <strong>30 sessions</strong> the
+      result says "early data" and gives no number. Your first attempt fixes the
+      percentile, so retakes draw unseen questions without letting you shop for a
+      better rank. The community dashboard follows the same rule and says plainly that
+      it has nothing to show yet.
+    </p>
+    <p>
+      The sessions behind all of this live in Supabase, and the free tier pauses a
+      project after seven days without activity. A twice-weekly keep-alive job pings the
+      API and checks the response bodies, not just the status codes, because the first
+      version of that job passed for three weeks while the database was down. It has
+      failed, correctly, on every run since 6 August 2026, when the project paused again. Until someone resumes
+      it, every subtopic stays at "early data".
+    </p>
+    <figure>
+      <img src="dashboard.jpg" width="1485" height="812" loading="lazy"
+        alt="The Live dashboard page, badged beta early data, saying the community counters switch on once the beta has real traffic to report and that there are no fake numbers in the meantime." />
+      <figcaption>The dashboard says when it is empty.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="sec" aria-labelledby="h-cov">
+  <div>
+    <p class="label">How much is live</p>
+    <h2 id="h-cov">385 subtopics catalogued, 29 with questions</h2>
+    <p>
+      <span class="mono">content/catalog.json</span> lists 385 subtopics across 46
+      fields and 117 career tracks. A subtopic goes live when its bank reaches 12
+      questions, and a build script works out field and track status
+      from whatever banks exist, so nothing is flipped by hand. Four tracks are
+      complete (Data Analyst, Data Scientist/ML, BI Analyst, Business/Product
+      Analytics) and 42 more are partly covered.
+    </p>
+    <figure class="chart" id="cov">
+      <div class="chart-head">
+        <p class="chart-title">Statistics and SQL are complete; 41 of 46 fields have nothing live yet</p>
+        <p class="chart-sub">Each bar is a field's catalogued subtopics; the filled part is the share with a live question bank. From <span class="mono">content/manifest.json</span>.</p>
+      </div>
+      <div class="chart-ctl">
+        <span>Sort:</span>
+        <span class="seg" role="group" aria-label="Sort fields">
+          <button type="button" data-sort="live" aria-pressed="true">Live first</button>
+          <button type="button" data-sort="size" aria-pressed="false">Catalog size</button>
+          <button type="button" data-sort="name" aria-pressed="false">A to Z</button>
+        </span>
+      </div>
+      <table class="cov">
+        <thead><tr><th scope="col">Field</th><th scope="col">Live of catalogued</th><th scope="col"><span class="sr">Bar</span></th></tr></thead>
+        <tbody id="cov-body"></tbody>
+      </table>
+      <div class="cov-more"><span id="cov-note"></span><button type="button" class="btn ghost" id="cov-all" aria-expanded="false">Show all 46 fields</button></div>
+    </figure>
+    <figure>
+      <img src="explore.jpg" width="1485" height="812" loading="lazy"
+        alt="The Explore page listing live topics grouped by field: Machine Learning and AI, SQL and Data Tools, Finance and Markets, Statistics and Experimentation, with plus-more-coming labels on the incomplete fields." />
+      <figcaption>The Explore page lists ready topics first and says how many are still coming.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="sec" aria-labelledby="h-int">
+  <div>
+    <p class="label">The capstone</p>
+    <h2 id="h-int">A mock interview that asks the second question</h2>
+    <p>
+      Assess all six topics in a track and a mock interview unlocks: six to eight turns
+      of text, pitched at the level your results showed rather than the one you
+      claimed, ending in a scorecard by dimension. It follows up when an answer is thin.
+      In testing, a deliberately vague answer was flagged and scored low across several
+      follow-ups. The server keeps no session; the browser resends the transcript each
+      turn. Candidate answers are wrapped in tags under a rule against prompt
+      injection, and a backend test checks that the rule is in the prompt.
+    </p>
+    <p>
+      The third model feature is a study guide: a downloadable Markdown plan for a whole
+      track, built from your per-concept results and, where they exist, your résumé and
+      interview. All three share one Gemini helper with a daily cap of 1,200 calls,
+      shown on the methodology page as a capacity meter.
+    </p>
+    <figure>
+      <img src="capstone.jpg" width="1485" height="812" loading="lazy"
+        alt="The bottom of a track page showing six subtopics badged From resume with Verify buttons, and a locked Mock interview capstone panel reading unlocks when all 6 topics are assessed, marked 0 of 6." />
+      <figcaption>Locked at 0 of 6. Finishing the track opens it.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="sec" aria-labelledby="h-data">
+  <div>
+    <p class="label">Your data</p>
+    <h2 id="h-data">One browser key, an export button and an erase button</h2>
+    <p>
+      There are no accounts. Everything you do is kept in one localStorage key
+      (<span class="mono">sc_v1</span>). The Progress page lists every check with its
+      date and score and has two buttons: take it all away as a file, or delete it.
+      The only central record is an anonymous answer log (question, right or wrong,
+      time taken), which is what percentiles and the planned recalibration run on.
+    </p>
+    <figure>
+      <img src="progress.jpg" width="1485" height="812" loading="lazy"
+        alt="The Your progress page showing checks completed, topics attempted and average score, a history list with dates and scores, and Export my data and Clear everything buttons." />
+      <figcaption>"Everything below lives only in this browser."</figcaption>
+    </figure>
+    <p style="margin-top:22px">
+      Smaller things: the whole check works from the keyboard (A to D, then Return);
+      the placement can be skipped by picking a level; a résumé photo is read the same
+      way as pasted text; and a track with only some banks ready carries a readiness
+      badge instead of failing halfway through.
+    </p>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="sec" aria-labelledby="h-stack">
+  <div>
+    <p class="label">What it runs on</p>
+    <h2 id="h-stack">Free tiers, and a quiz loop that needs no server</h2>
+    <p>
+      Questions ship as static JSON, and scoring, the knowledge map and the diagnosis
+      all run in the browser. That is why the demo above works and why the app's checks
+      keep working with the database paused: only percentiles and the model features
+      need the backend.
+    </p>
+    <dl class="specs">
+      <div><dt>Frontend</dt><dd>React, Vite and TypeScript, built to static files on GitHub Pages.</dd></div>
+      <div><dt>API</dt><dd>Python FastAPI on a free Hugging Face Space. Percentiles and the three model features only.</dd></div>
+      <div><dt>Session store</dt><dd>Supabase Postgres, free tier, reached through a 40-line standard-library PostgREST client after the official SDK misread the new key format. Paused as of this writing.</dd></div>
+      <div><dt>Model features</dt><dd>Gemini 2.5 Flash on the free tier over plain REST, with thinking tokens off so answers aren't cut short.</dd></div>
+      <div><dt>Questions</dt><dd>Drafted in difficulty bands, checked by an independent model pass, each tied to a named public source. Curricula referenced against Coursera, edX and Kaplan.</dd></div>
+    </dl>
+  </div>
+</section>
+
+</main>
+
+<section class="close">
+  <h2>Find out which half of the résumé holds up</h2>
+  <div class="cta">
+    <a class="btn" href="../">Take a 2-minute check</a>
+    <a href="../methodology">Read how it works first</a>
   </div>
 </section>
 
 <footer>
-  <p>
-    SkillCompass ·
-    <a href="../">App</a> ·
-    <a href="../methodology">How this works</a> ·
-    <a href="https://github.com/lyhjeremy/skill-compass">Source</a>
-  </p>
-  <p>
-    Beta. 29 of 385 catalogued subtopics are live and the rest are generating.
-    Every screenshot here is the running app.
-  </p>
+  <p>SkillCompass · <a href="../">App</a> · <a href="../methodology">How this works</a> · <a href="../privacy/">Privacy</a> · <a href="../terms/">Terms</a> · <a href="https://github.com/lyhjeremy/skill-compass">Source</a></p>
+  <p>Screenshots are captures of the running app. Counts come from <span class="mono">content/catalog.json</span>, <span class="mono">content/manifest.json</span> and the question banks, as of 28 October 2026.</p>
 </footer>
 
-<script>
-  // 385 dots, 29 filled. Written here rather than as 385 hand-typed spans;
-  // with JS off the sentence underneath still states the same numbers.
-  (function () {
-    var host = document.getElementById('dots');
-    if (!host) return;
-    var frag = document.createDocumentFragment();
-    for (var i = 0; i < 385; i++) {
-      var b = document.createElement('b');
-      if (i < 29) b.className = 'on';
-      frag.appendChild(b);
-    }
-    host.appendChild(frag);
-  })();
-</script>
+</div>
 
+<script>
+(function () {
+  "use strict";
+  var DEMO = {"subtopic":"Model evaluation","concepts":[{"id":"confusion-matrix","label":"Confusion Matrix"},{"id":"accuracy-under-imbalance","label":"Accuracy Under Imbalance"},{"id":"precision-recall-tradeoff","label":"Precision vs Recall Tradeoff"},{"id":"f1-score","label":"F1 Score"},{"id":"roc-auc-vs-pr-curve","label":"ROC-AUC vs PR Curve"},{"id":"threshold-selection","label":"Threshold Selection"},{"id":"probability-calibration","label":"Probability Calibration"},{"id":"validation-vs-test-sets","label":"Validation vs Test Sets"}],"items":{"model-evaluation-000":{"id":"model-evaluation-000","c":"accuracy-under-imbalance","s":"A fraud detection model on a dataset where 990 of 1,000 transactions are legitimate reaches 99% accuracy by predicting \"legitimate\" for every case, catching zero fraud. What does this demonstrate?","o":["Accuracy hides the model's failure to detect the minority class.","Accuracy confirms the model is ready for production deployment.","Accuracy would improve simply by collecting more of the same data.","Accuracy treats both classes equally, so it fairly reflects true performance."],"a":0,"e":"The model never flags fraud yet scores 99% accuracy because the majority class dominates the metric. Accuracy weights each instance, not each class, so it can look excellent while completely failing the minority class; more of the same data would not fix this.","src":"Wikipedia: Accuracy paradox","p":0.75},"model-evaluation-001":{"id":"model-evaluation-001","c":"confusion-matrix","s":"A binary classifier's confusion matrix shows 40 true positives, 10 false positives, 5 false negatives, and 45 true negatives. How many actual positive cases are in the dataset?","o":["45","50","85","55"],"a":0,"e":"Actual positives equal true positives plus false negatives (cases that were positive but missed): 40 + 5 = 45. 50 is predicted positives (TP+FP); 55 is actual negatives; 85 is total correct predictions.","src":"Wikipedia: Confusion matrix","p":0.78},"model-evaluation-002":{"id":"model-evaluation-002","c":"precision-recall-tradeoff","s":"A spam filter is retuned to flag more emails as spam so it catches nearly every spam message. What is the most likely tradeoff?","o":["Recall rises while precision falls, as more legitimate mail is flagged.","Precision rises while recall falls, because most flagged mail is truly spam.","Both precision and recall increase together, with no tradeoff at all.","Accuracy improves automatically, so precision and recall no longer matter here."],"a":0,"e":"Casting a wider net catches more actual spam, raising recall, but also flags more legitimate emails as spam, lowering precision. Precision and recall typically move in opposite directions as the decision threshold shifts.","src":"Wikipedia: Precision and recall","p":0.68},"model-evaluation-003":{"id":"model-evaluation-003","c":"validation-vs-test-sets","s":"A data scientist tunes hyperparameters by repeatedly checking performance on the test set and picks the settings that score highest there. What problem does this create?","o":["The test set no longer gives an unbiased performance estimate.","The model becomes better at generalizing to entirely new, unseen data.","The test set effectively becomes additional training data for the model.","The reported accuracy will always underestimate the model's true performance."],"a":0,"e":"Repeatedly selecting hyperparameters based on test performance leaks information into model selection, making the score optimistic rather than an honest generalization estimate. Unlike training, this doesn't update model weights, but it still biases evaluation; tuning should use a separate validation set.","src":"Wikipedia: Training, validation, and test data sets","p":0.78},"model-evaluation-004":{"id":"model-evaluation-004","c":"probability-calibration","s":"A weather model predicts a 70% chance of rain on many different days. If the model is well-calibrated, what should be observed across all days it gave that prediction?","o":["Close to 70% of those days actually had rain.","The model correctly classifies 70% of individual predictions as rain or not.","Exactly 70% of all days in the dataset had rain.","The model can perfectly distinguish rainy days from non-rainy days."],"a":0,"e":"Calibration means predicted probabilities match observed frequencies: among days assigned 70%, about 70% should see rain. This differs from discrimination (e.g., AUC), which measures ranking ability, and from overall accuracy or base rate, which are separate concepts.","src":"Wikipedia: Calibration (statistics)","p":0.7},"model-evaluation-005":{"id":"model-evaluation-005","c":"confusion-matrix","s":"A factory's defect-detection system inspected 500 parts. Its confusion matrix reports 30 defective parts correctly flagged, 5 defective parts missed, 20 good parts incorrectly flagged as defective, and 445 good parts correctly passed. How many parts were false positives?","o":["20 good parts wrongly flagged as defective","5 defective parts wrongly passed as good","30 defective parts correctly flagged as defective","445 good parts correctly passed as good"],"a":0,"e":"A false positive is a negative case (a good part) incorrectly predicted positive. The 5 missed defects are false negatives instead, a common mix-up between the two error types in a confusion matrix.","src":"Wikipedia: Confusion matrix","p":0.65},"model-evaluation-006":{"id":"model-evaluation-006","c":"f1-score","s":"A legal team's contract-flagging classifier achieves precision of 0.80 and recall of 0.40 on a review set. Using the standard F1 formula, the harmonic mean of precision and recall, what is the model's F1 score, rounded to two decimals?","o":["0.53","0.60","0.40","0.80"],"a":0,"e":"F1 = 2×(0.80×0.40)/(0.80+0.40) ≈ 0.53. A simple average of precision and recall gives 0.60, but F1 uses the harmonic mean, which weights the lower value more heavily and penalizes imbalance between the two.","src":"Wikipedia: F-score","p":0.55},"model-evaluation-007":{"id":"model-evaluation-007","c":"roc-auc-vs-pr-curve","s":"Two fraud-detection models both score 0.95 ROC-AUC, but fraud makes up only 0.5% of transactions. To see which model actually performs better at catching fraud, which curve should the team examine instead?","o":["Precision-recall curve, because it focuses on the rare positive class","ROC curve, because it already adjusts for class imbalance","Calibration curve, because it shows how well probabilities match outcomes","Learning curve, because it shows performance versus training set size"],"a":0,"e":"Under severe imbalance, ROC-AUC can look similar across models because true negatives dominate the score. The precision-recall curve ignores true negatives and exposes differences in catching the rare fraud cases.","src":"scikit-learn documentation: Precision-Recall","p":0.55},"model-evaluation-009":{"id":"model-evaluation-009","c":"probability-calibration","s":"A payment processor's fraud model is described as well-calibrated. In practice, this means that among all transactions it scores as 80% likely to be fraudulent, roughly what fraction are actually fraudulent?","o":["About 80% of them are actually fraudulent","About 80% of all transactions are correctly classified","The model's ROC-AUC score is approximately 0.80","About 80% of transactions are flagged as fraud"],"a":0,"e":"Calibration means predicted probabilities match observed outcome frequencies, so 80% predicted risk should correspond to about 80% actual fraud among those cases. This differs from overall accuracy or AUC, which don't depend on probability values.","src":"Wikipedia: Calibration (statistics)","p":0.58},"model-evaluation-010":{"id":"model-evaluation-010","c":"confusion-matrix","s":"A hospital's sepsis-alert system screened 800 patients. It flagged 90 as high-risk: 60 later developed sepsis, 30 did not. Of the 710 not flagged, 10 developed sepsis. What is the recall of this system?","o":["66.7%","75.0%","85.7%","95.0%"],"a":2,"e":"Recall = TP/(TP+FN) = 60/70 ≈ 85.7%. The 66.7% distractor is precision (TP/(TP+FP)); 95% is overall accuracy; 75% is the F1 score, which blends precision and recall rather than measuring recall alone.","src":"Wikipedia: Confusion matrix","p":0.45},"model-evaluation-011":{"id":"model-evaluation-011","c":"accuracy-under-imbalance","s":"A hospital deploys a disease-screening model where only 1% of 10,000 patients truly have the disease. The model achieves 99% accuracy. A colleague argues this proves the model is highly effective. What is the flaw in this argument?","o":["Because the model achieved 99% accuracy, its precision and recall for detecting the disease must also be approximately 99%.","A model that always predicts 'no disease' would also score about 99% accuracy, without detecting any true case.","Under class imbalance, accuracy must be rescaled by the class prior before it can be compared across models.","The 99% figure is misleading because accuracy formulas actually give equal weight to false positives and false negatives."],"a":1,"e":"With 1% prevalence, predicting the majority class for every patient yields about 99% accuracy without identifying a single true case, illustrating the accuracy paradox under class imbalance. Recall or F1 on the minority class is far more informative than accuracy alone.","src":"Google Machine Learning Crash Course: Classification","p":0.5},"model-evaluation-012":{"id":"model-evaluation-012","c":"precision-recall-tradeoff","s":"A recruiting tool flags resumes as 'strong candidate.' Increasing the flagging threshold so only the most confident predictions are labeled positive typically has what effect on precision and recall?","o":["Both precision and recall tend to rise together, since higher-confidence predictions are inherently more accurate overall.","Precision and recall stay constant across thresholds; only overall accuracy changes as the threshold shifts.","Precision tends to fall while recall tends to rise, since a stricter threshold captures more true candidates.","Precision tends to rise while recall falls, since fewer but more confident predictions are flagged positive."],"a":3,"e":"Raising the threshold means only the highest-confidence cases are labeled positive, so a larger share of flagged candidates are truly strong (precision rises), while some genuine strong candidates near the old cutoff are now missed (recall falls).","src":"Wikipedia: Precision and recall","p":0.55},"model-evaluation-013":{"id":"model-evaluation-013","c":"roc-auc-vs-pr-curve","s":"A team evaluates a single wildfire-detection model on satellite images where positive (fire) pixels make up less than 0.1% of all pixels. The model's ROC-AUC looks excellent, but its precision-recall AUC is much lower. What does this gap most likely indicate?","o":["The model is broken, since ROC-AUC and precision-recall AUC must always agree for any well-trained classifier.","The gap merely reflects noise from a small test set and would vanish given more labeled images.","The model is actually stronger than ROC-AUC suggests, since precision-recall AUC penalizes models unfairly on rare classes.","The model produces many false positives relative to true fires, a weakness ROC-AUC masks since negatives dominate."],"a":3,"e":"Because fire pixels are extremely rare, the huge number of true negatives lets ROC-AUC stay high even when many predicted positives are false alarms. Precision-recall AUC ignores true negatives, exposing this false-positive-heavy behavior that ROC-AUC hides.","src":"Davis & Goadrich, 'The Relationship Between Precision-Recall and ROC Curves' (2006)","p":0.4},"model-evaluation-014":{"id":"model-evaluation-014","c":"threshold-selection","s":"A hospital triage system scores each incoming patient by likelihood of critical illness. Because missing a truly critical patient is far more costly than ordering unnecessary follow-up tests on a stable one, how should the classification threshold be adjusted from the default 0.5?","o":["Higher than 0.5, flagging only the most confident predictions to minimize the number of unnecessary follow-up tests.","Exactly 0.5, since this threshold always maximizes accuracy regardless of the relative costs of different errors.","Lower than 0.5, so more patients are flagged as critical and fewer emergencies are missed.","Whatever threshold maximizes the model's ROC-AUC score, since AUC alone determines where to set the cutoff."],"a":2,"e":"When false negatives (missed critical patients) are far costlier than false positives (extra tests), the optimal operating point shifts below 0.5, increasing sensitivity to catch more emergencies. Note that AUC is threshold-independent and does not by itself specify a cutoff.","src":"Google Machine Learning Crash Course: Classification thresholding","p":0.45},"model-evaluation-015":{"id":"model-evaluation-015","c":"f1-score","s":"A churn-prediction model (Model A) has precision 0.90 and recall 0.30. A second model (Model B) has precision 0.60 and recall 0.60. Both are compared using F1 score. Which statement is correct?","o":["Model A has the higher F1 score, because F1 is dominated by precision when recall is low.","Both models have identical F1 scores, since F1 is just the simple average of precision and recall.","Model B has the higher F1 score (0.60 vs 0.45), despite Model A's much higher precision.","Model A has the higher F1 score, because avoiding false alarms matters more than catching every churn case."],"a":2,"e":"F1 is the harmonic mean, which penalizes imbalance between precision and recall more than a simple average. Model B's balanced 0.60/0.60 gives F1=0.60, while Model A's skewed 0.90/0.30 gives F1=0.45, despite equal arithmetic means.","src":"Wikipedia: F1 score","p":0.3},"model-evaluation-016":{"id":"model-evaluation-016","c":"precision-recall-tradeoff","s":"A content-moderation model can run at Threshold X (precision 0.95, recall 0.40) or Threshold Y (precision 0.70, recall 0.85). Platform policy prioritizes minimizing missed violations, even at the cost of more manual review. Which threshold fits this policy?","o":["Threshold X, because its higher precision means moderators review fewer false alarms.","Threshold Y, because its higher recall means fewer actual violations go undetected.","Threshold Y, because balanced precision and recall always beats an imbalanced tradeoff.","Threshold X, because minimizing missed violations requires maximizing precision rather than recall."],"a":1,"e":"Missed violations are false negatives, so minimizing them means maximizing recall, favoring Threshold Y. Threshold X's higher precision reduces false alarms but leaves more violations undetected, conflicting with the stated policy priority.","src":"Google Machine Learning Crash Course: Classification (Precision and Recall)","p":0.3},"model-evaluation-017":{"id":"model-evaluation-017","c":"roc-auc-vs-pr-curve","s":"A model is evaluated on two test sets from the same population: Set A has 50% positive cases, Set B has 2% positive cases. ROC-AUC is nearly identical on both sets, but PR-AUC differs sharply. What explains this?","o":["ROC-AUC rises automatically as class imbalance increases, which hides the true drop shown by PR-AUC.","PR-AUC and ROC-AUC are mathematically equivalent once adjusted for prevalence, so the gap indicates a computation error.","The model's underlying discrimination ability genuinely changed between the two test sets, despite being the same trained model.","ROC-AUC is computed from within-class rates, so it stays stable across prevalence, unlike precision-based PR-AUC."],"a":3,"e":"ROC-AUC is built from true/false positive rates computed separately within the positive and negative classes, so it barely shifts with prevalence. Precision mixes both classes, so PR-AUC drops sharply as positives become rarer, even for an unchanged model.","src":"Davis & Goadrich, \"The Relationship Between Precision-Recall and ROC Curves\" (2006)","p":0.28},"model-evaluation-018":{"id":"model-evaluation-018","c":"validation-vs-test-sets","s":"A team tunes its classification threshold on the validation set, then reports the resulting precision and recall on that same validation set as the estimate of real-world performance. What is the main problem?","o":["The estimate is optimistically biased, since the threshold was fit to that very validation set.","Precision and recall cannot be computed on a validation set, only on a held-out test set.","There is no problem, since validation and test sets are interchangeable once training has finished.","Validation sets are always smaller than test sets, so the estimate is noisy but not biased."],"a":0,"e":"Tuning a threshold to a validation set and then evaluating on that same set overstates performance, since the set influenced the choice. A separate, untouched test set is required to estimate true generalization.","src":"Wikipedia: Training, validation, and test data sets","p":0.32},"model-evaluation-019":{"id":"model-evaluation-019","c":"accuracy-under-imbalance","s":"A predictive-maintenance model is evaluated on 1,000 sensor readings: 970 indicate normal operation and 30 indicate impending failure. The model achieves 96% accuracy overall. Which conclusion is best supported?","o":["The model clearly outperforms a naive baseline, since 96% accuracy is high in absolute terms.","The model correctly identifies most impending failures, since failures make up only 3% of the data.","The model could perform worse than always predicting \"normal,\" which alone would yield 97% accuracy.","The 96% accuracy figure is invalid, since accuracy cannot be computed on imbalanced datasets."],"a":2,"e":"Always predicting the majority class (\"normal\") achieves 970/1000 = 97% accuracy, higher than the model's 96%. This is the accuracy paradox: high accuracy can still mean underperforming a trivial baseline under imbalance.","src":"Wikipedia: Accuracy paradox","p":0.3}},"placement":"model-evaluation-007","sets":{"easy":["model-evaluation-001","model-evaluation-003","model-evaluation-000","model-evaluation-004","model-evaluation-002","model-evaluation-005"],"hard":["model-evaluation-017","model-evaluation-019","model-evaluation-016","model-evaluation-015","model-evaluation-018","model-evaluation-013"],"standard":["model-evaluation-012","model-evaluation-011","model-evaluation-006","model-evaluation-010","model-evaluation-009","model-evaluation-014"]}};
+  var COV = [["Programming & CS",0,26],["Machine Learning & AI",7,25],["SQL & Data Tools",7,7],["Finance & Markets",3,17],["Marketing & Growth",0,8],["Communication & Leadership",0,13],["Statistics & Experimentation",8,8],["Web Development",0,12],["Data Engineering",0,15],["Cloud & DevOps",0,12],["Cybersecurity",0,15],["Business & Strategy",4,15],["Accounting & Audit",0,8],["Economics",0,10],["Product & Design",0,13],["Project & Operations",0,8],["HR & People",0,10],["Healthcare & Life Sciences",0,14],["Energy & Sustainability",0,5],["Law & Compliance",0,5],["Mathematics",0,11],["Psychology & Behavior",0,9],["Design & Creative",0,10],["Writing & Editing",0,9],["Education & Teaching",0,5],["Physics & Chemistry",0,6],["Biology & Life Sciences",0,6],["Engineering Disciplines",0,5],["Hardware & Embedded",0,4],["Game Development",0,4],["Media & Production",0,5],["Sales",0,5],["Customer Success & Support",0,4],["Real Estate & Property",0,4],["Hospitality & Tourism",0,4],["Manufacturing & Industry",0,4],["Government & Public Policy",0,5],["Languages & Linguistics",0,4],["Architecture & Construction",0,4],["Agriculture & Food Science",0,4],["Earth & Space Sciences",0,5],["History & Philosophy",0,5],["Arts & Music",0,4],["Skilled Trades",0,5],["Fitness & Wellness",0,4],["Transportation & Logistics",0,4]];
+  var PRI = [[0.25, 1], [0.27, 5], [0.28, 17], [0.3, 62], [0.32, 27], [0.33, 8], [0.34, 2], [0.35, 49], [0.37, 1], [0.38, 2], [0.4, 28], [0.42, 16], [0.44, 1], [0.45, 55], [0.47, 1], [0.48, 16], [0.5, 49], [0.52, 3], [0.55, 32], [0.57, 1], [0.58, 16], [0.6, 45], [0.62, 15], [0.63, 3], [0.65, 39], [0.68, 16], [0.7, 8], [0.72, 23], [0.73, 2], [0.74, 3], [0.75, 26], [0.76, 4], [0.77, 1], [0.78, 26], [0.8, 24], [0.82, 12], [0.83, 2], [0.85, 4]];
+
+  var NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function h(tag, cls, text, parent) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  var MINUS = "−";
+  function signed(v) { var r = Math.round(v); return (r > 0 ? "+" : r < 0 ? MINUS : "") + Math.abs(r); }
+  function fmt(n) { return String(Math.round(n)); }
+
+  // ---- the app's own formulas (frontend/src/lib/elo.ts) ----
+  function itemRating(p) { return 1500 - 400 * Math.log10(p / (1 - p)); }
+  function expected(rItem, rSess) { return 1 / (1 + Math.pow(10, (rItem - rSess) / 400)); }
+  function update(rSess, rItem, ok) { return rSess + 48 * ((ok ? 1 : 0) - expected(rItem, rSess)); }
+  var START = { easy: 1350, standard: 1500, hard: 1650 };
+
+  // ================= 01 demo =================
+  (function demo() {
+    var q = document.getElementById("demo-q");
+    if (!q || !DEMO) return;
+    var step = document.getElementById("demo-step");
+    var ratingEl = document.getElementById("demo-rating");
+    var ratingSub = document.getElementById("demo-rating-sub");
+    var traceHost = document.getElementById("demo-trace");
+    var conceptList = document.getElementById("demo-concepts");
+    var LETTERS = ["A", "B", "C", "D", "E"];
+    var st;
+
+    function reset() {
+      st = { phase: "placement", variant: null, queue: [], idx: 0, answers: [], ratings: [], t0: 0 };
+      ratingEl.textContent = "1500";
+      ratingSub.textContent = "Set by the placement answer: 1350, 1500 or 1650.";
+      drawTrace(); drawConcepts();
+      show(DEMO.items[DEMO.placement], "Placement");
+    }
+
+    function show(item, label) {
+      step.textContent = label;
+      q.textContent = "";
+      var meta = st.phase === "placement"
+        ? "Placement question · prior p = " + item.p.toFixed(2) + " · rating " + fmt(itemRating(item.p))
+        : "Question " + (st.idx + 1) + " of 6 · prior p = " + item.p.toFixed(2) + " · rating " + fmt(itemRating(item.p));
+      h("p", "q-meta", meta, q);
+      h("p", "q-stem", item.s, q);
+      var ul = h("ul", "opts", null, q);
+      ul.setAttribute("aria-label", "Answer options");
+      var buttons = item.o.map(function (text, i) {
+        var li = h("li", null, null, ul);
+        var b = h("button", "opt", null, li);
+        b.type = "button";
+        h("span", "k", LETTERS[i], b);
+        h("span", null, text, b);
+        b.addEventListener("click", function () { answer(item, i, buttons); });
+        return b;
+      });
+      st.t0 = performance.now();
+      if (st.focusNext) { buttons[0].focus(); st.focusNext = false; }
+    }
+
+    function answer(item, i, buttons) {
+      var ms = performance.now() - st.t0;
+      var ok = i === item.a;
+      buttons.forEach(function (b, j) {
+        b.disabled = true;
+        if (j === item.a) b.classList.add("right");
+        else if (j === i) b.classList.add("wrong");
+      });
+      var rv = h("div", "reveal", null, q);
+      h("p", "verdict " + (ok ? "r" : "w"), ok ? "Right" : "Wrong: the answer is " + LETTERS[item.a], rv);
+      h("p", null, item.e, rv);
+      h("p", "src", "Source: " + item.src, rv);
+
+      var next;
+      if (st.phase === "placement") {
+        var v = !ok ? "easy" : ms < 20000 ? "hard" : "standard";
+        st.variant = v;
+        st.queue = DEMO.sets[v];
+        var secs = (ms / 1000).toFixed(1);
+        var why = !ok ? "A wrong placement answer routes to the easy set."
+          : ms < 20000 ? "Right in " + secs + " s, under the 20-second line, so the hard set."
+          : "Right, but in " + secs + " s, over 20 seconds, so the standard set.";
+        h("p", "route-note", why + " Your rating starts at " + START[v] + ".", rv);
+        st.ratings = [START[v]];
+        ratingEl.textContent = String(START[v]);
+        ratingSub.textContent = "Start of the " + v + " set. Placement answers don't move it.";
+        drawTrace();
+        next = h("button", "btn", "Start the six questions", rv);
+      } else {
+        var prev = st.ratings[st.ratings.length - 1];
+        var r = update(prev, itemRating(item.p), ok);
+        st.ratings.push(r);
+        st.answers.push({ id: item.id, c: item.c, ok: ok });
+        ratingEl.textContent = fmt(r);
+        ratingSub.textContent = (ok ? "Right" : "Wrong") + " on a question rated " + fmt(itemRating(item.p)) +
+          ": " + signed(r - prev) + " points.";
+        h("p", "src", "Your rating: " + fmt(prev) + " to " + fmt(r) + " (" + signed(r - prev) + ").", rv);
+        drawTrace(); drawConcepts();
+        next = h("button", "btn", st.idx < 5 ? "Next question" : "See the result", rv);
+      }
+      next.type = "button";
+      next.addEventListener("click", advance);
+      next.focus({ preventScroll: true });
+    }
+
+    function advance() {
+      st.focusNext = true;
+      if (st.phase === "placement") { st.phase = "quiz"; st.idx = 0; }
+      else st.idx++;
+      if (st.idx < 6) show(DEMO.items[st.queue[st.idx]], "Question " + (st.idx + 1) + " of 6");
+      else finish();
+    }
+
+    function finish() {
+      step.textContent = "Result";
+      q.textContent = "";
+      var right = st.answers.filter(function (a) { return a.ok; }).length;
+      var fin = st.ratings[st.ratings.length - 1];
+      h("p", "q-meta", "Model evaluation · " + st.variant + " set", q);
+      h("p", "big", right + "/6", q);
+      h("p", "q-stem", "Final session rating " + fmt(fin) + ", from a start of " + st.ratings[0] +
+        ". In the app this is the number a percentile would be computed on, once a subtopic has 30 logged sessions.", q);
+      var p = h("p", null, null, q);
+      p.textContent = "The concept squares are the knowledge map in miniature. The app draws them as a graph with prerequisite links and keeps every attempt in your browser; this demo keeps nothing.";
+      var again = h("button", "btn ghost", "Start over", q);
+      again.type = "button";
+      again.addEventListener("click", function () { st.focusNext = true; reset(); });
+      again.focus({ preventScroll: true });
+    }
+
+    function drawTrace() {
+      traceHost.textContent = "";
+      var W = 320, H = 150, L = 38, R = 8, T = 10, B = 22;
+      var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img" }, traceHost);
+      var rs = st.ratings;
+      var lo = 1300, hi = 1700;
+      rs.forEach(function (v) { lo = Math.min(lo, Math.floor((v - 40) / 50) * 50); hi = Math.max(hi, Math.ceil((v + 40) / 50) * 50); });
+      var x = function (i) { return L + (i / 6) * (W - L - R); };
+      var y = function (v) { return T + (1 - (v - lo) / (hi - lo)) * (H - T - B); };
+      var stepT = (hi - lo) > 500 ? 200 : 100;
+      for (var g = Math.ceil(lo / stepT) * stepT; g <= hi; g += stepT) {
+        el("line", { x1: L, x2: W - R, y1: y(g), y2: y(g), "class": "gridline" }, svg);
+        el("text", { x: L - 6, y: y(g) + 3.5, "text-anchor": "end", "class": "tick-l" }, svg).textContent = fmt(g);
+      }
+      for (var i = 0; i <= 6; i++) {
+        el("text", { x: x(i), y: H - 6, "text-anchor": "middle", "class": "tick-l" }, svg).textContent = i === 0 ? "start" : String(i);
+      }
+      var desc = "Session rating after each answer: " + (rs.length ? rs.map(fmt).join(", ") : "not started");
+      el("desc", {}, svg).textContent = desc;
+      if (!rs.length) {
+        el("text", { x: (L + W - R) / 2, y: H / 2, "text-anchor": "middle", "class": "tick-l" }, svg).textContent = "answer the placement question to start";
+        return;
+      }
+      el("path", { d: rs.map(function (v, i) { return (i ? "L" : "M") + x(i).toFixed(1) + " " + y(v).toFixed(1); }).join(""), "class": "tline" }, svg);
+      rs.forEach(function (v, i) {
+        var cls = i === 0 ? "pt-s" : st.answers[i - 1].ok ? "pt-r" : "pt-w";
+        var c = el("circle", { cx: x(i), cy: y(v), r: i === 0 ? 3.5 : 4.5, "class": cls }, svg);
+        el("title", {}, c).textContent = (i === 0 ? "Start " : "After answer " + i + ": ") + fmt(v);
+      });
+    }
+
+    function drawConcepts() {
+      conceptList.textContent = "";
+      var by = {};
+      st.answers.forEach(function (a) { (by[a.c] = by[a.c] || []).push(a.ok); });
+      DEMO.concepts.forEach(function (c) {
+        var r = by[c.id], s = !r ? "untested" : r.every(Boolean) ? "strong" : r.some(Boolean) ? "shaky" : "missed";
+        var li = h("li", s, null, conceptList);
+        h("i", null, null, li).setAttribute("aria-hidden", "true");
+        h("span", null, c.label, li);
+        h("b", null, s, li);
+      });
+    }
+
+    reset();
+  })();
+
+  // ================= 05 Elo chart =================
+  (function eloChart() {
+    var svg = document.getElementById("elo-svg");
+    if (!svg || !PRI) return;
+    var slider = document.getElementById("elo-r"), sv = document.getElementById("elo-r-v");
+    var read = document.getElementById("elo-read");
+    var W = 640, H = 300, L = 44, R = 14, T = 16, B = 70;
+    function size() { W = Math.max(320, Math.min(900, Math.round(svg.parentNode.clientWidth || 640))); H = W < 520 ? 280 : 300; svg.setAttribute("viewBox", "0 0 " + W + " " + H); }
+    var X0 = 1150, X1 = 1750;
+    var x = function (r) { return L + (r - X0) / (X1 - X0) * (W - L - R); };
+    var y = function (d) { return T + (1 - (d + 48) / 96) * (H - T - B); };
+    var maxN = Math.max.apply(null, PRI.map(function (p) { return p[1]; }));
+    var hy0, hh = 34;
+    var cursorX = null;
+    svg.setAttribute("tabindex", "0");
+
+    function draw() {
+      var rYou = +slider.value;
+      hy0 = H - 24;
+      sv.textContent = String(rYou);
+      while (svg.lastChild && svg.lastChild.nodeName !== "desc") svg.removeChild(svg.lastChild);
+      [-40, -20, 0, 20, 40].forEach(function (d) {
+        el("line", { x1: L, x2: W - R, y1: y(d), y2: y(d), "class": d === 0 ? "zero" : "gridline" }, svg);
+        el("text", { x: L - 6, y: y(d) + 3.5, "text-anchor": "end", "class": "tick-l" }, svg).textContent = signed(d);
+      });
+      [1200, 1300, 1400, 1500, 1600, 1700].filter(function (r) { return W >= 520 || r % 200 === 0; }).forEach(function (r) {
+        el("text", { x: x(r), y: H - 4, "text-anchor": "middle", "class": "tick-l" }, svg).textContent = fmt(r);
+      });
+      PRI.forEach(function (p) {
+        var r = itemRating(p[0]), hgt = Math.max(1, p[1] / maxN * hh);
+        el("rect", { x: x(r) - 2, y: hy0 - hgt, width: 4, height: hgt, "class": "hist" }, svg);
+      });
+      el("line", { x1: L, x2: W - R, y1: hy0 + .5, y2: hy0 + .5, "class": "gridline" }, svg);
+      var up = "", dn = "";
+      for (var r = X0; r <= X1; r += 5) {
+        var e = expected(r, rYou);
+        up += (r === X0 ? "M" : "L") + x(r).toFixed(1) + " " + y(48 * (1 - e)).toFixed(1);
+        dn += (r === X0 ? "M" : "L") + x(r).toFixed(1) + " " + y(-48 * e).toFixed(1);
+      }
+      el("path", { d: up, "class": "c-line c-up" }, svg);
+      el("path", { d: dn, "class": "c-line c-dn" }, svg);
+      var eL = expected(1215, rYou);
+      el("text", { x: x(1215), y: y(48 * (1 - eL)) - 8, "class": "c-lab up" }, svg).textContent = "right answer";
+      el("text", { x: x(1215), y: y(-48 * eL) + 16, "class": "c-lab dn" }, svg).textContent = "wrong answer";
+      if (cursorX != null) {
+        var rr = cursorX, e2 = expected(rr, rYou);
+        el("line", { x1: x(rr), x2: x(rr), y1: T, y2: hy0, "class": "cursor" }, svg);
+        el("circle", { cx: x(rr), cy: y(48 * (1 - e2)), r: 4, "class": "pt-r" }, svg);
+        el("circle", { cx: x(rr), cy: y(-48 * e2), r: 4, "class": "pt-w" }, svg);
+        var p = 1 / (1 + Math.pow(10, (rr - 1500) / 400));
+        var n = 0;
+        PRI.forEach(function (q) { if (Math.abs(itemRating(q[0]) - rr) <= 12.5) n += q[1]; });
+        read.innerHTML = "";
+        read.appendChild(document.createTextNode("Question rated " + fmt(rr) + " (p = " + p.toFixed(2) + "), you at " + rYou + ": right "));
+        h("b", null, signed(48 * (1 - e2)), read);
+        read.appendChild(document.createTextNode(", wrong "));
+        h("b", null, signed(-48 * e2), read);
+        read.appendChild(document.createTextNode(". The model gives you a " + Math.round(e2 * 100) + "% chance. " + n + " question" + (n === 1 ? "" : "s") + " in the repo within 12 points of this rating."));
+      }
+    }
+    function fromEvent(ev) {
+      var rect = svg.getBoundingClientRect();
+      var px = (ev.clientX - rect.left) / rect.width * W;
+      var r = X0 + (px - L) / (W - L - R) * (X1 - X0);
+      return Math.max(X0, Math.min(X1, Math.round(r / 5) * 5));
+    }
+    svg.addEventListener("pointermove", function (ev) { cursorX = fromEvent(ev); draw(); });
+    svg.addEventListener("pointerdown", function (ev) { cursorX = fromEvent(ev); draw(); });
+    svg.addEventListener("keydown", function (ev) {
+      if (ev.key !== "ArrowLeft" && ev.key !== "ArrowRight") return;
+      ev.preventDefault();
+      if (cursorX == null) cursorX = 1500;
+      cursorX = Math.max(X0, Math.min(X1, cursorX + (ev.key === "ArrowRight" ? 25 : -25)));
+      draw();
+    });
+    slider.addEventListener("input", draw);
+    window.addEventListener("resize", function () { size(); draw(); });
+    cursorX = 1620;
+    size();
+    draw();
+  })();
+
+  // ================= 07 coverage table =================
+  (function coverage() {
+    var body = document.getElementById("cov-body");
+    if (!body || !COV) return;
+    var note = document.getElementById("cov-note"), more = document.getElementById("cov-all");
+    var sortBtns = document.querySelectorAll("#cov [data-sort]");
+    var maxT = Math.max.apply(null, COV.map(function (c) { return c[2]; }));
+    var sortKey = "live", all = false;
+    function render() {
+      var rows = COV.slice();
+      if (sortKey === "live") rows.sort(function (a, b) { return b[1] - a[1] || b[2] - a[2] || a[0].localeCompare(b[0]); });
+      else if (sortKey === "size") rows.sort(function (a, b) { return b[2] - a[2] || b[1] - a[1]; });
+      else rows.sort(function (a, b) { return a[0].localeCompare(b[0]); });
+      var shown = all ? rows : sortKey === "live" ? rows.filter(function (r) { return r[1] > 0; }) : rows.slice(0, 8);
+      body.textContent = "";
+      shown.forEach(function (r) {
+        var tr = h("tr", r[1] ? "" : "none", null, body);
+        h("td", "name", r[0], tr);
+        h("td", "n", r[1] + " / " + r[2], tr);
+        var td = h("td", "bar", null, tr);
+        var tk = h("div", "track", null, td);
+        tk.style.width = (r[2] / maxT * 100).toFixed(1) + "%";
+        tk.setAttribute("aria-hidden", "true");
+        var f = h("i", null, null, tk);
+        f.style.width = (r[1] / r[2] * 100).toFixed(1) + "%";
+        tr.title = r[0] + ": " + r[1] + " of " + r[2] + " subtopics live";
+      });
+      var hidden = COV.length - shown.length;
+      var hiddenSubs = 0;
+      if (hidden) {
+        var ids = {}; shown.forEach(function (r) { ids[r[0]] = 1; });
+        COV.forEach(function (r) { if (!ids[r[0]]) hiddenSubs += r[2]; });
+      }
+      note.textContent = hidden ? hidden + " more fields, " + hiddenSubs + " subtopics" + (sortKey === "live" ? ", none live yet." : ".") : "All 46 fields shown.";
+      more.textContent = all ? "Show fewer" : "Show all 46 fields";
+      more.setAttribute("aria-expanded", all ? "true" : "false");
+    }
+    Array.prototype.forEach.call(sortBtns, function (b) {
+      b.addEventListener("click", function () {
+        sortKey = b.getAttribute("data-sort");
+        Array.prototype.forEach.call(sortBtns, function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+        render();
+      });
+    });
+    more.addEventListener("click", function () { all = !all; render(); });
+    render();
+  })();
+})();
+</script>
 </body>
 </html>

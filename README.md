@@ -12,7 +12,7 @@ Design and copy follow [these standards](https://github.com/lyhjeremy/lyhjeremy/
 
 | Area | Details |
 |---|---|
-| Live content | 4 career tracks (Data Analyst, Data Scientist/ML, BI Analyst, Business/Product Analytics), 29 subtopics, 645 reviewed questions |
+| Live content | 4 career tracks (Data Analyst, Data Scientist/ML, BI Analyst, Business/Product Analytics), 29 subtopics, 645 questions (model-drafted and model-reviewed; every bank is still marked pending human review) |
 | Catalog | 385 subtopics across 46 fields and 117 career tracks in `content/catalog.json`; each goes live when its question bank lands |
 | Scoring | Elo-style ability estimate per session, item ratings from difficulty priors, adaptive placement |
 | Percentiles | Rank among sessions on the same subtopic in a rolling 90-day window, shown once a subtopic has 30 sessions |
@@ -51,9 +51,9 @@ The study guide (`/api/guide`) is a downloadable Markdown plan for a whole track
 | API | Python FastAPI with stdlib-only REST clients for Supabase and Gemini | Hugging Face Space (Docker, free CPU) |
 | Calibration data | Anonymous session and response log | Supabase Postgres (free tier, row-level security on) |
 | LLM features | Gemini 2.5 Flash | Google AI free tier |
-| Content pipeline | `claude -p` draft, independent adversarial review, human review | Local |
+| Content pipeline | `claude -p` draft, independent adversarial review, then human review (not yet done for any bank) | Local |
 
-The quiz loop makes no server calls: questions ship as static JSON, and scoring, the knowledge map and the diagnosis run in the browser. If the API is down the checks still work; only percentiles and the LLM features stop. User state lives in localStorage (`sc_v1`) and can be exported or erased from the Progress page. A GitHub Actions cron pings the API twice a week to keep the Supabase project active, and it checks the response bodies as well as the status codes.
+The quiz loop makes no server calls: questions ship as static JSON, and scoring, the knowledge map and the diagnosis run in the browser. If the API is down the checks still work; only percentiles and the LLM features stop. User state lives in localStorage (`sc_v1`) and can be exported or erased from the Progress page. A GitHub Actions cron pings the API twice a week to keep the Supabase project active, and it checks the response bodies as well as the status codes. As of 2026-10-28 the project is paused anyway (`/api/health` reports `supabase: false`) and that job has failed on every run since 2026-08-06, so no sessions are being logged until it is resumed from the Supabase dashboard.
 
 ## Running locally
 
@@ -84,7 +84,7 @@ The backend reads `SUPABASE_URL` and `SUPABASE_KEY` (percentiles) and `GEMINI_AP
 
 ## Limitations
 
-Item ratings are LLM-estimated priors until response-based recalibration is built. Percentiles need 30 sessions per subtopic in a 90-day window, so most subtopics still show "early data". The resume report compares against each track's curriculum; with no job-postings corpus yet, it makes no claims about market demand. Only 29 of the 385 catalog subtopics are live, and the rest show as coming soon. The free tiers have their own limits, too: the Supabase project pauses after 7 days without activity, and Gemini calls are capped per day.
+The Supabase project is paused as of 2026-10-28, so percentiles and session logging are off; the checks themselves still run in the browser. Item ratings are LLM-estimated priors until response-based recalibration is built. Percentiles need 30 sessions per subtopic in a 90-day window, so most subtopics still show "early data". The resume report compares against each track's curriculum; with no job-postings corpus yet, it makes no claims about market demand. Only 29 of the 385 catalog subtopics are live, and the rest show as coming soon. The free tiers have their own limits, too: the Supabase project pauses after 7 days without activity, and Gemini calls are capped per day.
 
 ## License
 
