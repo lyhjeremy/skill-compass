@@ -61,7 +61,7 @@ export default function Home() {
             </div>
             <div style={{ textAlign: 'center', paddingRight: 8 }}>
               <div className="display num" style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-dk)' }}>Top 27%</div>
-              <div className="small muted">of 412 this month</div>
+              <div className="small muted">sample figure</div>
             </div>
           </div>
         )}

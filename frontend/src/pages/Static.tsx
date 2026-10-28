@@ -64,8 +64,9 @@ export function Methodology() {
         match the level a quick first question suggests.
       </p>
       <p style={{ marginTop: 10 }}>
-        <b>Percentiles.</b> "Top 27% of 412 this month" means exactly that: your result placed against every
-        real session on that topic in the last 90 days. Until a topic has 30+ sessions, we say
+        <b>Percentiles.</b> A result such as "Top 27% of 412" places your score against every real
+        session on that topic in the last 90 days (the 27% and the 412 are made up).
+        Until a topic has 30+ sessions, we say
         "early data" instead of faking authority.
       </p>
       <p style={{ marginTop: 10 }}>
