@@ -60,11 +60,13 @@ The quiz loop makes no server calls: questions ship as static JSON, and scoring,
 ## Running locally
 
 ```bash
-cd frontend && npm install && npm run dev     # app on :5173 (syncs content first)
-cd backend && pip install -r requirements.txt && uvicorn app.main:app --reload
+cd frontend && npm install && npm run dev     # app on http://localhost:5173/skill-compass/ (syncs content first)
+
+cd backend && python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt && uvicorn app.main:app --reload   # API on :8000
 ```
 
-The backend reads `SUPABASE_URL` and `SUPABASE_KEY` (percentiles) and `GEMINI_API_KEY` (LLM features), with `GEMINI_MODEL` and `GEMINI_DAILY_CAP` as optional overrides. Without them it runs with those features off. `backend/schema.sql` creates the three tables. The frontend calls the deployed API unless `VITE_API_BASE` is set at build time. Backend tests: `cd backend && python3 -m pytest tests/ -q`. Deploying the backend is covered in [`backend/README.md`](backend/README.md).
+The backend reads `SUPABASE_URL` and `SUPABASE_KEY` (percentiles) and `GEMINI_API_KEY` (LLM features), with `GEMINI_MODEL` and `GEMINI_DAILY_CAP` as optional overrides. Without them it runs with those features off. `backend/schema.sql` creates the three tables. The frontend calls the deployed API unless `VITE_API_BASE` is set (`VITE_API_BASE=http://localhost:8000 npm run dev` uses the local one). Backend tests, from `backend/` with the venv active: `pip install pytest httpx && python -m pytest tests/ -q`. Deploying the backend is covered in [`backend/README.md`](backend/README.md).
 
 ## Repo layout
 
