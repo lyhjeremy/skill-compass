@@ -1,0 +1,436 @@
+{
+ "drafted": 650,
+ "reviewed": 645,
+ "unreviewed_batches": [
+  [
+   "llm-prompting-b5-draft.json",
+   5
+  ]
+ ],
+ "shipped": 645,
+ "change_counts": {
+  "any_change": 365,
+  "correct_option_reworded": 145,
+  "difficulty_prior_changed": 190,
+  "distractors_only_rewritten": 107,
+  "explanation_rewritten": 140,
+  "question_text_changed": 266,
+  "source_replaced": 15,
+  "stem_rewritten": 21
+ },
+ "prior_shift": {
+  "n": 190,
+  "raised": 97,
+  "lowered": 93,
+  "median_abs": 0.05,
+  "max_abs": 0.35
+ },
+ "longest_option_is_key": {
+  "draft": 241,
+  "verified": 148,
+  "shipped": 148
+ },
+ "shipped_key_position": {
+  "A": 415,
+  "B": 120,
+  "C": 74,
+  "D": 36
+ },
+ "subtopics_with_majority_A": 22,
+ "subtopics": 29,
+ "per_subtopic_key_position": {
+  "ab-testing": {
+   "A": 20,
+   "B": 9,
+   "C": 1
+  },
+  "advanced-sql": {
+   "A": 10,
+   "B": 4,
+   "C": 4,
+   "D": 2
+  },
+  "bayesian-thinking": {
+   "A": 11,
+   "B": 4,
+   "C": 4,
+   "D": 1
+  },
+  "business-metrics-kpis": {
+   "A": 15,
+   "B": 2,
+   "C": 3
+  },
+  "causal-inference": {
+   "A": 15,
+   "B": 2,
+   "C": 1,
+   "D": 2
+  },
+  "dashboards-bi": {
+   "A": 6,
+   "B": 6,
+   "C": 6,
+   "D": 2
+  },
+  "data-storytelling": {
+   "A": 11,
+   "B": 4,
+   "C": 3,
+   "D": 2
+  },
+  "deep-learning-basics": {
+   "A": 20
+  },
+  "descriptive-stats": {
+   "A": 15,
+   "B": 7,
+   "C": 5,
+   "D": 3
+  },
+  "experimental-design": {
+   "A": 15,
+   "B": 2,
+   "C": 2,
+   "D": 1
+  },
+  "feature-engineering-data-prep": {
+   "A": 6,
+   "B": 7,
+   "C": 4,
+   "D": 3
+  },
+  "financial-statements": {
+   "A": 14,
+   "B": 3,
+   "C": 2,
+   "D": 1
+  },
+  "forecasting-basics": {
+   "A": 13,
+   "B": 5,
+   "C": 2
+  },
+  "llm-prompting": {
+   "A": 20,
+   "B": 2,
+   "C": 3
+  },
+  "ml-fundamentals": {
+   "A": 16,
+   "B": 11,
+   "C": 2,
+   "D": 1
+  },
+  "model-evaluation": {
+   "A": 11,
+   "B": 2,
+   "C": 4,
+   "D": 3
+  },
+  "nlp-basics": {
+   "A": 6,
+   "B": 8,
+   "C": 4,
+   "D": 2
+  },
+  "portfolio-risk-return": {
+   "A": 6,
+   "B": 8,
+   "C": 3,
+   "D": 3
+  },
+  "power-bi": {
+   "A": 20
+  },
+  "probability-basics": {
+   "A": 15,
+   "B": 4,
+   "C": 1
+  },
+  "python-for-data": {
+   "A": 22,
+   "B": 4,
+   "C": 3,
+   "D": 1
+  },
+  "r-for-data": {
+   "A": 20
+  },
+  "regression-basics": {
+   "A": 12,
+   "B": 5,
+   "C": 2,
+   "D": 1
+  },
+  "spreadsheets": {
+   "A": 17,
+   "B": 5,
+   "C": 5,
+   "D": 3
+  },
+  "sql-querying": {
+   "A": 20,
+   "B": 6,
+   "C": 2,
+   "D": 2
+  },
+  "statistical-inference": {
+   "A": 16,
+   "B": 2,
+   "C": 1,
+   "D": 1
+  },
+  "survey-design": {
+   "A": 15,
+   "B": 2,
+   "C": 2,
+   "D": 1
+  },
+  "tableau": {
+   "A": 20
+  },
+  "time-value-of-money": {
+   "A": 8,
+   "B": 6,
+   "C": 5,
+   "D": 1
+  }
+ },
+ "examples": {
+  "distractors_only_rewritten": {
+   "file": "ab-testing-b0-verified.json",
+   "concept": "hypothesis-setup",
+   "draft": {
+    "concept": "hypothesis-setup",
+    "stem": "A product analyst is designing an A/B test to check whether a new checkout button color changes conversion rate compared to the current color. Which statement correctly pairs the null and alternative hypotheses?",
+    "options": [
+     "H0: the new color increases conversion; H1: the new color decreases conversion",
+     "H0: conversion rates are equal; H1: conversion rates differ",
+     "H0: button color has no effect; H1: the sample size was too small",
+     "H0: the test result will replicate later; H1: it will not replicate"
+    ],
+    "answer": 1,
+    "explanation": "The null hypothesis states no difference between groups; the alternative states a difference exists. Assuming a direction beforehand, citing sample size, or referencing future replication all confuse the hypothesis statement with unrelated testing concepts.",
+    "grounding": {
+     "source": "Wikipedia: Null hypothesis",
+     "note": "Defines the null hypothesis as the no-difference default tested against an alternative hypothesis of an effect."
+    },
+    "difficulty_prior": 0.8
+   },
+   "verified": {
+    "concept": "hypothesis-setup",
+    "stem": "A product analyst is designing an A/B test to check whether a new checkout button color changes conversion rate compared to the current color. Which statement correctly pairs the null and alternative hypotheses?",
+    "options": [
+     "H0: the new color increases conversion; H1: the new color decreases conversion",
+     "H0: conversion rates are equal; H1: conversion rates differ",
+     "H0: button color has no effect; H1: the sample size was too small",
+     "H0: conversion rates differ; H1: conversion rates are equal"
+    ],
+    "answer": 1,
+    "explanation": "The null hypothesis asserts no difference between groups, while the alternative asserts a difference exists. The other options impose an unwarranted direction, pair H1 with an unrelated claim, or reverse which hypothesis represents 'no difference.'",
+    "grounding": {
+     "source": "Wikipedia: Null hypothesis",
+     "note": "Defines the null hypothesis as the no-difference default tested against an alternative hypothesis of an effect."
+    },
+    "difficulty_prior": 0.8,
+    "verdict": "keep"
+   }
+  },
+  "explanation_rewritten": {
+   "file": "ab-testing-b0-verified.json",
+   "concept": "hypothesis-setup",
+   "draft": {
+    "concept": "hypothesis-setup",
+    "stem": "A product analyst is designing an A/B test to check whether a new checkout button color changes conversion rate compared to the current color. Which statement correctly pairs the null and alternative hypotheses?",
+    "options": [
+     "H0: the new color increases conversion; H1: the new color decreases conversion",
+     "H0: conversion rates are equal; H1: conversion rates differ",
+     "H0: button color has no effect; H1: the sample size was too small",
+     "H0: the test result will replicate later; H1: it will not replicate"
+    ],
+    "answer": 1,
+    "explanation": "The null hypothesis states no difference between groups; the alternative states a difference exists. Assuming a direction beforehand, citing sample size, or referencing future replication all confuse the hypothesis statement with unrelated testing concepts.",
+    "grounding": {
+     "source": "Wikipedia: Null hypothesis",
+     "note": "Defines the null hypothesis as the no-difference default tested against an alternative hypothesis of an effect."
+    },
+    "difficulty_prior": 0.8
+   },
+   "verified": {
+    "concept": "hypothesis-setup",
+    "stem": "A product analyst is designing an A/B test to check whether a new checkout button color changes conversion rate compared to the current color. Which statement correctly pairs the null and alternative hypotheses?",
+    "options": [
+     "H0: the new color increases conversion; H1: the new color decreases conversion",
+     "H0: conversion rates are equal; H1: conversion rates differ",
+     "H0: button color has no effect; H1: the sample size was too small",
+     "H0: conversion rates differ; H1: conversion rates are equal"
+    ],
+    "answer": 1,
+    "explanation": "The null hypothesis asserts no difference between groups, while the alternative asserts a difference exists. The other options impose an unwarranted direction, pair H1 with an unrelated claim, or reverse which hypothesis represents 'no difference.'",
+    "grounding": {
+     "source": "Wikipedia: Null hypothesis",
+     "note": "Defines the null hypothesis as the no-difference default tested against an alternative hypothesis of an effect."
+    },
+    "difficulty_prior": 0.8,
+    "verdict": "keep"
+   }
+  },
+  "difficulty_prior_changed": {
+   "file": "ab-testing-b0-verified.json",
+   "concept": "p-values-significance",
+   "draft": {
+    "concept": "p-values-significance",
+    "stem": "An analyst runs an A/B test comparing two checkout flows and finds p = 0.03 for the conversion difference, using a pre-set significance threshold of 0.05. What does this p-value mean?",
+    "options": [
+     "Assuming no true difference, a result this extreme occurs about 3% of the time",
+     "There is roughly a 3% chance that the null hypothesis itself is actually true",
+     "There is roughly a 97% chance that the new checkout flow is truly better",
+     "The observed difference would replicate in about 97% of future repeated tests"
+    ],
+    "answer": 0,
+    "explanation": "A p-value is the probability of a result this extreme or more so if the null hypothesis were true. It is not the probability that either hypothesis is true, nor a replication rate.",
+    "grounding": {
+     "source": "Wikipedia: P-value",
+     "note": "Defines a p-value as the probability, under the null hypothesis, of a result at least as extreme as observed."
+    },
+    "difficulty_prior": 0.75
+   },
+   "verified": {
+    "concept": "p-values-significance",
+    "stem": "An analyst runs an A/B test comparing two checkout flows and finds p = 0.03 for the conversion difference, using a pre-set significance threshold of 0.05. What does this p-value mean?",
+    "options": [
+     "Assuming no true difference, a result this extreme occurs about 3% of the time",
+     "There is roughly a 3% chance that the null hypothesis itself is actually true",
+     "There is roughly a 97% chance that the new checkout flow is truly better",
+     "The observed difference would replicate in about 97% of future repeated tests"
+    ],
+    "answer": 0,
+    "explanation": "A p-value is the probability of a result this extreme or more so if the null hypothesis were true. It is not the probability that either hypothesis is true, nor a replication rate.",
+    "grounding": {
+     "source": "Wikipedia: P-value",
+     "note": "Defines a p-value as the probability, under the null hypothesis, of a result at least as extreme as observed."
+    },
+    "difficulty_prior": 0.55,
+    "verdict": "keep"
+   }
+  },
+  "source_replaced": {
+   "file": "ab-testing-b0-verified.json",
+   "concept": "peeking-pitfall",
+   "draft": {
+    "concept": "peeking-pitfall",
+    "stem": "An analyst checks an A/B test's results every morning and stops the test the moment p drops below 0.05, well before the pre-planned sample size is reached. What is the main risk?",
+    "options": [
+     "The test loses statistical power but the false-positive rate stays the same",
+     "The true false-positive rate rises well above the stated 5% threshold",
+     "The novelty effect becomes stronger the longer the test continues to run",
+     "Multiple comparisons across metrics inflate the observed effect size unfairly"
+    ],
+    "answer": 1,
+    "explanation": "Repeatedly checking results and stopping as soon as p dips below 0.05 (optional stopping) inflates the real false-positive rate far beyond the nominal alpha, since each peek is another chance for a false alarm.",
+    "grounding": {
+     "source": "Wikipedia: Sequential analysis",
+     "note": "Describes how repeated significance testing without correction inflates the overall false-positive rate."
+    },
+    "difficulty_prior": 0.7
+   },
+   "verified": {
+    "concept": "peeking-pitfall",
+    "stem": "An analyst checks an A/B test's results every morning and stops the test the moment p drops below 0.05, well before the pre-planned sample size is reached. What is the main risk?",
+    "options": [
+     "The test loses statistical power but the false-positive rate stays the same",
+     "The true false-positive rate rises well above the stated 5% threshold",
+     "The novelty effect becomes stronger the longer the test continues to run",
+     "Multiple comparisons across metrics inflate the observed effect size unfairly"
+    ],
+    "answer": 1,
+    "explanation": "Repeatedly checking results and stopping as soon as p dips below 0.05 (optional stopping) inflates the real false-positive rate far beyond the nominal alpha, since each peek is another chance for a false alarm.",
+    "grounding": {
+     "source": "Wikipedia: Data dredging",
+     "note": "Describes how optional stopping (repeated checking and stopping once significant) inflates the true false-positive rate above the nominal alpha."
+    },
+    "difficulty_prior": 0.65,
+    "verdict": "keep"
+   }
+  },
+  "stem_rewritten": {
+   "file": "ab-testing-b1-verified.json",
+   "concept": "hypothesis-setup",
+   "draft": {
+    "concept": "hypothesis-setup",
+    "stem": "A mobile app team wants to know whether sending push notifications at 6 PM instead of 9 AM increases the app's open rate. Which pair correctly states the null and alternative hypotheses for this test?",
+    "options": [
+     "Null: the two open rates differ; Alternative: the two open rates are equal",
+     "Null: the two open rates are equal; Alternative: the two open rates differ",
+     "Null: the app is generally popular; Alternative: the app is generally unpopular",
+     "Null: the 6 PM rate is higher; Alternative: the 6 PM rate is lower"
+    ],
+    "answer": 1,
+    "explanation": "The null hypothesis assumes no difference between send times, while the alternative allows the rates to differ in either direction. Option A reverses this framing, C ignores the metric being tested, and D presupposes a direction without justifying a one-tailed test.",
+    "grounding": {
+     "source": "Wikipedia: Null hypothesis",
+     "note": "Defines the null as 'no effect/no difference' and the alternative as the claim being tested against it."
+    },
+    "difficulty_prior": 0.6
+   },
+   "verified": {
+    "concept": "hypothesis-setup",
+    "stem": "A mobile app team wants to know whether sending push notifications at 6 PM instead of 9 AM changes the app's open rate. Which pair correctly states the null and alternative hypotheses for this test?",
+    "options": [
+     "Null: the two open rates differ; Alternative: the two open rates are equal",
+     "Null: the two open rates are equal; Alternative: the two open rates differ",
+     "Null: the app is generally popular; Alternative: the app is generally unpopular",
+     "Null: the 6 PM rate is higher; Alternative: the 6 PM rate is lower"
+    ],
+    "answer": 1,
+    "explanation": "The null hypothesis assumes no difference between send times, while the alternative allows the rates to differ in either direction. Option A reverses this framing, C ignores the metric being tested, and D presupposes a direction without justifying a one-tailed test.",
+    "grounding": {
+     "source": "Wikipedia: Null hypothesis",
+     "note": "Defines the null as 'no effect/no difference' and the alternative as the claim being tested against it."
+    },
+    "difficulty_prior": 0.6,
+    "verdict": "keep"
+   }
+  },
+  "correct_option_reworded": {
+   "file": "ab-testing-b1-verified.json",
+   "concept": "honest-interpretation",
+   "draft": {
+    "concept": "honest-interpretation",
+    "stem": "An A/B test finds a statistically significant 0.2 percentage-point increase in conversion rate with a very large sample size. What should the analyst include when reporting this result to stakeholders?",
+    "options": [
+     "Only the p-value, since statistical significance alone is sufficient",
+     "The practical business impact of the effect size alongside its statistical significance",
+     "A recommendation to ignore the result because the lift is small",
+     "The confidence interval, but only when the result is not significant"
+    ],
+    "answer": 1,
+    "explanation": "With a very large sample, even a trivially small effect can be statistically significant. Honest reporting weighs whether the effect size matters for the business alongside the p-value, rather than treating significance alone as proof of a meaningful win.",
+    "grounding": {
+     "source": "Wikipedia: Statistical significance",
+     "note": "Distinguishes statistical significance from practical, real-world importance of an effect."
+    },
+    "difficulty_prior": 0.6
+   },
+   "verified": {
+    "concept": "honest-interpretation",
+    "stem": "An A/B test finds a statistically significant 0.2 percentage-point increase in conversion rate with a very large sample size. What should the analyst include when reporting this result to stakeholders?",
+    "options": [
+     "Only the p-value, since statistical significance alone is sufficient",
+     "The practical business impact of the effect alongside its significance",
+     "A recommendation to ignore the result because the lift is small",
+     "The confidence interval, but only when the result is not significant"
+    ],
+    "answer": 1,
+    "explanation": "With a very large sample, even a trivially small effect can be statistically significant. Honest reporting weighs whether the effect size matters for the business alongside the p-value, rather than treating significance alone as proof of a meaningful win.",
+    "grounding": {
+     "source": "Wikipedia: Statistical significance",
+     "note": "Distinguishes statistical significance from practical, real-world importance of an effect."
+    },
+    "difficulty_prior": 0.6,
+    "verdict": "keep"
+   }
+  }
+ }
+}

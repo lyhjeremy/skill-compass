@@ -1,6 +1,8 @@
 # SkillCompass
 
-SkillCompass is a free skill-assessment web app. A 2-minute check gives you an Elo-rated score, a percentile against other test-takers and a map of which concepts are strong or shaky; three LLM features then compare your resume with a career track, run a mock interview and write a study guide. There is no sign-up, and the whole stack costs $0 a month.
+A line on a résumé is a claim with no evidence behind it. SkillCompass turns each skill into a free two-minute check (one placement question and six more, Elo-scored, no sign-up), then uses an LLM to compare a résumé with a career track, run a mock interview and write a study guide, on a stack that costs $0 a month.
+
+Result, 4 November 2026: 645 questions are live across 29 subtopics, and an independent review pass rewrote 266 of the 645 drafts before they shipped (`eval/review_pass.json`). The open bug it missed: 415 of the 645 answer keys (64%) are option A. Percentiles are off while the free-tier Supabase project is paused.
 
 [Live app (beta)](https://lyhjeremy.github.io/skill-compass/) · [Product overview](https://lyhjeremy.github.io/skill-compass/overview/) · [Build log](writeup.md)
 
@@ -53,7 +55,7 @@ The study guide (`/api/guide`) is a downloadable Markdown plan for a whole track
 | LLM features | Gemini 2.5 Flash | Google AI free tier |
 | Content pipeline | `claude -p` draft, independent adversarial review, then human review (not yet done for any bank) | Local |
 
-The quiz loop makes no server calls: questions ship as static JSON, and scoring, the knowledge map and the diagnosis run in the browser. If the API is down the checks still work; only percentiles and the LLM features stop. User state lives in localStorage (`sc_v1`) and can be exported or erased from the Progress page. A GitHub Actions cron pings the API twice a week to keep the Supabase project active, and it checks the response bodies as well as the status codes. As of 2026-10-28 the project is paused anyway (`/api/health` reports `supabase: false`) and that job has failed on every run since 2026-08-06, so no sessions are being logged until it is resumed from the Supabase dashboard.
+The quiz loop makes no server calls: questions ship as static JSON, and scoring, the knowledge map and the diagnosis run in the browser. If the API is down the checks still work; only percentiles and the LLM features stop. User state lives in localStorage (`sc_v1`) and can be exported or erased from the Progress page. A GitHub Actions cron pings the API twice a week to keep the Supabase project active, and it checks the response bodies as well as the status codes. As of 2026-10-28 the project is paused anyway (`/api/health` reports `supabase: false`) and that job failed on every run from 2026-08-06 until GitHub disabled the schedule for inactivity after the 2026-10-19 run, so no sessions are being logged until it is resumed from the Supabase dashboard.
 
 ## Running locally
 
@@ -84,7 +86,7 @@ The backend reads `SUPABASE_URL` and `SUPABASE_KEY` (percentiles) and `GEMINI_AP
 
 ## Limitations
 
-The Supabase project is paused as of 2026-10-28, so percentiles and session logging are off; the checks themselves still run in the browser. Item ratings are LLM-estimated priors until response-based recalibration is built. Percentiles need 30 sessions per subtopic in a 90-day window, so most subtopics still show "early data". The resume report compares against each track's curriculum; with no job-postings corpus yet, it makes no claims about market demand. Only 29 of the 385 catalog subtopics are live, and the rest show as coming soon. The free tiers have their own limits, too: the Supabase project pauses after 7 days without activity, and Gemini calls are capped per day.
+The Supabase project is paused as of 2026-10-28, so percentiles and session logging are off; the checks themselves still run in the browser. Item ratings are LLM-estimated priors until response-based recalibration is built. Percentiles need 30 sessions per subtopic in a 90-day window, so most subtopics still show "early data". The resume report compares against each track's curriculum; with no job-postings corpus yet, it makes no claims about market demand. Only 29 of the 385 catalog subtopics are live, and the rest show as coming soon. The app shows answer options in stored order, and 415 of the 645 keys are option A, so a test-taker who always picks A scores well above chance; shuffling options at display time is the fix, and it is not done yet. The free tiers have their own limits, too: the Supabase project pauses after 7 days without activity, and Gemini calls are capped per day.
 
 ## License
 

@@ -93,6 +93,14 @@
   .status li { padding: 8px 0; border-bottom: 1px dashed var(--rule); font-size: 15.5px; color: var(--ink-2); }
   .status li:last-child { border-bottom: 0; }
   .status b { color: var(--ink); font-weight: 600; }
+  .glance dl { margin: 0; padding: 2px 14px 4px; }
+  .glance dl div { display: grid; grid-template-columns: 7.2rem minmax(0, 1fr); gap: 2px 12px; padding: 8px 0; border-bottom: 1px dashed var(--rule); }
+  .glance dl div:last-child { border-bottom: 0; }
+  .glance dt { font: 600 11.5px/1.6 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); padding-top: 1px; }
+  .glance dd { margin: 0; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+  .glance h2 { color: var(--signal); }
+  @media (min-width: 900px) { .glance { grid-column: 1 / -1; margin-top: 0; } .glance dl { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; } }
+  @media (max-width: 420px) { .glance dl div { grid-template-columns: minmax(0, 1fr); } }
 
   /* numbered sections */
   main { counter-reset: sec; }
@@ -214,6 +222,20 @@
   .track i { position: absolute; inset: 0 auto 0 0; background: var(--signal); }
   .cov tbody tr:hover td { background: var(--paper); }
   .cov-more { padding: 10px 14px 12px; display: flex; gap: 10px 16px; flex-wrap: wrap; align-items: center; font-size: 14.5px; color: var(--ink-2); }
+  .tablewrap { overflow-x: auto; margin: 18px 0; }
+  .rev td { vertical-align: top; font-size: 14.5px; color: var(--ink-2); }
+  .rev td:first-child { color: var(--ink); width: 26%; }
+  .rev th.n { text-align: right; }
+  .keybars { position: relative; border: 1px solid var(--edge); background: var(--panel); padding: 14px 14px 8px; }
+  .kb { display: grid; grid-template-columns: 1.4rem minmax(0, 1fr) 3rem; gap: 10px; align-items: center; padding: 5px 0; }
+  .kl, .kn { font: 600 15px/1 var(--mono); color: var(--ink); }
+  .kn { text-align: right; }
+  .kt { position: relative; height: 18px; background: var(--paper); }
+  .kf { position: absolute; inset: 0 auto 0 0; background: var(--signal-2); }
+  .kt::after { content: ""; position: absolute; top: -4px; bottom: -4px; left: 25%; border-left: 1.5px dashed var(--ink); }
+  .kc .kt { background: transparent; height: 14px; }
+  .kc .kt::after { top: -6px; bottom: 6px; }
+  .kcl { position: absolute; left: calc(25% + 6px); top: 0; white-space: nowrap; font: 400 12px/1 var(--mono); color: var(--ink-2); }
   @media (max-width: 560px) { .cov td.bar { width: 34%; } .cov th, .cov td { padding: 6px 8px; } .cov { font-size: 14px; } }
 
   .specs { margin: 22px 0 0; border-top: 1px solid var(--edge); }
@@ -254,6 +276,8 @@
       question and six more. It scores the answers with <strong>Elo arithmetic</strong>,
       cites the source behind every question, and hands back a map of which concepts
       held up and which didn't. It runs for <strong>$0 a month</strong>.
+      Before any question shipped, an independent review pass rewrote
+      <strong>266 of the 645</strong> drafts.
     </p>
     <div class="cta">
       <a class="btn" href="../">Take a 2-minute check</a>
@@ -274,15 +298,21 @@
         <div><dt>Running cost</dt><dd>$0<small>/month</small></dd></div>
       </dl>
     </div>
-    <section class="status" aria-labelledby="status-h">
-      <h2 id="status-h">State on 28 October 2026</h2>
-      <ul>
-        <li><b>Percentiles are off.</b> The Supabase free-tier project that stores sessions is paused, and <span class="mono">/api/health</span> reports it unreachable. Checks still run and score in the browser; nothing new is logged.</li>
-        <li><b>Item recalibration is planned, not built.</b> Every question's rating is still the prior it was written with.</li>
-        <li><b>Human sign-off is pending.</b> Every bank passed the draft-and-review pipeline, and every one is still marked "pending human review" in the repo.</li>
-      </ul>
-    </section>
+
   </div>
+
+  <section class="status glance" aria-labelledby="status-h">
+      <h2 id="status-h">At a glance, 4 November 2026</h2>
+      <dl>
+        <div><dt>Works now</dt><dd>The check itself: placement, six questions, Elo scoring and the knowledge map all run in the browser with no server. The demo below is the real bank and code.</dd></div>
+        <div><dt>Eval set</dt><dd>The 645 shipped questions, each paired with its draft (650 drafted, 5 never reviewed or shipped). Banks frozen in <span class="mono">content/</span>.</dd></div>
+        <div><dt>Baseline</dt><dd>The drafting pass alone: in 37% of drafts (241) the right answer was the longest option.</dd></div>
+        <div><dt>Result</dt><dd><b>266 of 645</b> questions rewritten by the review pass before shipping; longest-option giveaways down to <b>23%</b> (148), about chance for four options.</dd></div>
+        <div><dt>Cost per task</dt><dd>$0 on Gemini's free tier, capped at 1,200 calls a day. Per-call latency for the three model features is not measured: no Gemini key on the machine that ran the evals.</dd></div>
+        <div><dt>Main failure</dt><dd><b>415 of 645</b> keys (64%) are option A, and the app shows options in stored order. <a href="#h-review">Details</a>.</dd></div>
+        <div><dt>Switched off</dt><dd>Percentiles, while the free-tier Supabase project stays paused; item recalibration (planned, not built); human sign-off (every bank still marked pending).</dd></div>
+      </dl>
+    </section>
 </div>
 
 <main>
@@ -368,13 +398,58 @@
       pipeline assumes its own drafts are wrong. One model pass drafts questions in
       difficulty bands. A second, independent pass checks each one for the usual
       faults (an ambiguous key, a giveaway option length, trick phrasing) and repairs
-      or rejects it. The plan adds a person's sign-off before a question counts; as
+      or rejects it. In practice it rejected none of the 645 it saw and changed 365. The plan adds a person's sign-off before a question counts; as
       noted above, the banks in the repo are still marked as waiting for it.
     </p>
     <figure>
       <img src="reveal.jpg" width="1485" height="812" loading="lazy"
         alt="A revealed answer marked Right, with an explanation of why ROC-AUC stays stable across prevalence while PR-AUC drops, followed by a cited source line naming Davis and Goadrich 2006." />
       <figcaption>The reveal step, with the source line at the bottom.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- review pass -->
+<section class="sec" aria-labelledby="h-review">
+  <div>
+    <p class="label">Error analysis</p>
+    <h2 id="h-review">What the review pass fixed, and the bias it missed</h2>
+    <p>
+      The drafts and the reviewed versions are both kept, so the review pass can be read
+      as a diff. <span class="mono">eval/review_pass.py</span> pairs all 645 shipped questions
+      with their drafts and sorts the changes by kind. A question can fall under more than
+      one row.
+    </p>
+    <div class="tablewrap">
+      <table class="cov rev">
+        <thead><tr><th>Change</th><th class="n">Count</th><th>One real case, draft to shipped</th></tr></thead>
+        <tbody>
+          <tr><td>Difficulty prior re-estimated</td><td class="n">190</td><td>"What does p = 0.03 mean?": the share of professionals expected to answer right, 0.75 to 0.55. 97 priors went up, 93 down; median move 0.05.</td></tr>
+          <tr><td>Correct option reworded</td><td class="n">145</td><td>"The practical business impact of the effect <i>size</i> alongside its <i>statistical</i> significance" lost two words, so it no longer stood out as the longest.</td></tr>
+          <tr><td>Only distractors rewritten</td><td class="n">107</td><td>An off-topic wrong answer ("H0: the test result will replicate later") became a plausible one: the null and alternative swapped.</td></tr>
+          <tr><td>Question stem rewritten</td><td class="n">21</td><td>"whether 6 PM <i>increases</i> the open rate" became "<i>changes</i>", to match a two-sided key.</td></tr>
+          <tr><td>Source replaced</td><td class="n">15</td><td>A question on peeking at A/B results moved from "Sequential analysis" to "Data dredging", the page that describes the error.</td></tr>
+          <tr><td>Rejected</td><td class="n">0</td><td>Every reviewed question was repaired or kept. A batch of 5 drafts was never reviewed and never shipped.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      The review pass looked at one question at a time, so it could not see a pattern across
+      a bank. The correct option is <strong>A in 415 of 645 questions (64%)</strong>, and the
+      app shows options in the order they are stored. Across the bank, always answering A
+      gets about two in three right; a random guess gets one in four. In 22 of the 29
+      subtopics A is the key more often than not. The fix is to shuffle options at display
+      time. It is not built yet.
+    </p>
+    <figure class="chart" id="keys">
+      <div class="keybars" role="img" aria-label="Answer key position across 645 shipped questions: A 415, B 120, C 74, D 36.">
+        <div class="kb"><span class="kl">A</span><span class="kt"><span class="kf" style="width:64.3%"></span></span><span class="kn">415</span></div>
+        <div class="kb"><span class="kl">B</span><span class="kt"><span class="kf" style="width:18.6%"></span></span><span class="kn">120</span></div>
+        <div class="kb"><span class="kl">C</span><span class="kt"><span class="kf" style="width:11.5%"></span></span><span class="kn">74</span></div>
+        <div class="kb"><span class="kl">D</span><span class="kt"><span class="kf" style="width:5.6%"></span></span><span class="kn">36</span></div>
+        <div class="kb kc"><span></span><span class="kt"><span class="kcl">25%: an even spread</span></span><span></span></div>
+      </div>
+      <figcaption>Which letter holds the right answer, all 645 shipped questions. Bars are shares of 645. From <span class="mono">eval/review_pass.json</span>, run 4 November 2026.</figcaption>
     </figure>
   </div>
 </section>
@@ -468,9 +543,10 @@
       The sessions behind all of this live in Supabase, and the free tier pauses a
       project after seven days without activity. A twice-weekly keep-alive job pings the
       API and checks the response bodies, not just the status codes, because the first
-      version of that job passed for three weeks while the database was down. It has
-      failed, correctly, on every run since 6 August 2026, when the project paused again. Until someone resumes
-      it, every subtopic stays at "early data".
+      version of that job passed for three weeks while the database was down. It
+      failed, correctly, on every run from 6 August 2026, when the project paused again,
+      until GitHub switched the schedule off for inactivity after the 19 October run. Until
+      someone resumes the project, every subtopic stays at "early data".
     </p>
     <figure>
       <img src="dashboard.jpg" width="1485" height="812" loading="lazy"
@@ -607,7 +683,7 @@
 
 <footer>
   <p>SkillCompass · <a href="../">App</a> · <a href="../methodology">How this works</a> · <a href="../privacy/">Privacy</a> · <a href="../terms/">Terms</a> · <a href="https://github.com/lyhjeremy/skill-compass">Source</a></p>
-  <p>Screenshots are captures of the running app. Counts come from <span class="mono">content/catalog.json</span>, <span class="mono">content/manifest.json</span> and the question banks, as of 28 October 2026.</p>
+  <p>Screenshots are captures of the running app. Counts come from <span class="mono">content/catalog.json</span>, <span class="mono">content/manifest.json</span> and the question banks, as of 28 October 2026. Review-pass and answer-key counts come from <span class="mono">eval/review_pass.json</span>, run 4 November 2026.</p>
 </footer>
 
 </div>
