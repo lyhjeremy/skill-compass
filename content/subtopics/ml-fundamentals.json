@@ -73,8 +73,8 @@
    "options": [
     "Supervised learning, since it learns from labeled historical outcomes.",
     "Unsupervised learning, since the model groups purchases without using labels.",
-    "Reinforcement learning, since the model learns through trial-and-error rewards.",
-    "Semi-supervised learning, since only some purchases have known outcomes."
+    "Semi-supervised learning, since only some purchases have known outcomes.",
+    "Reinforcement learning, since the model learns through trial-and-error rewards."
    ],
    "answer": 0,
    "explanation": "The model trains on purchases with known outcomes, which defines supervised learning. Semi-supervised learning applies only when some examples lack labels, but here every past purchase is labeled; unsupervised and reinforcement learning don't use labeled outcomes at all.",
@@ -90,12 +90,12 @@
    "concept": "unsupervised-learning",
    "stem": "A marketing team has a large dataset of customer transactions with no predefined categories and wants to discover natural groupings of similar customers for targeted campaigns. Which approach is most appropriate?",
    "options": [
-    "Unsupervised learning, such as clustering, to group similar customers.",
-    "Supervised classification, using purchase amount as the labeled target variable.",
     "Supervised regression, predicting a numeric loyalty score for each customer.",
-    "Reinforcement learning, rewarding the model for correct campaign targeting."
+    "Unsupervised learning, such as clustering, to group similar customers.",
+    "Reinforcement learning, rewarding the model for correct campaign targeting.",
+    "Supervised classification, using purchase amount as the labeled target variable."
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Since there are no predefined labels or categories, clustering (a form of unsupervised learning) finds structure in the data itself. Supervised methods require labeled outcomes, which are not present here.",
    "grounding": {
     "source": "Wikipedia: Unsupervised learning",
@@ -109,12 +109,12 @@
    "concept": "classification-vs-regression",
    "stem": "A bank wants to predict the exact dollar amount a loan applicant is likely to default on, not just whether they will default. What kind of supervised learning task is this?",
    "options": [
-    "Regression, because the target is a continuous numeric value.",
-    "Classification, because the output falls into a small set of categories.",
     "Clustering, because similar applicants are grouped by default amount.",
-    "Association rule learning, because it links applicant traits to default."
+    "Association rule learning, because it links applicant traits to default.",
+    "Regression, because the target is a continuous numeric value.",
+    "Classification, because the output falls into a small set of categories."
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "Predicting a continuous dollar amount is a regression task. Classification would apply if predicting a category, such as 'default' or 'no default', instead of a numeric amount.",
    "grounding": {
     "source": "Wikipedia: Regression analysis",
@@ -128,12 +128,12 @@
    "concept": "train-test-split",
    "stem": "A data scientist builds a model using 100% of the available historical data and reports strong accuracy on that same data. Why is this evaluation misleading?",
    "options": [
-    "The model was tested on data it had already trained on.",
     "The high accuracy proves the model has already overfit the data.",
-    "Accuracy is not a meaningful metric for this type of task.",
-    "The model simply needs a larger training dataset to improve."
+    "The model simply needs a larger training dataset to improve.",
+    "The model was tested on data it had already trained on.",
+    "Accuracy is not a meaningful metric for this type of task."
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "Testing only on training data doesn't reveal generalization ability, regardless of whether the model overfit. The high-accuracy result alone can't confirm overfitting without comparing to unseen data; a held-out test set is needed to know for sure.",
    "grounding": {
     "source": "Wikipedia: Training, validation, and test data sets",
@@ -147,12 +147,12 @@
    "concept": "overfitting-underfitting",
    "stem": "A model achieves 98% accuracy on training data but only 60% accuracy on new, unseen data. Which problem does this pattern most likely indicate?",
    "options": [
+    "Class imbalance, since one outcome category dominates the dataset.",
     "Overfitting, since the model memorized noise in training data.",
-    "Underfitting, since the model is too simple to capture patterns.",
     "Data leakage, since the test set was mixed into training.",
-    "Class imbalance, since one outcome category dominates the dataset."
+    "Underfitting, since the model is too simple to capture patterns."
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "A large gap between high training accuracy and low test accuracy is the classic signature of overfitting: the model fit noise specific to training data rather than generalizable patterns. Underfitting would show poor performance on both sets.",
    "grounding": {
     "source": "Wikipedia: Overfitting",
@@ -168,8 +168,8 @@
    "options": [
     "Supervised learning",
     "Unsupervised learning",
-    "Reinforcement learning",
-    "Semi-supervised learning"
+    "Semi-supervised learning",
+    "Reinforcement learning"
    ],
    "answer": 0,
    "explanation": "Labeled outcomes let the model learn a mapping from inputs to known answers, which defines supervised learning. Semi-supervised learning applies when only some data is labeled; here all records include known outcomes.",
@@ -185,12 +185,12 @@
    "concept": "validation-set",
    "stem": "A team is tuning a neural network's hyperparameters, such as learning rate and number of layers. They already have a training set and a separate test set reserved for final evaluation. What additional split should they use to compare hyperparameter settings before final testing?",
    "options": [
+    "A new random subset of the test set",
     "A validation set held out from training data",
     "The reserved test set, checked repeatedly",
-    "A new random subset of the test set",
     "The complete training set, unchanged"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "A validation set lets the team compare hyperparameter choices without touching the test set. Repeatedly checking the test set would leak information into decisions, biasing the final performance estimate.",
    "grounding": {
     "source": "Wikipedia: Training, validation, and test data sets",
@@ -204,12 +204,12 @@
    "concept": "bias-variance-tradeoff",
    "stem": "A data scientist compares two models. Model A is simple and misses patterns in both training and new data. Model B is complex, fits training data almost perfectly, but performs poorly on new data. Which statement is correct?",
    "options": [
-    "Model A has high bias and Model B has high variance",
-    "Model A has high variance and Model B has high bias",
     "Both Model A and Model B have high bias",
-    "Both Model A and Model B have high variance"
+    "Both Model A and Model B have high variance",
+    "Model A has high variance and Model B has high bias",
+    "Model A has high bias and Model B has high variance"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Model A's poor fit everywhere reflects oversimplified assumptions, or high bias. Model B's strong training fit but poor generalization reflects excessive sensitivity to training data, or high variance.",
    "grounding": {
     "source": "Wikipedia: Bias-variance tradeoff",
@@ -224,9 +224,9 @@
    "stem": "A team has a small dataset of only 200 samples and wants a reliable estimate of how well their model will generalize, without permanently sacrificing data to a single fixed validation split. Which technique best addresses this need?",
    "options": [
     "k-fold cross-validation",
-    "A single train/test split",
+    "Reporting training accuracy as the estimate",
     "Bootstrapping the training set",
-    "Reporting training accuracy as the estimate"
+    "A single train/test split"
    ],
    "answer": 0,
    "explanation": "k-fold cross-validation rotates which portion of the data is used for validation, giving a more reliable generalization estimate than one fixed split. A single split wastes data and its estimate depends heavily on which samples land in it.",
@@ -242,12 +242,12 @@
    "concept": "overfitting-underfitting",
    "stem": "A linear regression model shows high error on both the training data and the test data, and adding more training examples does not improve its performance. What is the most likely explanation for this behavior?",
    "options": [
-    "The model is underfitting due to insufficient complexity",
     "The model is overfitting due to excessive complexity",
+    "The features were not scaled before training",
     "The model needs stronger regularization to reduce variance",
-    "The features were not scaled before training"
+    "The model is underfitting due to insufficient complexity"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "High error on both sets signals the model is too simple to capture the pattern, i.e., underfitting. Overfitting shows low training error with high test error instead. Regularization would reduce complexity further, worsening underfitting, not fixing it.",
    "grounding": {
     "source": "Wikipedia: Overfitting",
@@ -261,12 +261,12 @@
    "concept": "unsupervised-learning",
    "stem": "A streaming service wants to group viewers into behavioral segments to guide content strategy, but has no predefined segment labels for any viewer. Which type of learning approach is most appropriate for discovering these groupings?",
    "options": [
-    "Supervised classification, since viewers must be sorted into categories defined in advance",
     "Unsupervised clustering, since no labeled segments exist and structure must be found",
-    "Supervised regression, since viewer engagement can be expressed as a continuous score",
-    "Reinforcement learning, since the model would learn from rewards for correct segment guesses"
+    "Supervised classification, since viewers must be sorted into categories defined in advance",
+    "Reinforcement learning, since the model would learn from rewards for correct segment guesses",
+    "Supervised regression, since viewer engagement can be expressed as a continuous score"
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "Clustering is unsupervised: there are no ground-truth segment labels to learn from, so the algorithm must find natural groupings in the data itself, unlike classification or reinforcement learning.",
    "grounding": {
     "source": "Wikipedia: Unsupervised learning",
@@ -280,12 +280,12 @@
    "concept": "classification-vs-regression",
    "stem": "A telecom company wants to (1) estimate the number of months until a customer cancels their subscription, and (2) flag whether a customer will cancel within the next month. How should these two tasks be categorized?",
    "options": [
+    "Task 1 is classification because months are counted in whole numbers; task 2 is regression because it outputs a probability",
     "Both tasks are classification, since both predict aspects of customer cancellation behavior",
     "Task 1 is regression because the target is numeric; task 2 is classification because the outcome is a category",
-    "Task 1 is classification because months are counted in whole numbers; task 2 is regression because it outputs a probability",
     "Both tasks are regression, since each relies on the same underlying continuous risk score"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "Months-until-cancellation is a continuous numeric target, making it regression. Cancel-or-not next month is a binary category, making it classification. The output type, not whether values are integers, determines the task.",
    "grounding": {
     "source": "Coursera: Machine Learning Specialization (Andrew Ng)",
@@ -299,12 +299,12 @@
    "concept": "validation-set",
    "stem": "A team trains five candidate models and wants to select the best performer before reporting one final, unbiased estimate of real-world performance. What is the correct way to use a validation set here?",
    "options": [
-    "Fit the model's parameters directly on the validation set, then report that score as the final result",
-    "Compare candidate models using the validation set, then evaluate the chosen model on a separate test set",
     "Use the validation set only after the test set has already been used to pick the winning model",
-    "Skip the validation set entirely and choose the model with the highest training-set accuracy score"
+    "Fit the model's parameters directly on the validation set, then report that score as the final result",
+    "Skip the validation set entirely and choose the model with the highest training-set accuracy score",
+    "Compare candidate models using the validation set, then evaluate the chosen model on a separate test set"
    ],
-   "answer": 1,
+   "answer": 3,
    "explanation": "The validation set is for model selection; the test set, used only once at the end, gives an unbiased estimate. Using the test set for selection or skipping validation both bias the final estimate.",
    "grounding": {
     "source": "Wikipedia: Training, validation, and test data sets",
@@ -318,12 +318,12 @@
    "concept": "bias-variance-tradeoff",
    "stem": "A team increases a model's flexibility to capture more intricate patterns in the training data, while keeping the amount of training data fixed. What tradeoff is most likely to occur?",
    "options": [
-    "Bias decreases, but variance increases, raising the risk of overfitting to the training data",
-    "Bias increases while variance decreases, raising the risk of underfitting the training data",
     "Both bias and variance decrease together, with no meaningful downside to the model",
-    "Bias and variance stay unchanged, since both depend only on the size of the dataset"
+    "Bias and variance stay unchanged, since both depend only on the size of the dataset",
+    "Bias increases while variance decreases, raising the risk of underfitting the training data",
+    "Bias decreases, but variance increases, raising the risk of overfitting to the training data"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "More flexible models fit training data more closely (lower bias) but become sensitive to noise in that specific data (higher variance), increasing overfitting risk. Bias and variance depend on model complexity, not just data size.",
    "grounding": {
     "source": "Wikipedia: Bias–variance tradeoff",
@@ -337,12 +337,12 @@
    "concept": "cross-validation",
    "stem": "A data scientist tunes hyperparameters using a single validation split and selects whichever settings score highest on that split. A colleague recommends k-fold cross-validation instead. What is the main benefit?",
    "options": [
-    "It guarantees the tuned model will score higher on the final test set",
     "It reduces the chance hyperparameters are chosen based on one split's random quirks",
     "It removes the need to keep a separate test set for final evaluation",
-    "It increases the amount of data available for training the final model"
+    "It increases the amount of data available for training the final model",
+    "It guarantees the tuned model will score higher on the final test set"
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "K-fold cross-validation averages performance across multiple splits, reducing the risk that hyperparameters are overfit to the quirks of any single validation split, yielding a more reliable performance estimate than one split alone.",
    "grounding": {
     "source": "scikit-learn documentation: Cross-validation: evaluating estimator performance",
@@ -356,12 +356,12 @@
    "concept": "supervised-learning",
    "stem": "A manufacturer has five years of sensor data but no recorded failures — only maintenance logs of which machines were serviced. An engineer labels 'serviced within 48 hours' as a proxy failure label and trains a model on sensor data. Which paradigm is this?",
    "options": [
-    "Unsupervised learning, since true failure was never directly observed",
     "Supervised learning, since inputs have a label",
-    "Reinforcement learning, since the model learns from delayed outcomes",
-    "Semi-supervised learning, since only some machines were serviced"
+    "Semi-supervised learning, since only some machines were serviced",
+    "Unsupervised learning, since true failure was never directly observed",
+    "Reinforcement learning, since the model learns from delayed outcomes"
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "The model is trained on explicit input-output pairs (sensor readings paired with a serviced/not-serviced label), which defines supervised learning regardless of how indirect the label is. It is not unsupervised, since a label exists, nor semi-supervised, since every example has one.",
    "grounding": {
     "source": "Wikipedia: Supervised learning",
@@ -376,11 +376,11 @@
    "stem": "An analyst clusters customer purchase histories into three groups. To interpret them, they later compare each cluster's average income and age — variables not used to form the clusters. Does this later comparison make the clustering supervised?",
    "options": [
     "Yes; introducing any labeled variable makes an analysis supervised",
-    "Yes; the groups now depend on income and age",
     "No; those variables were used only afterward",
-    "No; supervised learning only applies to neural networks"
+    "No; supervised learning only applies to neural networks",
+    "Yes; the groups now depend on income and age"
    ],
-   "answer": 2,
+   "answer": 1,
    "explanation": "Whether a method is supervised depends on what is used during training, not afterward. The clustering algorithm never received income or age as inputs or targets — those were used only afterward to interpret existing clusters, so training remained unsupervised.",
    "grounding": {
     "source": "Wikipedia: Unsupervised learning",
@@ -394,10 +394,10 @@
    "concept": "train-test-split",
    "stem": "A team building a fraud detector has transactions logged over time. They randomly shuffle all transactions and split 80/20 into train/test sets. When deployed, the model performs far worse than the test accuracy suggested. What is the most likely explanation?",
    "options": [
-    "The 80/20 split ratio was too aggressive for this dataset",
-    "Random shuffling leaked future transactions into the training set",
     "Fraud detection models cannot be validated using any train/test split",
-    "A test set that is too large dilutes the measured accuracy"
+    "Random shuffling leaked future transactions into the training set",
+    "A test set that is too large dilutes the measured accuracy",
+    "The 80/20 split ratio was too aggressive for this dataset"
    ],
    "answer": 1,
    "explanation": "Transactions are time-ordered. Random shuffling mixes later transactions into training, so the model implicitly benefits from patterns (e.g., newer fraud tactics) that wouldn't exist yet at real deployment time, making test accuracy an overly optimistic estimate.",
@@ -413,12 +413,12 @@
    "concept": "validation-set",
    "stem": "After splitting data into train, validation, and test sets, a data scientist tunes a model's hyperparameters over 200 configurations, checking validation accuracy each time, then reports the best validation score as expected real-world performance. Why is this reporting misleading?",
    "options": [
-    "Validation accuracy is always lower than true test accuracy",
-    "Hyperparameters should be tuned only on the training set",
     "Selecting the best of many configurations overfits validation",
-    "Validation sets can only ever be used a single time"
+    "Validation accuracy is always lower than true test accuracy",
+    "Validation sets can only ever be used a single time",
+    "Hyperparameters should be tuned only on the training set"
    ],
-   "answer": 2,
+   "answer": 0,
    "explanation": "With 200 configurations evaluated on the same validation set, some score well by chance alone. The reported 'best' score reflects this multiple-comparisons effect rather than genuine generalization, which is why a separate, untouched test set gives an honest final estimate.",
    "grounding": {
     "source": "Hastie, Tibshirani & Friedman, The Elements of Statistical Learning, Ch. 7",
@@ -433,11 +433,11 @@
    "stem": "A team trains a highly flexible polynomial model on a small dataset, then retrains it after gathering ten times more data. Training error stays about the same, but the training-validation gap shrinks substantially. What does this suggest?",
    "options": [
     "The polynomial features removed the bias-variance tradeoff entirely",
-    "Training error should have dropped if more data helped at all",
     "The extra data reduced bias, fitting the true relationship better",
-    "The extra data reduced variance, not the model's bias"
+    "The extra data reduced variance, not the model's bias",
+    "Training error should have dropped if more data helped at all"
    ],
-   "answer": 3,
+   "answer": 2,
    "explanation": "More training data primarily reduces variance by constraining a flexible model to real patterns rather than noise. Since training error didn't change, the model's bias is unchanged — only its ability to generalize improved with more data.",
    "grounding": {
     "source": "Andrew Ng, Machine Learning course (Coursera) — Bias vs. Variance",
@@ -451,12 +451,12 @@
    "concept": "classification-vs-regression",
    "stem": "A logistics company builds a model to predict which of four shipping delay categories (none, minor, moderate, severe) a package will fall into, based on route and weather data. Which best describes this task?",
    "options": [
+    "Unsupervised learning, because the categories were chosen by an analyst",
     "Regression, because delay severity follows a natural numeric order",
     "Classification, because the target is one of four discrete labels",
-    "Unsupervised learning, because the categories were chosen by an analyst",
     "Regression, because the delay itself is a continuous time value"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "The target variable is a fixed set of discrete labels, so predicting it is classification even though the categories are ordered or derived from an underlying continuous delay time.",
    "grounding": {
     "source": "Statistical classification (Wikipedia)",
@@ -470,12 +470,12 @@
    "concept": "bias-variance-tradeoff",
    "stem": "A data science team notices that averaging the predictions of many decision trees, each trained on a different bootstrap sample of the same data, produces a model with similar bias but noticeably lower prediction variance than any single tree. Why?",
    "options": [
+    "Averaging works because each tree makes highly correlated errors that reinforce each other",
     "Averaging cancels out uncorrelated errors made by individual overfit trees",
     "Averaging increases each tree's flexibility, reducing bias further",
-    "Averaging works because each tree makes highly correlated errors that reinforce each other",
     "Averaging eliminates the model's bias entirely, leaving only variance"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Each tree overfits differently on its own bootstrap sample; because their errors are largely uncorrelated (not correlated), averaging cancels noise and lowers variance while leaving bias roughly unchanged.",
    "grounding": {
     "source": "Bootstrap aggregating (Wikipedia)",
@@ -489,12 +489,12 @@
    "concept": "cross-validation",
    "stem": "A researcher evaluates a model using 10-fold cross-validation and finds accuracy ranges from 65% to 92% across folds. What does this large spread most likely indicate?",
    "options": [
-    "The model's performance estimate is unstable across different data subsets",
     "The model is definitely underfitting the data",
+    "The model's performance estimate is unstable across different data subsets",
     "The cross-validation procedure was implemented incorrectly",
     "The model's average accuracy can be trusted regardless of the spread"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "A wide range across folds signals high variance in the performance estimate itself, often from a small or noisy dataset or an unstable model; the average alone hides this instability.",
    "grounding": {
     "source": "Cross-validation (statistics) (Wikipedia)",
@@ -508,12 +508,12 @@
    "concept": "overfitting-underfitting",
    "stem": "A decision tree grown to full depth achieves 99% training accuracy but 71% test accuracy. After limiting the maximum depth, training accuracy drops to 90% but test accuracy rises to 85%. What does this trade-off illustrate?",
    "options": [
-    "Limiting depth reduced overfitting, improving generalization to new data",
-    "Limiting depth caused underfitting, so the constrained tree is worse overall",
+    "Limiting depth improved training accuracy, which explains the higher test accuracy",
     "The full-depth tree is preferable since it has higher training accuracy",
-    "Limiting depth improved training accuracy, which explains the higher test accuracy"
+    "Limiting depth reduced overfitting, improving generalization to new data",
+    "Limiting depth caused underfitting, so the constrained tree is worse overall"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "Constraining depth simplifies the model, trading some fit to training noise for better generalization; higher training accuracy alone, as in the full-depth tree, does not indicate better real-world performance.",
    "grounding": {
     "source": "Overfitting (Wikipedia)",
@@ -527,12 +527,12 @@
    "concept": "train-test-split",
    "stem": "Before splitting data into training and test sets, a data scientist scales all features using the mean and standard deviation computed from the entire dataset. Why is this problematic?",
    "options": [
-    "It leaks test-set information into training, inflating test performance estimates",
-    "It makes the model unable to generalize to any new data",
+    "It causes underfitting by removing meaningful variance in the features",
     "It has no effect, since scaling is preprocessing, not model training",
-    "It causes underfitting by removing meaningful variance in the features"
+    "It makes the model unable to generalize to any new data",
+    "It leaks test-set information into training, inflating test performance estimates"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Scaling using statistics from the full dataset lets test-set information influence preprocessing; even though scaling isn't model training itself, the test set no longer represents truly unseen data, so evaluation becomes overly optimistic.",
    "grounding": {
     "source": "Data leakage (machine learning) (Wikipedia)",
@@ -546,12 +546,12 @@
    "concept": "bias-variance-tradeoff",
    "stem": "A team adds many additional input features and increases a model's complexity to drive training error close to zero, but error on new, unseen data rises sharply. What best explains this pattern?",
    "options": [
-    "The model's bias increased, so it misses real patterns",
     "The model's variance increased, so it fits training-set noise",
+    "The model's bias increased, so it misses real patterns",
     "Training and test data were drawn from different populations",
     "The learning rate was too low, slowing convergence"
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "Adding complexity typically lowers bias but raises variance, so the model fits noise in the training set rather than generalizable patterns; test error rises even as training error keeps improving. Increased bias would instead cause underfitting, not this pattern.",
    "grounding": {
     "source": "Bias–variance tradeoff (Wikipedia)",
@@ -565,12 +565,12 @@
    "concept": "cross-validation",
    "stem": "A data scientist evaluates two models using a single 80/20 train/test split and selects the one with higher test accuracy. A colleague argues this comparison may be unreliable. What is the colleague's strongest justification?",
    "options": [
-    "Results depend heavily on which examples land in the test set",
-    "A random split guarantees the same class balance in train and test sets",
+    "A single split always favors the more complex model",
     "The 80/20 ratio is the only valid way to split data for comparison",
-    "A single split always favors the more complex model"
+    "Results depend heavily on which examples land in the test set",
+    "A random split guarantees the same class balance in train and test sets"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "A single split's accuracy is sensitive to which examples happen to fall in the test set, so an apparent difference may be due to chance. Random splits do not guarantee matching class balance, and no split ratio or model type is inherently favored.",
    "grounding": {
     "source": "Cross-validation (statistics) (Wikipedia)",
@@ -584,12 +584,12 @@
    "concept": "validation-set",
    "stem": "A team trains a neural network and tracks error on a held-out validation set after each epoch, stopping as soon as validation error starts rising even though training error keeps falling. What is this technique guarding against?",
    "options": [
-    "Underfitting caused by too few training epochs",
-    "Overfitting caused by fitting training-set noise",
+    "Class imbalance in the training data",
     "Data leakage between the training and test sets",
-    "Class imbalance in the training data"
+    "Underfitting caused by too few training epochs",
+    "Overfitting caused by fitting training-set noise"
    ],
-   "answer": 1,
+   "answer": 3,
    "explanation": "Rising validation error while training error keeps improving signals the model is fitting noise specific to the training set rather than general patterns; training error alone cannot reveal this, since it keeps improving regardless.",
    "grounding": {
     "source": "Early stopping (Wikipedia)",
@@ -603,9 +603,9 @@
    "concept": "classification-vs-regression",
    "stem": "A hospital wants to predict a patient's length of stay in days, an integer with many possible values. A junior analyst proposes treating this as classification with one class per day count. What is the main drawback versus regression?",
    "options": [
-    "Classification cannot handle a target with this many possible values",
-    "It ignores the natural ordering and closeness between day counts",
     "Classification requires far more computing power than regression",
+    "It ignores the natural ordering and closeness between day counts",
+    "Classification cannot handle a target with this many possible values",
     "It cannot be evaluated using standard accuracy metrics"
    ],
    "answer": 1,
@@ -622,12 +622,12 @@
    "concept": "supervised-learning",
    "stem": "A company has staff manually tag 2,000 customer reviews as positive or negative, then trains a model on these tagged examples to predict sentiment for millions of untagged reviews. Which learning paradigm does this describe?",
    "options": [
-    "Unsupervised learning, since most reviews remain unlabeled",
-    "Supervised learning, learning from labeled examples to predict outcomes",
+    "Clustering, since reviews are grouped by similarity",
     "Reinforcement learning, since the model improves through trial and error",
-    "Clustering, since reviews are grouped by similarity"
+    "Unsupervised learning, since most reviews remain unlabeled",
+    "Supervised learning, learning from labeled examples to predict outcomes"
    ],
-   "answer": 1,
+   "answer": 3,
    "explanation": "The model is trained on inputs paired with known labels and then predicts labels for new inputs — the defining structure of supervised learning, even though most of the overall dataset is never labeled.",
    "grounding": {
     "source": "Supervised learning (Wikipedia)",

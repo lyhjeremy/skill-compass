@@ -110,11 +110,11 @@
    "stem": "A company reports revenue of $1,000,000, cost of goods sold of $600,000, and operating expenses of $250,000. What is its operating margin?",
    "options": [
     "40%",
-    "60%",
     "15%",
-    "25%"
+    "25%",
+    "60%"
    ],
-   "answer": 2,
+   "answer": 1,
    "explanation": "Operating margin is operating income divided by revenue: (1,000,000 - 600,000 - 250,000)/1,000,000 = 15%. The 40% is gross margin, 60% is the cost-of-goods-sold ratio, and 25% is the operating-expense ratio; none represent operating income.",
    "grounding": {
     "source": "Wikipedia: Operating margin",
@@ -128,12 +128,12 @@
    "concept": "current-ratio",
    "stem": "A company holds $200,000 in current assets and $250,000 in current liabilities. What does its current ratio indicate about short-term liquidity?",
    "options": [
+    "0.8; current liabilities exceed current assets, a possible liquidity concern",
     "1.25; current liabilities divided by current assets, misread as strong liquidity",
     "-$50,000; the working-capital shortfall, mistaken for the current ratio",
-    "0.8; a ratio below 1.0 is still read as a comfortable cushion",
-    "0.8; current liabilities exceed current assets, a possible liquidity concern"
+    "0.8; a ratio below 1.0 is still read as a comfortable cushion"
    ],
-   "answer": 3,
+   "answer": 0,
    "explanation": "Current ratio equals current assets divided by current liabilities: 200,000/250,000 = 0.8, meaning liabilities exceed assets, a potential liquidity concern since ratios below 1.0 signal limited cushion. 1.25 inverts the formula; -$50,000 is working capital, a different measure.",
    "grounding": {
     "source": "Wikipedia: Current ratio",
@@ -148,11 +148,11 @@
    "stem": "A company reports net income of $120,000, average shareholders' equity of $800,000, and average total assets of $2,000,000 for the year. What is its return on equity (ROE)?",
    "options": [
     "6%",
-    "15%",
     "40%",
+    "15%",
     "0.15%"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "ROE equals net income divided by average shareholders' equity: 120,000/800,000 = 15%. Dividing by total assets instead gives 6% (that is ROA), dividing equity by assets gives 40% (a leverage ratio), and forgetting to convert the decimal gives 0.15%.",
    "grounding": {
     "source": "Wikipedia: Return on equity",
@@ -166,13 +166,13 @@
    "concept": "working-capital",
    "stem": "A manufacturer reports current assets of $450,000 and current liabilities of $300,000, with no other short-term items outstanding. What is its working capital?",
    "options": [
-    "$150,000 — current assets minus current liabilities",
     "$750,000 — current assets plus current liabilities",
+    "-$150,000 — current liabilities minus current assets",
     "$450,000 — current assets alone, ignoring liabilities",
-    "-$150,000 — current liabilities minus current assets"
+    "$150,000 — current assets minus current liabilities"
    ],
-   "answer": 0,
-   "explanation": "Working capital = current assets − current liabilities = $450,000 − $300,000 = $150,000. Option D reverses the subtraction; B sums the two accounts instead of subtracting; C ignores liabilities entirely.",
+   "answer": 3,
+   "explanation": "Working capital = current assets − current liabilities = $450,000 − $300,000 = $150,000. The -$150,000 option reverses the subtraction; $750,000 sums the two accounts instead of subtracting; $450,000 ignores liabilities entirely.",
    "grounding": {
     "source": "Wikipedia: Working capital",
     "note": "Defines working capital as current assets minus current liabilities, a short-term liquidity measure."
@@ -185,13 +185,13 @@
    "concept": "debt-to-equity-ratio",
    "stem": "A firm's balance sheet shows total liabilities of $600,000 and total shareholders' equity of $400,000. What is its debt-to-equity ratio?",
    "options": [
-    "1.5",
-    "0.67",
     "0.6",
-    "2.5"
+    "1.5",
+    "2.5",
+    "0.67"
    ],
-   "answer": 0,
-   "explanation": "Debt-to-equity = total liabilities ÷ total equity = $600,000 ÷ $400,000 = 1.5. Option B swaps numerator and denominator; C divides by total assets instead of equity; D compares total assets to equity instead.",
+   "answer": 1,
+   "explanation": "Debt-to-equity = total liabilities ÷ total equity = $600,000 ÷ $400,000 = 1.5. 0.67 swaps numerator and denominator; 0.6 divides by total assets instead of equity; 2.5 compares total assets to equity instead.",
    "grounding": {
     "source": "Wikipedia: Debt-to-equity ratio",
     "note": "Defines D/E as total liabilities divided by shareholders' equity, a common leverage measure."
@@ -204,13 +204,13 @@
    "concept": "linking-three-statements",
    "stem": "A company earns net income of $80,000 this year, pays no dividends, and prepares its cash flow statement using the indirect method. Where does this net income appear?",
    "options": [
-    "Added to retained earnings; used as the start of operating cash flow",
     "Recorded solely within the investing activities section of the cash flow statement",
-    "Recorded as the total change in the company's cash balance for the year",
-    "Reported as the ending total of shareholders' equity for the year"
+    "Added to retained earnings; used as the start of operating cash flow",
+    "Reported as the ending total of shareholders' equity for the year",
+    "Recorded as the total change in the company's cash balance for the year"
    ],
-   "answer": 0,
-   "explanation": "Net income increases retained earnings on the balance sheet and is the starting figure for operating cash flow under the indirect method. It is not the change in cash (C) or total equity (D), since other items also affect each.",
+   "answer": 1,
+   "explanation": "Net income increases retained earnings on the balance sheet and is the starting figure for operating cash flow under the indirect method. It is not the change in cash or the total of equity, since other items also affect each.",
    "grounding": {
     "source": "Wikipedia: Cash flow statement",
     "note": "Describes the indirect method, which begins with net income and adjusts for non-cash items to derive operating cash flow."
@@ -223,13 +223,13 @@
    "concept": "statement-roles",
    "stem": "A company recognizes $15,000 of depreciation expense this period on equipment purchased in a prior year. Where does this depreciation appear in the current period?",
    "options": [
+    "As a reduction of revenue on the income statement",
     "As an expense on the income statement, reducing net income",
-    "As a cash outflow within the investing section of the cash flow statement",
     "As a new liability on the balance sheet",
-    "As a reduction of revenue on the income statement"
+    "As a cash outflow within the investing section of the cash flow statement"
    ],
-   "answer": 0,
-   "explanation": "Depreciation is a non-cash expense recognized on the income statement each period, reducing net income. It is added back in the cash flow statement's operating section, not treated as an investing outflow (B) or a liability (C).",
+   "answer": 1,
+   "explanation": "Depreciation is a non-cash expense recognized on the income statement each period, reducing net income. It is added back in the cash flow statement's operating section, not treated as an investing outflow or a liability.",
    "grounding": {
     "source": "Wikipedia: Income statement",
     "note": "Describes depreciation as a non-cash operating expense reported on the income statement."
@@ -242,12 +242,12 @@
    "concept": "income-statement-margins",
    "stem": "A software company reports revenue of $2,000,000, cost of revenue of $500,000, and operating expenses of $900,000. What is its operating margin?",
    "options": [
-    "30%",
+    "43%",
     "75%",
-    "55%",
-    "43%"
+    "30%",
+    "55%"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "Operating margin = operating income ÷ revenue = ($2,000,000 − $500,000 − $900,000) ÷ $2,000,000 = 30%. 75% is gross margin; 55% ignores cost of revenue; 43% mistakenly divides by total costs instead of revenue.",
    "grounding": {
     "source": "Wikipedia: Operating margin",
@@ -261,12 +261,12 @@
    "concept": "statement-roles",
    "stem": "A company issues $500,000 of long-term bonds for cash to fund future expansion. How does this transaction appear across the financial statements?",
    "options": [
-    "Financing activities inflow on the cash flow statement; new long-term liability on the balance sheet",
-    "Operating activities inflow on the cash flow statement; new long-term liability on the balance sheet",
+    "Investing activities inflow on the cash flow statement; increase in equity on the balance sheet",
     "Revenue on the income statement; increase in cash on the balance sheet",
-    "Investing activities inflow on the cash flow statement; increase in equity on the balance sheet"
+    "Operating activities inflow on the cash flow statement; new long-term liability on the balance sheet",
+    "Financing activities inflow on the cash flow statement; new long-term liability on the balance sheet"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Issuing debt for cash is a financing activity, not operating, and creates a liability rather than revenue or equity. The bonds have no income statement impact at issuance.",
    "grounding": {
     "source": "IAS 7, Statement of Cash Flows",
@@ -280,12 +280,12 @@
    "concept": "working-capital",
    "stem": "At fiscal year-end, a retailer holds cash of $40,000, accounts receivable of $60,000, inventory of $50,000, and prepaid rent of $10,000. Current liabilities total $90,000. What is the company's working capital?",
    "options": [
-    "$70,000",
+    "$160,000",
     "$60,000",
     "$90,000",
-    "$160,000"
+    "$70,000"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Working capital equals current assets ($40,000+$60,000+$50,000+$10,000=$160,000) minus current liabilities ($90,000), giving $70,000. Prepaid rent still counts as a current asset even though it isn't cash.",
    "grounding": {
     "source": "Investopedia: Working Capital",
@@ -318,12 +318,12 @@
    "concept": "return-on-equity",
    "stem": "A firm has a net profit margin of 8%, total asset turnover of 1.5x, and a financial leverage ratio (assets/equity) of 2.0. Using the DuPont decomposition, what is the firm's return on equity?",
    "options": [
-    "24%",
+    "8%",
     "12%",
     "16%",
-    "8%"
+    "24%"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "DuPont ROE = net profit margin × asset turnover × financial leverage = 8% × 1.5 × 2.0 = 24%. Multiplying only two of the three factors (12% or 16%) understates the true return.",
    "grounding": {
     "source": "Wikipedia: DuPont analysis",
@@ -337,12 +337,12 @@
    "concept": "linking-three-statements",
    "stem": "A company recognizes $200,000 of revenue on an accrual basis, but accounts receivable rises by $30,000 during the year as some customers have not yet paid. Under the indirect method, how is this reflected in operating cash flow?",
    "options": [
-    "Subtract $30,000 from operating cash flow, since the cash was not yet received",
-    "Add $30,000 to operating cash flow, since revenue always increases cash performance",
     "Add $30,000 to investing cash flow, since receivables are financial assets",
+    "Add $30,000 to operating cash flow, since revenue always increases cash performance",
+    "Subtract $30,000 from operating cash flow, since the cash was not yet received",
     "Leave cash flow unadjusted, since accounts receivable is a balance sheet item only"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "An increase in accounts receivable means revenue was booked without matching cash received, so the indirect method subtracts the increase from net income to reconcile accrual earnings to cash from operations.",
    "grounding": {
     "source": "IAS 7, Statement of Cash Flows",
@@ -356,12 +356,12 @@
    "concept": "statement-roles",
    "stem": "A company holds available-for-sale debt securities. During the year their fair value rises by $30,000, but none are sold. Under U.S. GAAP, where in the financial statements does this gain appear this year?",
    "options": [
-    "It is recognized as net income on the income statement",
-    "It is recorded as other comprehensive income within equity",
     "It increases operating cash flow on the cash flow statement",
-    "It directly reduces the securities' recorded cost basis"
+    "It directly reduces the securities' recorded cost basis",
+    "It is recorded as other comprehensive income within equity",
+    "It is recognized as net income on the income statement"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "Unrealized gains on available-for-sale securities bypass net income and are reported in other comprehensive income (OCI), a component of shareholders' equity, until the securities are sold and the gain is realized.",
    "grounding": {
     "source": "Wikipedia: Accumulated other comprehensive income",
@@ -375,12 +375,12 @@
    "concept": "accrual-vs-cash-accounting",
    "stem": "A software company collects $120,000 cash upfront on April 1 for a one-year subscription. By December 31, nine months of service have been delivered. Under accrual accounting, what amount is recognized as revenue this year?",
    "options": [
-    "$120,000, the full cash amount collected",
     "$90,000, reflecting nine months of service delivered",
-    "$30,000, the amount of service not yet delivered",
-    "$0, since the cash was collected in advance"
+    "$120,000, the full cash amount collected",
+    "$0, since the cash was collected in advance",
+    "$30,000, the amount of service not yet delivered"
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "Accrual accounting recognizes revenue as service is delivered, not when cash changes hands. With 9 of 12 months earned, $90,000 is recognized; the remaining $30,000 stays as deferred (unearned) revenue on the balance sheet.",
    "grounding": {
     "source": "Wikipedia: Revenue recognition",
@@ -394,12 +394,12 @@
    "concept": "income-statement-margins",
    "stem": "A retailer reclassifies $40,000 of shipping costs from cost of goods sold to selling, general, and administrative expense; total expenses and revenue are unchanged. Which margin increases solely because of this reclassification?",
    "options": [
-    "Gross margin only",
     "Operating margin only",
-    "Net profit margin only",
-    "Both gross margin and operating margin"
+    "Both gross margin and operating margin",
+    "Gross margin only",
+    "Net profit margin only"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "Moving costs from COGS to SG&A raises gross profit and gross margin since COGS falls, but operating income and net income are unaffected because total operating expenses are unchanged — only their internal classification shifts.",
    "grounding": {
     "source": "Wikipedia: Gross margin",
@@ -413,12 +413,12 @@
    "concept": "working-capital",
    "stem": "A company collects $80,000 cash from a customer in full payment of an outstanding accounts receivable balance. No other transactions occur. What is the effect on the company's working capital?",
    "options": [
-    "Working capital increases by $80,000",
-    "Working capital decreases by $80,000",
+    "Working capital increases by $160,000",
     "Working capital is unchanged",
-    "Working capital increases by $160,000"
+    "Working capital increases by $80,000",
+    "Working capital decreases by $80,000"
    ],
-   "answer": 2,
+   "answer": 1,
    "explanation": "Cash and accounts receivable are both current assets, so collecting a receivable merely swaps one current asset for another. Total current assets, current liabilities, and therefore working capital remain unchanged.",
    "grounding": {
     "source": "Wikipedia: Working capital",
@@ -432,12 +432,12 @@
    "concept": "linking-three-statements",
    "stem": "Retained earnings on a company's balance sheet rise from $300,000 to $340,000 during the year. The income statement reports net income of $55,000 for the same period. What dividends did the company pay?",
    "options": [
-    "$15,000",
-    "$40,000",
     "$55,000",
-    "$95,000"
+    "$95,000",
+    "$40,000",
+    "$15,000"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Ending retained earnings equals beginning retained earnings plus net income minus dividends: $300,000 + $55,000 − dividends = $340,000, so dividends = $15,000. $40,000 is just the change in retained earnings, not dividends paid.",
    "grounding": {
     "source": "Wikipedia: Retained earnings",

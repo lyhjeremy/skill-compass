@@ -73,10 +73,10 @@
    "options": [
     "It restricts the sampling frame to a narrow subgroup of customers",
     "It fails to include enough scale points to capture nuance",
-    "It uses loaded, positive wording that pushes respondents toward agreement",
-    "It relies on self-selected respondents who volunteered to answer"
+    "It relies on self-selected respondents who volunteered to answer",
+    "It uses loaded, positive wording that pushes respondents toward agreement"
    ],
-   "answer": 2,
+   "answer": 3,
    "explanation": "The words \"delicious\" and \"love\" presuppose a positive experience, steering respondents toward agreement. This is a leading question, not a sampling frame, scale granularity, or self-selection issue, which are separate survey pitfalls.",
    "grounding": {
     "source": "Wikipedia, 'Leading question'",
@@ -90,12 +90,12 @@
    "concept": "sampling-frame",
    "stem": "A city wants to survey residents about park usage but only has a list of registered voters to draw phone numbers from. What is the main methodological issue with this approach?",
    "options": [
-    "Nonresponse from residents who don't answer calls will inflate the margin of error",
-    "The sampling frame excludes non-voters, so it underrepresents the full population",
+    "Weighting by household size will fully correct for any bias in the sample",
     "The Likert scale used to measure satisfaction will be too coarse",
-    "Weighting by household size will fully correct for any bias in the sample"
+    "The sampling frame excludes non-voters, so it underrepresents the full population",
+    "Nonresponse from residents who don't answer calls will inflate the margin of error"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "A frame limited to registered voters omits younger, non-citizen, or unregistered residents, so it doesn't match the target population of all residents. This coverage gap isn't fixed by nonresponse handling, scale design, or weighting alone.",
    "grounding": {
     "source": "Wikipedia, 'Sampling frame'",
@@ -109,9 +109,9 @@
    "concept": "likert-scales",
    "stem": "A survey measures agreement with \"The training improved my skills\" using a 5-point scale from \"Strongly Disagree\" to \"Strongly Agree.\" What type of data does a single Likert item like this produce?",
    "options": [
+    "Interval data, since the gaps between every category are proven equal",
     "Nominal data, since the categories have no inherent order",
     "Ratio data, since responses can be meaningfully divided or multiplied",
-    "Interval data, since the gaps between every category are proven equal",
     "Ordinal data, since order is meaningful but spacing is uneven"
    ],
    "answer": 3,
@@ -128,10 +128,10 @@
    "concept": "margin-of-error",
    "stem": "A poll of 1,000 randomly sampled voters reports 52% support for a proposal with a margin of error of ±3 percentage points at 95% confidence. What does this margin of error indicate?",
    "options": [
+    "The specific wording of the question shifted results by no more than 3 points",
     "There is a 95% probability that the proposal will actually pass in the vote",
-    "About 3% of the surveyed respondents refused to answer this particular question",
     "The estimate is within 3 points of the true value 95% of the time",
-    "The specific wording of the question shifted results by no more than 3 points"
+    "About 3% of the surveyed respondents refused to answer this particular question"
    ],
    "answer": 2,
    "explanation": "Margin of error describes sampling variability: repeated samples would produce estimates within that range of the true value about 95% of the time. It says nothing about election outcomes, nonresponse rates, or wording effects.",
@@ -166,12 +166,12 @@
    "concept": "sampling-frame",
    "stem": "A national employee-engagement survey is sent only to addresses in the company's outdated HR database, which was never updated after several rounds of hiring and turnover. What issue does this create?",
    "options": [
-    "The sampling frame is outdated and no longer matches the current workforce",
+    "The survey weighting scheme will overcorrect for underrepresented departments",
     "The margin of error will be too small to reliably detect real differences",
-    "The Likert response scale used will fail to capture employee sentiment accurately",
-    "The survey weighting scheme will overcorrect for underrepresented departments"
+    "The sampling frame is outdated and no longer matches the current workforce",
+    "The Likert response scale used will fail to capture employee sentiment accurately"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "The HR database is stale, so it excludes new hires and includes departed employees, a sampling frame problem. This isn't fixed by margin-of-error size, scale design, or weighting.",
    "grounding": {
     "source": "Wikipedia, 'Sampling frame'",
@@ -185,12 +185,12 @@
    "concept": "selection-bias",
    "stem": "A hospital wants to measure patient satisfaction overall but only distributes surveys to patients who stop by the front desk on their way out, skipping those discharged directly from their rooms. What problem does this create?",
    "options": [
+    "Leading question bias caused by how the survey items are worded",
     "Selection bias, since front-desk patients may differ from those discharged directly",
     "A larger margin of error caused simply by a smaller sample size",
-    "Leading question bias caused by how the survey items are worded",
     "Higher nonresponse bias among patients who never receive the survey at all"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Surveying only patients who pass the front desk systematically omits those discharged directly, who may differ in experience. This is selection bias, not a sample-size, wording, or true nonresponse issue.",
    "grounding": {
     "source": "Wikipedia, 'Selection bias'",
@@ -205,9 +205,9 @@
    "stem": "During a performance review, a manager personally hands employees a satisfaction survey about their own management style and waits nearby while they complete it. Why might the results be unreliable?",
    "options": [
     "Response bias, since employees may give more favorable answers under observation",
-    "Sampling frame bias, since only current employees were included in the survey",
+    "Weighting bias, since responses were not adjusted for department size",
     "A wider margin of error, since the sample size is unusually small",
-    "Weighting bias, since responses were not adjusted for department size"
+    "Sampling frame bias, since only current employees were included in the survey"
    ],
    "answer": 0,
    "explanation": "Being observed by the person being evaluated pressures employees toward socially desirable, favorable answers, a form of response bias, distinct from frame coverage, sample-size, or weighting issues.",
@@ -223,12 +223,12 @@
    "concept": "nonresponse-handling",
    "stem": "A mail survey achieves only a 22% response rate after the initial mailing. Which action best reduces the risk of nonresponse bias before the data are analyzed?",
    "options": [
-    "Send reminders and offer an alternate response mode to non-respondents",
-    "Report results based only on the 22% who already replied",
+    "Apply demographic weights to the completed responses without further contact",
     "Increase total sample size using the same mailing method",
-    "Apply demographic weights to the completed responses without further contact"
+    "Report results based only on the 22% who already replied",
+    "Send reminders and offer an alternate response mode to non-respondents"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Following up with non-respondents through reminders or an alternate mode directly targets why people didn't answer. Reporting only completed responses, repeating identical outreach, or weighting afterward don't address the underlying nonresponse.",
    "grounding": {
     "source": "Wikipedia, 'Nonresponse bias'",
@@ -242,12 +242,12 @@
    "concept": "weighting",
    "stem": "A national survey organization deliberately oversamples a small rural region by phone to ensure enough responses for a reliable regional breakdown. To produce an accurate national estimate afterward, what should they do?",
    "options": [
-    "Apply weights proportional to the region's actual population share",
-    "Discard all responses collected from the oversampled rural region entirely",
+    "Rephrase the survey questions used in the oversampled region to remove bias",
     "Widen the reported national margin of error to compensate for the imbalance",
-    "Rephrase the survey questions used in the oversampled region to remove bias"
+    "Apply weights proportional to the region's actual population share",
+    "Discard all responses collected from the oversampled rural region entirely"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "Oversampling changes the region's probability of selection; weighting inversely to that probability restores its correct share of the national estimate. Discarding data, widening the error margin, or rewording questions don't fix the imbalance.",
    "grounding": {
     "source": "Wikipedia, 'Post-stratification'",
@@ -261,12 +261,12 @@
    "concept": "leading-questions",
    "stem": "An engagement survey asks: 'Given that flexible schedules boost morale, how supportive are you of extending remote-work options?' What is the primary methodological flaw in this question?",
    "options": [
-    "It presupposes flexible schedules boost morale, priming a favorable response",
+    "It was distributed only to employees who rarely respond to surveys",
     "It offers only extreme response options with no neutral category",
-    "It samples employees from an outdated employee directory list",
-    "It was distributed only to employees who rarely respond to surveys"
+    "It presupposes flexible schedules boost morale, priming a favorable response",
+    "It samples employees from an outdated employee directory list"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "The clause 'given that flexible schedules boost morale' asserts a premise as fact before asking the question, priming respondents toward agreement. This is the defining feature of a leading question, distinct from scale design or sampling issues.",
    "grounding": {
     "source": "Pew Research Center, 'Writing Survey Questions'",
@@ -280,12 +280,12 @@
    "concept": "selection-bias",
    "stem": "To evaluate a new internal software tool, a company surveys only the employees who volunteered to join its beta-testing group. Which term describes the bias when these results are generalized to all employees?",
    "options": [
-    "Selection bias, since volunteers are not representative of the wider workforce",
-    "Nonresponse bias, since some employees declined to answer the survey",
     "Margin of error, since the sample size is smaller than expected",
-    "Leading-question bias, since the wording steered employees toward positive answers"
+    "Leading-question bias, since the wording steered employees toward positive answers",
+    "Nonresponse bias, since some employees declined to answer the survey",
+    "Selection bias, since volunteers are not representative of the wider workforce"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "The sample was never drawn to represent all employees; beta-testing volunteers tend to be more tech-savvy and engaged than the general workforce. This systematic difference in who was included is selection bias, not a wording or nonresponse problem.",
    "grounding": {
     "source": "AAPOR (American Association for Public Opinion Research), Survey Methods glossary",
@@ -300,8 +300,8 @@
    "stem": "A researcher changes a customer-satisfaction item from a 5-point scale (Strongly Disagree to Strongly Agree) to a 4-point scale, removing the neutral midpoint. What is the main methodological consequence?",
    "options": [
     "Respondents without a clear opinion are forced toward a direction, skewing results",
-    "The survey's margin of error automatically increases at the same sample size",
     "The item becomes a leading question that presupposes a favorable opinion",
+    "The survey's margin of error automatically increases at the same sample size",
     "The sampling frame no longer matches the target customer population"
    ],
    "answer": 0,
@@ -320,8 +320,8 @@
    "options": [
     "±2.5%",
     "±1.25%",
-    "±5%",
-    "±10%"
+    "±10%",
+    "±5%"
    ],
    "answer": 0,
    "explanation": "Margin of error is inversely proportional to the square root of sample size. Quadrupling the sample size from 400 to 1,600 reduces the margin of error by half, from ±5% to about ±2.5%.",
@@ -337,12 +337,12 @@
    "concept": "nonresponse-handling",
    "stem": "After a mail survey's response rate stalls at 30%, researchers compare answers from early responders to those from late responders and find the two groups differ significantly on key questions. What does this comparison suggest?",
    "options": [
-    "Nonrespondents may resemble late responders and differ from early ones, biasing results",
-    "The questionnaire's sampling frame excludes part of the target population",
     "The margin of error should be recalculated using a larger sample",
-    "The survey items are leading questions that favor one response direction"
+    "The survey items are leading questions that favor one response direction",
+    "The questionnaire's sampling frame excludes part of the target population",
+    "Nonrespondents may resemble late responders and differ from early ones, biasing results"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "This 'wave analysis' approach assumes reluctant late responders approximate nonrespondents. A significant gap between early and late waves signals likely nonresponse bias, since those who never answered probably differ from prompt respondents.",
    "grounding": {
     "source": "AAPOR (American Association for Public Opinion Research), 'Nonresponse Bias' resource",
@@ -357,9 +357,9 @@
    "stem": "A subscription-service satisfaction survey draws its sample from the customer database, which still lists accounts cancelled up to two years ago as \"active.\" Some former customers are contacted and included in the results. This illustrates which sampling frame problem?",
    "options": [
     "Overcoverage: the frame includes units outside the target population",
+    "Selection bias: researchers intentionally chose to include only satisfied customers",
     "Undercoverage: the frame is missing large segments of current customers",
-    "Nonresponse bias: cancelled customers are less likely to complete the survey",
-    "Selection bias: researchers intentionally chose to include only satisfied customers"
+    "Nonresponse bias: cancelled customers are less likely to complete the survey"
    ],
    "answer": 0,
    "explanation": "Overcoverage occurs when a sampling frame contains units outside the target population—here, former customers—which can skew estimates independent of response rates or intentional selection.",
@@ -376,9 +376,9 @@
    "stem": "To assess whether a voluntary wellness program improves productivity, analysts compare average output of employees who completed the entire 12-week program against those who never signed up. Completers report higher productivity. What best explains why this comparison may be misleading?",
    "options": [
     "Employees disciplined enough to finish the program may already be more productive anyway",
-    "The margin of error is too wide to detect any real productivity difference",
+    "Employees who dropped out midway created nonresponse bias that widened the margin of error",
     "The productivity Likert scale used was never validated for this employee population",
-    "Employees who dropped out midway created nonresponse bias that widened the margin of error"
+    "The margin of error is too wide to detect any real productivity difference"
    ],
    "answer": 0,
    "explanation": "This is self-selection bias: traits like motivation and discipline that lead employees to complete a voluntary program also predict higher productivity independent of the program's effect, confounding the comparison.",
@@ -394,12 +394,12 @@
    "concept": "response-bias",
    "stem": "An anonymous internal survey asks employees whether they always follow the company's expense-reporting policy. Nearly 98% answer \"yes,\" yet internal audits find policy violations in roughly one-third of expense reports. Which phenomenon most likely explains the gap?",
    "options": [
+    "A leading question's wording pushed employees toward answering yes",
     "Social desirability bias: employees answer as expected despite anonymity",
     "Sampling frame error: the survey excluded employees who submit expense reports",
-    "A leading question's wording pushed employees toward answering yes",
     "The survey's margin of error is larger than the audit's violation rate"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Social desirability bias leads people to overstate compliance with norms even when responses are anonymous, producing a gap between self-reported behavior and objective audit findings.",
    "grounding": {
     "source": "Social desirability bias - Wikipedia",
@@ -413,12 +413,12 @@
    "concept": "likert-scales",
    "stem": "A researcher redesigns a customer survey by changing the response scale from a 5-point scale (with a \"Neither agree nor disagree\" midpoint) to a 4-point forced-choice scale. What is the most likely consequence of this design change?",
    "options": [
-    "Genuinely neutral respondents must pick a mildly positive or negative option",
-    "The margin of error automatically increases because there are fewer response categories",
     "The new scale eliminates acquiescence bias since there is no middle option",
-    "Weighting adjustments become unnecessary because forced-choice scales self-correct for nonresponse"
+    "Genuinely neutral respondents must pick a mildly positive or negative option",
+    "Weighting adjustments become unnecessary because forced-choice scales self-correct for nonresponse",
+    "The margin of error automatically increases because there are fewer response categories"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Removing the neutral midpoint forces genuinely undecided respondents toward a side, shifting the response distribution; it does not affect margin of error, eliminate acquiescence bias, or replace weighting.",
    "grounding": {
     "source": "Likert scale - Wikipedia",
@@ -432,12 +432,12 @@
    "concept": "weighting",
    "stem": "To correct demographic imbalances, a pollster applies survey weights so heavily to a small subgroup that a handful of individuals' answers count for over 15% of the final result. What statistical consequence should this raise concern about?",
    "options": [
+    "Nonresponse bias is eliminated because weighting accounts for all missing data",
     "Effective sample size shrinks and variance increases, though nominal size is unchanged",
     "The margin of error automatically shrinks because weighting always improves precision",
-    "The sampling frame becomes probability-based once weights are applied",
-    "Nonresponse bias is eliminated because weighting accounts for all missing data"
+    "The sampling frame becomes probability-based once weights are applied"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Large, unequal weights reduce effective sample size and inflate variance (design effect), even though the raw sample size is unchanged; weighting corrects bias but can cost precision.",
    "grounding": {
     "source": "Design effect - Wikipedia",

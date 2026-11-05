@@ -71,12 +71,12 @@
    "concept": "correlation-vs-causation",
    "stem": "Ice cream sales and drowning incidents both rise in summer and fall in winter, producing a strong positive correlation across months. What most likely explains this pattern?",
    "options": [
-    "A third factor, warm weather, boosts both sales and swimming risk",
-    "Buying more ice cream directly causes people to drown while swimming",
     "Drowning incidents cause survivors' families to purchase more ice cream",
-    "The correlation is pure coincidence with no explanation of any kind"
+    "A third factor, warm weather, boosts both sales and swimming risk",
+    "The correlation is pure coincidence with no explanation of any kind",
+    "Buying more ice cream directly causes people to drown while swimming"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "The correlation is explained by a confounding variable, warm weather, which independently raises both ice cream sales and swimming (and thus drowning risk). Neither variable causes the other, and the pattern is a well-known confounding example, not coincidence.",
    "grounding": {
     "source": "Correlation does not imply causation (Wikipedia)",
@@ -90,12 +90,12 @@
    "concept": "confounders",
    "stem": "A hospital study finds patients who take vitamin D supplements have lower rates of severe illness than non-takers. Critics note supplement takers also tend to exercise more and eat healthier. What issue does this illustrate?",
    "options": [
-    "A confounding variable, healthy lifestyle, may explain part of the association",
+    "Reverse causation, where illness severity influences vitamin D intake, is occurring",
     "A collider variable was conditioned on, distorting the true association",
     "Selection bias arose because patients were not randomly recruited into the study",
-    "Reverse causation, where illness severity influences vitamin D intake, is occurring"
+    "A confounding variable, healthy lifestyle, may explain part of the association"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Healthy lifestyle drives both supplement use and lower illness risk, a classic confounder. A collider would require conditioning on a shared effect of two causes, which isn't described here; selection bias and reverse causation aren't supported by these details.",
    "grounding": {
     "source": "Confounding (Wikipedia)",
@@ -109,12 +109,12 @@
    "concept": "selection-bias",
    "stem": "A university estimates the average five-year salary of alumni from a given major using only responses from graduates who attended a career-fair reunion. Why might this estimate be misleading?",
    "options": [
+    "No control group exists, so the estimate cannot be interpreted at all",
     "Reunion attendees may differ systematically in career engagement from non-attendees",
     "The sample size is too small to calculate any meaningful average",
-    "Salaries naturally rise over time, making any survey estimate outdated",
-    "No control group exists, so the estimate cannot be interpreted at all"
+    "Salaries naturally rise over time, making any survey estimate outdated"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Alumni who attend reunions may be more career-engaged or successful than non-attendees, biasing the sample. This is selection bias, not a sample-size or control-group problem, and salary drift over time doesn't explain a systematic gap in a single survey.",
    "grounding": {
     "source": "Selection bias (Wikipedia)",
@@ -129,9 +129,9 @@
    "stem": "A company evaluates a new sales training program by letting employees choose whether to attend, rather than assigning attendance randomly. Why does this weaken causal conclusions about the program's effect on revenue?",
    "options": [
     "Motivated employees may self-select into training, mixing its effect with pre-existing differences",
+    "Without a paid control group, the program cannot be evaluated at all",
     "Voluntary attendance always inflates the measured effect far beyond the true effect",
-    "Revenue is too variable a metric to ever detect a training effect",
-    "Without a paid control group, the program cannot be evaluated at all"
+    "Revenue is too variable a metric to ever detect a training effect"
    ],
    "answer": 0,
    "explanation": "Letting employees self-select mixes the training's true effect with pre-existing differences in drive or ability, since more motivated employees may opt in. Randomization removes this by making treatment and control groups comparable on average, which self-selection cannot guarantee.",
@@ -148,9 +148,9 @@
    "stem": "A city raises its minimum wage while a similar neighboring city does not. An analyst compares each city's employment change before versus after the increase. What key assumption does this comparison rely on?",
    "options": [
     "Absent the policy, employment trends in both cities would have moved in parallel",
-    "Both cities must have identical employment levels before the wage increase",
     "The neighboring city must have an equal population to serve as a comparison",
-    "The wage increase must have been assigned at random across cities"
+    "The wage increase must have been assigned at random across cities",
+    "Both cities must have identical employment levels before the wage increase"
    ],
    "answer": 0,
    "explanation": "Difference-in-differences relies on the parallel trends assumption: absent treatment, both groups would have followed similar trajectories. It doesn't require equal baseline levels, equal population, or random assignment, since the comparison city's trend serves as the counterfactual.",
@@ -166,10 +166,10 @@
    "concept": "correlation-vs-causation",
    "stem": "A retailer observes that days with more staff scheduled have higher sales, and a manager concludes hiring more staff boosts sales. However, schedules are set a week in advance based on projected demand. What does this reveal about the correlation?",
    "options": [
-    "The correlation is purely coincidental and reflects no real relationship between the variables",
+    "A larger sample of days would be needed before any relationship could exist",
     "More staff directly causes higher customer purchases through improved service quality",
     "Anticipated high demand may drive staffing decisions, reversing the assumed causal direction",
-    "A larger sample of days would be needed before any relationship could exist"
+    "The correlation is purely coincidental and reflects no real relationship between the variables"
    ],
    "answer": 2,
    "explanation": "Since schedules are set from projected demand, high anticipated sales likely drive the staffing decision, not the reverse — a case of reverse causation. The correlation isn't coincidental, staffing alone doesn't explain the pattern, and sample size isn't the issue.",
@@ -186,11 +186,11 @@
    "stem": "A city finds that neighborhoods where more firefighters are dispatched to blazes also show higher property damage. Someone concludes that sending more firefighters causes more damage. What best explains this correlation?",
    "options": [
     "Firefighters cause structural damage while extinguishing fires, explaining the entire correlation",
-    "Larger, more dangerous fires require more firefighters and independently cause more damage",
     "Neighborhoods with more firefighters dispatched simply have more buildings overall",
+    "Larger, more dangerous fires require more firefighters and independently cause more damage",
     "Property damage estimates are inflated whenever more personnel are present at the scene"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "Fire severity is a confounder: bigger, more dangerous fires prompt dispatchers to send more firefighters and independently cause more damage. Firefighters don't cause the damage they fight to control, and the other options aren't supported by the scenario.",
    "grounding": {
     "source": "Confounding (Wikipedia)",
@@ -204,12 +204,12 @@
    "concept": "colliders",
    "stem": "Researchers study only patients hospitalized for either disease A or injury B and find that among these patients, having disease A is associated with a lower chance of also having injury B, even though the two are unrelated in the general population. What explains this?",
    "options": [
-    "Disease A must have a genuine protective effect against developing injury B",
-    "The two conditions are diagnosed using incompatible criteria across different hospitals",
     "Injury B must have a genuine protective effect against developing disease A",
-    "Hospitalization is a shared effect of both conditions, creating a spurious association"
+    "Hospitalization is a shared effect of both conditions, creating a spurious association",
+    "Disease A must have a genuine protective effect against developing injury B",
+    "The two conditions are diagnosed using incompatible criteria across different hospitals"
    ],
-   "answer": 3,
+   "answer": 1,
    "explanation": "Hospitalization (the collider) is caused by having disease A or injury B; restricting to hospitalized patients induces a spurious negative association between otherwise unrelated conditions, known as Berkson's paradox. Neither condition truly protects against the other.",
    "grounding": {
     "source": "Berkson's paradox (Wikipedia)",
@@ -224,11 +224,11 @@
    "stem": "An analyst wants to estimate whether a wellness program improves employee health, but enrollment is voluntary and healthier employees may be more likely to join. The company randomly mails discount coupons to some employees. Why can the coupon serve as an instrumental variable?",
    "options": [
     "It guarantees that every employee who receives it will enroll in the program",
-    "It shifts enrollment while affecting health only through its effect on enrollment",
     "It directly improves employee health regardless of whether they enroll",
+    "It shifts enrollment while affecting health only through its effect on enrollment",
     "It removes the need to measure enrollment status in the analysis"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "A valid instrument must shift the treatment (enrollment) and affect the outcome (health) only through that treatment, not directly. The coupon changes enrollment likelihood without independently improving health, satisfying the exclusion restriction.",
    "grounding": {
     "source": "Instrumental variables estimation (Wikipedia)",
@@ -242,12 +242,12 @@
    "concept": "regression-discontinuity",
    "stem": "A university awards scholarships to students scoring at least 90 on an entrance exam. An analyst compares graduation rates of students who scored 89 to 91, treating the near-cutoff students as similar except for scholarship receipt. What design is this?",
    "options": [
-    "Difference-in-differences design, comparing graduation trends before and after the exam was introduced",
-    "Instrumental variable design, using exam score to predict scholarship receipt indirectly",
     "Randomized controlled trial, since scholarship receipt was assigned without any student input",
-    "Regression discontinuity design, using the score cutoff as a near-random assignment"
+    "Difference-in-differences design, comparing graduation trends before and after the exam was introduced",
+    "Regression discontinuity design, using the score cutoff as a near-random assignment",
+    "Instrumental variable design, using exam score to predict scholarship receipt indirectly"
    ],
-   "answer": 3,
+   "answer": 2,
    "explanation": "Students scoring just above and below the cutoff are similar in ability, so the cutoff approximates random assignment near the threshold — the defining feature of regression discontinuity. It is not diff-in-diff, IV, or a true RCT, since treatment isn't literally randomized.",
    "grounding": {
     "source": "Regression discontinuity design (Wikipedia)",
@@ -261,12 +261,12 @@
    "concept": "colliders",
    "stem": "A hiring team only interviews candidates who have either an advanced degree or five or more years of experience. Among interviewed candidates, degree level and experience are negatively correlated, though unrelated in the full applicant pool. What explains this?",
    "options": [
-    "Meeting either criterion for interview creates a spurious link",
-    "A hidden confounder, such as industry norms, drives both traits",
     "Lacking a degree causes candidates to accumulate more experience",
-    "Being interviewed causes candidates' actual experience to decrease"
+    "Being interviewed causes candidates' actual experience to decrease",
+    "A hidden confounder, such as industry norms, drives both traits",
+    "Meeting either criterion for interview creates a spurious link"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Conditioning on being interviewed, which requires meeting at least one criterion, creates a collider. Among interviewed candidates, having one trait makes the other unnecessary, producing a spurious negative correlation without any real confounder or causal link.",
    "grounding": {
     "source": "Berkson's paradox (Wikipedia)",
@@ -280,12 +280,12 @@
    "concept": "instrumental-variables",
    "stem": "An economist studies whether military service affects later earnings, but who serves differs from who doesn't for unmeasured reasons like ambition. She uses randomly assigned draft lottery numbers as an instrument. Which condition must hold for the lottery number to be valid?",
    "options": [
-    "It must influence earnings only through its effect on service",
     "It must correlate strongly with unmeasured traits such as ambition or motivation",
+    "It must be chosen by each individual based on personal preference",
     "It must have a direct causal effect on a person's later earnings",
-    "It must be chosen by each individual based on personal preference"
+    "It must influence earnings only through its effect on service"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "This is the exclusion restriction: a valid instrument may shift the treatment but cannot affect the outcome through any other path. If the lottery correlated with ambition or earnings directly, it would fail to isolate the effect of service.",
    "grounding": {
     "source": "Instrumental variables estimation (Wikipedia)",
@@ -301,8 +301,8 @@
    "options": [
     "Filers cannot manipulate income to land on a preferred side of the cutoff",
     "The number of filers just below and above the cutoff must be equal",
-    "The audit rate must rise gradually across the income range instead of sharply",
-    "The agency must randomly assign each filer's income level before applying the rule"
+    "The agency must randomly assign each filer's income level before applying the rule",
+    "The audit rate must rise gradually across the income range instead of sharply"
    ],
    "answer": 0,
    "explanation": "Regression discontinuity requires that filers cannot manipulate their income to land on a preferred side of the cutoff, so units near the threshold stay comparable. The sharp jump in audit rate, not gradual change, identifies the effect; equal sample sizes on each side are not required.",
@@ -318,12 +318,12 @@
    "concept": "difference-in-differences",
    "stem": "A retailer launches a loyalty program in stores that were already growing faster than others before the launch. An analyst compares sales growth in loyalty-enrolled stores to non-enrolled stores before and after launch. Why is this diff-in-diff estimate likely biased?",
    "options": [
-    "Parallel trends fails since treated stores were already diverging beforehand",
     "The number of enrolled stores is too small for a reliable estimate",
     "Diff-in-differences requires random assignment of stores, which did not occur",
+    "Parallel trends fails since treated stores were already diverging beforehand",
     "Sales growth was recorded using inconsistent metrics across store groups"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "Diff-in-differences assumes treated and control groups would have followed parallel trends absent treatment. Since loyalty stores were already growing faster beforehand, this assumption is violated. Randomization is not required for diff-in-differences, so that is not the source of bias.",
    "grounding": {
     "source": "Difference in differences (Wikipedia)",
@@ -337,12 +337,12 @@
    "concept": "selection-bias",
    "stem": "An analyst studies the business practices of currently operating unicorn startups to identify factors behind their success, without examining startups that used similar practices but later failed. What problem does this introduce?",
    "options": [
-    "Survivorship bias, since failed firms with similar practices are excluded",
+    "Measurement bias, since surviving firms misreport their practices more than others",
     "Confounding bias, since profitability independently drives both practices and survival",
     "Reverse causation, since achieving success causes firms to adopt these practices",
-    "Measurement bias, since surviving firms misreport their practices more than others"
+    "Survivorship bias, since failed firms with similar practices are excluded"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Only studying surviving unicorns excludes failed firms that used the same practices, a classic case of survivorship bias, a form of selection bias. This can make certain practices look like drivers of success when they may be unrelated or even harmful.",
    "grounding": {
     "source": "Survivorship bias (Wikipedia)",
@@ -357,8 +357,8 @@
    "stem": "An analyst evaluates a wellness app's effect on productivity. Enrollment relates to an unmeasured trait, self-discipline; productivity relates to an unmeasured trait, job engagement. The analyst adjusts for a symptom score affected by both traits, hoping to control confounding. What happens?",
    "options": [
     "Adjusting for it creates a spurious link between enrollment and productivity",
-    "Adjusting for it fully removes confounding since it is directly measured",
     "Adjusting for it has no effect since both traits are unmeasured",
+    "Adjusting for it fully removes confounding since it is directly measured",
     "Adjusting for it corrects reverse causation between the app and productivity"
    ],
    "answer": 0,
@@ -375,12 +375,12 @@
    "concept": "instrumental-variables",
    "stem": "An economist uses an instrument that is only weakly correlated with schooling to estimate its effect on wages, though the instrument satisfies the exclusion restriction. Compared to a strong instrument, what problem primarily arises?",
    "options": [
+    "The exclusion restriction is automatically violated whenever an instrument is weak",
     "Small violations of the exclusion restriction get amplified into large bias",
     "The estimate is biased toward zero regardless of any assumptions made",
-    "The exclusion restriction is automatically violated whenever an instrument is weak",
     "The estimate becomes unbiased but needs a much smaller sample size"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "A weak instrument amplifies sensitivity to any exclusion-restriction violation and inflates the estimator's variance, unlike a simple bias toward zero; weakness alone does not violate the exclusion restriction.",
    "grounding": {
     "source": "Instrumental variables estimation (Wikipedia)",
@@ -394,12 +394,12 @@
    "concept": "difference-in-differences",
    "stem": "A retail chain rolls out a new checkout system across stores at different times over two years. An analyst runs one diff-in-diff regression using all stores, comparing each newly treated store to both untreated stores and stores treated earlier. Why can this bias the estimate?",
    "options": [
-    "Already-treated stores used as controls carry their own treatment effect",
     "Diff-in-differences cannot be estimated when more than two periods exist",
-    "The estimate is unbiased whenever treatment timing ignores store size",
-    "Untreated stores must always outnumber treated stores for this design"
+    "Already-treated stores used as controls carry their own treatment effect",
+    "Untreated stores must always outnumber treated stores for this design",
+    "The estimate is unbiased whenever treatment timing ignores store size"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "When already-treated stores serve as comparisons for newly treated ones, their own ongoing treatment effects contaminate the comparison, potentially biasing or reversing the sign of standard two-way fixed-effects diff-in-differences estimates.",
    "grounding": {
     "source": "Difference in differences (Wikipedia)",
@@ -413,12 +413,12 @@
    "concept": "regression-discontinuity",
    "stem": "A city gives housing subsidies to households scoring below a poverty index cutoff. A regression discontinuity analysis finds the subsidy raises employment for households near the cutoff. A policymaker concludes the subsidy would work identically for households far below the cutoff. Why is this weak?",
    "options": [
-    "The estimate applies locally near the cutoff, not necessarily elsewhere",
+    "Regression discontinuity results are valid only before implementation begins",
     "Regression discontinuity estimates apply uniformly across the entire population",
     "Regression discontinuity requires removing the cutoff before results apply",
-    "Regression discontinuity results are valid only before implementation begins"
+    "The estimate applies locally near the cutoff, not necessarily elsewhere"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "RDD identifies a local average effect for units near the cutoff, where treated and untreated households are comparable; extrapolating far from the threshold assumes the effect is uniform, which need not hold.",
    "grounding": {
     "source": "Regression discontinuity design (Wikipedia)",
@@ -433,9 +433,9 @@
    "stem": "In a randomized drug trial, some patients assigned to treatment never take the medication. An analyst instead compares outcomes between patients who actually took the drug and those who did not, ignoring original assignment. Why does this undermine the trial's causal validity?",
    "options": [
     "Adherence often relates to health, reintroducing confounding into the result",
-    "Randomization guarantees full adherence, so this comparison is unaffected",
+    "Non-compliance always exaggerates the drug's true measured benefit",
     "This comparison equals intention-to-treat and fully preserves randomization",
-    "Non-compliance always exaggerates the drug's true measured benefit"
+    "Randomization guarantees full adherence, so this comparison is unaffected"
    ],
    "answer": 0,
    "explanation": "Comparing by actual adherence rather than assignment breaks randomization, since healthier or more motivated patients often adhere more, reintroducing confounding — the reason intention-to-treat analysis is preferred over per-protocol comparisons.",

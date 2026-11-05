@@ -71,12 +71,12 @@
    "concept": "tokenization",
    "stem": "A tokenizer splits the sentence \"The café's menu costs $12.50.\" using only whitespace as the delimiter. What is the most likely result?",
    "options": [
-    "Each token is automatically converted to its dictionary base form (lemmatized)",
-    "Each token is automatically tagged with its part of speech",
+    "Named entities like monetary amounts are automatically merged into single labeled tokens",
     "Punctuation such as apostrophes and periods remains attached to adjacent tokens",
-    "Named entities like monetary amounts are automatically merged into single labeled tokens"
+    "Each token is automatically tagged with its part of speech",
+    "Each token is automatically converted to its dictionary base form (lemmatized)"
    ],
-   "answer": 2,
+   "answer": 1,
    "explanation": "Whitespace tokenizers split only where spaces occur, so punctuation attached to words or numbers is not separated. Lemmatizing, POS tagging, and entity merging are distinct downstream NLP steps, not part of basic tokenization.",
    "grounding": {
     "source": "Wikipedia: Tokenization (lexical analysis)",
@@ -91,11 +91,11 @@
    "stem": "In a TF-IDF weighting scheme applied to a large document collection, the word \"the\" receives a very low weight even though it appears many times in each document. Why?",
    "options": [
     "TF-IDF automatically removes all words shorter than five characters as noise",
-    "Its inverse document frequency nears zero from occurring in nearly every document",
+    "Its term frequency resets to zero whenever it appears in more than one sentence",
     "TF-IDF measures semantic meaning, and \"the\" is treated as having none",
-    "Its term frequency resets to zero whenever it appears in more than one sentence"
+    "Its inverse document frequency nears zero from occurring in nearly every document"
    ],
-   "answer": 1,
+   "answer": 3,
    "explanation": "IDF = log(N / document frequency), so a term appearing in almost every document has document frequency near N, driving IDF near zero and thus the overall TF-IDF weight near zero.",
    "grounding": {
     "source": "Manning, Raghavan, Schütze — Introduction to Information Retrieval",
@@ -111,10 +111,10 @@
    "options": [
     "They store each word's dictionary definition as a numerical hash value",
     "They encode alphabetical similarity between the words' spellings",
-    "They assign every word a unique one-hot vector based on its frequency rank",
-    "They are trained so words appearing in similar contexts get similar vectors"
+    "They are trained so words appearing in similar contexts get similar vectors",
+    "They assign every word a unique one-hot vector based on its frequency rank"
    ],
-   "answer": 3,
+   "answer": 2,
    "explanation": "Word2vec learns vectors from co-occurrence patterns within context windows, so words used in similar contexts get similar vectors, capturing distributional semantics rather than spelling or dictionary definitions.",
    "grounding": {
     "source": "Mikolov et al., \"Efficient Estimation of Word Representations in Vector Space\" (word2vec paper)",
@@ -128,12 +128,12 @@
    "concept": "named-entity-recognition",
    "stem": "A named entity recognition system processes the sentence \"Apple announced a new office in Paris.\" What is the primary task this component performs?",
    "options": [
+    "Compute the grammatical part of speech for each word in the sentence",
     "Determine whether the sentence expresses positive or negative sentiment",
     "Identify \"Apple\" as an organization and \"Paris\" as a location",
-    "Convert each word into a dense numerical vector representing its meaning",
-    "Compute the grammatical part of speech for each word in the sentence"
+    "Convert each word into a dense numerical vector representing its meaning"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "NER locates text spans and classifies them into predefined categories such as organization or location. Sentiment scoring, embedding generation, and POS tagging are separate NLP tasks that do not label entity types.",
    "grounding": {
     "source": "Jurafsky & Martin, Speech and Language Processing (NER chapter)",
@@ -147,9 +147,9 @@
    "concept": "sentiment-analysis-pitfalls",
    "stem": "A sentiment classifier trained on product reviews labels the sentence \"This is not bad at all\" as negative. What is the most likely cause of this error?",
    "options": [
-    "The training data contained no complete sentences, only sentence fragments",
-    "The model's vocabulary size exceeded what the architecture could support",
     "The review contains a named entity that the model failed to detect",
+    "The model's vocabulary size exceeded what the architecture could support",
+    "The training data contained no complete sentences, only sentence fragments",
     "The model overweights \"bad,\" missing the negation in \"not... at all\""
    ],
    "answer": 3,
@@ -166,12 +166,12 @@
    "concept": "semantic-similarity",
    "stem": "A search engine ranks documents using TF-IDF cosine similarity to the query \"car repair.\" It fails to surface a highly relevant document that instead uses the words \"automobile\" and \"maintenance\" throughout. What is the most likely explanation?",
    "options": [
-    "TF-IDF vectors ignore document length entirely, so long documents rank lower",
     "TF-IDF matches exact term overlap and cannot recognize synonyms with different wording",
-    "The document was excluded because it did not contain any named entities",
-    "Cosine similarity always favors the shortest document in the collection"
+    "Cosine similarity always favors the shortest document in the collection",
+    "TF-IDF vectors ignore document length entirely, so long documents rank lower",
+    "The document was excluded because it did not contain any named entities"
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "TF-IDF represents text by shared vocabulary, so synonyms sharing no exact words score near zero similarity. Embedding-based semantic similarity, by contrast, places synonyms close together because it captures meaning rather than literal wording.",
    "grounding": {
     "source": "Wikipedia: Semantic similarity",
@@ -185,12 +185,12 @@
    "concept": "text-classification-workflow",
    "stem": "A team builds a spam classifier by labeling emails, extracting numeric features, and training a model on most of the data. Before deployment, they measure accuracy on emails withheld from training. Why is this held-out check necessary?",
    "options": [
+    "It relabels any emails that were tagged incorrectly during collection",
     "It estimates how well the model generalizes to new, unseen emails",
     "It recalculates the TF-IDF weights so they match the training vocabulary exactly",
-    "It relabels any emails that were tagged incorrectly during collection",
     "It removes named entities that might bias the feature extraction step"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Performance on training data can look strong even when a model has merely memorized examples. A held-out test set approximates future, unseen inputs and reveals whether the model actually generalizes.",
    "grounding": {
     "source": "Wikipedia: Training, validation, and test data sets",
@@ -204,12 +204,12 @@
    "concept": "nlp-evaluation-metrics",
    "stem": "A spam classifier is evaluated on a test set where only 2% of emails are spam. Predicting every email as \"not spam\" achieves 98% accuracy. Why is accuracy a poor metric in this situation?",
    "options": [
-    "Accuracy cannot be computed when classes are imbalanced",
     "The high accuracy hides that the model never detects any spam",
+    "The 98% figure is inflated by mislabeled entities in the test set",
     "Accuracy is misleading here only because the test set is too small",
-    "The 98% figure is inflated by mislabeled entities in the test set"
+    "Accuracy cannot be computed when classes are imbalanced"
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "With severe class imbalance, a model that ignores the minority class can still post very high accuracy. Metrics like precision and recall on the spam class expose that no spam is ever actually caught.",
    "grounding": {
     "source": "Wikipedia: Precision and recall",
@@ -223,10 +223,10 @@
    "concept": "tokenization",
    "stem": "A subword tokenizer processes the rare word \"unhappiness\" by splitting it into \"un,\" \"happi,\" and \"ness\" rather than treating it as one unknown token. What is the main advantage of this approach?",
    "options": [
-    "It ensures each word maps to exactly one unique token in the vocabulary",
     "It removes the need for the model to learn any embeddings for common words",
+    "It automatically translates the word into its base dictionary form",
     "It lets the model represent rare or unseen words using familiar smaller pieces",
-    "It automatically translates the word into its base dictionary form"
+    "It ensures each word maps to exactly one unique token in the vocabulary"
    ],
    "answer": 2,
    "explanation": "Subword tokenization builds a vocabulary of frequent pieces, so rare or unseen words can be assembled from familiar fragments instead of becoming a single unknown token, reducing out-of-vocabulary problems.",
@@ -243,11 +243,11 @@
    "stem": "A sentiment model trained on movie reviews is applied to tweets about a smartphone and labels \"This phone's battery life is sick!\" as negative. What most likely caused this error?",
    "options": [
     "The model cannot process sentences containing punctuation marks",
-    "The model reads slang \"sick\" as negative instead of positive",
+    "The sentence exceeds the maximum token length the model can process",
     "The tweet contains an unrecognized named entity that confused the classifier",
-    "The sentence exceeds the maximum token length the model can process"
+    "The model reads slang \"sick\" as negative instead of positive"
    ],
-   "answer": 1,
+   "answer": 3,
    "explanation": "Word polarity can shift across domains and informal registers; \"sick\" is positive slang in casual speech but the model learned its literal negative sense from movie reviews, a common domain-shift pitfall.",
    "grounding": {
     "source": "Pang & Lee, \"Opinion Mining and Sentiment Analysis\" (survey)",
@@ -261,12 +261,12 @@
    "concept": "word-embeddings",
    "stem": "A static word embedding model assigns a single fixed vector to the word \"bank,\" used identically in both \"river bank\" and \"bank account\" contexts. What limitation does this illustrate?",
    "options": [
-    "The single vector represents only the most frequent sense of the word",
-    "The vector automatically shifts to reflect the surrounding sentence context",
     "A single vector cannot capture distinct senses of a polysemous word",
-    "The model stores a separate vector for each part of speech"
+    "The model stores a separate vector for each part of speech",
+    "The vector automatically shifts to reflect the surrounding sentence context",
+    "The single vector represents only the most frequent sense of the word"
    ],
-   "answer": 2,
+   "answer": 0,
    "explanation": "Static embeddings like word2vec or GloVe assign one fixed vector per word form regardless of context, blending all senses together. Only contextual embedding models (e.g., BERT) produce a different vector for each occurrence.",
    "grounding": {
     "source": "Wikipedia: Word embedding",
@@ -280,9 +280,9 @@
    "concept": "tfidf-vectorization",
    "stem": "A product review repeats the word \"excellent\" 40 times, while typical reviews use it once or twice. Using raw term frequency in TF-IDF would overweight this document. Which adjustment addresses this?",
    "options": [
-    "Removing \"excellent\" entirely from the vocabulary before vectorizing",
-    "Applying a logarithmic (sublinear) scaling to term frequency before weighting",
     "Increasing the inverse document frequency weight assigned to \"excellent\"",
+    "Applying a logarithmic (sublinear) scaling to term frequency before weighting",
+    "Removing \"excellent\" entirely from the vocabulary before vectorizing",
     "Normalizing every document to contain exactly the same word count"
    ],
    "answer": 1,
@@ -299,12 +299,12 @@
    "concept": "named-entity-recognition",
    "stem": "An NER system labels \"Washington\" as a PERSON in \"Washington crossed the Delaware\" and as a LOCATION in \"Washington received heavy snowfall.\" What allows the same string to receive different labels?",
    "options": [
-    "The system looks up the string in a fixed name-to-label dictionary",
     "The system relies only on capitalization to assign the entity type",
-    "The system uses surrounding words and sentence context to disambiguate the mention",
-    "The system assigns the majority label seen for that string during training"
+    "The system looks up the string in a fixed name-to-label dictionary",
+    "The system assigns the majority label seen for that string during training",
+    "The system uses surrounding words and sentence context to disambiguate the mention"
    ],
-   "answer": 2,
+   "answer": 3,
    "explanation": "NER models draw on contextual features from surrounding text, not just the surface string, so identical mentions can be classified differently depending on context. A fixed dictionary lookup or a majority-label baseline cannot capture this.",
    "grounding": {
     "source": "Jurafsky & Martin, Speech and Language Processing (NER chapter)",
@@ -318,12 +318,12 @@
    "concept": "text-classification-workflow",
    "stem": "A team fits a TF-IDF vectorizer on the entire dataset, including both training and test emails, before splitting the data and training a spam classifier. What problem does this create?",
    "options": [
+    "Cross-validation folds become imbalanced between spam and non-spam classes",
     "The vocabulary grows too large for the classifier to train efficiently",
     "Test set statistics leak into the vectorizer, inflating evaluation performance",
-    "The classifier overfits to frequent words appearing only in training emails",
-    "Cross-validation folds become imbalanced between spam and non-spam classes"
+    "The classifier overfits to frequent words appearing only in training emails"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "Fitting vocabulary and IDF weights on the full dataset lets information from the test set influence feature representation, a form of data leakage that makes held-out performance overly optimistic. Vocabulary size and overfitting are separate, unrelated concerns here.",
    "grounding": {
     "source": "Wikipedia: Leakage (machine learning)",
@@ -337,12 +337,12 @@
    "concept": "nlp-evaluation-metrics",
    "stem": "A 10-class text classifier reaches 92% overall accuracy, but one class makes up 85% of the test set. Macro-averaged F1 across the 10 classes is only 0.41. What does this gap most likely indicate?",
    "options": [
-    "The accuracy metric was computed incorrectly and should be recalculated",
     "The model performs poorly on several minority classes despite high overall accuracy",
-    "Macro-averaged F1 is invalid for any classification problem with more than two classes",
-    "The test set must be re-labeled because the two metrics disagree"
+    "The accuracy metric was computed incorrectly and should be recalculated",
+    "The test set must be re-labeled because the two metrics disagree",
+    "Macro-averaged F1 is invalid for any classification problem with more than two classes"
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "Accuracy is dominated by the majority class, while macro-F1 weights every class equally, so a low macro-F1 alongside high accuracy reveals weak performance on minority classes that accuracy alone conceals.",
    "grounding": {
     "source": "scikit-learn documentation: Precision, recall and F-measures",
@@ -356,12 +356,12 @@
    "concept": "tokenization",
    "stem": "A byte-pair encoding (BPE) tokenizer trained on English news text renders common words like 'the' as a single token but splits a rare technical term into five subword pieces. What causes this difference?",
    "options": [
-    "BPE iteratively merges the most frequent adjacent symbol pairs, so common words become single tokens while rare words stay fragmented",
     "BPE looks up each word in a fixed dictionary ranked by frequency, assigning whole-word tokens only to top-ranked entries",
-    "The tokenizer failed to recognize the rare term and defaulted to splitting it into individual characters as a fallback",
-    "BPE first applies stemming to reduce every word to its grammatical root before assigning any token boundaries"
+    "BPE first applies stemming to reduce every word to its grammatical root before assigning any token boundaries",
+    "BPE iteratively merges the most frequent adjacent symbol pairs, so common words become single tokens while rare words stay fragmented",
+    "The tokenizer failed to recognize the rare term and defaulted to splitting it into individual characters as a fallback"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "BPE builds its vocabulary by repeatedly merging the most frequent symbol pairs in training data, so frequent words end up as single merged tokens while rare words fall back to smaller, more common subunits.",
    "grounding": {
     "source": "Wikipedia: Byte-pair encoding",
@@ -394,12 +394,12 @@
    "concept": "named-entity-recognition",
    "stem": "An NER model tags each token independently as PERSON, ORG, or O, without marking entity start or continuation. Applied to 'New York Yankees played New York Mets,' what limitation does this labeling scheme have?",
    "options": [
-    "It cannot tell where one entity ends and the next begins when two same-type entities sit adjacent",
-    "It cannot detect entities spanning more than a single token, no matter what surrounding sentence context is available",
     "It cannot recognize organization names that happen to contain location words within the name",
-    "It cannot correctly label a multi-word entity unless every token within it is capitalized in the surrounding text"
+    "It cannot correctly label a multi-word entity unless every token within it is capitalized in the surrounding text",
+    "It cannot detect entities spanning more than a single token, no matter what surrounding sentence context is available",
+    "It cannot tell where one entity ends and the next begins when two same-type entities sit adjacent"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Without boundary markers like BIO tags, adjacent same-type entities merge into one ambiguous span, since plain type labels give no signal about where one entity stops and the next starts.",
    "grounding": {
     "source": "Wikipedia: Named-entity recognition",
@@ -413,12 +413,12 @@
    "concept": "nlp-evaluation-metrics",
    "stem": "A 5-class text classifier scores well on the majority class but poorly on four minority classes. Comparing micro-F1 and macro-F1 on the same test set, which metric better reveals the weak minority-class performance, and why?",
    "options": [
-    "Macro-F1, because it averages each class's F1 score equally, so low minority-class scores pull down the overall average",
     "Micro-F1, because it computes F1 separately per class before combining, giving extra weight to minority classes",
-    "Neither metric differs meaningfully, since micro-F1 and macro-F1 converge to the same value for any multi-class problem",
-    "Micro-F1, because it computes each class's F1 separately and reports the lowest score as the overall result"
+    "Macro-F1, because it averages each class's F1 score equally, so low minority-class scores pull down the overall average",
+    "Micro-F1, because it computes each class's F1 separately and reports the lowest score as the overall result",
+    "Neither metric differs meaningfully, since micro-F1 and macro-F1 converge to the same value for any multi-class problem"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Macro-F1 gives every class equal weight regardless of size, so poor minority-class scores directly lower the average; micro-F1 aggregates all predictions together and is dominated by the majority class's volume.",
    "grounding": {
     "source": "scikit-learn documentation: sklearn.metrics.f1_score",
@@ -432,12 +432,12 @@
    "concept": "text-classification-workflow",
    "stem": "A binary text classifier outputs probability scores, and the deployment use case requires minimizing missed positive cases even if more false positives result. What should the workflow do before deploying?",
    "options": [
+    "Raise the decision threshold above 0.5 to make the model more conservative before flagging any case as positive",
     "Lower the decision threshold below 0.5 to increase recall, then evaluate the tradeoff with precision-recall analysis instead of accuracy",
     "Retrain the model using only labeled positive-class examples so every prediction defaults to the positive class",
-    "Raise the decision threshold above 0.5 to make the model more conservative before flagging any case as positive",
     "Replace the evaluation metric with overall accuracy, since it directly reflects any change in decision threshold"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Lowering the threshold shifts the operating point toward higher recall at the cost of precision; this tradeoff should be assessed with precision-recall analysis, since accuracy is insensitive to threshold changes on imbalanced outcomes.",
    "grounding": {
     "source": "Wikipedia: Precision and recall",

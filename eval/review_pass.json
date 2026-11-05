@@ -30,171 +30,195 @@
   "verified": 148,
   "shipped": 148
  },
- "shipped_key_position": {
+ "verified_key_position": {
   "A": 415,
   "B": 120,
   "C": 74,
   "D": 36
  },
- "subtopics_with_majority_A": 22,
+ "shipped_key_position": {
+  "A": 165,
+  "B": 164,
+  "C": 158,
+  "D": 158
+ },
+ "max_share_one_position_in_a_subtopic": 0.28,
+ "subtopics_with_majority_A": 0,
  "subtopics": 29,
  "per_subtopic_key_position": {
   "ab-testing": {
-   "A": 20,
-   "B": 9,
-   "C": 1
+   "A": 8,
+   "B": 8,
+   "C": 7,
+   "D": 7
   },
   "advanced-sql": {
-   "A": 10,
-   "B": 4,
-   "C": 4,
-   "D": 2
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "bayesian-thinking": {
-   "A": 11,
-   "B": 4,
-   "C": 4,
-   "D": 1
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "business-metrics-kpis": {
-   "A": 15,
-   "B": 2,
-   "C": 3
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "causal-inference": {
-   "A": 15,
-   "B": 2,
-   "C": 1,
-   "D": 2
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "dashboards-bi": {
-   "A": 6,
-   "B": 6,
-   "C": 6,
-   "D": 2
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "data-storytelling": {
-   "A": 11,
-   "B": 4,
-   "C": 3,
-   "D": 2
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "deep-learning-basics": {
-   "A": 20
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "descriptive-stats": {
-   "A": 15,
-   "B": 7,
-   "C": 5,
-   "D": 3
+   "A": 8,
+   "B": 8,
+   "C": 7,
+   "D": 7
   },
   "experimental-design": {
-   "A": 15,
-   "B": 2,
-   "C": 2,
-   "D": 1
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "feature-engineering-data-prep": {
-   "A": 6,
-   "B": 7,
-   "C": 4,
-   "D": 3
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "financial-statements": {
-   "A": 14,
-   "B": 3,
-   "C": 2,
-   "D": 1
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "forecasting-basics": {
-   "A": 13,
+   "A": 5,
    "B": 5,
-   "C": 2
+   "C": 5,
+   "D": 5
   },
   "llm-prompting": {
-   "A": 20,
-   "B": 2,
-   "C": 3
+   "A": 7,
+   "B": 6,
+   "C": 6,
+   "D": 6
   },
   "ml-fundamentals": {
-   "A": 16,
-   "B": 11,
-   "C": 2,
-   "D": 1
+   "A": 8,
+   "B": 8,
+   "C": 7,
+   "D": 7
   },
   "model-evaluation": {
-   "A": 11,
-   "B": 2,
-   "C": 4,
-   "D": 3
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "nlp-basics": {
-   "A": 6,
-   "B": 8,
-   "C": 4,
-   "D": 2
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "portfolio-risk-return": {
-   "A": 6,
-   "B": 8,
-   "C": 3,
-   "D": 3
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "power-bi": {
-   "A": 20
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "probability-basics": {
-   "A": 15,
-   "B": 4,
-   "C": 1
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "python-for-data": {
-   "A": 22,
-   "B": 4,
-   "C": 3,
-   "D": 1
+   "A": 8,
+   "B": 8,
+   "C": 7,
+   "D": 7
   },
   "r-for-data": {
-   "A": 20
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "regression-basics": {
-   "A": 12,
+   "A": 5,
    "B": 5,
-   "C": 2,
-   "D": 1
+   "C": 5,
+   "D": 5
   },
   "spreadsheets": {
-   "A": 17,
-   "B": 5,
-   "C": 5,
-   "D": 3
+   "A": 8,
+   "B": 8,
+   "C": 7,
+   "D": 7
   },
   "sql-querying": {
-   "A": 20,
-   "B": 6,
-   "C": 2,
-   "D": 2
+   "A": 8,
+   "B": 8,
+   "C": 7,
+   "D": 7
   },
   "statistical-inference": {
-   "A": 16,
-   "B": 2,
-   "C": 1,
-   "D": 1
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "survey-design": {
-   "A": 15,
-   "B": 2,
-   "C": 2,
-   "D": 1
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "tableau": {
-   "A": 20
+   "A": 5,
+   "B": 5,
+   "C": 5,
+   "D": 5
   },
   "time-value-of-money": {
-   "A": 8,
-   "B": 6,
+   "A": 5,
+   "B": 5,
    "C": 5,
-   "D": 1
+   "D": 5
   }
  },
  "examples": {

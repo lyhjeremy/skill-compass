@@ -2,7 +2,7 @@
 
 A line on a résumé is a claim with no evidence behind it. SkillCompass turns each skill into a free two-minute check (one placement question and six more, Elo-scored, no sign-up), then uses an LLM to compare a résumé with a career track, run a mock interview and write a study guide, on a stack that costs $0 a month.
 
-Result, 4 November 2026: 645 questions are live across 29 subtopics, and an independent review pass rewrote 266 of the 645 drafts before they shipped (`eval/review_pass.json`). What it missed: 415 of the 645 stored answer keys (64%) are option A; since 4 November the app shuffles options on every showing. Percentiles are off while the free-tier Supabase project is paused.
+Result, 5 November 2026: 645 questions are live across 29 subtopics, and an independent review pass rewrote 266 of the 645 drafts before they shipped (`eval/review_pass.json`). What it missed: 415 of the 645 answer keys (64%) were option A as drafted; the app now shuffles options on every showing, and on 5 November `scripts/rebalance_keys.py` reordered the stored bank to 165, 164, 158 and 158 keys at A to D. Percentiles are off while the free-tier Supabase project is paused.
 
 [Live app (beta)](https://lyhjeremy.github.io/skill-compass/) · [Product overview](https://lyhjeremy.github.io/skill-compass/overview/) · [Build log](writeup.md)
 
@@ -84,11 +84,12 @@ The backend reads `SUPABASE_URL` and `SUPABASE_KEY` (percentiles) and `GEMINI_AP
 | `content/subtopics/` | The 29 live question banks with concept graphs |
 | `scripts/gen_questions.py` | Two-pass question generation: draft in difficulty bands, then adversarial verify |
 | `scripts/validate_content.py` | Schema and range checks on the banks |
+| `scripts/rebalance_keys.py` | Reorders each question's options so key positions are even per subtopic (fixed seed); applies `explanation_letter_fixes.json` first |
 | `.github/workflows/` | Pages deploy, Space deploy, keep-alive cron |
 
 ## Limitations
 
-The Supabase project is paused as of 2026-10-28, so percentiles and session logging are off; the checks themselves still run in the browser. Item ratings are LLM-estimated priors until response-based recalibration is built. Percentiles need 30 sessions per subtopic in a 90-day window, so most subtopics still show "early data". The resume report compares against each track's curriculum; with no job-postings corpus yet, it makes no claims about market demand. Only 29 of the 385 catalog subtopics are live, and the rest show as coming soon. 415 of the 645 stored keys are option A. Until 4 November the app showed options in stored order, so always picking A scored well above chance; it now shuffles them on every showing, and the stored keys still need rebalancing. The free tiers have their own limits, too: the Supabase project pauses after 7 days without activity, and Gemini calls are capped per day.
+The Supabase project is paused as of 2026-10-28, so percentiles and session logging are off; the checks themselves still run in the browser. Item ratings are LLM-estimated priors until response-based recalibration is built. Percentiles need 30 sessions per subtopic in a 90-day window, so most subtopics still show "early data". The resume report compares against each track's curriculum; with no job-postings corpus yet, it makes no claims about market demand. Only 29 of the 385 catalog subtopics are live, and the rest show as coming soon. As drafted, 415 of the 645 keys were option A. Until 4 November the app showed options in stored order, so always picking A scored well above chance. It now shuffles them on every showing, and since 5 November the stored order is balanced too (no letter holds more than 28% of any subtopic's keys); 31 explanations that named options by letter were rewritten to name them by content. The free tiers have their own limits, too: the Supabase project pauses after 7 days without activity, and Gemini calls are capped per day.
 
 ## License
 

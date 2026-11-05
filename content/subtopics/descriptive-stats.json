@@ -73,8 +73,8 @@
    "options": [
     "The mean, since it includes every data point",
     "The median, since extreme values do not shift it much",
-    "The standard deviation, since it shows variability in pay",
-    "The range, since it shows the spread between highest and lowest pay"
+    "The range, since it shows the spread between highest and lowest pay",
+    "The standard deviation, since it shows variability in pay"
    ],
    "answer": 1,
    "explanation": "The mean is pulled upward by high executive salaries in this right-skewed distribution, while the median reflects the middle value and resists outliers. Standard deviation and range describe spread, not typical value.",
@@ -90,12 +90,12 @@
    "concept": "standard-deviation",
    "stem": "Two factories produce bolts with the same mean diameter of 10 mm. Factory A's diameters have a standard deviation of 0.1 mm; Factory B's have a standard deviation of 0.5 mm. What does this indicate?",
    "options": [
-    "Factory A's bolts are more consistent than Factory B's",
-    "Factory B's bolts are more consistent than Factory A's",
     "Both factories are equally consistent since their means are equal",
-    "Standard deviation values cannot be meaningfully compared across factories"
+    "Standard deviation values cannot be meaningfully compared across factories",
+    "Factory B's bolts are more consistent than Factory A's",
+    "Factory A's bolts are more consistent than Factory B's"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "A lower standard deviation means less variation around the mean, so Factory A's bolt diameters are more tightly clustered and consistent than Factory B's, despite identical means.",
    "grounding": {
     "source": "Standard deviation (Wikipedia)",
@@ -110,8 +110,8 @@
    "stem": "On a hiring assessment, a candidate's score places them at the 90th percentile among all applicants who took the test. What does this indicate?",
    "options": [
     "The candidate scored higher than about 90% of applicants",
-    "The candidate answered 90% of the questions correctly",
     "The candidate's score equals 90% of the maximum possible score",
+    "The candidate answered 90% of the questions correctly",
     "The candidate is ranked 90th among all applicants"
    ],
    "answer": 0,
@@ -128,12 +128,12 @@
    "concept": "correlation-vs-causation",
    "stem": "A city report finds that months with higher ice cream sales also have higher drowning rates. A columnist concludes that eating ice cream causes drowning. What best explains the flaw in this reasoning?",
    "options": [
-    "Warm weather is a confounding variable behind both trends",
+    "Drowning incidents may have caused increased ice cream buying",
     "The correlation coefficient was miscalculated in the report",
-    "The number of months studied was too small",
-    "Drowning incidents may have caused increased ice cream buying"
+    "Warm weather is a confounding variable behind both trends",
+    "The number of months studied was too small"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "Warm weather independently drives both ice cream sales and swimming activity, a classic confounding variable; correlation does not imply causation, and no evidence supports drowning influencing ice cream purchases.",
    "grounding": {
     "source": "Correlation does not imply causation (Wikipedia)",
@@ -147,12 +147,12 @@
    "concept": "sampling-basics",
    "stem": "A company estimates overall customer satisfaction by surveying only customers who called its support hotline. What is the main limitation of this approach?",
    "options": [
-    "The sample overrepresents customers who experienced problems",
-    "The sample is representative since it includes many respondents",
     "The survey did not collect enough responses to be reliable",
+    "The sample is representative since it includes many respondents",
+    "The sample overrepresents customers who experienced problems",
     "Random sampling error explains any bias in the results"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "Customers who call support are disproportionately those with complaints, so the sample misrepresents the full customer base regardless of size; this is systematic selection bias, not random sampling error.",
    "grounding": {
     "source": "Sampling bias (Wikipedia)",
@@ -166,12 +166,12 @@
    "concept": "central-tendency",
    "stem": "A real estate report states the average (mean) home price in a neighborhood is $850,000, while the median price is $420,000. Which explanation best accounts for this large gap?",
    "options": [
-    "A few very expensive homes are skewing the distribution, pulling the mean upward.",
-    "The median was calculated incorrectly, since it should always equal the mean.",
     "Home prices in the neighborhood follow a symmetric, bell-shaped distribution.",
-    "One home's price was likely entered incorrectly, creating a data error."
+    "The median was calculated incorrectly, since it should always equal the mean.",
+    "One home's price was likely entered incorrectly, creating a data error.",
+    "A few very expensive homes are skewing the distribution, pulling the mean upward."
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Right-skewed data have a few very high values that pull the mean above the median; the mean is sensitive to outliers while the median is not. A large gap like this is a normal feature of skewed data, not necessarily an error.",
    "grounding": {
     "source": "Wikipedia: Skewness",
@@ -185,12 +185,12 @@
    "concept": "distribution-shape",
    "stem": "A histogram of customer call durations shows most calls clustered between 2 and 5 minutes, with a long tail extending toward 45 minutes. How would a statistician best describe this distribution?",
    "options": [
-    "Right-skewed (positively skewed), with a long tail toward higher values.",
     "Left-skewed (negatively skewed), with a long tail toward lower values.",
-    "Normally distributed, since most call durations cluster near the center.",
-    "Bimodal, since the data shows two distinct, equally sized peaks."
+    "Bimodal, since the data shows two distinct, equally sized peaks.",
+    "Right-skewed (positively skewed), with a long tail toward higher values.",
+    "Normally distributed, since most call durations cluster near the center."
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "A long tail toward higher values defines a right-skewed (positively skewed) distribution, which typically pulls the mean above the median. A symmetric or bimodal shape would not produce this single long tail.",
    "grounding": {
     "source": "Wikipedia: Skewness",
@@ -223,12 +223,12 @@
    "concept": "correlation",
    "stem": "A researcher finds a correlation coefficient of -0.85 between hours of sleep and reported stress levels. Which interpretation is correct?",
    "options": [
-    "There is a strong negative relationship: more sleep tends to accompany less stress.",
+    "About 85 percent of the variation in stress is explained by sleep.",
     "The variables are unrelated, since a negative sign shows no real pattern.",
-    "Sleep hours directly cause the observed reduction in stress levels.",
-    "About 85 percent of the variation in stress is explained by sleep."
+    "There is a strong negative relationship: more sleep tends to accompany less stress.",
+    "Sleep hours directly cause the observed reduction in stress levels."
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "A coefficient near -1 signals a strong negative linear relationship, not the absence of one. Correlation does not establish causation, and r (not r-squared) measures strength and direction; r-squared reflects variance explained.",
    "grounding": {
     "source": "Wikipedia: Pearson correlation coefficient",
@@ -242,12 +242,12 @@
    "concept": "misleading-summary-stats",
    "stem": "A shipping company advertises an average delivery time of 2 days based on all orders. A customer's package arrives in 9 days. Which additional statistic would best help customers understand the range of likely delivery times?",
    "options": [
-    "A measure of spread, such as standard deviation or a percentile range.",
-    "The median delivery time across all orders, replacing the mean entirely.",
     "The mode, or single most common delivery time among all orders.",
-    "A larger sample of orders, since more data always narrows the range."
+    "A larger sample of orders, since more data always narrows the range.",
+    "The median delivery time across all orders, replacing the mean entirely.",
+    "A measure of spread, such as standard deviation or a percentile range."
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "A single average hides variability; a standard deviation or percentile range shows how far individual delivery times typically spread, explaining outliers like 9 days. Switching to median, mode, or a larger sample size does not by itself reveal that spread.",
    "grounding": {
     "source": "Wikipedia: Descriptive statistics",
@@ -262,11 +262,11 @@
    "stem": "A right-skewed city income distribution has a few very high earners. A report states: mean household income rose 8% but median rose only 2%. Is it reasonable to conclude gains were concentrated among higher earners?",
    "options": [
     "No; the mean and median must always rise by the same percentage in any correctly reported dataset.",
-    "Yes, but only because the mean is always the more trustworthy measure of central tendency overall.",
     "Yes; a faster-rising mean than median in skewed data typically signals gains concentrated near the top.",
+    "Yes, but only because the mean is always the more trustworthy measure of central tendency overall.",
     "No; a faster-rising mean than median actually signals gains concentrated among the lowest earners instead."
    ],
-   "answer": 2,
+   "answer": 1,
    "explanation": "In skewed data, extreme values inflate the mean much more than the resistant median, so a mean rising faster signals gains concentrated in the upper tail — not a general property that the mean is more 'trustworthy.'",
    "grounding": {
     "source": "Wikipedia: Skewness",
@@ -280,12 +280,12 @@
    "concept": "distribution-shape",
    "stem": "A software company measures time-to-first-response for support tickets. A histogram shows two distinct peaks: one around 5 minutes (chat tickets) and another around 4 hours (email tickets). Which statement about this distribution is most accurate?",
    "options": [
-    "The distribution is uniform, so every response time between 5 minutes and 4 hours is equally likely.",
-    "The distribution is bimodal, so a single overall mean response time would misrepresent both ticket types.",
+    "The distribution is approximately normal, so about 68% of tickets fall within one standard deviation of the mean.",
     "The distribution is right-skewed, so the median falls below the mean for both ticket types combined.",
-    "The distribution is approximately normal, so about 68% of tickets fall within one standard deviation of the mean."
+    "The distribution is uniform, so every response time between 5 minutes and 4 hours is equally likely.",
+    "The distribution is bimodal, so a single overall mean response time would misrepresent both ticket types."
    ],
-   "answer": 1,
+   "answer": 3,
    "explanation": "Two separate peaks reveal two subpopulations (chat vs. email tickets), not a single skewed or normal curve, so one overall mean misrepresents both groups; each channel should be analyzed separately.",
    "grounding": {
     "source": "Wikipedia: Multimodal distribution",
@@ -299,8 +299,8 @@
    "concept": "percentiles",
    "stem": "A pediatric growth chart shows a child's height at the 25th percentile for their age group. A parent worries this means the child is shorter than average and something is wrong. What is the correct interpretation of this percentile?",
    "options": [
-    "The child's height measurement is exactly 25% below the average height for their age group.",
     "The child ranks in the bottom 25% of all children nationally, which does indicate a growth problem.",
+    "The child's height measurement is exactly 25% below the average height for their age group.",
     "The child's height score is 25 points below the median on a standardized 100-point scale.",
     "About 25% of children the same age are shorter, which is normal variation."
    ],
@@ -318,12 +318,12 @@
    "concept": "sampling-basics",
    "stem": "Two surveys estimate average weekly work hours in the same company. Survey A randomly samples 50 employees; Survey B randomly samples 800 employees, using an identical random sampling method. Which statement is most accurate?",
    "options": [
-    "Both surveys will produce identical sample means, since each uses genuinely random sampling from the population.",
     "Survey B's mean is likely closer to the true population mean, since larger samples reduce sampling error.",
+    "Both surveys will produce identical sample means, since each uses genuinely random sampling from the population.",
     "Survey A's sample mean is more reliable, since smaller samples are easier to collect without recording errors.",
     "Survey B's sample mean is guaranteed to exactly match the true population mean because of its larger size."
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "Larger random samples reduce sampling error and typically land closer to the true population value, but this is a tendency, not a guarantee of an exact match or identical results across samples.",
    "grounding": {
     "source": "Wikipedia: Sampling error",
@@ -338,11 +338,11 @@
    "stem": "A quality engineer calculates a correlation coefficient of 0.03 between oven temperature and defect rate, concluding there is no relationship. A scatterplot shows defects are low at moderate temperatures but rise sharply at both very low and very high temperatures. What does this reveal?",
    "options": [
     "The conclusion is correct, since a coefficient near zero always means the variables are unrelated.",
-    "The conclusion is flawed: a nonzero coefficient, however small, would still prove that temperature causes defects.",
     "The conclusion is flawed: correlation coefficients capture only linear association and can miss non-linear relationships.",
+    "The conclusion is flawed: a nonzero coefficient, however small, would still prove that temperature causes defects.",
     "The conclusion is correct, since a U-shaped scatterplot pattern confirms there is no relationship."
    ],
-   "answer": 2,
+   "answer": 1,
    "explanation": "Pearson's r captures only linear association, so a U-shaped pattern can still yield r≈0 despite a real effect. Also, a tiny nonzero r does not establish causation — correlation and causation are distinct.",
    "grounding": {
     "source": "Wikipedia: Pearson correlation coefficient",
@@ -356,12 +356,12 @@
    "concept": "distribution-shape",
    "stem": "A quality control analyst reports that a batch of measurements has a mean of 50.0 and a median of 50.0, exactly equal. She concludes the distribution must be symmetric. Is her conclusion valid?",
    "options": [
-    "Yes — mean and median can only be equal when a distribution is perfectly symmetric.",
     "No — equal mean and median doesn't guarantee symmetry; skewed data can coincide this way too.",
     "Yes — the equality only holds because the sample size is large enough to smooth out any skew.",
-    "No — equal mean and median indicates the data contains no meaningful outliers or extreme values."
+    "No — equal mean and median indicates the data contains no meaningful outliers or extreme values.",
+    "Yes — mean and median can only be equal when a distribution is perfectly symmetric."
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "Equal mean and median only shows two statistics coincide; it doesn't test shape. A skewed dataset can have offsetting extreme values, or a bimodal dataset can hide structure, so symmetry must be checked directly, e.g., via a histogram.",
    "grounding": {
     "source": "Wikipedia: Skewness",
@@ -376,11 +376,11 @@
    "stem": "A researcher studies household wealth, which is heavily right-skewed due to a few extremely wealthy households. She applies the empirical rule to claim about 95% of households fall within two standard deviations of the mean. What is the flaw in her reasoning?",
    "options": [
     "Standard deviation is undefined for right-skewed distributions so no percentage claim can be made at all.",
+    "The rule assumes an approximately normal distribution, so it doesn't reliably apply to skewed data.",
     "The empirical rule requires computing variance rather than standard deviation whenever a distribution is skewed.",
-    "Skewed distributions need three standard deviations instead of two to capture roughly 95% of values.",
-    "The rule assumes an approximately normal distribution, so it doesn't reliably apply to skewed data."
+    "Skewed distributions need three standard deviations instead of two to capture roughly 95% of values."
    ],
-   "answer": 3,
+   "answer": 1,
    "explanation": "The 68-95-99.7 empirical rule is derived from the normal distribution and assumes roughly symmetric, bell-shaped data. Heavily skewed distributions, like wealth data with extreme outliers, violate this assumption, so the rule's percentage guarantees do not hold.",
    "grounding": {
     "source": "Wikipedia: 68–95–99.7 rule",
@@ -394,12 +394,12 @@
    "concept": "percentiles",
    "stem": "A student scores at the 60th percentile on a standardized test in Grade 8, then again at the 60th percentile in Grade 10. A counselor concludes the student's actual skill level has not improved. What is wrong with this reasoning?",
    "options": [
-    "Percentile rank shows standing relative to peers that year, not absolute skill; growth may still occur.",
-    "The counselor is correct, since percentile rank directly measures a student's absolute skill level independent of peers.",
     "Percentile scores from different school years can never be compared to one another under any circumstances.",
-    "A given percentile corresponds to a completely different raw score each year, making any comparison meaningless."
+    "A given percentile corresponds to a completely different raw score each year, making any comparison meaningless.",
+    "Percentile rank shows standing relative to peers that year, not absolute skill; growth may still occur.",
+    "The counselor is correct, since percentile rank directly measures a student's absolute skill level independent of peers."
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "Percentile rank is defined relative to a specific comparison group, not as an absolute skill measure. If the peer group's performance shifts across years, a student's percentile can stay flat even while true skill changes.",
    "grounding": {
     "source": "Wikipedia: Percentile",
@@ -413,12 +413,12 @@
    "concept": "correlation-vs-causation",
    "stem": "A hospital finds patients who received vitamin D supplements during their stay recovered faster on average and concludes the supplement caused faster recovery. Physicians, however, were less likely to give the supplement to the most severely ill patients. What best explains the flaw?",
    "options": [
-    "The association is spurious because the sample size was too small to support any real conclusion.",
-    "Faster recovery caused physicians to prescribe the supplement more often, reversing the true direction of causation.",
     "Illness severity confounds the result: sicker patients got the supplement less often and recovered slower regardless.",
-    "Recovery time cannot be compared across patients unless it is first converted into percentile ranks."
+    "Recovery time cannot be compared across patients unless it is first converted into percentile ranks.",
+    "The association is spurious because the sample size was too small to support any real conclusion.",
+    "Faster recovery caused physicians to prescribe the supplement more often, reversing the true direction of causation."
    ],
-   "answer": 2,
+   "answer": 0,
    "explanation": "This is confounding by indication: illness severity affects both whether a patient receives the supplement and how fast they recover, creating a spurious association without the supplement itself causing faster recovery.",
    "grounding": {
     "source": "Wikipedia: Confounding",
@@ -432,12 +432,12 @@
    "concept": "misleading-summary-stats",
    "stem": "A university reports an overall admission rate of 45% for male applicants versus 35% for female applicants, suggesting bias. Yet within every individual department, women are admitted at an equal or higher rate than men. What explains this contradiction?",
    "options": [
-    "The department-level figures must contain an error, since they contradict the reported overall admission rate.",
     "Women applied more often to selective, lower-admission departments, pulling down their overall rate despite department-level parity.",
-    "Aggregated, overall statistics are always more trustworthy than disaggregated, department-level statistics for detecting bias.",
-    "This proves bias exists but is only visible when data is aggregated rather than broken out by department."
+    "This proves bias exists but is only visible when data is aggregated rather than broken out by department.",
+    "The department-level figures must contain an error, since they contradict the reported overall admission rate.",
+    "Aggregated, overall statistics are always more trustworthy than disaggregated, department-level statistics for detecting bias."
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "This is Simpson's Paradox: when women apply more to selective, lower-admission departments, the aggregate rate can look lower even though each department admits women at parity or better, reversing the apparent trend.",
    "grounding": {
     "source": "Wikipedia: Simpson's paradox",
@@ -451,12 +451,12 @@
    "concept": "distribution-shape",
    "stem": "A UX researcher records task completion times for 200 users and finds the distribution is bimodal, with clusters near 2 seconds and near 10 seconds, and an overall mean of 6 seconds. What does this mean best indicate?",
    "options": [
-    "It shows that most users complete the task in around six seconds",
     "It confirms that the underlying data follow a normal distribution",
-    "It falls between the clusters, representing neither group well",
-    "It predicts that the two clusters will converge as more users are sampled"
+    "It predicts that the two clusters will converge as more users are sampled",
+    "It shows that most users complete the task in around six seconds",
+    "It falls between the clusters, representing neither group well"
    ],
-   "answer": 2,
+   "answer": 3,
    "explanation": "In bimodal data, the mean often falls in a low-density gap between clusters, so it represents neither subgroup well; it neither implies normality nor predicts the clusters merging with more data.",
    "grounding": {
     "source": "Multimodal distribution (Wikipedia)",
@@ -470,12 +470,12 @@
    "concept": "standard-deviation",
    "stem": "An analyst compares Stock A (mean price $8, SD $2) with Stock B (mean price $400, SD $40) to decide which is riskier per dollar invested. Why is comparing the raw standard deviations directly misleading?",
    "options": [
-    "It can only be validly compared when both distributions are exactly normal",
-    "It requires that both stocks have identical historical sample sizes",
     "It scales with price level, so a relative measure is needed",
-    "It becomes mathematically undefined whenever prices exceed a few hundred dollars"
+    "It becomes mathematically undefined whenever prices exceed a few hundred dollars",
+    "It can only be validly compared when both distributions are exactly normal",
+    "It requires that both stocks have identical historical sample sizes"
    ],
-   "answer": 2,
+   "answer": 0,
    "explanation": "Standard deviation is expressed in the data's own units, so it grows with price level regardless of true relative risk; dividing by the mean (coefficient of variation) allows a fair comparison across scales.",
    "grounding": {
     "source": "Coefficient of variation (Wikipedia)",
@@ -489,12 +489,12 @@
    "concept": "percentiles",
    "stem": "A candidate scores at the 90th percentile on a verbal test and the 50th percentile on a math test. An assessor averages these two percentiles to report an overall 70th percentile score. Why is this invalid?",
    "options": [
+    "A 90th percentile always reflects a higher raw score than a 50th percentile",
     "The candidate actually performed below average overall, contradicting the 70th percentile",
     "Percentile ranks are ordinal and test-specific, so averaging them is not valid",
-    "Percentiles under the 50th mark should count more heavily than higher ones",
-    "A 90th percentile always reflects a higher raw score than a 50th percentile"
+    "Percentiles under the 50th mark should count more heavily than higher ones"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "Percentiles rank a score within its own test's distribution and are ordinal, not equal-interval, so averaging two percentiles from different tests doesn't produce a mathematically valid combined percentile.",
    "grounding": {
     "source": "Percentile (Wikipedia)",
@@ -509,11 +509,11 @@
    "stem": "A pollster quadruples the sample size from 400 to 1,600 respondents, expecting the margin of error to shrink to one-quarter of its original value. What actually happens to the margin of error?",
    "options": [
     "It shrinks to exactly one-quarter, matching the fourfold sample increase",
-    "It shrinks by roughly half, since error is proportional to 1/√n",
+    "It shrinks further only if sampling also switches to without-replacement",
     "It stays the same, since margin of error depends only on population size",
-    "It shrinks further only if sampling also switches to without-replacement"
+    "It shrinks by roughly half, since error is proportional to 1/√n"
    ],
-   "answer": 1,
+   "answer": 3,
    "explanation": "Margin of error is proportional to 1/√n. Quadrupling n multiplies the error by 1/√4 = 1/2, halving it rather than quartering it as linear intuition suggests.",
    "grounding": {
     "source": "Margin of error (Wikipedia)",
@@ -528,11 +528,11 @@
    "stem": "A retailer notices that larger, more established stores tend to have both more loyalty-program signups and higher profit margins. It invests heavily in signup drives at smaller stores, but their margins do not improve. What does this best suggest?",
    "options": [
     "Signups do cause higher margins, but the effect takes longer than the trial period",
+    "A confounding factor, like store size or maturity, likely drove both signups and margins",
     "The original correlation resulted from a data-entry error and should be recalculated",
-    "Higher margins directly cause more loyalty signups, so smaller stores were an inappropriate test group",
-    "A confounding factor, like store size or maturity, likely drove both signups and margins"
+    "Higher margins directly cause more loyalty signups, so smaller stores were an inappropriate test group"
    ],
-   "answer": 3,
+   "answer": 1,
    "explanation": "Since larger, established stores already had both traits, size or maturity is a plausible confounder; boosting signups alone at smaller stores failing to raise margins weakens the case for direct causation.",
    "grounding": {
     "source": "Confounding (Wikipedia)",
@@ -546,12 +546,12 @@
    "concept": "standard-deviation",
    "stem": "A logistics manager adds a flat $50 bonus to every employee's weekly paycheck to reflect a company-wide raise. Compared to the pay data before the bonus, the standard deviation of weekly pay afterward is...",
    "options": [
+    "Cannot be known without recalculating every employee's pay",
     "Unchanged, since adding a constant doesn't affect spread",
-    "Increased by exactly $50, matching the bonus amount",
     "Decreased by $50, since bonuses reduce pay variability",
-    "Cannot be known without recalculating every employee's pay"
+    "Increased by exactly $50, matching the bonus amount"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Adding a constant to every value shifts the mean but leaves each value's deviation from the mean unchanged, so standard deviation stays the same. Only multiplying values rescales the SD.",
    "grounding": {
     "source": "Variance (Wikipedia)",
@@ -565,12 +565,12 @@
    "concept": "distribution-shape",
    "stem": "A restaurant analyst studies tip percentages and finds the distribution has two distinct peaks, one near 10% and another near 20%, with very few tips falling near 15%. Reporting only the mean tip percentage would most likely...",
    "options": [
-    "Obscure that few customers actually tip near that value",
-    "Correctly represent the typical customer since means balance peaks",
     "Confirm the data follows a normal distribution",
-    "Show that tipping behavior is heavily right-skewed"
+    "Obscure that few customers actually tip near that value",
+    "Show that tipping behavior is heavily right-skewed",
+    "Correctly represent the typical customer since means balance peaks"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "In a bimodal distribution, the mean can fall in a low-density region between the two peaks, so it fails to describe any actual typical customer, unlike in a single-peaked distribution.",
    "grounding": {
     "source": "Multimodal distribution (Wikipedia)",
@@ -585,9 +585,9 @@
    "stem": "A runner finishes a marathon at the 70th percentile within her age group but only the 40th percentile among all runners regardless of age. This pattern most likely indicates that...",
    "options": [
     "Her age group was slower than the full field",
+    "She actually finished faster than her age group results suggest",
     "Her recorded finish time contains a measurement error",
-    "Percentiles cannot be compared across different reference groups",
-    "She actually finished faster than her age group results suggest"
+    "Percentiles cannot be compared across different reference groups"
    ],
    "answer": 0,
    "explanation": "Percentile rank depends entirely on the reference group used. If her age group ran slower overall, she ranks higher among peers but lower against the full field, with no error involved.",
@@ -603,12 +603,12 @@
    "concept": "sampling-basics",
    "stem": "To estimate the average commute time for a city's workforce, an analyst surveys everyone waiting at one downtown train platform between 8 and 9 a.m. This approach is problematic mainly because...",
    "options": [
-    "It overrepresents commuters using that mode at that hour",
-    "The sample size is too small to calculate a mean",
+    "The median should have been used instead of the mean",
     "Standard deviation cannot be computed from convenience samples",
-    "The median should have been used instead of the mean"
+    "It overrepresents commuters using that mode at that hour",
+    "The sample size is too small to calculate a mean"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "This is a convenience sample tied to one time, place, and transport mode, so it systematically excludes commuters with different schedules or modes — a selection bias, not a size or statistic-choice issue.",
    "grounding": {
     "source": "Selection bias (Wikipedia)",
@@ -622,12 +622,12 @@
    "concept": "correlation-vs-causation",
    "stem": "A survey finds that employees who take more vacation days report higher job satisfaction. A news article concludes that taking more vacation directly increases job satisfaction. Which explanation most challenges this conclusion?",
    "options": [
-    "Higher satisfaction may lead employees to take more vacation",
-    "The survey's sample size was too small to be meaningful",
     "The correlation coefficient reported was not statistically significant",
-    "Standard deviation of vacation days taken was unusually high"
+    "Higher satisfaction may lead employees to take more vacation",
+    "Standard deviation of vacation days taken was unusually high",
+    "The survey's sample size was too small to be meaningful"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "This describes reverse causation: job satisfaction, or a supportive employer behind it, may drive vacation access rather than vacation days causing the satisfaction — a classic correlation-causation confound.",
    "grounding": {
     "source": "Correlation does not imply causation (Wikipedia)",

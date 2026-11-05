@@ -71,12 +71,12 @@
    "concept": "vectors-data-frames",
    "stem": "An analyst creates a vector with c(1, 2, \"three\", 4) in R. What is the resulting class of every element in this vector?",
    "options": [
-    "Character, since coercion favors the most flexible type",
     "Numeric, because c() ignores the quoted string",
+    "Integer, because R stores mixed vectors as integers",
     "A list containing both numeric and character values",
-    "Integer, because R stores mixed vectors as integers"
+    "Character, since coercion favors the most flexible type"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "R vectors hold only one type; combining numeric and character values forces coercion to character, the most flexible type that can represent all elements.",
    "grounding": {
     "source": "Hadley Wickham, Advanced R: Vectors chapter",
@@ -90,13 +90,13 @@
    "concept": "na-handling",
    "stem": "A numeric column in a data frame contains one NA value. An analyst runs mean(df$sales) with no additional arguments. What is returned?",
    "options": [
-    "NA, because arithmetic involving NA propagates by default",
     "The mean of the non-missing values only",
-    "Zero, since R treats NA as zero in numeric calculations",
-    "An error stopping the function from executing"
+    "NA, because arithmetic involving NA propagates by default",
+    "An error stopping the function from executing",
+    "Zero, since R treats NA as zero in numeric calculations"
    ],
-   "answer": 0,
-   "explanation": "mean() propagates NA unless na.rm = TRUE is set; option B describes the behavior only after adding that argument.",
+   "answer": 1,
+   "explanation": "mean() propagates NA unless na.rm = TRUE is set; the mean of the non-missing values is what you get only after adding that argument.",
    "grounding": {
     "source": "R documentation: mean()",
     "note": "Base R help page states na.rm defaults to FALSE, so missing values propagate."
@@ -109,13 +109,13 @@
    "concept": "dplyr-filter-select",
    "stem": "In dplyr, an analyst writes filter(df, region == \"West\", sales > 100). How does R combine these two conditions?",
    "options": [
-    "With logical AND, keeping rows where both conditions are true",
     "With logical OR, keeping rows where either condition is true",
     "Sequentially, applying only the second condition to remaining rows",
-    "As separate outputs, returning two data frames"
+    "As separate outputs, returning two data frames",
+    "With logical AND, keeping rows where both conditions are true"
    ],
-   "answer": 0,
-   "explanation": "Comma-separated arguments to filter() are combined with AND; option B confuses this with OR logic, which requires the | operator instead.",
+   "answer": 3,
+   "explanation": "Comma-separated arguments to filter() are combined with AND; keeping rows where either condition is true would be OR logic, which requires the | operator instead.",
    "grounding": {
     "source": "dplyr documentation: filter()",
     "note": "Documents that multiple conditions passed as separate arguments are combined with &."
@@ -128,13 +128,13 @@
    "concept": "group-by-summarise",
    "stem": "An analyst runs df %>% group_by(department) %>% summarise(avg_pay = mean(pay)). How many rows appear in the result if there are 5 distinct departments?",
    "options": [
+    "5 rows plus one additional total row",
     "5 rows, one summary row per department",
-    "The same number of rows as the original data frame",
     "1 row containing the overall average across all departments",
-    "5 rows plus one additional total row"
+    "The same number of rows as the original data frame"
    ],
-   "answer": 0,
-   "explanation": "summarise() collapses each group to a single row, so 5 departments yield 5 rows; option B confuses this with mutate(), which preserves the original row count.",
+   "answer": 1,
+   "explanation": "summarise() collapses each group to a single row, so 5 departments yield 5 rows; keeping the original row count is what mutate() does.",
    "grounding": {
     "source": "dplyr documentation: summarise()",
     "note": "States that summarise returns one row for each combination of grouping variables."
@@ -147,12 +147,12 @@
    "concept": "ggplot2-grammar",
    "stem": "An analyst writes ggplot(df, aes(x = height, y = weight, color = \"blue\")) + geom_point(). What actually happens to the point colors?",
    "options": [
-    "Points are mapped to a single-category color scale labeled \"blue\"",
     "All points are rendered in blue, matching the string literal",
+    "Points are colored by height, since color defaults to the x variable",
     "The plot fails to render because color cannot be a string",
-    "Points are colored by height, since color defaults to the x variable"
+    "Points are mapped to a single-category color scale labeled \"blue\""
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Placing color = \"blue\" inside aes() treats it as a variable mapping, producing a single-category legend rather than a fixed color; setting color outside aes() would give blue points.",
    "grounding": {
     "source": "ggplot2 documentation: aes()",
@@ -167,9 +167,9 @@
    "stem": "An analyst imports survey data where a satisfaction column contains values Low, Medium, and High stored as a factor. They run mean(df$satisfaction) directly. What happens?",
    "options": [
     "R returns NA with a warning, since factors are not treated as numeric",
-    "R computes the mean using the underlying integer codes for each factor level",
+    "R throws an error immediately, halting execution before any output is produced",
     "R automatically converts the level labels to numbers before computing the average",
-    "R throws an error immediately, halting execution before any output is produced"
+    "R computes the mean using the underlying integer codes for each factor level"
    ],
    "answer": 0,
    "explanation": "mean() on a factor issues a warning that the argument is not numeric or logical and returns NA; it does not silently average the internal integer codes.",
@@ -186,9 +186,9 @@
    "stem": "An analyst writes df %>% lm(y ~ x, data = .) to fit a regression using the pipe operator. Why is the data = . argument needed here?",
    "options": [
     "The pipe defaults to the first argument; the dot moves df to data",
-    "lm() cannot accept a data frame passed through the pipe under any circumstance",
     "The pipe operator requires a dot placeholder in every function call it is used in",
-    "Writing data = . converts df into a formula object before the model is fit"
+    "Writing data = . converts df into a formula object before the model is fit",
+    "lm() cannot accept a data frame passed through the pipe under any circumstance"
    ],
    "answer": 0,
    "explanation": "By default %>% inserts the left-hand value as the first argument; lm() expects a formula first and data second, so the dot explicitly places df in the data argument.",
@@ -204,13 +204,13 @@
    "concept": "dplyr-mutate",
    "stem": "An analyst runs df %>% mutate(bonus = ifelse(sales > 1000, 0.1 * sales, 0)). What does this add to the resulting data frame?",
    "options": [
-    "A new column bonus with a computed value for every row, based on the condition",
+    "An error, since mutate() cannot evaluate conditional logic such as ifelse()",
     "A single bonus value appended as one extra row at the bottom of the data",
-    "A filtered data frame keeping only rows where sales exceed 1000",
-    "An error, since mutate() cannot evaluate conditional logic such as ifelse()"
+    "A new column bonus with a computed value for every row, based on the condition",
+    "A filtered data frame keeping only rows where sales exceed 1000"
    ],
-   "answer": 0,
-   "explanation": "mutate() adds a column computed row-by-row for the full data frame; option C confuses this with filter(), which removes rows instead of adding a column.",
+   "answer": 2,
+   "explanation": "mutate() adds a column computed row-by-row for the full data frame; keeping only rows where sales exceed 1000 is what filter() does, which removes rows instead of adding a column.",
    "grounding": {
     "source": "dplyr documentation: mutate()",
     "note": "States that mutate() adds new columns while preserving all existing rows, computed per row using the supplied expression."
@@ -223,12 +223,12 @@
    "concept": "vectors-data-frames",
    "stem": "An analyst runs df$total <- df$price * df$quantity, where price has 10 values and quantity has 5 values. What happens under R's recycling rule?",
    "options": [
-    "R recycles quantity to match price's length, since 10 divides evenly by 5",
-    "R throws an error immediately because the two vectors have different lengths",
     "R truncates price down to the first five values before multiplying",
-    "R fills the remaining values in quantity with NA once it is exhausted"
+    "R fills the remaining values in quantity with NA once it is exhausted",
+    "R throws an error immediately because the two vectors have different lengths",
+    "R recycles quantity to match price's length, since 10 divides evenly by 5"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "R's recycling rule repeats the shorter vector without a warning when its length divides evenly into the longer one; a warning only appears when it does not divide evenly.",
    "grounding": {
     "source": "CRAN: An Introduction to R, section on vector arithmetic",
@@ -243,12 +243,12 @@
    "stem": "An analyst runs df %>% group_by(region) %>% mutate(region_avg = mean(sales)). How does this differ from replacing mutate() with summarise() in the same pipeline?",
    "options": [
     "mutate() adds region_avg to every row; summarise() collapses each region into one row",
-    "mutate() collapses each region to one summary row; summarise() keeps every row intact",
+    "mutate() ignores the grouping and calculates one overall average across all rows",
     "Both functions produce identical output once the data has been grouped by region",
-    "mutate() ignores the grouping and calculates one overall average across all rows"
+    "mutate() collapses each region to one summary row; summarise() keeps every row intact"
    ],
    "answer": 0,
-   "explanation": "Grouped mutate() computes region_avg per group but retains all original rows, while summarise() reduces each group to a single output row; option B reverses these behaviors.",
+   "explanation": "Grouped mutate() computes region_avg per group but retains all original rows, while summarise() reduces each group to a single output row; the option that has mutate() collapsing and summarise() keeping rows reverses these behaviors.",
    "grounding": {
     "source": "dplyr documentation: group_by()",
     "note": "Explains that grouped mutate() preserves row count while grouped summarise() returns one row per group."
@@ -261,12 +261,12 @@
    "concept": "vectors-data-frames",
    "stem": "An analyst runs a <- c(10, 20, 30); b <- c(1, 2); then computes a + b in R. What is the result?",
    "options": [
-    "c(11, 22, 31), along with a warning about mismatched vector lengths",
-    "An error stopping execution because the vectors have different lengths",
+    "c(11, 22), with the extra element silently dropped",
     "c(11, 22, NA), with the unmatched element filled in as missing",
-    "c(11, 22), with the extra element silently dropped"
+    "c(11, 22, 31), along with a warning about mismatched vector lengths",
+    "An error stopping execution because the vectors have different lengths"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "R recycles the shorter vector b to match a's length, cycling 1, 2, 1. Since 3 is not a multiple of 2, R issues a warning but still returns a full-length result rather than an error or NA.",
    "grounding": {
     "source": "R Language Definition",
@@ -280,12 +280,12 @@
    "concept": "na-handling",
    "stem": "A data frame df has a column score containing some NA values. An analyst runs filter(df, score == NA) to find the missing rows. What does this return?",
    "options": [
-    "An empty data frame, since comparisons with NA return NA, not TRUE",
     "All rows where score is missing, since == NA matches missing values",
-    "An error, because R does not allow == comparisons with NA",
-    "All rows of df, since NA is treated as matching everything"
+    "All rows of df, since NA is treated as matching everything",
+    "An empty data frame, since comparisons with NA return NA, not TRUE",
+    "An error, because R does not allow == comparisons with NA"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "Any comparison to NA yields NA, not TRUE or FALSE, and filter() only retains rows where the condition is TRUE. Finding missing values requires is.na(score) instead of == NA.",
    "grounding": {
     "source": "R documentation, ?NA and ?Comparison",
@@ -299,12 +299,12 @@
    "concept": "factors",
    "stem": "An analyst builds x <- factor(c(\"10\", \"20\", \"30\")) and runs as.numeric(x) to recover the original numbers. What is returned?",
    "options": [
-    "c(1, 2, 3), the factor's internal integer codes",
     "c(10, 20, 30), the original numeric values recovered",
     "c(NA, NA, NA), since factors cannot convert to numeric",
+    "c(1, 2, 3), the factor's internal integer codes",
     "c(\"10\", \"20\", \"30\"), unchanged as character text values"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "as.numeric() on a factor returns the underlying integer level codes, not the printed labels. Recovering the original numbers requires as.numeric(as.character(x)) instead.",
    "grounding": {
     "source": "R documentation, ?factor",
@@ -319,8 +319,8 @@
    "stem": "An analyst runs df2 <- df %>% mutate(x = x * 2) %>% filter(x > 10). After this line executes, what is true of the original object df?",
    "options": [
     "df is unchanged, since the pipe assigns its result only to df2",
-    "df now has an added x column, doubled in place",
     "df is reduced to only rows where x is greater than 10",
+    "df now has an added x column, doubled in place",
     "df and df2 become linked, so later changes to df2 also affect df"
    ],
    "answer": 0,
@@ -337,12 +337,12 @@
    "concept": "ggplot2-grammar",
    "stem": "A data frame has one row per region with a column total_sales already summed. An analyst runs ggplot(df, aes(x = region, y = total_sales)) + geom_bar(). What do the resulting bar heights show?",
    "options": [
+    "An error, since geom_bar cannot accept a y aesthetic",
     "The count of rows per region, not the total_sales values",
     "The total_sales values, exactly as mapped in the aes() call",
-    "The average of total_sales values within each region",
-    "An error, since geom_bar cannot accept a y aesthetic"
+    "The average of total_sales values within each region"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "geom_bar()'s default stat is \"count\", which tallies rows per x value regardless of any y mapping. Plotting total_sales directly requires stat = \"identity\" or geom_col().",
    "grounding": {
     "source": "ggplot2 documentation, geom_bar",
@@ -356,12 +356,12 @@
    "concept": "vectors-data-frames",
    "stem": "An analyst runs summary_df <- df[, 'sales'] on a data frame with multiple columns, expecting a one-column data frame. Instead, the result prints without column headers. Why?",
    "options": [
-    "Single-bracket indexing with one column name drops to a vector by default",
-    "The column name must be quoted with backticks, not quotes",
+    "df[, 'sales'] always returns a list, and lists never print column headers",
     "R automatically converts the selected column to a factor, and factors print without column headers",
-    "df[, 'sales'] always returns a list, and lists never print column headers"
+    "The column name must be quoted with backticks, not quotes",
+    "Single-bracket indexing with one column name drops to a vector by default"
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "By default, `[` drops to a plain vector when subsetting a data frame to a single column; this is unrelated to quoting style or factor conversion. Use drop = FALSE or df['sales'] to keep a one-column data frame.",
    "grounding": {
     "source": "R documentation for `[.data.frame` (Extract)",
@@ -375,12 +375,12 @@
    "concept": "na-handling",
    "stem": "A data frame df has some NA values in column x. An analyst runs filter(df, x == NA) intending to keep rows where x is missing. What is the result?",
    "options": [
+    "All rows are returned, including those where x is not missing",
     "Zero rows are returned, because comparisons with NA evaluate to NA, not TRUE",
     "All rows with NA in x are returned, since dplyr treats == NA as a missing-value test",
-    "An error is raised because NA cannot appear on the right side of ==",
-    "All rows are returned, including those where x is not missing"
+    "An error is raised because NA cannot appear on the right side of =="
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Any comparison involving NA, including x == NA, evaluates to NA rather than TRUE or FALSE, and filter() only keeps rows where the condition is TRUE. is.na(x) is needed to test for missingness.",
    "grounding": {
     "source": "R documentation, 'Comparison' operators help page",
@@ -394,12 +394,12 @@
    "concept": "factors",
    "stem": "An analyst creates satisfaction <- factor(c('Medium','Low','High','Low')) without specifying levels, then plots it. The bars appear in the order High, Low, Medium. Why?",
    "options": [
-    "factor() sorts levels alphabetically by default, not by any logical order",
+    "ggplot2 sorts categorical axes alphabetically, independent of any factor level order",
     "ggplot2 always sorts bars by descending frequency",
-    "factor() orders levels by the order values first appear in the vector",
-    "ggplot2 sorts categorical axes alphabetically, independent of any factor level order"
+    "factor() sorts levels alphabetically by default, not by any logical order",
+    "factor() orders levels by the order values first appear in the vector"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "Without an explicit levels argument, factor() assigns levels alphabetically by default, which is why High sorts before Low and Medium. ggplot2 uses the factor's level order for the axis; it does not independently sort alphabetically or by frequency.",
    "grounding": {
     "source": "R documentation for the factor() function",
@@ -413,12 +413,12 @@
    "concept": "pipes",
    "stem": "An analyst runs df %>% aggregate(x ~ group), expecting df to fill the data argument of aggregate(). The call throws an error. What is the issue?",
    "options": [
-    "The pipe inserts df into aggregate()'s first argument slot, displacing the data argument",
     "The pipe automatically matches df to aggregate()'s data argument by name, regardless of position",
+    "The pipe inserts df into aggregate()'s first argument slot, displacing the data argument",
     "aggregate() cannot be used together with the pipe operator under any circumstance",
     "The formula x ~ group must be wrapped in quotes before it can be piped"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "The pipe always inserts the left-hand side into the first argument position, not by matching argument names. Since aggregate()'s first argument is not data, df lands in the wrong slot. Use data = . to place it correctly.",
    "grounding": {
     "source": "R for Data Science (Wickham & Grolemund), chapter on pipes",
@@ -433,9 +433,9 @@
    "stem": "A data frame has one row per product with a column total_units already summed. An analyst plots ggplot(df, aes(x = product, y = total_units)) + geom_bar(). The bar heights are wrong. Why?",
    "options": [
     "geom_bar() by default counts rows per x value, ignoring the y values",
-    "geom_bar() requires the data to be sorted by y before plotting",
     "geom_bar() can only plot categorical variables, not numeric totals",
-    "geom_bar() automatically log-transforms the y axis for count-like data"
+    "geom_bar() automatically log-transforms the y axis for count-like data",
+    "geom_bar() requires the data to be sorted by y before plotting"
    ],
    "answer": 0,
    "explanation": "geom_bar()'s default stat is 'count', which tallies rows per x category rather than plotting the supplied y values. geom_col(), or stat = 'identity', should be used for pre-summarized data.",

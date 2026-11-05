@@ -8,7 +8,9 @@ paired by position within a batch (the concept ids match on every pair).
 
 Also checks two properties of the shipped banks that a test-taker could exploit:
 how often the correct option is the uniquely longest one, and which letter holds
-the key (the app shows options in stored order).
+the key. The verified files keep the order the model wrote (415 of 645 keys at A);
+scripts/rebalance_keys.py reordered the shipped banks on 2026-11-05, so both
+distributions are reported. The app also shuffles options on every showing.
 
     python3 eval/review_pass.py     # writes eval/review_pass.json
 """
@@ -71,6 +73,7 @@ def main():
         for q in json.load(open(f))["items"]:
             shipped.append((f.stem, q))
     key_pos = collections.Counter("ABCD"[q["answer"]] for _, q in shipped)
+    written_pos = collections.Counter("ABCD"[b["answer"]] for _, _, b in pairs)
     per_sub = collections.defaultdict(collections.Counter)
     for s, q in shipped:
         per_sub[s]["ABCD"[q["answer"]]] += 1
@@ -88,7 +91,9 @@ def main():
         "longest_option_is_key": {"draft": sum(longest_is_key(a) for _, a, _ in pairs),
                                   "verified": sum(longest_is_key(b) for _, _, b in pairs),
                                   "shipped": sum(longest_is_key(q) for _, q in shipped)},
+        "verified_key_position": dict(sorted(written_pos.items())),
         "shipped_key_position": dict(sorted(key_pos.items())),
+        "max_share_one_position_in_a_subtopic": round(max(max(c.values()) / sum(c.values()) for c in per_sub.values()), 3),
         "subtopics_with_majority_A": sum(c["A"] * 2 > sum(c.values()) for c in per_sub.values()),
         "subtopics": len(per_sub),
         "per_subtopic_key_position": {s: dict(sorted(c.items())) for s, c in sorted(per_sub.items())},

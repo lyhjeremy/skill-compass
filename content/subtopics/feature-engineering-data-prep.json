@@ -71,12 +71,12 @@
    "concept": "missing-value-handling",
    "stem": "A dataset has a column 'income' with 15% missing values, and missingness is correlated with age (older respondents skip the question more often). What is the most appropriate way to handle this before training a model?",
    "options": [
+    "Replace every missing income value with zero to keep all rows.",
     "Impute values using correlated features and flag missingness with an indicator.",
-    "Drop every row in the dataset that has a missing income value.",
     "Fill all missing income values with the column's overall mean value.",
-    "Replace every missing income value with zero to keep all rows."
+    "Drop every row in the dataset that has a missing income value."
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Since missingness depends on age rather than occurring randomly, mean or zero imputation would bias the income distribution; imputing from correlated features plus an indicator flag preserves the missingness signal without discarding rows.",
    "grounding": {
     "source": "scikit-learn documentation: Imputation of missing values",
@@ -91,9 +91,9 @@
    "stem": "A dataset of house prices includes a few entries with a sale price of $50 million, far above the rest of the market (typical range $100k-$2M), likely due to a data entry error. What is the best treatment before modeling with linear regression?",
    "options": [
     "Leave the values unchanged, since removing data points always reduces model accuracy.",
-    "Standardize the column with z-score scaling so outliers automatically shrink in effect.",
+    "Cap the extreme values at a preset percentile without investigating their cause.",
     "Investigate the extreme values, then correct or remove any that are errors.",
-    "Cap the extreme values at a preset percentile without investigating their cause."
+    "Standardize the column with z-score scaling so outliers automatically shrink in effect."
    ],
    "answer": 2,
    "explanation": "The extreme values are likely data-entry errors, so investigating and correcting or removing them addresses the root cause; scaling or percentile capping without investigation only mask the outlier's effect rather than fixing the underlying data error.",
@@ -109,10 +109,10 @@
    "concept": "one-hot-vs-label-encoding",
    "stem": "A dataset has a categorical column 'city' with five unlabeled, non-ordinal categories such as Paris, Tokyo, and Cairo. Which encoding is most appropriate for a linear regression model, avoiding both an arbitrary numeric order and use of the target variable?",
    "options": [
-    "Label encoding, mapping each city to a single integer value.",
-    "One-hot encoding, creating a separate binary column for each city.",
     "Ordinal encoding, ranking the cities by population from low to high.",
-    "Target encoding, replacing each city with its average target value."
+    "One-hot encoding, creating a separate binary column for each city.",
+    "Target encoding, replacing each city with its average target value.",
+    "Label encoding, mapping each city to a single integer value."
    ],
    "answer": 1,
    "explanation": "One-hot encoding assigns independent binary columns with no implied order and does not use the target; label and ordinal encoding impose a numeric sequence a linear model treats as meaningful, while target encoding uses target values and risks leakage.",
@@ -128,12 +128,12 @@
    "concept": "target-leakage",
    "stem": "A team predicts whether a loan applicant will default, and one candidate feature is 'days_late_on_first_payment', which is only recorded after the loan is issued and payments begin. What is the main problem with including this feature?",
    "options": [
-    "It is redundant with other payment-history features already in the model.",
-    "It has too many missing values to be useful for training.",
     "It is measured on a different numeric scale than the other features.",
-    "It uses information not available at prediction time, which causes leakage."
+    "It uses information not available at prediction time, which causes leakage.",
+    "It has too many missing values to be useful for training.",
+    "It is redundant with other payment-history features already in the model."
    ],
-   "answer": 3,
+   "answer": 1,
    "explanation": "Because this value is only known after the loan is issued, training on it lets the model see information unavailable at prediction time, inflating validation performance without generalizing to real-world use; the other options describe unrelated data issues.",
    "grounding": {
     "source": "Wikipedia: Leakage (machine learning)",
@@ -147,12 +147,12 @@
    "concept": "class-imbalance-handling",
    "stem": "A fraud detection dataset is 99.5% legitimate transactions and 0.5% fraudulent. A model that predicts every transaction as legitimate achieves 99.5% accuracy. What is the most appropriate next step for evaluating this model?",
    "options": [
+    "Exclude fraud transactions from training since they are too rare to model.",
     "Use evaluation metrics such as precision, recall, or F1-score, not just accuracy.",
     "Report the 99.5% accuracy figure as the model's final performance result.",
-    "Increase the number of legitimate transactions to make the dataset larger still.",
-    "Exclude fraud transactions from training since they are too rare to model."
+    "Increase the number of legitimate transactions to make the dataset larger still."
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "With 99.5% of transactions legitimate, predicting only the majority class yields high accuracy while catching zero fraud; precision, recall, and F1-score reveal this failure on the minority class that actually matters, unlike accuracy alone.",
    "grounding": {
     "source": "Wikipedia: Accuracy paradox",
@@ -166,12 +166,12 @@
    "concept": "missing-value-handling",
    "stem": "An IoT platform collects temperature readings every minute from field sensors. About 4% of readings are missing because of brief network dropouts that occur independently of the actual temperature value. Which imputation strategy is most appropriate?",
    "options": [
+    "Replace missing readings with a constant value such as zero to preserve row count.",
     "Delete every row with a missing reading, since imputation would distort the analysis unnecessarily.",
     "Interpolate from neighboring readings, since the dropouts are unrelated to the true value.",
-    "Replace missing readings with a constant value such as zero to preserve row count.",
     "Replace missing readings with the overall average temperature across all sensors and times."
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "Dropouts here are unrelated to the temperature itself, so time-based interpolation preserves valid data without bias. Deleting rows wastes usable data, zero-filling creates unrealistic readings, and a global average ignores daily temperature cycles at the missing timestamp.",
    "grounding": {
     "source": "Wikipedia: Missing data",
@@ -185,12 +185,12 @@
    "concept": "categorical-encoding",
    "stem": "A retail dataset includes a 'zip_code' column with over 30,000 unique values, most appearing only a handful of times. One-hot encoding this column would create tens of thousands of sparse columns. What is the most practical alternative?",
    "options": [
+    "Assign each zip code an arbitrary integer label, ignoring the resulting magnitude differences.",
     "Apply one-hot encoding anyway, accepting the large increase in feature dimensionality.",
     "Drop the zip_code column entirely, since it carries no useful information for the model.",
-    "Use frequency or target encoding to give each zip code one numeric value.",
-    "Assign each zip code an arbitrary integer label, ignoring the resulting magnitude differences."
+    "Use frequency or target encoding to give each zip code one numeric value."
    ],
-   "answer": 2,
+   "answer": 3,
    "explanation": "High-cardinality categoricals make one-hot encoding impractical and sparse; frequency or target encoding compresses each category into one meaningful number instead. Arbitrary integer labels falsely imply order between categories, and dropping the column discards potentially predictive geographic signal.",
    "grounding": {
     "source": "scikit-learn documentation: TargetEncoder",
@@ -204,12 +204,12 @@
    "concept": "feature-scaling",
    "stem": "A data scientist fits a StandardScaler on the entire dataset before splitting it into training and test sets, then trains a model on the resulting scaled training data. What problem does this workflow introduce?",
    "options": [
+    "The scaler's statistics are computed using test data, leaking test information into training.",
     "There is no real problem, since scaling is a deterministic transformation unrelated to target labels.",
     "The scaled features lose their original units, making model coefficients harder for humans to interpret.",
-    "This introduces multicollinearity among the features that was not present in the unscaled data.",
-    "The scaler's statistics are computed using test data, leaking test information into training."
+    "This introduces multicollinearity among the features that was not present in the unscaled data."
    ],
-   "answer": 3,
+   "answer": 0,
    "explanation": "Fitting the scaler on the full dataset lets test-set statistics (mean, variance) influence training data — a subtle leakage even though no labels are involved. Scaling doesn't cause multicollinearity or make units uninterpretable; the scaler must be fit only on training data.",
    "grounding": {
     "source": "scikit-learn documentation: Common pitfalls and recommended practices",
@@ -223,12 +223,12 @@
    "concept": "scaling-sensitive-models",
    "stem": "A dataset has 'age' (18-90) and 'annual_income' ($20,000-$200,000) as unscaled features. A team must choose a model to train directly on these raw features without any scaling step. Which model choice is appropriate?",
    "options": [
-    "A random forest classifier, since tree splits threshold each feature independently of scale.",
+    "Logistic regression trained with gradient descent, since the optimizer rescales features internally.",
     "A k-nearest neighbors classifier, since distance metrics automatically adjust for differing feature ranges.",
     "A support vector machine with an RBF kernel, since kernel functions ignore input magnitude.",
-    "Logistic regression trained with gradient descent, since the optimizer rescales features internally."
+    "A random forest classifier, since tree splits threshold each feature independently of scale."
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Tree-based models split on one feature threshold at a time, so differing scales don't affect where those splits land. KNN, SVM with an RBF kernel, and gradient-descent-based logistic regression all rely on distances or gradients that unscaled features can distort.",
    "grounding": {
     "source": "scikit-learn documentation: Importance of Feature Scaling",
@@ -242,12 +242,12 @@
    "concept": "target-leakage",
    "stem": "A team predicts whether a customer will cancel their subscription next month. A proposed feature is 'number of support tickets filed in the customer's final week before cancellation.' Why is this feature problematic?",
    "options": [
-    "It is simply a measure of customer engagement, so it should improve the model's accuracy.",
-    "It reflects behavior caused by the cancellation, information not available before it happens.",
     "The feature has too many missing values across customers to be reliably imputed.",
-    "It introduces multicollinearity with other customer engagement features already in the model."
+    "It introduces multicollinearity with other customer engagement features already in the model.",
+    "It reflects behavior caused by the cancellation, information not available before it happens.",
+    "It is simply a measure of customer engagement, so it should improve the model's accuracy."
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "The ticket spike occurs because the customer already decided to cancel, so the feature encodes the outcome itself rather than a genuine predictive signal — textbook target leakage. It is not a benign engagement metric, a missing-data issue, or a multicollinearity problem.",
    "grounding": {
     "source": "Kaufman, Rosset & Perlich, 'Leakage in Data Mining: Formulation, Detection, and Avoidance' (KDD 2011)",
@@ -261,12 +261,12 @@
    "concept": "missing-value-handling",
    "stem": "A hospital readmission model includes 'creatinine_level', missing for 40% of patients because physicians order the test mainly when kidney problems are suspected. Which strategy best preserves the predictive signal carried by the missingness pattern itself?",
    "options": [
+    "Impute missing values using the column median stratified by patient age group.",
     "Impute with the column mean and use the resulting value like any other observed measurement.",
     "Add a binary indicator for whether the test was ordered, plus an imputed value.",
-    "Drop every row with a missing creatinine_level value before model training.",
-    "Impute missing values using the column median stratified by patient age group."
+    "Drop every row with a missing creatinine_level value before model training."
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "Missingness here is informative (MNAR) — tests are ordered based on clinical suspicion. A missing indicator preserves that signal; mean/median imputation treats missingness as random noise and discards it.",
    "grounding": {
     "source": "scikit-learn User Guide — Imputation of missing values",
@@ -280,12 +280,12 @@
    "concept": "categorical-encoding",
    "stem": "A model is trained with one-hot encoded 'shipping_carrier' values limited to UPS, FedEx, and USPS. In production, a new carrier, DHL, appears that the encoder never saw during training. What is the most robust way to handle this at inference time?",
    "options": [
-    "Retrain and redeploy the entire model as soon as any new carrier value is observed.",
     "Randomly assign the new carrier to one of the existing one-hot columns.",
     "Map unseen carriers to a reserved 'unknown' category defined during encoding.",
+    "Retrain and redeploy the entire model as soon as any new carrier value is observed.",
     "Remove the shipping_carrier feature from the pipeline the moment an unseen value appears."
    ],
-   "answer": 2,
+   "answer": 1,
    "explanation": "Reserving an 'unknown' bucket (e.g., OneHotEncoder's handle_unknown='ignore') lets the pipeline handle new categories gracefully. Retraining on every new value is impractical, and random assignment or dropping the feature loses information.",
    "grounding": {
     "source": "scikit-learn documentation — sklearn.preprocessing.OneHotEncoder",
@@ -299,8 +299,8 @@
    "concept": "feature-scaling",
    "stem": "A neural network uses a 'transaction_amount' feature that is heavily right-skewed, with a few extremely large transactions among mostly small ones. After applying standard (z-score) scaling, what is the most likely effect on the feature's distribution?",
    "options": [
-    "The scaling reshapes the distribution so it becomes approximately normal, improving convergence.",
     "Standard scaling has no effect on skewed data since it only changes units, not distribution shape.",
+    "The scaling reshapes the distribution so it becomes approximately normal, improving convergence.",
     "Training will fail because z-score scaling requires all input values to be non-negative.",
     "Extreme values inflate the mean and standard deviation, compressing most points near zero."
    ],
@@ -319,9 +319,9 @@
    "stem": "A model predicts whether an employee will resign within the next quarter. One candidate feature, 'exit_interview_scheduled', is only set to 1 after an employee has already announced their resignation. Why should this feature be excluded from training?",
    "options": [
     "It reflects information unavailable before the outcome, so it leaks the target.",
+    "It is missing for most employees, making any imputation strategy unreliable.",
     "It is a categorical feature and cannot be combined with numeric employee attributes.",
-    "It has too few unique values to add meaningful predictive information.",
-    "It is missing for most employees, making any imputation strategy unreliable."
+    "It has too few unique values to add meaningful predictive information."
    ],
    "answer": 0,
    "explanation": "This is target leakage: the feature only exists because the outcome already happened, so it wouldn't be available for a currently-employed worker at prediction time, artificially inflating training accuracy.",
@@ -337,12 +337,12 @@
    "concept": "class-imbalance-handling",
    "stem": "A rare-disease dataset has 2% positive cases. After applying SMOTE to oversample the minority class, a data scientist evaluates model performance on an SMOTE-augmented test set. Why is this evaluation misleading?",
    "options": [
-    "SMOTE removes noisy minority-class examples, making the test set trivially easy for most classifiers.",
-    "The oversampled test set balances the classes, making accuracy a fair measure of real-world performance.",
     "Synthetic samples do not match the real-world distribution, so metrics overstate true performance.",
-    "SMOTE can only generate numeric features, so categorical variables are silently dropped from the test set."
+    "SMOTE can only generate numeric features, so categorical variables are silently dropped from the test set.",
+    "SMOTE removes noisy minority-class examples, making the test set trivially easy for most classifiers.",
+    "The oversampled test set balances the classes, making accuracy a fair measure of real-world performance."
    ],
-   "answer": 2,
+   "answer": 0,
    "explanation": "SMOTE should only resample training data. A synthetically balanced test set no longer reflects real-world class frequencies, so accuracy or recall computed on it overstates performance on genuinely imbalanced production data.",
    "grounding": {
     "source": "imbalanced-learn documentation — SMOTE / Over-sampling",
@@ -356,12 +356,12 @@
    "concept": "missing-value-handling",
    "stem": "A churn model includes 'days_since_last_purchase', which is missing only for customers who have never purchased. Which imputation approach is most appropriate?",
    "options": [
-    "Impute the missing values using the mean of days_since_last_purchase among purchasing customers only.",
-    "Add a 'never_purchased' flag and impute the field with an out-of-range sentinel value.",
+    "Impute the missing values using k-nearest neighbors based on other purchase behavior features.",
     "Drop the days_since_last_purchase feature entirely so missing values no longer affect the model.",
-    "Impute the missing values using k-nearest neighbors based on other purchase behavior features."
+    "Impute the missing values using the mean of days_since_last_purchase among purchasing customers only.",
+    "Add a 'never_purchased' flag and impute the field with an out-of-range sentinel value."
    ],
-   "answer": 1,
+   "answer": 3,
    "explanation": "The missingness is informative (MNAR): these customers structurally differ from purchasers. An explicit flag plus a sentinel value preserves that signal, whereas mean or KNN imputation would falsely assign them a plausible purchase timing.",
    "grounding": {
     "source": "scikit-learn documentation: Imputation of missing values (MissingIndicator)",
@@ -375,12 +375,12 @@
    "concept": "outlier-treatment",
    "stem": "A ride-sharing dataset shows trip_distance values of exactly 0.0 miles for about 3% of trips, coinciding with a known app bug that logged 0 when GPS failed. What is the most appropriate treatment?",
    "options": [
-    "Apply the IQR rule to flag and remove all 0.0 values as statistical outliers.",
     "Treat these records as missing data from the known GPS fault, not genuine outliers.",
+    "Apply the IQR rule to flag and remove all 0.0 values as statistical outliers.",
     "Winsorize the trip_distance column by capping every value below the fifth percentile.",
     "Leave the values unchanged, since 0.0 miles is a valid distance for very short rides."
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "Because the root cause is a documented logging fault rather than genuinely short trips, these values are disguised missing data. Generic statistical outlier rules like IQR or winsorizing don't address the actual data quality problem.",
    "grounding": {
     "source": "NIST/SEMATECH e-Handbook of Statistical Methods, Section 1.3.5.17 (Detection of Outliers)",
@@ -394,12 +394,12 @@
    "concept": "one-hot-vs-label-encoding",
    "stem": "An analyst confirms that 'education_level' (High School < Bachelor's < Master's < PhD) has an approximately linear effect on salary, and wants to encode it using a single feature rather than multiple dummy columns. Which encoding is appropriate?",
    "options": [
-    "One-hot encoding, creating a separate binary column for each level.",
     "Ordinal encoding, mapping levels to increasing integers like 1 through 4.",
     "Target encoding, replacing each level with its historical mean salary value.",
+    "One-hot encoding, creating a separate binary column for each level.",
     "Binary encoding, converting each level's rank into a compact binary bit representation."
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "Ordinal encoding directly represents the known rank order with a single numeric feature, matching the assumed linear relationship. One-hot discards order and adds columns; target encoding risks leakage; binary encoding doesn't preserve a linear scale.",
    "grounding": {
     "source": "scikit-learn documentation: Preprocessing data (OrdinalEncoder vs OneHotEncoder)",
@@ -413,12 +413,12 @@
    "concept": "scaling-sensitive-models",
    "stem": "A data scientist fits a Lasso regression using 'square_footage' (500-5,000) and 'num_bedrooms' (1-5) without scaling either feature. What is the most likely consequence for the fitted model?",
    "options": [
-    "The L1 penalty shrinks num_bedrooms more heavily than square_footage, regardless of true importance.",
     "The model fails to converge because gradient descent cannot handle differing feature units.",
     "Lasso automatically rescales all input features internally, so differing ranges have no effect.",
-    "The model's R-squared will be biased downward due to multicollinearity between the two features."
+    "The model's R-squared will be biased downward due to multicollinearity between the two features.",
+    "The L1 penalty shrinks num_bedrooms more heavily than square_footage, regardless of true importance."
    ],
-   "answer": 0,
+   "answer": 3,
    "explanation": "Small-scale features need larger coefficients to produce a comparable effect on the prediction, so the L1 penalty, which acts uniformly on coefficient magnitude, shrinks them disproportionately regardless of actual importance.",
    "grounding": {
     "source": "Hastie, Tibshirani & Friedman, The Elements of Statistical Learning, Ch. 3",
@@ -432,12 +432,12 @@
    "concept": "target-leakage",
    "stem": "A manufacturing model predicts whether a batch of products will fail quality inspection. A proposed feature, 'rework_hours', logs the time technicians spent fixing defects after inspection results were recorded. Why should this feature be excluded from training?",
    "options": [
-    "It introduces target leakage, since rework_hours is generated by the outcome being predicted.",
     "It has a nonlinear relationship with the failure outcome that most models cannot capture.",
-    "It contains missing values for batches that passed inspection, complicating imputation efforts.",
-    "It is measured in different units (hours) than the other engineering features."
+    "It is measured in different units (hours) than the other engineering features.",
+    "It introduces target leakage, since rework_hours is generated by the outcome being predicted.",
+    "It contains missing values for batches that passed inspection, complicating imputation efforts."
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "rework_hours is generated as a downstream consequence of the failure outcome, so it encodes the label itself and won't be available at prediction time, unlike the missing-value or unit-scale issues in the other options.",
    "grounding": {
     "source": "Kaggle Learn: Intro to Machine Learning — Data Leakage",

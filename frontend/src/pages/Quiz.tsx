@@ -35,7 +35,7 @@ export default function Quiz() {
 
   const placement = useMemo(() => content ? placementItem(content.items) : null, [content])
   const raw: Item | null = phase === 'placement' ? placement : (queue[idx] ?? null)
-  // The bank stores most keys as option A, so options are shuffled per showing and the key remapped.
+  // Options are shuffled per showing and the key remapped, so position never gives the answer away.
   const current: Item | null = useMemo(() => {
     if (!raw) return null
     const order = raw.options.map((_, i) => i)

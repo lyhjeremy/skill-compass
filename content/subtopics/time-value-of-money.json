@@ -71,12 +71,12 @@
    "concept": "present-value-future-value",
    "stem": "An investor deposits $1,000 today in an account earning 10% annual interest, compounded annually. What is the value of the investment after 2 years?",
    "options": [
-    "$1,100",
     "$1,200",
-    "$1,210",
-    "$1,331"
+    "$1,331",
+    "$1,100",
+    "$1,210"
    ],
-   "answer": 2,
+   "answer": 3,
    "explanation": "FV = PV × (1+r)^n = $1,000 × 1.10² = $1,210. $1,200 assumes simple interest, and $1,331 mistakenly compounds for 3 years instead of 2.",
    "grounding": {
     "source": "Wikipedia: Future value",
@@ -91,11 +91,11 @@
    "stem": "A bank advertises a savings account with a stated annual interest rate of 12%, compounded monthly. Which value is closest to the account's effective annual rate?",
    "options": [
     "12.00%",
+    "13.00%",
     "12.36%",
-    "12.68%",
-    "13.00%"
+    "12.68%"
    ],
-   "answer": 2,
+   "answer": 3,
    "explanation": "EAR = (1 + 0.12/12)^12 − 1 ≈ 12.68%. Using 12.00% ignores compounding entirely, and 12.36% mistakenly assumes semiannual rather than monthly compounding.",
    "grounding": {
     "source": "Wikipedia: Effective interest rate",
@@ -110,9 +110,9 @@
    "stem": "An investor will receive $100 at the end of each year for 3 years. Using a 10% discount rate, which amount is closest to the present value of this ordinary annuity?",
    "options": [
     "$248.70",
+    "$331.00",
     "$270.00",
-    "$300.00",
-    "$331.00"
+    "$300.00"
    ],
    "answer": 0,
    "explanation": "PV = 100 × [(1 − 1.10⁻³)/0.10] ≈ $248.70. $300.00 wrongly sums the raw cash flows without discounting, and $331.00 is the annuity's future value, not present value.",
@@ -128,12 +128,12 @@
    "concept": "npv-decision-rule",
    "stem": "A project requires an initial investment of $1,000 today and returns a single cash inflow of $1,200 in one year. At a 10% discount rate, what is the project's NPV, and should the firm accept it?",
    "options": [
+    "NPV is about $1,200; accept, since it exceeds cost",
     "NPV is about $91; accept, since NPV is positive",
-    "NPV is about $200; accept, since NPV is positive",
     "NPV is about -$91; reject, since NPV is negative",
-    "NPV is about $1,200; accept, since it exceeds cost"
+    "NPV is about $200; accept, since NPV is positive"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "NPV = −$1,000 + $1,200/1.10 ≈ $91, so the firm should accept. $200 is the undiscounted profit, ignoring time value of money; $1,200 is just the future inflow, not netted against cost.",
    "grounding": {
     "source": "Wikipedia: Net present value",
@@ -147,12 +147,12 @@
    "concept": "irr-pitfalls",
    "stem": "A project has cash flows of -$100 at time 0, +$230 at time 1, and -$132 at time 2. What pitfall does this cash flow pattern create for the IRR decision rule?",
    "options": [
-    "Sign changes in the cash flows may yield multiple IRRs",
-    "IRR cannot be calculated when a later cash flow is negative",
     "IRR assumes all cash flows are reinvested at the IRR itself",
+    "IRR cannot be calculated when a later cash flow is negative",
+    "Sign changes in the cash flows may yield multiple IRRs",
     "NPV cannot be found unless a single IRR is identified first"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "With cash flows changing sign twice, the IRR equation has multiple valid roots (here, 10% and 20%), making the accept/reject rule ambiguous. The reinvestment-rate assumption is a separate, general IRR limitation, not one caused by sign changes.",
    "grounding": {
     "source": "Wikipedia: Internal rate of return",
@@ -166,12 +166,12 @@
    "concept": "present-value-future-value",
    "stem": "A firm needs $20,000 in 4 years to replace equipment. If it can invest today at an annual rate of 8% compounded annually, how much must it invest now (to the nearest $100)?",
    "options": [
+    "$15,200",
     "$15,900",
     "$20,000",
-    "$14,700",
-    "$15,200"
+    "$14,700"
    ],
-   "answer": 2,
+   "answer": 3,
    "explanation": "PV = FV / (1+r)^n = 20,000 / 1.08^4 ≈ $14,700. Discounting only 3 years overstates the deposit ($15,900); using simple interest instead of compounding also overstates it ($15,200); ignoring discounting entirely gives $20,000.",
    "grounding": {
     "source": "CFA Institute Level I Curriculum – Quantitative Methods (Time Value of Money)",
@@ -185,12 +185,12 @@
    "concept": "compounding-frequency",
    "stem": "Two banks offer a stated annual rate of 6% on a $5,000 deposit for one year. Bank A compounds semiannually; Bank B compounds monthly. Which statement is correct?",
    "options": [
-    "Bank A has a higher future value, since semiannual compounding earns larger interest amounts at each payment date.",
-    "Bank B has a higher future value, since more frequent compounding raises the effective rate.",
     "Both banks have identical future values, since the stated annual rate is the same for both.",
-    "Bank B has a lower future value, since monthly compounding applies a smaller rate each period, reducing total growth."
+    "Bank A has a higher future value, since semiannual compounding earns larger interest amounts at each payment date.",
+    "Bank B has a lower future value, since monthly compounding applies a smaller rate each period, reducing total growth.",
+    "Bank B has a higher future value, since more frequent compounding raises the effective rate."
    ],
-   "answer": 1,
+   "answer": 3,
    "explanation": "More frequent compounding raises the effective annual rate because interest earns interest sooner, even though each period's rate is smaller. Bank B (monthly) therefore has a higher future value than Bank A (semiannual), despite the smaller per-period rate cited in the incorrect options.",
    "grounding": {
     "source": "Wikipedia – Compound interest",
@@ -204,12 +204,12 @@
    "concept": "perpetuity-valuation",
    "stem": "A preferred stock pays a fixed dividend of $6 per share at the end of each year forever. If investors require an 8% annual return, what is the stock's fair value today?",
    "options": [
+    "$48",
     "$75",
-    "$81",
     "$60",
-    "$48"
+    "$81"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "Perpetuity value = payment / rate = 6/0.08 = $75. Treating the first payment as due today gives $81 (perpetuity due); inverting the formula to dividend × rate gives $48; using a 10% rate instead of 8% gives $60.",
    "grounding": {
     "source": "Wikipedia – Perpetuity (finance)",
@@ -223,12 +223,12 @@
    "concept": "npv-decision-rule",
    "stem": "A capital project has a required return of 9% and an NPV of $1,200 when discounted at that rate. According to the NPV decision rule, what should the firm do, and why?",
    "options": [
+    "Accept the project, because a positive NPV indicates it is expected to increase shareholder wealth.",
     "Reject the project, because the NPV should equal zero for an acceptable investment.",
     "Reject the project, because a positive NPV of only $1,200 is too small to be economically meaningful.",
-    "Accept the project only if the initial investment is recovered within a set payback period.",
-    "Accept the project, because a positive NPV indicates it is expected to increase shareholder wealth."
+    "Accept the project only if the initial investment is recovered within a set payback period."
    ],
-   "answer": 3,
+   "answer": 0,
    "explanation": "NPV rule: accept if NPV > 0, regardless of dollar size. The $1,200 magnitude is irrelevant, and payback period is a separate, inferior criterion not required once NPV is positive.",
    "grounding": {
     "source": "Wikipedia – Net present value",
@@ -242,12 +242,12 @@
    "concept": "discount-rate-selection",
    "stem": "A firm is evaluating a new project with risk similar to its existing operations. Which discount rate is most appropriate for computing the project's NPV?",
    "options": [
+    "The project's own internal rate of return.",
     "The current risk-free Treasury bill rate.",
-    "The firm's weighted average cost of capital (WACC).",
     "The average historical return earned by the firm's common stock alone.",
-    "The project's own internal rate of return."
+    "The firm's weighted average cost of capital (WACC)."
    ],
-   "answer": 1,
+   "answer": 3,
    "explanation": "WACC blends the cost of debt and equity and matches the risk of average firm operations. The risk-free rate or equity-only return understates required compensation for risk, and using the project's own IRR is circular.",
    "grounding": {
     "source": "Wikipedia – Weighted average cost of capital",
@@ -261,12 +261,12 @@
    "concept": "present-value-future-value",
    "stem": "An investor can choose to receive $1,600 in 4 years or $1,200 in 2 years, valued at an 8% annual discount rate. Which choice has the higher present value, and by approximately how much?",
    "options": [
-    "$1,600 in 4 years; PV is about $147 higher",
-    "$1,200 in 2 years; PV is about $147 higher",
     "$1,600 in 4 years; PV is about $400 higher",
-    "The two present values are approximately equal"
+    "$1,600 in 4 years; PV is about $147 higher",
+    "The two present values are approximately equal",
+    "$1,200 in 2 years; PV is about $147 higher"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "PV of $1,600/1.08⁴ ≈ $1,176; PV of $1,200/1.08² ≈ $1,029. The later, larger payment is worth about $147 more today; comparing nominal amounts or timing alone reverses the ranking.",
    "grounding": {
     "source": "Wikipedia: Time value of money",
@@ -280,12 +280,12 @@
    "concept": "effective-annual-rate",
    "stem": "A credit card issuer charges interest of 1.5% per month on unpaid balances, compounded monthly. What effective annual rate (EAR) is the cardholder actually paying?",
    "options": [
-    "18.0%",
-    "19.6%",
+    "21.0%",
     "16.5%",
-    "21.0%"
+    "19.6%",
+    "18.0%"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "EAR = (1.015)^12 − 1 ≈ 19.6%. Simply multiplying the monthly rate by 12 (18.0%) ignores compounding and understates the true annual cost of borrowing.",
    "grounding": {
     "source": "Investopedia: Effective Annual Interest Rate (EAR)",
@@ -299,12 +299,12 @@
    "concept": "annuity-valuation",
    "stem": "A borrower takes out a $10,000 loan at a 6% annual interest rate, to be repaid in three equal payments at the end of each year for the next three years. What is the approximate annual payment?",
    "options": [
-    "$3,333",
     "$3,741",
     "$3,530",
+    "$3,333",
     "$3,933"
    ],
-   "answer": 1,
+   "answer": 0,
    "explanation": "Payment = $10,000 ÷ [1−1.06⁻³]/0.06 ≈ $10,000 ÷ 2.673 ≈ $3,741. An annuity-due factor (payments at year-start) gives $3,530; dividing principal evenly by 3 ($3,333) or spreading simple total interest evenly ($3,933) both ignore proper compounding.",
    "grounding": {
     "source": "CFA Institute Level I Curriculum – Time Value of Money (Annuities)",
@@ -318,12 +318,12 @@
    "concept": "npv-decision-rule",
    "stem": "A firm is considering two independent projects, each requiring a $2,000 initial investment. Project X returns $2,500 after one year; Project Y returns $1,300 after each of the next two years. Using a 10% discount rate, what should the firm do?",
    "options": [
-    "Accept both, since both have positive NPV and are independent",
-    "Accept only Project X, since it has the higher NPV",
     "Reject both, since neither NPV exceeds the initial outlay",
+    "Accept only Project X, since it has the higher NPV",
+    "Accept both, since both have positive NPV and are independent",
     "Accept only Project Y, since it has cash flows in more periods"
    ],
-   "answer": 0,
+   "answer": 2,
    "explanation": "NPV(X) ≈ $273 and NPV(Y) ≈ $256; both exceed zero. Because the projects are independent, not mutually exclusive, the firm should accept every project with positive NPV rather than picking only the higher one.",
    "grounding": {
     "source": "CFA Institute Level I Curriculum – Net Present Value and the NPV Rule",
@@ -338,9 +338,9 @@
    "stem": "Mutually exclusive Project A (cost $1,000, 1-year IRR 30%) and Project B (cost $10,000, 1-year IRR 20%) are evaluated at a 10% cost of capital. Project A's NPV is $182; Project B's NPV is $909. Which project should be chosen, and why?",
    "options": [
     "Project B, because NPV reflects the larger dollar value created",
+    "Either project, since IRR and NPV always rank projects identically",
     "Project A, because a higher IRR always signals greater profitability",
-    "Project A, because smaller investments are always less risky",
-    "Either project, since IRR and NPV always rank projects identically"
+    "Project A, because smaller investments are always less risky"
    ],
    "answer": 0,
    "explanation": "IRR ignores project scale, so a smaller project can show a higher percentage return yet create less wealth. NPV, which measures dollar value added, correctly favors Project B despite its lower IRR.",
@@ -356,12 +356,12 @@
    "concept": "effective-annual-rate",
    "stem": "Two savings accounts each advertise a stated annual rate of 12%. Account A compounds monthly and Account B compounds daily (365 days). Which statement correctly compares their effective annual rates (EARs)?",
    "options": [
-    "Account A's EAR is higher than Account B's, because fewer compounding periods let each interval earn more interest",
-    "Both accounts have the same 12% EAR, since the stated annual rate alone determines the EAR",
+    "Account B's EAR is higher than Account A's, and the gap widens without bound as frequency increases",
     "Account B's EAR is only slightly higher, since gains from more frequent compounding shrink at higher frequencies",
-    "Account B's EAR is higher than Account A's, and the gap widens without bound as frequency increases"
+    "Both accounts have the same 12% EAR, since the stated annual rate alone determines the EAR",
+    "Account A's EAR is higher than Account B's, because fewer compounding periods let each interval earn more interest"
    ],
-   "answer": 2,
+   "answer": 1,
    "explanation": "More frequent compounding raises the EAR, so Account B's daily compounding (~12.75%) is marginally higher than Account A's monthly compounding (~12.68%). Each additional compounding period yields smaller gains, converging toward the continuous-compounding limit (e^0.12−1≈12.75%), so the difference stays small.",
    "grounding": {
     "source": "Effective interest rate — Wikipedia",
@@ -375,12 +375,12 @@
    "concept": "irr-pitfalls",
    "stem": "An analyst finds a project's IRR equals 35% and argues the firm can reinvest every intermediate cash flow at 35% for the rest of the project's life. What is the key flaw in this claim?",
    "options": [
+    "IRR involves no reinvestment assumption at all, unlike NPV, so the analyst's claim is essentially meaningless",
     "IRR implicitly assumes reinvestment at the IRR itself, unrealistic since 35% likely exceeds comparable-risk market returns",
     "IRR assumes reinvestment at the risk-free rate, so the true realized return actually exceeds 35%",
-    "IRR involves no reinvestment assumption at all, unlike NPV, so the analyst's claim is essentially meaningless",
     "NPV suffers the same reinvestment-rate flaw as IRR, so switching decision rules would not fix the problem"
    ],
-   "answer": 0,
+   "answer": 1,
    "explanation": "The internal rate of return implicitly assumes reinvestment of intermediate cash flows at the IRR itself, not at a market-based rate, which is unrealistic when the IRR is very high. NPV avoids this issue by discounting at the more realistic cost of capital.",
    "grounding": {
     "source": "CFA Institute Level I Curriculum, Quantitative Methods: Internal Rate of Return",
@@ -394,12 +394,12 @@
    "concept": "discount-rate-selection",
    "stem": "A firm's core business has low risk, but it is evaluating a new venture into a much riskier, unrelated industry. Which discount rate is most appropriate for valuing the new venture's cash flows?",
    "options": [
-    "The firm's existing weighted average cost of capital (WACC), since it reflects the firm's overall financing structure",
-    "A project-specific rate reflecting the venture's own risk, likely higher than the firm's existing WACC",
     "The risk-free rate, since the venture's cash flows are unrelated to the firm's core operations",
-    "The firm's after-tax cost of debt, since debt is generally the cheapest source of financing"
+    "The firm's after-tax cost of debt, since debt is generally the cheapest source of financing",
+    "A project-specific rate reflecting the venture's own risk, likely higher than the firm's existing WACC",
+    "The firm's existing weighted average cost of capital (WACC), since it reflects the firm's overall financing structure"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "Discount rates must reflect the risk of the cash flows being valued, not the firm's overall risk profile. Applying the firm's existing WACC to a much riskier venture understates the required return and could cause the firm to accept a value-destroying project.",
    "grounding": {
     "source": "Weighted average cost of capital — Wikipedia",
@@ -413,12 +413,12 @@
    "concept": "annuity-valuation",
    "stem": "A retiree needs an account that pays exactly $5,000 at the beginning of each year for 10 years, with the account earning 7% annually. How does the required deposit compare to one funding otherwise identical year-end (ordinary annuity) withdrawals?",
    "options": [
-    "The required deposit is identical, because the number and size of payments are unchanged",
-    "The required deposit must be about 7% smaller, since the account has one fewer year to earn interest overall",
     "The required deposit must be about 7% larger, since each payment arrives one period earlier, losing interest",
+    "The required deposit must be about 7% smaller, since the account has one fewer year to earn interest overall",
+    "The required deposit is identical, because the number and size of payments are unchanged",
     "The required deposit depends only on the total amount withdrawn, not on the timing of individual payments"
    ],
-   "answer": 2,
+   "answer": 0,
    "explanation": "An annuity due's present value equals an ordinary annuity's present value multiplied by (1+r). Because each payment arrives one period earlier, the retiree loses one period of discounting on every cash flow, raising the required deposit by roughly the periodic rate, here about 7%.",
    "grounding": {
     "source": "CFA Institute Level I Curriculum, Quantitative Methods: The Time Value of Money",
@@ -432,12 +432,12 @@
    "concept": "perpetuity-valuation",
    "stem": "A stock just paid an annual dividend of $4 (D0), and dividends are expected to grow at a constant 3% per year forever. With a required return of 9%, which calculation gives the correct intrinsic value today?",
    "options": [
-    "$4 / (0.09 − 0.03) = $66.67, using the dividend that was just paid",
-    "$4 × 1.03 / (0.09 − 0.03) = $68.67, using next year's expected dividend",
     "$4 / (0.09 + 0.03) = $33.33, discounting at the sum of the two rates",
-    "$4 × 1.03 / (0.09 + 0.03) = $34.33, using next year's dividend and the summed rates"
+    "$4 × 1.03 / (0.09 + 0.03) = $34.33, using next year's dividend and the summed rates",
+    "$4 × 1.03 / (0.09 − 0.03) = $68.67, using next year's expected dividend",
+    "$4 / (0.09 − 0.03) = $66.67, using the dividend that was just paid"
    ],
-   "answer": 1,
+   "answer": 2,
    "explanation": "The constant-growth (Gordon growth) model values a stock using next period's expected dividend, D1 = D0×(1+g), divided by (r−g). Using the dividend just paid, D0, instead of D1 is a common error that understates the correct intrinsic value of $68.67.",
    "grounding": {
     "source": "Gordon growth model — Wikipedia",
