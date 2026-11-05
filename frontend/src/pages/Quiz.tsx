@@ -34,7 +34,17 @@ export default function Quiz() {
   }, [subtopicId])
 
   const placement = useMemo(() => content ? placementItem(content.items) : null, [content])
-  const current: Item | null = phase === 'placement' ? placement : (queue[idx] ?? null)
+  const raw: Item | null = phase === 'placement' ? placement : (queue[idx] ?? null)
+  // The bank stores most keys as option A, so options are shuffled per showing and the key remapped.
+  const current: Item | null = useMemo(() => {
+    if (!raw) return null
+    const order = raw.options.map((_, i) => i)
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]]
+    }
+    return { ...raw, options: order.map(i => raw.options[i]), answer: order.indexOf(raw.answer) }
+  }, [raw])
 
   function begin(v?: Variant) {
     if (!content) return

@@ -2,7 +2,7 @@
 
 A line on a résumé is a claim with no evidence behind it. SkillCompass turns each skill into a free two-minute check (one placement question and six more, Elo-scored, no sign-up), then uses an LLM to compare a résumé with a career track, run a mock interview and write a study guide, on a stack that costs $0 a month.
 
-Result, 4 November 2026: 645 questions are live across 29 subtopics, and an independent review pass rewrote 266 of the 645 drafts before they shipped (`eval/review_pass.json`). The open bug it missed: 415 of the 645 answer keys (64%) are option A. Percentiles are off while the free-tier Supabase project is paused.
+Result, 4 November 2026: 645 questions are live across 29 subtopics, and an independent review pass rewrote 266 of the 645 drafts before they shipped (`eval/review_pass.json`). What it missed: 415 of the 645 stored answer keys (64%) are option A; since 4 November the app shuffles options on every showing. Percentiles are off while the free-tier Supabase project is paused.
 
 [Live app (beta)](https://lyhjeremy.github.io/skill-compass/) · [Product overview](https://lyhjeremy.github.io/skill-compass/overview/) · [Build log](writeup.md)
 
@@ -88,7 +88,7 @@ The backend reads `SUPABASE_URL` and `SUPABASE_KEY` (percentiles) and `GEMINI_AP
 
 ## Limitations
 
-The Supabase project is paused as of 2026-10-28, so percentiles and session logging are off; the checks themselves still run in the browser. Item ratings are LLM-estimated priors until response-based recalibration is built. Percentiles need 30 sessions per subtopic in a 90-day window, so most subtopics still show "early data". The resume report compares against each track's curriculum; with no job-postings corpus yet, it makes no claims about market demand. Only 29 of the 385 catalog subtopics are live, and the rest show as coming soon. The app shows answer options in stored order, and 415 of the 645 keys are option A, so a test-taker who always picks A scores well above chance; shuffling options at display time is the fix, and it is not done yet. The free tiers have their own limits, too: the Supabase project pauses after 7 days without activity, and Gemini calls are capped per day.
+The Supabase project is paused as of 2026-10-28, so percentiles and session logging are off; the checks themselves still run in the browser. Item ratings are LLM-estimated priors until response-based recalibration is built. Percentiles need 30 sessions per subtopic in a 90-day window, so most subtopics still show "early data". The resume report compares against each track's curriculum; with no job-postings corpus yet, it makes no claims about market demand. Only 29 of the 385 catalog subtopics are live, and the rest show as coming soon. 415 of the 645 stored keys are option A. Until 4 November the app showed options in stored order, so always picking A scored well above chance; it now shuffles them on every showing, and the stored keys still need rebalancing. The free tiers have their own limits, too: the Supabase project pauses after 7 days without activity, and Gemini calls are capped per day.
 
 ## License
 

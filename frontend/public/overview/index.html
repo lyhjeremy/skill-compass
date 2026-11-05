@@ -309,7 +309,7 @@
         <div><dt>Baseline</dt><dd>The drafting pass alone: in 37% of drafts (241) the right answer was the longest option.</dd></div>
         <div><dt>Result</dt><dd><b>266 of 645</b> questions rewritten by the review pass before shipping; longest-option giveaways down to <b>23%</b> (148), about chance for four options.</dd></div>
         <div><dt>Cost per task</dt><dd>$0 on Gemini's free tier, capped at 1,200 calls a day. Per-call latency for the three model features is not measured: no Gemini key on the machine that ran the evals.</dd></div>
-        <div><dt>Main failure</dt><dd><b>415 of 645</b> keys (64%) are option A, and the app shows options in stored order. <a href="#h-review">Details</a>.</dd></div>
+        <div><dt>Main failure</dt><dd><b>415 of 645</b> stored keys (64%) were option A. Since 4 November the app and this demo shuffle options on every showing, so position no longer gives the answer away; the bank itself still needs rebalancing. <a href="#h-review">Details</a>.</dd></div>
         <div><dt>Switched off</dt><dd>Percentiles, while the free-tier Supabase project stays paused; item recalibration (planned, not built); human sign-off (every bank still marked pending).</dd></div>
       </dl>
     </section>
@@ -436,10 +436,11 @@
     <p>
       The review pass looked at one question at a time, so it could not see a pattern across
       a bank. The correct option is <strong>A in 415 of 645 questions (64%)</strong>, and the
-      app shows options in the order they are stored. Across the bank, always answering A
-      gets about two in three right; a random guess gets one in four. In 22 of the 29
-      subtopics A is the key more often than not. The fix is to shuffle options at display
-      time. It is not built yet.
+      app showed options in the order they were stored. Across the bank, always answering A
+      got about two in three right; a random guess gets one in four. In 22 of the 29
+      subtopics A is the key more often than not. Since 4 November the app and the demo on
+      this page shuffle the options each time a question is shown, so always answering A
+      now scores at chance. The stored keys are unchanged.
     </p>
     <figure class="chart" id="keys">
       <div class="keybars" role="img" aria-label="Answer key position across 645 shipped questions: A 415, B 120, C 74, D 36.">
@@ -739,7 +740,19 @@
       show(DEMO.items[DEMO.placement], "Placement");
     }
 
+    function shuffled(item) {
+      var order = item.o.map(function (_, i) { return i; });
+      for (var i = order.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1)), t = order[i]; order[i] = order[j]; order[j] = t;
+      }
+      var copy = Object.assign({}, item);
+      copy.o = order.map(function (k) { return item.o[k]; });
+      copy.a = order.indexOf(item.a);
+      return copy;
+    }
+
     function show(item, label) {
+      item = shuffled(item);
       step.textContent = label;
       q.textContent = "";
       var meta = st.phase === "placement"
