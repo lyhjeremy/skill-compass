@@ -1,5 +1,7 @@
 # SkillCompass
 
+[![tests](https://github.com/lyhjeremy/skill-compass/actions/workflows/tests.yml/badge.svg)](https://github.com/lyhjeremy/skill-compass/actions/workflows/tests.yml)
+
 A line on a résumé is a claim with no evidence behind it. SkillCompass turns each skill into a free two-minute check (one placement question and six more, Elo-scored, no sign-up), then uses an LLM to compare a résumé with a career track, run a mock interview and write a study guide, on a stack that costs $0 a month.
 
 Result, 5 November 2026: 645 questions are live across 29 subtopics, and an independent review pass rewrote 266 of the 645 drafts before they shipped (`eval/review_pass.json`). What it missed: 415 of the 645 answer keys (64%) were option A as drafted; the app now shuffles options on every showing, and on 5 November `scripts/rebalance_keys.py` reordered the stored bank to 165, 164, 158 and 158 keys at A to D. Percentiles are off while the free-tier Supabase project is paused.
