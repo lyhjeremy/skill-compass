@@ -1,0 +1,5 @@
+# Backend tests (python -m pytest -q backend/tests). Kept at the repo root so
+# that editing it does not trigger the backend deploy, which watches backend/**.
+-r backend/requirements.txt
+httpx
+pytest>=8.0
